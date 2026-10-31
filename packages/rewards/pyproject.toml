@@ -1,0 +1,19 @@
+[project]
+name = "goodhart-rewards"
+version = "0.1.0"
+description = "The strict comparator and the training rewards, honest and defective"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+dependencies = [
+  "goodhart-core",
+]
+
+[tool.uv.sources]
+goodhart-core = { workspace = true }
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/goodhart_rewards"]

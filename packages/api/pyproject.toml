@@ -1,0 +1,30 @@
+[project]
+name = "goodhart-api"
+version = "0.1.0"
+description = "The grader API: grade any SQL against the held-out questions on the original and the twins"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+dependencies = [
+  "goodhart-core",
+  "goodhart-rewards",
+  "goodhart-heldout",
+  "goodhart-monitor",
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+  "sqlmodel>=0.0.22",
+  "psycopg[binary]>=3.2",
+  "alembic>=1.14",
+]
+
+[tool.uv.sources]
+goodhart-core = { workspace = true }
+goodhart-rewards = { workspace = true }
+goodhart-heldout = { workspace = true }
+goodhart-monitor = { workspace = true }
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/goodhart_api"]

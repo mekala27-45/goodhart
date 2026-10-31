@@ -1,0 +1,140 @@
+[project]
+name = "goodhart"
+version = "0.1.0"
+description = "Post-training small open models to write SQL over three warehouses, graded by checks the training reward never saw"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [{ name = "Ajay Mekala" }]
+dependencies = [
+  "goodhart-core",
+  "goodhart-render",
+  "goodhart-questions",
+  "goodhart-rewards",
+  "goodhart-heldout",
+  "goodhart-monitor",
+  "goodhart-train",
+  "goodhart-evaluation",
+  "goodhart-sizing",
+  "goodhart-judge",
+  "goodhart-api",
+  "typer>=0.15",
+  "httpx>=0.28",
+]
+
+[project.scripts]
+goodhart = "goodhart_evaluation.cli:app"
+
+[project.optional-dependencies]
+# The trainers on CPU with a tiny model, for the smoke run in CI. The GPU kernels install
+# requirements-gpu.txt instead, with hashes, on top of the CUDA build of PyTorch in the Kaggle image.
+smoke = [
+  "torch>=2.6",
+  "transformers==5.22.1",
+  "trl==1.17.1",
+  "peft==0.21.2",
+  "datasets==5.1.0",
+  "accelerate==1.15.0",
+]
+# The readback no model floor, imported at its pinned commit and never vendored.
+floor = [
+  "readback-core @ git+https://github.com/mekala27-45/readback@c4efff35b8ec24f9f80cef7736cc5bf11334ddb4#subdirectory=packages/core",
+  "readback-catalog @ git+https://github.com/mekala27-45/readback@c4efff35b8ec24f9f80cef7736cc5bf11334ddb4#subdirectory=packages/catalog",
+  "readback-planner @ git+https://github.com/mekala27-45/readback@c4efff35b8ec24f9f80cef7736cc5bf11334ddb4#subdirectory=packages/planner",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=6.0",
+  "anyio>=4.6",
+  "hypothesis>=6.120",
+  "ruff>=0.11",
+  "mypy>=1.15",
+  "types-PyYAML",
+  "nbmake>=1.5",
+  "nbformat>=5.10",
+  "nbconvert>=7.16",
+  "ipykernel>=6.29",
+  "matplotlib>=3.9",
+  "skills-ref>=0.1",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+goodhart-core = { workspace = true }
+goodhart-render = { workspace = true }
+goodhart-questions = { workspace = true }
+goodhart-rewards = { workspace = true }
+goodhart-heldout = { workspace = true }
+goodhart-monitor = { workspace = true }
+goodhart-train = { workspace = true }
+goodhart-evaluation = { workspace = true }
+goodhart-sizing = { workspace = true }
+goodhart-judge = { workspace = true }
+goodhart-api = { workspace = true }
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["scripts"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["web", "notebooks", "data", "kernels/templates"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "N", "W"]
+# N818: Refused and Breach read as what happened and are caught by name.
+ignore = ["RUF001", "RUF002", "RUF003", "N818"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["E402"]
+"tests/*" = ["E402", "N802", "N806"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = [
+  "goodhart_core", "goodhart_render", "goodhart_questions", "goodhart_rewards", "goodhart_heldout",
+  "goodhart_monitor", "goodhart_train", "goodhart_evaluation", "goodhart_sizing", "goodhart_judge",
+  "goodhart_api",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# The trainers call TRL and Transformers, which are typed loosely; the stage code is checked, the
+# library objects are Any.
+module = ["goodhart_train.sft", "goodhart_train.dpo", "goodhart_train.grpo", "goodhart_train.sample", "goodhart_train.probe", "goodhart_train.backend"]
+disallow_untyped_calls = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "postgres: needs DATABASE_URL pointing at a Postgres",
+  "torch: needs the smoke extra (torch, transformers, trl, peft) installed",
+  "warehouses: needs the warehouses fetched by lock (make fetch)",
+  "browser: needs Playwright and a browser",
+  "loadtest: needs a running server",
+  "floor: needs the floor extra (readback at its pinned commit)",
+]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["packages"]
+omit = ["*/tests/*", "*/goodhart_train/sft.py", "*/goodhart_train/dpo.py", "*/goodhart_train/grpo.py", "*/goodhart_train/backend.py", "*/goodhart_train/probe.py", "*/goodhart_train/sample.py"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = false
