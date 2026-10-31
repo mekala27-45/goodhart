@@ -19,7 +19,7 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts._files import all_text_files, commit_diffs
+from scripts._files import LOCK_FILES, all_text_files, commit_diffs
 
 EMAIL = re.compile(r"\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b")
 PHONE = re.compile(r"(?<![\d.])\(?\b\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}\b(?![\d.])")
@@ -73,7 +73,7 @@ def check(root: Path, revision_range: str | None = None, files: list[Path] | Non
             continue
         for name in find(text):
             problems.append(f"{path.relative_to(root)}: {name}")
-    diffs = commit_diffs(root, revision_range)
+    diffs = commit_diffs(root, revision_range, exclude=LOCK_FILES)
     fixture_text = (root / FIXTURE).read_text(encoding="utf-8") if (root / FIXTURE).exists() else ""
     for commit, added in diffs:
         cleaned = added.replace(fixture_text.strip(), "") if fixture_text.strip() else added

@@ -108,13 +108,21 @@ def all_text_files(root: Path) -> list[Path]:
     return out
 
 
-def commit_diffs(root: Path, revision_range: str | None) -> list[tuple[str, str]]:
+LOCK_FILES = ("uv.lock", "package-lock.json", "requirements-gpu.txt", "requirements-vllm.txt")
+
+
+def commit_diffs(
+    root: Path, revision_range: str | None, exclude: tuple[str, ...] = ()
+) -> list[tuple[str, str]]:
     """(commit, added lines) for every commit in the range, or in the whole history when None.
 
-    Only added lines matter: a removed line never reaches a blob that is new in that commit.
+    Only added lines matter: a removed line never reaches a blob that is new in that commit. Lock
+    files can be excluded: their package versions look like addresses to a pattern and hold no prose.
     """
     args = ["git", "log", "-p", "--no-color", "--no-ext-diff", "--format=@@commit %H"]
     args.append(revision_range if revision_range else "--all")
+    if exclude:
+        args += ["--", ".", *(f":(exclude,glob)**/{name}" for name in exclude)]
     try:
         text = subprocess.run(
             args, cwd=root, check=True, capture_output=True, text=True, errors="replace"
