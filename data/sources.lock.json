@@ -1,0 +1,1171 @@
+{
+ "version": 1,
+ "readback": {
+  "repository": "https://github.com/mekala27-45/readback",
+  "commit": "c4efff35b8ec24f9f80cef7736cc5bf11334ddb4",
+  "files": [
+   {
+    "path": "data/warehouses.lock.json",
+    "sha256": "39f4f06d85f2903933cf2de4e07bf6080e0ba5577eb5ddfe40940f4a4ac72fb9",
+    "bytes": 36159
+   },
+   {
+    "path": "data/PROVENANCE.md",
+    "sha256": "2679a3b40c83a57912b7baa24e3dc0088c6d9b8e8271c2efb7056e3ae75745a4",
+    "bytes": 3348
+   },
+   {
+    "path": "catalog/measures.yaml",
+    "sha256": "80247c9a62c64338c09335b2e87196dc6213db8f95e9c19b649329bbcba48a0d",
+    "bytes": 9175
+   },
+   {
+    "path": "catalog/entities.yaml",
+    "sha256": "f53e6a3de44d3c4724a7067a0127212a836cf5457ce31f3ba2aec946b436abd6",
+    "bytes": 2730
+   },
+   {
+    "path": "catalog/synonyms.yaml",
+    "sha256": "291e50af2e0d70ce6b6695e14066514fd58db8aeaad4293ab8a93fa943846f34",
+    "bytes": 2680
+   },
+   {
+    "path": "catalog/unit_rules.yaml",
+    "sha256": "7751523c0ca72861111712d3749a48ff1afcf1f791c5f5645b033f876ea7e2e0",
+    "bytes": 9260
+   },
+   {
+    "path": "catalog/doorstep.yaml",
+    "sha256": "e75fe6deefbd0da50304e6ab97184b7d0ff2a6b4588f34f0acfc327989cdb431",
+    "bytes": 220880
+   },
+   {
+    "path": "catalog/turnaround.yaml",
+    "sha256": "93127f4f3c4082d5187c1cdbe0d8d10b7f78bdf04ad6e27323b3072e4ff4d810",
+    "bytes": 101157
+   },
+   {
+    "path": "catalog/ledger.yaml",
+    "sha256": "27bedbfb25c291fcd9565fdc37550b064aceb60309651a16c1bfecfee98583d2",
+    "bytes": 147978
+   },
+   {
+    "path": "evals/golden/doorstep.yaml",
+    "sha256": "1405f5fad7b14095a6c7a82c6dbff20c4395c8d0b68da8b0060fc3ea1956c8be",
+    "bytes": 27656
+   },
+   {
+    "path": "evals/golden/turnaround.yaml",
+    "sha256": "e7a65d246237159bc4c6ad85e34cabd1f59d7ba954c0805c06bcb396e18c8df4",
+    "bytes": 23592
+   },
+   {
+    "path": "evals/golden/ledger.yaml",
+    "sha256": "4f66515418d464fc9c14762cfa2aa26eec0c7c9fe9bcf047d2ed098b805459eb",
+    "bytes": 21425
+   },
+   {
+    "path": "evals/golden/multi.yaml",
+    "sha256": "36a08d7b5a3a4f438ca74c1231b785abf799e6c52c14f7934f71f327e0793860",
+    "bytes": 7195
+   },
+   {
+    "path": "evals/golden/refusal.yaml",
+    "sha256": "961d31492c4843da659b1b35de04ad905506d13721ce6b952c8d55c7faf16026",
+    "bytes": 2495
+   },
+   {
+    "path": "evals/plan.yaml",
+    "sha256": "e2af77e6720c7919f766911addec3eb846578146f185aa712d9626c793cb30c5",
+    "bytes": 1659
+   },
+   {
+    "path": "evals/registration.json",
+    "sha256": "6245b9ea58b0e0c03d2e8fc7e186c412a323a400a4bc63384f9cb8a9c7bbcf4e",
+    "bytes": 249
+   },
+   {
+    "path": "LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "bytes": 11358
+   }
+  ]
+ },
+ "warehouses": {
+  "doorstep": {
+   "repository": "https://github.com/mekala27-45/doorstep",
+   "tag": "v0.1.0",
+   "commit": "6ca4c7b936fd6239347c9de8ec8d736b9f9b7c7d",
+   "tables": [
+    {
+     "path": "results/marts/calc_metros.parquet",
+     "table": "calc_metros",
+     "sha256": "6ba025b1b47eb04553bd086a1c9d07c97f10d7a7f15dadee1bb5b9dd4914ad15",
+     "bytes": 157642
+    },
+    {
+     "path": "results/marts/calc_quarters.parquet",
+     "table": "calc_quarters",
+     "sha256": "2981d763a8ccea549d56e1afa1d1022af4a72689ded09869f70350e0e07898d2",
+     "bytes": 137286
+    },
+    {
+     "path": "results/marts/ch1_national_series.parquet",
+     "table": "ch1_national_series",
+     "sha256": "5b0c6075f38d89b7a3dafe06424ce60cd3444da146f7bab3d3e7a1e531f70a88",
+     "bytes": 5319
+    },
+    {
+     "path": "results/marts/ch1_self_report.parquet",
+     "table": "ch1_self_report",
+     "sha256": "0f631605ece213c69fab8aa50f859373993fd1d0a4ef9e259b933ef2176815bd",
+     "bytes": 12128
+    },
+    {
+     "path": "results/marts/ch2_decomposition.parquet",
+     "table": "ch2_decomposition",
+     "sha256": "a04e628cd07c3a68a3c3bdd41c4af16006a90f3147e747280a34eaaccecd06a6",
+     "bytes": 4345
+    },
+    {
+     "path": "results/marts/ch2_lock_in_metros.parquet",
+     "table": "ch2_lock_in_metros",
+     "sha256": "bf0a01a732af948c57d3a131e61090b1f1d4e90774bbea93b67f7096c5be18fe",
+     "bytes": 19306
+    },
+    {
+     "path": "results/marts/ch3_burden_by_income.parquet",
+     "table": "ch3_burden_by_income",
+     "sha256": "6282cf2b26f0a13306c5dd09dba5956441a350c64c4a20a33264868a00768a7d",
+     "bytes": 6340
+    },
+    {
+     "path": "results/marts/ch3_metro_shares.parquet",
+     "table": "ch3_metro_shares",
+     "sha256": "3d47b9acb0461be9bd54d19da694b698da449c12fe792b845dba36904c6d3d92",
+     "bytes": 317476
+    },
+    {
+     "path": "results/marts/ch3_national_bands.parquet",
+     "table": "ch3_national_bands",
+     "sha256": "bdbc5d976434c380b8c931f08071388cd0411e5ca27ed9eb5230cc1c7ba023d5",
+     "bytes": 3104
+    },
+    {
+     "path": "results/marts/ch4_cells.parquet",
+     "table": "ch4_cells",
+     "sha256": "229bc7f9a79b9e4f599f93c014fcedb967c4b707c572e5def847b1f0b562e40f",
+     "bytes": 64388
+    },
+    {
+     "path": "results/marts/ch5_ranking.parquet",
+     "table": "ch5_ranking",
+     "sha256": "ba0be3f53533478898fc43bbd6962010e42c45b16554771787b50e4ee464be44",
+     "bytes": 38521
+    },
+    {
+     "path": "results/marts/ch6_by_year.parquet",
+     "table": "ch6_by_year",
+     "sha256": "aa2badfbc1865df0f864f4693b1e5b138e9cccfcb220f331be75c2e0fa337405",
+     "bytes": 5002
+    },
+    {
+     "path": "results/marts/ch6_largest_metros.parquet",
+     "table": "ch6_largest_metros",
+     "sha256": "e16b3156d0dff8e7de468a8055d7d1cd046d408214560b9789466be4ae252a6a",
+     "bytes": 5642
+    },
+    {
+     "path": "results/marts/ch6_spread.parquet",
+     "table": "ch6_spread",
+     "sha256": "e23035be4b8bed1983a64464408680afd260d8f525fa499b3608261eb72ea341",
+     "bytes": 5035
+    },
+    {
+     "path": "results/marts/ch7_cross_section.parquet",
+     "table": "ch7_cross_section",
+     "sha256": "c9227c9fde9d69351566dab8034f1486fb8177da0a0ad31badfa49d7226434d5",
+     "bytes": 29130
+    },
+    {
+     "path": "results/marts/ch7_synthetic_controls.parquet",
+     "table": "ch7_synthetic_controls",
+     "sha256": "56552b47e906eed4e53efcaa9e2c3758bc44728871184196db006c15591b37a4",
+     "bytes": 7580
+    },
+    {
+     "path": "results/marts/ch8_curve.parquet",
+     "table": "ch8_curve",
+     "sha256": "4841e25e7ac4e312f581deebc64778e003b63559eb95d39547b27cd1f3f1eeaa",
+     "bytes": 2940
+    },
+    {
+     "path": "results/marts/ch8_metros.parquet",
+     "table": "ch8_metros",
+     "sha256": "bd1713eceb4544a7fa4fddc8df8fcb4dadf0bfff3bd0a485a0cbd405a4b38662",
+     "bytes": 94319
+    },
+    {
+     "path": "exports/csv/ch1_anchor_sensitivity.csv",
+     "table": "export_ch1_anchor_sensitivity",
+     "sha256": "057dbbc58ce15b2ede2a6429f87a5d0921537db29d4b08c3602d06d2dcf929e2",
+     "bytes": 296
+    },
+    {
+     "path": "exports/csv/ch1_line_interior.csv",
+     "table": "export_ch1_line_interior",
+     "sha256": "1ec7a2584764266521832d4c9ed299b877ef6362c8c89501f8aebad319387203",
+     "bytes": 106
+    },
+    {
+     "path": "exports/csv/ch1_series.csv",
+     "table": "export_ch1_series",
+     "sha256": "3907d188eb2a6529c6fd2fe25435bf78ffb9598e2b2a5a02f0522c52b5750197",
+     "bytes": 1668
+    },
+    {
+     "path": "exports/csv/ch2_decomposition.csv",
+     "table": "export_ch2_decomposition",
+     "sha256": "f51ed55152f0edb5ea81379f4c536eba9c6087271829ca544665e7524d8a779f",
+     "bytes": 1698
+    },
+    {
+     "path": "exports/csv/ch2_threshold_interior.csv",
+     "table": "export_ch2_threshold_interior",
+     "sha256": "7961ceb17ccffd5dec0b77aaee141516b0f0aab94c9df81cc796ccfe7ea1731d",
+     "bytes": 248
+    },
+    {
+     "path": "exports/csv/ch3_bands.csv",
+     "table": "export_ch3_bands",
+     "sha256": "bf267844ea5730f44ca41e939f0345de6ec53037fe97079ce65d09f0ddf1a28e",
+     "bytes": 905
+    },
+    {
+     "path": "exports/csv/ch3_by_income_group.csv",
+     "table": "export_ch3_by_income_group",
+     "sha256": "bff2b0668a06990994fbd6d6e0d0862fb78eecae09fe42ab42bc78e707afbb64",
+     "bytes": 387
+    },
+    {
+     "path": "exports/csv/ch3_line_interior.csv",
+     "table": "export_ch3_line_interior",
+     "sha256": "5634780b96350fe28d4d25078e9572afa74129e44196fc470ff766f42ff07614",
+     "bytes": 143
+    },
+    {
+     "path": "exports/csv/ch4_specifications.csv",
+     "table": "export_ch4_specifications",
+     "sha256": "d350689c6484b4ed82c7a28b2eeb91d62c6814371af33f8f24ac1ce0e3af7b16",
+     "bytes": 274
+    },
+    {
+     "path": "exports/csv/ch4_window_interior.csv",
+     "table": "export_ch4_window_interior",
+     "sha256": "3f3a4dcb42fad7fa41fdffe9d1d6a22d9d2ddf8847153eb894544ac877bb3f08",
+     "bytes": 259
+    },
+    {
+     "path": "exports/csv/ch5_largest.csv",
+     "table": "export_ch5_largest",
+     "sha256": "a32d37d2a2b1f01fc90b7ef3e528425d7fb6d19761d08245436245e886432d11",
+     "bytes": 2584
+    },
+    {
+     "path": "exports/csv/ch5_ranking.csv",
+     "table": "export_ch5_ranking",
+     "sha256": "da4140330d36a55f578b68e5e05302a2030b1915d4581a1bffb0865cb8d9cf95",
+     "bytes": 79096
+    },
+    {
+     "path": "exports/csv/ch6_by_year.csv",
+     "table": "export_ch6_by_year",
+     "sha256": "6f8eaa867a960fd7235e6fb6ff7c33c264bba7baf0e2ad9e11f24ef28535a8ea",
+     "bytes": 849
+    },
+    {
+     "path": "exports/csv/ch6_largest_metros.csv",
+     "table": "export_ch6_largest_metros",
+     "sha256": "baed7660c6cfd8b7ec455bab32f24b238d2d4de43d763d59bc4f26124d128b6c",
+     "bytes": 2272
+    },
+    {
+     "path": "exports/csv/ch7_regression.csv",
+     "table": "export_ch7_regression",
+     "sha256": "95b10a4ac2b8f4e5d1d727f78b00cf04570a550a8ddea30bfa99ebdf7ff55fe2",
+     "bytes": 363
+    },
+    {
+     "path": "exports/csv/ch7_synthetic_controls.csv",
+     "table": "export_ch7_synthetic_controls",
+     "sha256": "ce654967cd905358793643510a4301935489008a393cf18264d417b891f1bf62",
+     "bytes": 599
+    },
+    {
+     "path": "exports/csv/ch8_down_interior.csv",
+     "table": "export_ch8_down_interior",
+     "sha256": "42bbbb5a01104741f27574419c9a97ebdf525013013d261605fa2191a8aa8b51",
+     "bytes": 134
+    },
+    {
+     "path": "exports/csv/ch8_largest.csv",
+     "table": "export_ch8_largest",
+     "sha256": "3869324402fc15f0a3988b3461f447b24d2e3699e5cdcaddd1cc63a248780770",
+     "bytes": 2146
+    },
+    {
+     "path": "exports/csv/ch8_line_interior.csv",
+     "table": "export_ch8_line_interior",
+     "sha256": "d9e6943a12aa55cd59e2b1c08a43b0a74b958be469c1fb0d481e42868bf285b0",
+     "bytes": 180
+    },
+    {
+     "path": "exports/csv/ch8_metros.csv",
+     "table": "export_ch8_metros",
+     "sha256": "ae520a417ca8c65aa9a1440ad3b289d70c216be7d90f1efaec48fd6931e31731",
+     "bytes": 210863
+    },
+    {
+     "path": "exports/csv/ch8_saving_interior.csv",
+     "table": "export_ch8_saving_interior",
+     "sha256": "afa723262a90f74f8b5fa396ef7fdd2bcaa9c962b20bc2dd32a1dc90b6544831",
+     "bytes": 104
+    },
+    {
+     "path": "exports/csv/recovery_by_condition.csv",
+     "table": "export_recovery_by_condition",
+     "sha256": "233756bc90840eae2413d1deb44388b249763044a5bc2d308c9a01748514617c",
+     "bytes": 44017
+    },
+    {
+     "path": "exports/csv/recovery_by_estimator.csv",
+     "table": "export_recovery_by_estimator",
+     "sha256": "22f82a25e1fac0c192779a0cc6dad6c3397cb3e160c94fe14d0373e1eb01463d",
+     "bytes": 2647
+    },
+    {
+     "path": "results/marts/fct_metro_year.parquet",
+     "table": "fct_metro_year",
+     "sha256": "e82d477c7332406998488b40f3fca5ef59a4bb1aeb769b69c348452921bf8179",
+     "bytes": 2763329
+    },
+    {
+     "path": "results/marts/grain_acs.parquet",
+     "table": "grain_acs",
+     "sha256": "3876d9a05c8584c3d10b100013f45a16d5c58a297ec0e3d3890608dc5e62c355",
+     "bytes": 9419500
+    },
+    {
+     "path": "results/marts/grain_counties.parquet",
+     "table": "grain_counties",
+     "sha256": "eece53c272cd56f4992fc8e5a52b67d10b66593fa49960786aa8aa5d2e36f6eb",
+     "bytes": 422386
+    },
+    {
+     "path": "results/marts/grain_loans.parquet",
+     "table": "grain_loans",
+     "sha256": "d4ae5012d620b85da34eac8ed3e128b728ac8d629fd2b92fc067eae4000ce50c",
+     "bytes": 15218194
+    },
+    {
+     "path": "results/marts/mart_borrowers_income.parquet",
+     "table": "mart_borrowers_income",
+     "sha256": "83fa11ec798d6527bafa891a97445e6d3e855967cb1cd8d33eab34826c628d91",
+     "bytes": 15380593
+    },
+    {
+     "path": "results/marts/mart_borrowers_spread.parquet",
+     "table": "mart_borrowers_spread",
+     "sha256": "9a4d89fc8a3cb7de46ee4e3bbee0b15d195a65dade221bbccf1621f02aaaa15a",
+     "bytes": 3786
+    },
+    {
+     "path": "results/marts/mart_borrowers_vti.parquet",
+     "table": "mart_borrowers_vti",
+     "sha256": "74eed0bef78aba7b9948ea6747d34b69343021656bb57e99ed33504d9e80042c",
+     "bytes": 973480
+    },
+    {
+     "path": "results/marts/mart_income_brackets.parquet",
+     "table": "mart_income_brackets",
+     "sha256": "2e31372495d5fc6395478de7d25c1423b89178f505b438096362cc9100f0dea6",
+     "bytes": 732677
+    },
+    {
+     "path": "results/marts/mart_metro_quarter.parquet",
+     "table": "mart_metro_quarter",
+     "sha256": "b17513c1e97af33449f7627d718ce3bbb7c732845c3287c602091972df8d4a2c",
+     "bytes": 1521043
+    },
+    {
+     "path": "results/marts/mart_metro_year.parquet",
+     "table": "mart_metro_year",
+     "sha256": "e4f416bedd625723f6be5d9b17b0a0152f5053fb049931f929153d895073e9de",
+     "bytes": 3561523
+    },
+    {
+     "path": "results/marts/mart_national_year.parquet",
+     "table": "mart_national_year",
+     "sha256": "cd3be545fa2056f7250ada1d10d575125110c4649d12f848cbeee63f3c357a0f",
+     "bytes": 4474
+    },
+    {
+     "path": "results/marts/mart_quarantine.parquet",
+     "table": "mart_quarantine",
+     "sha256": "0c9ac5cc0089c1ac5da8c6a3f6261621f6d957a166d023aacc6f0ef3cb89750b",
+     "bytes": 3299
+    },
+    {
+     "path": "results/marts/mart_rent_burden_by_income.parquet",
+     "table": "mart_rent_burden_by_income",
+     "sha256": "d2bd87956ef72711e4e819d48361b7ca171147a8596b34045508a8d7a297ddbe",
+     "bytes": 242889
+    }
+   ],
+   "documents": [
+    {
+     "path": "results/manifest.json",
+     "sha256": "496af07c450857c16c3f8da3f3e0e966917c7fca02e81857ee0f1f9a3314f41a",
+     "bytes": 490699
+    },
+    {
+     "path": "docs/definitions.md",
+     "sha256": "10087e283a68afcc31838c58c46057ba206f67a56b79e4c0f73ecd606061588d",
+     "bytes": 9411
+    },
+    {
+     "path": "exports/csv/data_dictionary.csv",
+     "sha256": "ddad4d65bf525a665b4e239ae789c4b936afdfcdb8d1a6ceb11f8180569e299b",
+     "bytes": 31148
+    },
+    {
+     "path": "exports/csv/metrics_definitions.csv",
+     "sha256": "11a82729ac4b340bc920b1807cd1fc9269a943dede6b6578bfd92e3f0a0a10d1",
+     "bytes": 2385
+    },
+    {
+     "path": "LICENSE",
+     "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+     "bytes": 11358
+    }
+   ]
+  },
+  "turnaround": {
+   "repository": "https://github.com/mekala27-45/turnaround",
+   "tag": "v0.1.0",
+   "commit": "50c1ebee55b4b165524a3cca32b61e29d97af3c8",
+   "tables": [
+    {
+     "path": "exports/csv/ch1_by_year.csv",
+     "table": "export_ch1_by_year",
+     "sha256": "26c5defdfdcba333d73f378e8f5e8c2e71fe7faee40ee5bdf210fe93c1519062",
+     "bytes": 670
+    },
+    {
+     "path": "exports/csv/ch2_by_carrier.csv",
+     "table": "export_ch2_by_carrier",
+     "sha256": "06ba717a2b4c00bd406eae6801fd7caf143ee33aa464d4a650754b969c306199",
+     "bytes": 663
+    },
+    {
+     "path": "exports/csv/ch2_changepoints.csv",
+     "table": "export_ch2_changepoints",
+     "sha256": "1538de736f2073ea846f042bcc16c54b032849be5be1f38ae6254b4e14ecbc16",
+     "bytes": 12465
+    },
+    {
+     "path": "exports/csv/ch3_by_carrier.csv",
+     "table": "export_ch3_by_carrier",
+     "sha256": "dc05ce3ce5574840de691f158fcbb6f9d17ac22b36f9358661d58f5454c71951",
+     "bytes": 1427
+    },
+    {
+     "path": "exports/csv/ch4_buffer_curve.csv",
+     "table": "export_ch4_buffer_curve",
+     "sha256": "3da2c499b90989524415e9c88be562af804e4418722800e50d7cc9afbff991b1",
+     "bytes": 596
+    },
+    {
+     "path": "exports/csv/ch5_ranking.csv",
+     "table": "export_ch5_ranking",
+     "sha256": "9996b866ff9550ccc121c2aef8ad299a293629169c255dda459355ac42165a69",
+     "bytes": 1263
+    },
+    {
+     "path": "exports/csv/ch6_nas_by_airport.csv",
+     "table": "export_ch6_nas_by_airport",
+     "sha256": "5b418a9485a1b7dc816fa84aad0ef9a57c571f7c21aab0de502f4f8482ec767f",
+     "bytes": 456
+    },
+    {
+     "path": "exports/csv/ch6_reported_by_year.csv",
+     "table": "export_ch6_reported_by_year",
+     "sha256": "16f61ee260241ca502365f696bc16104b830e3d9e258efc7ed00105c835ace78",
+     "bytes": 256
+    },
+    {
+     "path": "exports/csv/ch7_events.csv",
+     "table": "export_ch7_events",
+     "sha256": "dea40cdf0144ba883445c33801f8d06eb43a662081cf95ee2926d919e60fdfb1",
+     "bytes": 1060
+    },
+    {
+     "path": "exports/csv/ch7_recovery_by_carrier.csv",
+     "table": "export_ch7_recovery_by_carrier",
+     "sha256": "0f11a40cbd0184d918f7d59ed9d70a434da4ab4712bfa2c19c93952a7b98c44c",
+     "bytes": 725
+    },
+    {
+     "path": "exports/csv/ch8_by_dow.csv",
+     "table": "export_ch8_by_dow",
+     "sha256": "07cd661a9700bf97c3a0fb311f3b9eb4caa7920cdcb3be96b3b4521650678a04",
+     "bytes": 333
+    },
+    {
+     "path": "exports/csv/ch8_by_hour.csv",
+     "table": "export_ch8_by_hour",
+     "sha256": "b8690b643602c567ee8e19881db38b90c9ae098cfad3f5c58525662505627c71",
+     "bytes": 1001
+    },
+    {
+     "path": "exports/csv/ch8_by_month.csv",
+     "table": "export_ch8_by_month",
+     "sha256": "62b746f5d7b83a48f3b38b65c1baa59729fb74537c84e3e4e3517e25f60194be",
+     "bytes": 535
+    },
+    {
+     "path": "exports/csv/ch8_by_position.csv",
+     "table": "export_ch8_by_position",
+     "sha256": "fe38a24d28e29422e96c24fc383f3c7e231993f30a5be19378401b083c15e5e5",
+     "bytes": 292
+    },
+    {
+     "path": "exports/csv/ch8_hubs.csv",
+     "table": "export_ch8_hubs",
+     "sha256": "6177028409b25365e4e4aaf3d4c6de47e8c6618530debc5174c119050f504f9b",
+     "bytes": 817
+    },
+    {
+     "path": "exports/csv/ch8_trade_airports.csv",
+     "table": "export_ch8_trade_airports",
+     "sha256": "de86820f1a4a7422287ae39c13c082799a90e43d398fdf7a409e6ba75474b1be",
+     "bytes": 909
+    },
+    {
+     "path": "exports/csv/mart_inherited_month.csv",
+     "table": "export_mart_inherited_month",
+     "sha256": "535bf4f41a4364903faad78c5aeb4cc6b72943ff026d50da0b9c7c789c3fa8f2",
+     "bytes": 29091
+    },
+    {
+     "path": "exports/csv/recovery_by_condition.csv",
+     "table": "export_recovery_by_condition",
+     "sha256": "a61f2bd0f0a0b7858102f3355552b854c0f0ab043704de033e593155a252ea22",
+     "bytes": 2380
+    },
+    {
+     "path": "results/marts/mart_airport_day.parquet",
+     "table": "mart_airport_day",
+     "sha256": "af4faec7085bd6c693c037c4045e28b7931e81c66b63dc729d2cc1106f84ce6c",
+     "bytes": 12126757
+    },
+    {
+     "path": "results/marts/mart_carrier_day.parquet",
+     "table": "mart_carrier_day",
+     "sha256": "18404577ea872b3a9c4f7640e9090d33a8b58a8446583a7edaf82d72d40007d2",
+     "bytes": 635782
+    },
+    {
+     "path": "results/marts/mart_carrier_month.parquet",
+     "table": "mart_carrier_month",
+     "sha256": "513aaf92c46699cea39678e3994ba1dcb3c70a670d431a2eed40b9599a8267cb",
+     "bytes": 132213
+    },
+    {
+     "path": "results/marts/mart_delay_histogram.parquet",
+     "table": "mart_delay_histogram",
+     "sha256": "46b8ba4db7b6ce594308d5ee5d4ae23dcfb3242ac652ea5809d13771c8d43d99",
+     "bytes": 821283
+    },
+    {
+     "path": "results/marts/mart_hour_profile.parquet",
+     "table": "mart_hour_profile",
+     "sha256": "6300669d84bf609ba7199778d1420303a0f8ec2aad7650227eaa812f8ac3e5d2",
+     "bytes": 247142
+    },
+    {
+     "path": "results/marts/mart_inherited_month.parquet",
+     "table": "mart_inherited_month",
+     "sha256": "ba2413632c8c63a77628d665293e767d5dd6976dcf0ea0c0dde6fea1e4ca2fb3",
+     "bytes": 11284
+    },
+    {
+     "path": "results/marts/mart_leg_position.parquet",
+     "table": "mart_leg_position",
+     "sha256": "d82e4a41d8dea71b87b712fc2d7aa62f97e3951dd13791c445274671b5ba1385",
+     "bytes": 14938
+    },
+    {
+     "path": "results/marts/mart_quarantine.parquet",
+     "table": "mart_quarantine",
+     "sha256": "6210123ee5c43c1ed8543bfb39ac80b809f77db32fd35efb8607526ad631d734",
+     "bytes": 12513
+    },
+    {
+     "path": "results/marts/mart_route_month.parquet",
+     "table": "mart_route_month",
+     "sha256": "c91b0fd16eb480d92cb0ca0b9a4b4c7fca479561abb231e8062cec2b69c87918",
+     "bytes": 17750284
+    },
+    {
+     "path": "results/marts/misconnect_cells.parquet",
+     "table": "misconnect_cells",
+     "sha256": "525c07804072526e075c2e19317bd5af5e1a0d3374af52de3a0f41e041de7106",
+     "bytes": 619278
+    },
+    {
+     "path": "results/marts/misconnect_hubs.parquet",
+     "table": "misconnect_hubs",
+     "sha256": "bb299e42bf91b31e255b71da0600aea0c2cf3da71f59fc283dad65b5c041894e",
+     "bytes": 18606
+    },
+    {
+     "path": "results/marts/misconnect_lost.parquet",
+     "table": "misconnect_lost",
+     "sha256": "9203a20b72ff77e1ac8b86e6a6081418948628b9b11c1642b8ffdc75c49184e8",
+     "bytes": 21761
+    },
+    {
+     "path": "results/marts/misconnect_outcomes.parquet",
+     "table": "misconnect_outcomes",
+     "sha256": "5e6d1d9ebea10ff6e2b587cba16e3dd21e6e5872513c98d57f560b21ddeb3720",
+     "bytes": 1031365
+    },
+    {
+     "path": "results/marts/misconnect_routes.parquet",
+     "table": "misconnect_routes",
+     "sha256": "103fa6c45f39a2931f28f787451466db88848e588cb8b69fb822680c490bc727",
+     "bytes": 489429
+    },
+    {
+     "path": "results/marts/rotation_samples.parquet",
+     "table": "rotation_samples",
+     "sha256": "1ecc9f1c06c068c3da8b0358ca1fdc6a113909e74e080de4684dfc5649c92d08",
+     "bytes": 74290
+    },
+    {
+     "path": "results/marts/rotation_worst_days.parquet",
+     "table": "rotation_worst_days",
+     "sha256": "812d053a8f7d1ce598f4f8771ebe44be16457bd75c8000a3d779e488b048a868",
+     "bytes": 1648
+    }
+   ],
+   "documents": [
+    {
+     "path": "results/manifest.json",
+     "sha256": "d34693030180124329a9cc4546fb56d2a550e9f98bbb1cd51a69f03865cdd250",
+     "bytes": 333460
+    },
+    {
+     "path": "docs/definitions.md",
+     "sha256": "d54d17d56c1e013bc06900f29a4ba556664990452ae7be297c4f55b80a03fba4",
+     "bytes": 6783
+    },
+    {
+     "path": "exports/csv/dictionary.csv",
+     "sha256": "5e725794ddd8d9f97fdf7ef0b3c9812099ee83016f434d1115208ef4240d967b",
+     "bytes": 18739
+    },
+    {
+     "path": "exports/csv/metrics_definitions.csv",
+     "sha256": "c1104eb5da264ad606ec9beb19e895caac8f6794ad2d7d5094f11b1b2ccf6dfb",
+     "bytes": 2913
+    },
+    {
+     "path": "LICENSE",
+     "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+     "bytes": 11358
+    }
+   ]
+  },
+  "ledger": {
+   "repository": "https://github.com/mekala27-45/ledger",
+   "tag": "v0.1.0",
+   "commit": "263b1656c371119c6e1a9970bbdc5f40ede9b913",
+   "tables": [
+    {
+     "path": "results/contracts/identifier_scan.parquet",
+     "table": "contracts_identifier_scan",
+     "sha256": "605ec1ce4687bcb49d1e129fc58be497782137fa9918a732904bba25ed7d21e8",
+     "bytes": 481
+    },
+    {
+     "path": "results/contracts/rule_hits.parquet",
+     "table": "contracts_rule_hits",
+     "sha256": "28688ec1ed0d187d4701d24f8d1096122f06976df5df6cbcc716cf5a776dcc68",
+     "bytes": 5246
+    },
+    {
+     "path": "results/exports/extracts/chargeoff_backtest.csv",
+     "table": "extract_chargeoff_backtest",
+     "sha256": "8f96e838efa95e4128e9ce5f582fc2081c68a2240f433151a78c8e986c3ef563",
+     "bytes": 1272
+    },
+    {
+     "path": "results/exports/extracts/deposits_monthly.csv",
+     "table": "extract_deposits_monthly",
+     "sha256": "3c36dd846e9a0cca4b1e2918bc65a38f91d6483d908c3e5f617b32608e8f760b",
+     "bytes": 4466
+    },
+    {
+     "path": "results/exports/extracts/expected_loss.csv",
+     "table": "extract_expected_loss",
+     "sha256": "dd8a79a72ac4ab65de326d85771aa6e4aaac8bd696feb78e35547d4ebbf9c101",
+     "bytes": 376
+    },
+    {
+     "path": "results/exports/extracts/nii_positions.csv",
+     "table": "extract_nii_positions",
+     "sha256": "fd722960db52f723a3bc5f53315805f1b7d93bb29a2e6653b12f2f859be24fbb",
+     "bytes": 1010
+    },
+    {
+     "path": "results/exports/extracts/recoveries.csv",
+     "table": "extract_recoveries",
+     "sha256": "bcd6627a89baf5d4ef5fbc1ec835d2b3c80af10528f1fddc64029920cc801121",
+     "bytes": 2292
+    },
+    {
+     "path": "results/exports/extracts/stress_paths.csv",
+     "table": "extract_stress_paths",
+     "sha256": "200582c789a6b993ef015255157284960be33d1234843fa6c3ea9b9c46ffe74b",
+     "bytes": 5164
+    },
+    {
+     "path": "results/exports/extracts/vintages.csv",
+     "table": "extract_vintages",
+     "sha256": "74a9ef0b6d121c252df42494b1c48cbcded04f204e12c43efc731cd5ca76dedd",
+     "bytes": 11364
+    },
+    {
+     "path": "results/f01/peer_strips.parquet",
+     "table": "f01_peer_strips",
+     "sha256": "13067f095ed99289c863f124e4bf69f293f30eedb53ad0e9647dc13f687dbc0d",
+     "bytes": 11624
+    },
+    {
+     "path": "results/f01/ratios_monthly.parquet",
+     "table": "f01_ratios_monthly",
+     "sha256": "fcc13ed956a37cb07198b0b92555bb6bf75392e16a5f7d29fb63636767c488e2",
+     "bytes": 12307
+    },
+    {
+     "path": "results/f02/cecl_by_vintage.parquet",
+     "table": "f02_cecl_by_vintage",
+     "sha256": "10b2c17cd3fae2306b5d587e58b2345395153ce1c5ddf1c889717b571b5c9739",
+     "bytes": 1935
+    },
+    {
+     "path": "results/f02/expected_loss.parquet",
+     "table": "f02_expected_loss",
+     "sha256": "cf5a11d28f6e965fc7ddd23f1e2beb3a445f82e934cb1becb821f4a07bd1c280",
+     "bytes": 1586
+    },
+    {
+     "path": "results/f02/limits.parquet",
+     "table": "f02_limits",
+     "sha256": "613661d9be70316f4d7368c7d31d3cbc7751394fe2858a6d189cdbf524523a3b",
+     "bytes": 1213
+    },
+    {
+     "path": "results/f02/overlay_by_vintage.parquet",
+     "table": "f02_overlay_by_vintage",
+     "sha256": "8e5ab81cdedf5000914d5bc747e5f505153391430346ff6e1d8b49cfdbdf665b",
+     "bytes": 1009
+    },
+    {
+     "path": "results/f02/roll_rates.parquet",
+     "table": "f02_roll_rates",
+     "sha256": "9950c306b1dd572be9245b94a5f49e60ca825da3a0a919504f0734b8daf5358f",
+     "bytes": 1875
+    },
+    {
+     "path": "results/f02/survival_curves.parquet",
+     "table": "f02_survival_curves",
+     "sha256": "95ffd5e86207aa8e91718402ef68ea09cbde2e3b12d65f99a89b574c420fa004",
+     "bytes": 1859
+    },
+    {
+     "path": "results/f02/vintages.parquet",
+     "table": "f02_vintages",
+     "sha256": "4b100566b3f64fa58e42d65e0a1478746a045b9c0d757eea664ef3a840c115b7",
+     "bytes": 3870
+    },
+    {
+     "path": "results/f03/adjusted.parquet",
+     "table": "f03_adjusted",
+     "sha256": "3a5372dd8c370fbf2bbc86ed1878e4b70d75146d2e410ee377fa6ecd334ed11e",
+     "bytes": 2055
+    },
+    {
+     "path": "results/f03/county.parquet",
+     "table": "f03_county",
+     "sha256": "9c473ad93eb4217b2762607d352a6b4436d1eeab9fa3872cbfdd6f7d917dfd1a",
+     "bytes": 3177
+    },
+    {
+     "path": "results/f03/denial_reasons.parquet",
+     "table": "f03_denial_reasons",
+     "sha256": "bfb2583f1ecc40738d36e0648b78c0bf5da37cde3314575398b500a7a90f8db9",
+     "bytes": 1981
+    },
+    {
+     "path": "results/f03/forest.parquet",
+     "table": "f03_forest",
+     "sha256": "cebe8bbd4c7d80fc2478bb7b8a3b497b6e8ebc57e1097810b6436131aaa7bb8a",
+     "bytes": 2856
+    },
+    {
+     "path": "results/f03/unadjusted.parquet",
+     "table": "f03_unadjusted",
+     "sha256": "bfafee73b2298e23752c231b450072cfc8ffd436c0fce22de5236aa61c3d0c11",
+     "bytes": 2945
+    },
+    {
+     "path": "results/f04/cost_curve.parquet",
+     "table": "f04_cost_curve",
+     "sha256": "26f43ec498955b1ddba50f7ed43748b83cfc2dbbb7d2715beb8f124a49f1c897",
+     "bytes": 11143
+    },
+    {
+     "path": "results/f04/label_lag.parquet",
+     "table": "f04_label_lag",
+     "sha256": "12dad98973766acce3dc052257a0fcf81a94bdc219e487608ee09c33aba3cd65",
+     "bytes": 4288
+    },
+    {
+     "path": "results/f04/pr_curve.parquet",
+     "table": "f04_pr_curve",
+     "sha256": "0b857c899b3846119c2a5920065ac0d4e0e305e9ed1b58339657f72a2fdbe3eb",
+     "bytes": 4074
+    },
+    {
+     "path": "results/f04/score_histogram.parquet",
+     "table": "f04_score_histogram",
+     "sha256": "7083eac5d55c8fd62e181860e4605dac5ff37b05ef3b000c66487489b577c82c",
+     "bytes": 4391
+    },
+    {
+     "path": "results/f05/alerts_monthly.parquet",
+     "table": "f05_alerts_monthly",
+     "sha256": "20e8f9e054c63ef7e29c3c6d93bc36d72a4490f024e9adad6415825879e4cf64",
+     "bytes": 1613
+    },
+    {
+     "path": "results/f05/communities.parquet",
+     "table": "f05_communities",
+     "sha256": "7104741ba0ec0af5d2662a706be6b61262de9849b1f67b652df819d5e5947102",
+     "bytes": 59582
+    },
+    {
+     "path": "results/f05/queue.parquet",
+     "table": "f05_queue",
+     "sha256": "4f509266fe826a139b992e4cbbe5200f2b75934fd14b62c0bf9a8b04322801c5",
+     "bytes": 3582
+    },
+    {
+     "path": "results/f05/rule_scorecard.parquet",
+     "table": "f05_rule_scorecard",
+     "sha256": "4b0063a2cc1cf95afbc5202fb0ad0949e7e352d6f87a95aa711e26e807818b07",
+     "bytes": 2511
+    },
+    {
+     "path": "results/f06/deposits_monthly.parquet",
+     "table": "f06_deposits_monthly",
+     "sha256": "b2905e75e3d7a87b9f2e805d47e0b567c9a98e0b2278d36bad92dce72358ec51",
+     "bytes": 3446
+    },
+    {
+     "path": "results/f06/rates.parquet",
+     "table": "f06_rates",
+     "sha256": "d4d81275490c94c4d12e5997aca9e9c13d5984edb673d44704e4415137cc589f",
+     "bytes": 3169
+    },
+    {
+     "path": "results/f06/retention_list.parquet",
+     "table": "f06_retention_list",
+     "sha256": "b62552b59bb8dc94ab9115a02d268eb6f8b51690db3919e0703d7d699fb10f7e",
+     "bytes": 13622
+    },
+    {
+     "path": "results/f07/companies.parquet",
+     "table": "f07_companies",
+     "sha256": "f1adbd71c57ae0cc8a7ae2f79f0418b7ae2dd849539cf6a4cfb7ceaaf7a85a20",
+     "bytes": 5016
+    },
+    {
+     "path": "results/f07/issues.parquet",
+     "table": "f07_issues",
+     "sha256": "7d05c1c3d9ee47c81301e6ef129b438903a95e5b908bfd88466b2090b85ac591",
+     "bytes": 3559
+    },
+    {
+     "path": "results/f07/relief_by_month.parquet",
+     "table": "f07_relief_by_month",
+     "sha256": "c87bafef216c4422a106d561f71db2d9f1ef62a3556864fe9c1c59ce699c1895",
+     "bytes": 1240
+    },
+    {
+     "path": "results/f07/topic_trend.parquet",
+     "table": "f07_topic_trend",
+     "sha256": "44f7746a0efbbf6a8e91ad56a3dcbd4d64d82a488e837b92c2906af0b780b54a",
+     "bytes": 4449
+    },
+    {
+     "path": "results/f07/volume_by_product.parquet",
+     "table": "f07_volume_by_product",
+     "sha256": "cadf5012c49e749d58fc7a4209c5a4f03c3be61312af41d9368b87f92e195bdf",
+     "bytes": 1858
+    },
+    {
+     "path": "results/f08/nii_positions.parquet",
+     "table": "f08_nii_positions",
+     "sha256": "fa81ec5767864c471bbaaa6a9cae0fa1ab3d4f773b28bc4ab9835ddbb8ec2093",
+     "bytes": 2571
+    },
+    {
+     "path": "results/f08/nii_shocks.parquet",
+     "table": "f08_nii_shocks",
+     "sha256": "c2d5809ad87cb75ce674a06ef25f39fd76c9b4a3bdb88c632001fb83c6bfb1b8",
+     "bytes": 1357
+    },
+    {
+     "path": "results/f08/stress_paths.parquet",
+     "table": "f08_stress_paths",
+     "sha256": "94a49c5a7402fd06373c6347e1b0948458f02e6f37471903e2c4ea461ad5a1a4",
+     "bytes": 5895
+    },
+    {
+     "path": "results/f09/backtest.parquet",
+     "table": "f09_backtest",
+     "sha256": "2c7997136fd245307f453f9ea61ccc965e510abca6d90651475885764352fd7d",
+     "bytes": 2094
+    },
+    {
+     "path": "results/f09/forecast.parquet",
+     "table": "f09_forecast",
+     "sha256": "e3a791716dc5707970e3ab47fb169dc0c6b99c9734604b4d38b253f998d643b5",
+     "bytes": 1654
+    },
+    {
+     "path": "results/f09/queue.parquet",
+     "table": "f09_queue",
+     "sha256": "7402c6dedb4f66da991401e9ffaaf65d01d2f826f3598e049cfbae4557de4c3b",
+     "bytes": 9505
+    },
+    {
+     "path": "results/f09/recoveries.parquet",
+     "table": "f09_recoveries",
+     "sha256": "4c469481bdcc4b8bc9ae1efd6b50ef4dfcbd5f4714250e55f8da312f51a6684f",
+     "bytes": 1671
+    },
+    {
+     "path": "results/f10/fraud_weekly.parquet",
+     "table": "f10_fraud_weekly",
+     "sha256": "089c5fdd7f3f03f5942fb66312828c9dfcb4bec555a44e5e114a513b2ece46c9",
+     "bytes": 1684
+    },
+    {
+     "path": "results/f10/inventory.parquet",
+     "table": "f10_inventory",
+     "sha256": "96f85175358ae7e61beec621b439333762d1347f6466de01ce2a923bc0b77bf5",
+     "bytes": 2799
+    },
+    {
+     "path": "results/f10/pd_csi.parquet",
+     "table": "f10_pd_csi",
+     "sha256": "ad1b8ad24821d4e13c6ad1caf988b5caf5fa7401070d59a9b4ae420475ecdbef",
+     "bytes": 793
+    },
+    {
+     "path": "results/f10/pd_psi_by_quarter.parquet",
+     "table": "f10_pd_psi_by_quarter",
+     "sha256": "cb60327fb7470d0fd43b743bc85ea429ff1ed0f5b4cc0371e8207b7ba4460fef",
+     "bytes": 1087
+    },
+    {
+     "path": "results/f11/data_quality.parquet",
+     "table": "f11_data_quality",
+     "sha256": "3988f6df7248e297e1ee9bcc62e1521951ae4fa6c7903426c6b9c77295b4faad",
+     "bytes": 3712
+    },
+    {
+     "path": "results/f11/reconciliation.parquet",
+     "table": "f11_reconciliation",
+     "sha256": "99d7555ad2e70f6c8c84ed04f63bcd9b8a2c981d9bb5ff91daf5e53727da0f05",
+     "bytes": 8494
+    },
+    {
+     "path": "results/f11/subledger_tie.parquet",
+     "table": "f11_subledger_tie",
+     "sha256": "ced1a55d06b4d832ae4885e3c1762b8724a1787da96dddca1f68b6ab6e139fa7",
+     "bytes": 4918
+    },
+    {
+     "path": "results/f12/cutoff_options.parquet",
+     "table": "f12_cutoff_options",
+     "sha256": "e9bbb7f85f42d08562739d9cb9de36cbbf4491b773c488e278d110ab6f42422c",
+     "bytes": 1764
+    },
+    {
+     "path": "results/metrics/bank_month.parquet",
+     "table": "metrics_bank_month",
+     "sha256": "8d8f8252ccc1f8036629c9967604355e2bf642058c79abc7312e5b036ba0f206",
+     "bytes": 18743
+    },
+    {
+     "path": "results/metrics/bank_quarter.parquet",
+     "table": "metrics_bank_quarter",
+     "sha256": "1ce1dca1949046ec93d6588f3ec80ef6757d731649692d27f502b68835868e61",
+     "bytes": 13834
+    },
+    {
+     "path": "results/metrics/bank_window.parquet",
+     "table": "metrics_bank_window",
+     "sha256": "3b417f4fe0b5b4de5f2654d833dcf2d7331c0b57d929490a8afdfc24cd5bcdad",
+     "bytes": 10965
+    },
+    {
+     "path": "results/metrics/bank_year.parquet",
+     "table": "metrics_bank_year",
+     "sha256": "0c783e5752c49e591537e4fab0f8ce0afc296117070207dc3b21bda2f5707dc2",
+     "bytes": 11694
+    },
+    {
+     "path": "results/metrics/reconciliation.parquet",
+     "table": "metrics_reconciliation",
+     "sha256": "08d937dafaf4fbb0b7e2fa5e860620e46f00767b743ce5014317abf502518902",
+     "bytes": 1901
+    },
+    {
+     "path": "results/models/aml_triage/alerts_scored.parquet",
+     "table": "models_aml_triage_alerts_scored",
+     "sha256": "958f2249b51839bbbe39420cb0bc68cc21a547e418ce2864161f5e6bbf59856d",
+     "bytes": 60564
+    },
+    {
+     "path": "results/models/aml_triage/rule_scorecard.parquet",
+     "table": "models_aml_triage_rule_scorecard",
+     "sha256": "a90f58881acdf5922691448927ff733340de9108bd9f0ba25407b3d7109b2662",
+     "bytes": 3493
+    },
+    {
+     "path": "results/models/attrition/retention_list.parquet",
+     "table": "models_attrition_retention_list",
+     "sha256": "07accbe9c6af3c4a71705ff9de7f9da481bd1b6cdfcbfd39de7cd8838544953b",
+     "bytes": 14451
+    },
+    {
+     "path": "results/models/attrition/scores_as_of.parquet",
+     "table": "models_attrition_scores_as_of",
+     "sha256": "e2e733e248cdae34bc34ffecfc90eb1c542283cd30ce56f57a89f0474e877961",
+     "bytes": 862770
+    },
+    {
+     "path": "results/models/cure/queue.parquet",
+     "table": "models_cure_queue",
+     "sha256": "9379930503c19ad0186bcfe459b3efcd17cec4048bd813abc75e3b19022f284b",
+     "bytes": 10361
+    },
+    {
+     "path": "results/models/fraud_account/age_bands.parquet",
+     "table": "models_fraud_account_age_bands",
+     "sha256": "6a3d19b25e5d17068102afe291f353bc253e47bd59382d0bd2a4cd7fac7cf587",
+     "bytes": 3327
+    },
+    {
+     "path": "results/models/fraud_account/alternatives.parquet",
+     "table": "models_fraud_account_alternatives",
+     "sha256": "9c1ab601e44edcde4851182f6e8a4815e6b32527dbba547e7b660f82c0dd475f",
+     "bytes": 3078
+    },
+    {
+     "path": "results/models/fraud_account/variants.parquet",
+     "table": "models_fraud_account_variants",
+     "sha256": "89541790f5cc290b3d7cb0bfc0f92f6b29b7dd725528152e041ed472484e126e",
+     "bytes": 2387
+    },
+    {
+     "path": "results/models/fraud_card/cost_curve.parquet",
+     "table": "models_fraud_card_cost_curve",
+     "sha256": "0e594e5b9633b627852c3accce2b5eb0067c9ed20f2ac0b766eeaa35464f508d",
+     "bytes": 11793
+    },
+    {
+     "path": "results/models/fraud_card/label_lag_daily.parquet",
+     "table": "models_fraud_card_label_lag_daily",
+     "sha256": "aa27488e6200ec85ba348afadeda39e57245ddc9df3fc438503f97aba78a63fb",
+     "bytes": 4904
+    },
+    {
+     "path": "results/models/fraud_card/pr_curve.parquet",
+     "table": "models_fraud_card_pr_curve",
+     "sha256": "f0bbc482b7fb92982d20746ff3a0ad9416cead99ef57cc24c66135e8a20ee47b",
+     "bytes": 4506
+    },
+    {
+     "path": "results/models/fraud_card/score_histogram.parquet",
+     "table": "models_fraud_card_score_histogram",
+     "sha256": "dfc7bec278b036a6f42aba2ed34c9df57ea97ae36198d16833dd9069dfe90acb",
+     "bytes": 3227
+    },
+    {
+     "path": "results/models/known_parameters.parquet",
+     "table": "models_known_parameters",
+     "sha256": "812327a81ad7fa12becfc5a601a23a170a1b7acc3f75efa5bdce5330cd210a68",
+     "bytes": 4004
+    },
+    {
+     "path": "results/models/pd_scorecard/scorecard_generated.parquet",
+     "table": "models_pd_scorecard_scorecard_generated",
+     "sha256": "21b1218174d8a23d9189e8b501c24dbd4d772d83658ad625cdd7e91caa49c8da",
+     "bytes": 4466
+    },
+    {
+     "path": "results/models/pd_scorecard/scorecard_uci.parquet",
+     "table": "models_pd_scorecard_scorecard_uci",
+     "sha256": "b01358c3ea24d9321672c4d9d19955a1feacdd536cb71b90aa16d6111370fc48",
+     "bytes": 3990
+    },
+    {
+     "path": "results/models/relief/issues.parquet",
+     "table": "models_relief_issues",
+     "sha256": "82da7074e5a0651788143669f21b0dbe455d8b633010b572791ce3e2ff0d847c",
+     "bytes": 4585
+    }
+   ],
+   "documents": [
+    {
+     "path": "results/manifest.json",
+     "sha256": "3033560dc5e09279c7655925fd022c7d80cce9bc71faaec7c9491c5dfd44f7cc",
+     "bytes": 503834
+    },
+    {
+     "path": "docs/definitions.md",
+     "sha256": "a6a25eee08571847d11191ab7cf57c39ff92570f30f852fcb8fd302562456423",
+     "bytes": 6419
+    },
+    {
+     "path": "metrics/bank.yaml",
+     "sha256": "73ff453df1ed3b7c8404fe3f20ab575d38992a2a33f4ab35b9316d8871b557af",
+     "bytes": 3888
+    },
+    {
+     "path": "LICENSE",
+     "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+     "bytes": 11358
+    }
+   ]
+  }
+ }
+}
