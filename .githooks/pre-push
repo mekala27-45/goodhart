@@ -1,0 +1,17 @@
+#!/bin/sh
+# Scan the commits about to leave for credentials and personal identifiers. Nothing reaches a pushed
+# blob, so pushed history never has to be rewritten.
+set -e
+root="$(git rev-parse --show-toplevel)"
+zero=0000000000000000000000000000000000000000
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue
+  if [ "$remote_sha" = "$zero" ]; then
+    range="$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  if [ -x "$root/.venv/bin/python" ]; then py="$root/.venv/bin/python"; else py=python3; fi
+  "$py" "$root/scripts/check_tokens.py" --range "$range"
+  "$py" "$root/scripts/scan_for_planted_identifiers.py" --range "$range"
+done
