@@ -1,0 +1,109 @@
+name: ci
+
+# Every push and pull request: the sources fetched and checked against the locks, the gates on every
+# file and every commit diff, lint and strict types, the suite with coverage against a real Postgres,
+# the trainers on CPU with a tiny model, the claim gate, the registration check, the grading of every
+# exported completion, the container answering from a separate process, and the site.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+  UV_SYSTEM_CERTS: "1"
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: goodhart
+          POSTGRES_PASSWORD: goodhart
+          POSTGRES_DB: goodhart
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U goodhart" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://goodhart:goodhart@localhost:5432/goodhart
+      GOODHART_REQUIRE: postgres,warehouses
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: uv sync --frozen
+      - name: The sources, by digest
+        run: uv run python scripts/fetch_sources.py
+      - name: The completion exports, by digest
+        if: hashFiles('data/results.lock.json') != ''
+        run: uv run python scripts/fetch_results.py
+      - name: Gates (every file, every commit diff)
+        run: make gates
+      - name: Lint and types
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run mypy
+      - name: Tests, with coverage
+        run: uv run pytest --cov --cov-report=term --cov-fail-under=80
+      - name: The questions, twins and mutants rebuild to the committed digests
+        if: hashFiles('data/questions/manifest.json') != ''
+        run: uv run goodhart rebuild-check
+      - name: Every exported completion graded again in the repository
+        if: hashFiles('results/completions/index.json') != ''
+        run: uv run goodhart grade --check
+      - name: The claim gate
+        if: hashFiles('results/manifest.json') != ''
+        run: uv run python scripts/check_published_numbers.py
+      - name: The skills
+        if: hashFiles('.claude/skills/*/SKILL.md') != ''
+        run: uv run python scripts/check_skills.py
+      - name: The notebooks
+        if: hashFiles('notebooks/*.ipynb') != ''
+        run: uv run pytest --nbmake notebooks -q
+
+  smoke:
+    # SFT, DPO and GRPO each run two steps on CPU with a tiny model built in the test, so the
+    # trainers are exercised on every push without a GPU or a download from the Hub.
+    runs-on: ubuntu-latest
+    env:
+      GOODHART_REQUIRE: torch
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - name: Install with CPU PyTorch
+        run: |
+          uv sync --frozen
+          uv pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6"
+          uv pip install "transformers==5.22.1" "trl==1.17.1" "peft==0.21.2" "datasets==5.1.0" "accelerate==1.15.0"
+      - name: The trainers on CPU
+        run: uv run --no-sync pytest -m torch -q tests/train
+
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: The Vercel image builds and answers /health
+        run: |
+          docker build -f Dockerfile.vercel -t goodhart .
+          docker run -d --name gh -p 8080:80 goodhart
+          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:8080/health && break; sleep 2; done
+          curl -fsS http://127.0.0.1:8080/health | grep -q '"status":"ok"'
