@@ -99,7 +99,9 @@ jobs:
       - name: Install
         run: |
           uv sync --frozen --no-dev
-          uv pip install "kaggle==2.2.5"
+          # kaggle 2.2.5 imports six without declaring it; it came with python-dateutil until 4.0.0,
+          # released on 1 November 2026, dropped it. Both are pinned at the versions that last worked.
+          uv pip install "kaggle==2.2.5" "python-dateutil==3.0.0" "six==1.17.0"
       - name: Probe the hosts this run can see
         continue-on-error: true
         env:
