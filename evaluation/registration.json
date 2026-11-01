@@ -1,0 +1,17 @@
+{
+ "before_first_test_score": true,
+ "comparator_hash": "c25d64097ed520975de2c231be250f14dce9feb10cbd5677a6635a674cc6129d",
+ "detectors_hash": "62ea6c0ff037c80cbdc28a9856dda7125791486d59913b40504efc1c27a38385",
+ "generator_hash": "49ae9b04c2851ac42c976c51a0454481a518bf152899c4504fe4ef8142321a6d",
+ "hypotheses_hash": "7b27d1180bfc3d4ac5d35b5ca050d0dbc21ae528bbebd1aba141d9f499398731",
+ "monitor_hash": "f9dffdc87b3962ef8703ef14c1a4a39a0dcdd447182e5532b81164f044df588f",
+ "plan_hash": "f4b75fe308115b24d994e61d0edb771af9601b1f5336b18c331079a110a679ed",
+ "predictions_hash": "767ce7eb1cc0b9c2d429b4d2591fbb3e71f83855627a02e3d156f8ba9b05a219",
+ "prompt_hash": "ef06663ebec638563258675f24f914868888aea92451c6faf9b9a21a36e57603",
+ "questions_hash": "4cf2916cf69c8e9c43aaf18472513fa0b1dfe3c410f7cf9204ec85678a1bfd11",
+ "registered_at": "2026-11-01T01:10:25+00:00",
+ "registered_on": "2026-10-31",
+ "rewards_hash": "1d45c99e88d518192808f21b2343a279f231a8521afbbc39541ef12764fdbb59",
+ "training_hash": "cc7c20f7d804a4bab54bf83e16b25a0601fe8e984e2b7819a7f7fa00cccd2287",
+ "twins_hash": "864ed8a1d18127bbe0af6199db64d6c11ec3334d5de3628f3eaa00909f630faa"
+}

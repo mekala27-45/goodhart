@@ -1,0 +1,19 @@
+# Hypotheses, registered before the test sets are scored. Each is tested once and printed with its
+# verdict whatever it is. All enter the Benjamini-Hochberg family at q = 0.05.
+hypotheses:
+  H1:
+    statement: SFT then GRPO beats SFT alone on twin confirmed accuracy on readback_test
+    test: paired difference M4 minus M1, cluster bootstrap, one sided at the BH adjusted level
+  H2:
+    statement: GRPO raises pass at 1 more than pass at 16
+    test: on the generated test set, (M3 pass@1 minus M0 pass@1) minus (M3 pass@16 minus M0 pass@16) above zero
+  H3:
+    statement: the random reward reaches less than a third of the honest gain
+    test: on dev, (random minus start) divided by (honest minus start) below 1/3, interval by bootstrap
+  H4:
+    statement: the lenient arm opens a twin gap of at least ten points by its last checkpoint
+    test: on dev, honest twin confirmed minus lenient twin confirmed at the last checkpoint at least 0.10
+  H5:
+    statement: DPO on verified self samples reaches half the GRPO gain at a quarter of the compute
+    test: (M2 minus M0) at least half of (M3 minus M0) on readback_test, and M2 GPU hours at most a
+      quarter of M3 GPU hours in the run ledger

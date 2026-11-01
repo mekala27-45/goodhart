@@ -247,3 +247,82 @@ def test_palette_validator_catches_a_red_green_pair(tmp_path: Path) -> None:
 def test_palette_validator_refuses_an_empty_palette(tmp_path: Path) -> None:
     done = _validate(_palette(tmp_path, []))
     assert done.returncode != 0
+
+
+# registration
+
+
+def _registered_root(tmp_path: Path) -> Path:
+    import shutil
+
+    import check_registration
+
+    for rel in check_registration.REGISTERED.values():
+        target = tmp_path / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(ROOT / rel, target)
+    check_registration.register(tmp_path)
+    return tmp_path
+
+
+def test_registration_gate_passes_what_was_registered(tmp_path: Path) -> None:
+    import check_registration
+
+    root = _registered_root(tmp_path)
+    assert check_registration.check(root) == []
+
+
+def test_registration_gate_catches_a_change_without_a_dated_entry(tmp_path: Path) -> None:
+    import check_registration
+
+    root = _registered_root(tmp_path)
+    plan = root / "evaluation" / "plan.yaml"
+    plan.write_text(plan.read_text(encoding="utf-8") + "\n# a quiet change\n", encoding="utf-8")
+    new = check_registration.current(root)["plan_hash"][:12]
+    problems = check_registration.check(root)
+    assert len(problems) == 1 and problems[0].startswith("plan_hash")
+    (root / "DECISIONS.md").write_text(f"## 2001-01-01 an old entry\n\nNames {new}.\n", encoding="utf-8")
+    assert check_registration.check(root), "an entry dated before the registration does not count"
+    today = check_registration.dt.date.today().isoformat()
+    (root / "DECISIONS.md").write_text(
+        f"## {today} the plan changed\n\nThe new plan hash is {new}.\n", encoding="utf-8"
+    )
+    assert check_registration.check(root) == []
+
+
+def test_registration_gate_refuses_when_nothing_is_registered(tmp_path: Path) -> None:
+    import check_registration
+
+    assert check_registration.check(tmp_path) == ["nothing is registered: evaluation/registration.json does not exist"]
+    root = _registered_root(tmp_path)
+    with pytest.raises(SystemExit):
+        check_registration.register(root)
+
+
+# skills
+
+
+def test_skills_gate_passes_the_committed_skills() -> None:
+    import check_skills
+
+    assert check_skills.check() == []
+
+
+def test_skills_gate_catches_a_skill_without_a_description(tmp_path: Path) -> None:
+    import check_skills
+
+    for name in check_skills.REQUIRED:
+        folder = tmp_path / ".claude" / "skills" / name
+        folder.mkdir(parents=True)
+        (folder / "SKILL.md").write_text(f"---\nname: {name}\ndescription: Does one thing.\n---\n\nBody.\n")
+    bad = tmp_path / ".claude" / "skills" / "add-a-reward" / "SKILL.md"
+    bad.write_text("---\nname: add-a-reward\n---\n\nBody.\n")
+    problems = check_skills.check(tmp_path)
+    assert problems and all(p.startswith("add-a-reward") for p in problems)
+
+
+def test_skills_gate_refuses_when_there_are_no_skills(tmp_path: Path) -> None:
+    import check_skills
+
+    problems = check_skills.check(tmp_path)
+    assert "no skill folder under .claude/skills" in problems and len(problems) == 4
