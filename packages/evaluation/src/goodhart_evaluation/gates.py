@@ -200,13 +200,13 @@ def run(root: Any) -> dict[str, Any]:
     """Every gate for every method with a sampled checkpoint, and the champion; results/gates.json."""
     import json
 
-    from goodhart_evaluation.methods import _files_for, _scores, graded_files, method_of, requests
+    from goodhart_evaluation.methods import _files_for, _scores, graded_files, is_interior, method_of, requests
 
     reqs = requests(root)
     by_method: dict[str, list[str]] = {}
     for run_id, req in reqs.items():
         m = method_of(req)
-        if m is not None:
+        if m is not None and not is_interior(req):
             by_method.setdefault(m, []).append(run_id)
     index = graded_files(root)
 
