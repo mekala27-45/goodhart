@@ -6,20 +6,17 @@ import json
 import subprocess
 from pathlib import Path
 
+import check_no_em_dash
+import check_published_numbers
+import check_statement
+import check_tokens
+import check_vocabulary
 import pytest
+import scan_for_planted_identifiers
 from goodhart_core.manifest import ManifestBuilder, write
 from goodhart_core.statements import STATEMENT
 from goodhart_render.render import ClaimGateError, Renderer, hand_typed_numbers
 from goodhart_render.targets import discover, template_roots
-
-from scripts import (
-    check_no_em_dash,
-    check_published_numbers,
-    check_statement,
-    check_tokens,
-    check_vocabulary,
-    scan_for_planted_identifiers,
-)
 
 ROOT = Path(__file__).resolve().parents[2]
 

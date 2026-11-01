@@ -14,8 +14,14 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+# The repository root stays off the import path: folders there such as requests/ and kernels/ would
+# pass for missing libraries (TRL checks for requests by spec alone). python -m pytest puts the
+# working directory first, so it is dropped here. The gate scripts are standalone files, imported
+# from their own folder, which holds nothing but those scripts.
+sys.path[:] = [p for p in sys.path if p not in {"", ".", str(ROOT)}]
+SCRIPTS = str(ROOT / "scripts")
+if SCRIPTS not in sys.path:
+    sys.path.insert(0, SCRIPTS)
 
 REQUIRED = {d.strip() for d in os.environ.get("GOODHART_REQUIRE", "").split(",") if d.strip()}
 

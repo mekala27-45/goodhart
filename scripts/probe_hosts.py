@@ -51,9 +51,7 @@ def probe_api(base: str | None) -> dict[str, Any]:
 
     try:
         response = httpx.get(base.rstrip("/") + "/health", timeout=60.0)
-        body = (
-            response.json() if response.headers.get("content-type", "").startswith("application/json") else {}
-        )
+        body = response.json() if response.headers.get("content-type", "").startswith("application/json") else {}
         return {
             "checked": True,
             "status": response.status_code,
@@ -93,9 +91,7 @@ def probe_kaggle() -> dict[str, Any]:
         return {"checked": False, "reason": "no Kaggle credential here; only Actions holds it"}
     if shutil.which("kaggle") is None:
         return {"checked": False, "reason": "the kaggle CLI is not installed here"}
-    done = subprocess.run(
-        ["kaggle", "quota", "--format", "json"], capture_output=True, text=True, timeout=120
-    )
+    done = subprocess.run(["kaggle", "quota", "--format", "json"], capture_output=True, text=True, timeout=120)
     if done.returncode != 0:
         return {
             "checked": True,

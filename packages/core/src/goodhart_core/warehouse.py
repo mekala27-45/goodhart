@@ -98,9 +98,7 @@ def _views_file(version: Version, folder: Path) -> Path:
         for name in WAREHOUSES:
             con.execute(f'create schema if not exists "{name}"')
         for (name, table), path in sorted(version.files.items()):
-            con.execute(
-                f'create or replace view "{name}"."{table}" as select * from {_reader(path.resolve())}'
-            )
+            con.execute(f'create or replace view "{name}"."{table}" as select * from {_reader(path.resolve())}')
     finally:
         con.close()
     return db
@@ -234,9 +232,7 @@ class Warehouses:
             return Execution(executed=False, error=f"timeout after {timeout_s:.1f} s", elapsed_ms=_ms(start))
         except duckdb.Error as err:
             message = str(err).splitlines()[0][:300]
-            return Execution(
-                executed=False, error=message, elapsed_ms=_ms(start), tables=list(checked.tables)
-            )
+            return Execution(executed=False, error=message, elapsed_ms=_ms(start), tables=list(checked.tables))
         finally:
             timer.cancel()
             cur.close()

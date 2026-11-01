@@ -14,9 +14,7 @@ from typing import Any
 
 import structlog
 
-REFUSED_KEYS = frozenset(
-    {"token", "key", "password", "secret", "database_url", "authorization", "text", "sql"}
-)
+REFUSED_KEYS = frozenset({"token", "key", "password", "secret", "database_url", "authorization", "text", "sql"})
 CREDENTIAL = re.compile(
     r"(KGAT_[A-Za-z0-9_\-]{8,}|hf_[A-Za-z0-9]{20,}|nvapi-[A-Za-z0-9_\-]{12,}|npg_[A-Za-z0-9]{8,}|"
     r"postgres(?:ql)?://[^\s:@/]+:[^\s@/]+@)"

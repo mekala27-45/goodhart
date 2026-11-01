@@ -16,10 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from scripts._files import LOCK_FILES, all_text_files, commit_diffs
+from _files import LOCK_FILES, all_text_files, commit_diffs
 
 EMAIL = re.compile(r"\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b")
 PHONE = re.compile(r"(?<![\d.])\(?\b\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}\b(?![\d.])")
@@ -60,9 +57,7 @@ def find(text: str) -> list[str]:
 
 
 def check(root: Path, revision_range: str | None = None, files: list[Path] | None = None) -> tuple[int, int]:
-    targets = (
-        files if files is not None else [p for p in all_text_files(root) if p.relative_to(root) != FIXTURE]
-    )
+    targets = files if files is not None else [p for p in all_text_files(root) if p.relative_to(root) != FIXTURE]
     if not targets:
         raise ValueError("the identifier scan found no files to read")
     problems: list[str] = []

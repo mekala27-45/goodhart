@@ -16,10 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from scripts._files import all_text_files, commit_diffs
+from _files import all_text_files, commit_diffs
 
 # Each pattern is assembled from parts so the scan does not match its own source.
 PATTERNS: dict[str, re.Pattern[str]] = {

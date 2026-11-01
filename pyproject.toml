@@ -22,9 +22,6 @@ dependencies = [
   "httpx>=0.28",
 ]
 
-[project.scripts]
-goodhart = "goodhart_evaluation.cli:app"
-
 [project.optional-dependencies]
 # The trainers on CPU with a tiny model, for the smoke run in CI. The GPU kernels install
 # requirements-gpu.txt instead, with hashes, on top of the CUDA build of PyTorch in the Kaggle image.
@@ -61,6 +58,9 @@ dev = [
 ]
 
 [tool.uv]
+# The root is a virtual project: it is never installed, so the repository root never lands on the
+# import path, where folders such as requests/ and kernels/ would pass for missing libraries.
+package = false
 default-groups = ["dev"]
 
 [tool.uv.workspace]
@@ -79,18 +79,8 @@ goodhart-sizing = { workspace = true }
 goodhart-judge = { workspace = true }
 goodhart-api = { workspace = true }
 
-[build-system]
-requires = ["hatchling>=1.25"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["scripts"]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py312"
 extend-exclude = ["web", "notebooks", "data", "kernels/templates"]
 
@@ -101,7 +91,7 @@ ignore = ["RUF001", "RUF002", "RUF003", "N818"]
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["E402"]
-"tests/*" = ["E402", "N802", "N806"]
+"tests/*" = ["E402", "N802", "N806", "E501"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -129,11 +119,19 @@ markers = [
   "loadtest: needs a running server",
   "floor: needs the floor extra (readback at its pinned commit)",
 ]
-addopts = "-q"
+# importlib mode leaves sys.path alone, for the same reason the root is virtual.
+addopts = "-q --import-mode=importlib"
 
 [tool.coverage.run]
-source = ["packages"]
-omit = ["*/tests/*", "*/goodhart_train/sft.py", "*/goodhart_train/dpo.py", "*/goodhart_train/grpo.py", "*/goodhart_train/backend.py", "*/goodhart_train/probe.py", "*/goodhart_train/sample.py"]
+# Every package folder by path, so a module no test imports still counts, at zero.
+source = [
+  "packages/core/src/goodhart_core", "packages/render/src/goodhart_render",
+  "packages/questions/src/goodhart_questions", "packages/rewards/src/goodhart_rewards",
+  "packages/heldout/src/goodhart_heldout", "packages/monitor/src/goodhart_monitor",
+  "packages/train/src/goodhart_train", "packages/evaluation/src/goodhart_evaluation",
+  "packages/sizing/src/goodhart_sizing", "packages/judge/src/goodhart_judge",
+  "packages/api/src/goodhart_api",
+]
 
 [tool.coverage.report]
 fail_under = 80

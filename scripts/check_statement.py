@@ -8,11 +8,7 @@ from __future__ import annotations
 
 import html
 import re
-import sys
 from pathlib import Path
-
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from goodhart_core.statements import contains_statement
 
@@ -29,9 +25,7 @@ GLOBS = ("docs/models/*.md", "docs/validation/*.md", "web/out/**/*.html")
 def surfaces(root: Path) -> list[Path]:
     found = [root / doc for doc in DOCUMENTS if (root / doc).exists()]
     for pattern in GLOBS:
-        found.extend(
-            sorted(p for p in root.glob(pattern) if "node_modules" not in p.parts and p.name != "404.html")
-        )
+        found.extend(sorted(p for p in root.glob(pattern) if "node_modules" not in p.parts and p.name != "404.html"))
     return found
 
 

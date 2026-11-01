@@ -11,8 +11,6 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(ROOT))
 
 from goodhart_core.manifest import load as load_manifest
 from goodhart_render.render import ClaimGateError, Renderer, hand_typed_numbers, load_allowed_literals

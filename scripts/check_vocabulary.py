@@ -3,13 +3,9 @@
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from scripts._files import authored_files
+from _files import authored_files
 
 # Split so the gate does not trip over its own list.
 PHRASES = (

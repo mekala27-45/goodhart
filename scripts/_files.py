@@ -111,9 +111,7 @@ def all_text_files(root: Path) -> list[Path]:
 LOCK_FILES = ("uv.lock", "package-lock.json", "requirements-gpu.txt", "requirements-vllm.txt")
 
 
-def commit_diffs(
-    root: Path, revision_range: str | None, exclude: tuple[str, ...] = ()
-) -> list[tuple[str, str]]:
+def commit_diffs(root: Path, revision_range: str | None, exclude: tuple[str, ...] = ()) -> list[tuple[str, str]]:
     """(commit, added lines) for every commit in the range, or in the whole history when None.
 
     Only added lines matter: a removed line never reaches a blob that is new in that commit. Lock
@@ -124,9 +122,7 @@ def commit_diffs(
     if exclude:
         args += ["--", ".", *(f":(exclude,glob)**/{name}" for name in exclude)]
     try:
-        text = subprocess.run(
-            args, cwd=root, check=True, capture_output=True, text=True, errors="replace"
-        ).stdout
+        text = subprocess.run(args, cwd=root, check=True, capture_output=True, text=True, errors="replace").stdout
     except (OSError, subprocess.CalledProcessError):
         return []
     out: list[tuple[str, str]] = []

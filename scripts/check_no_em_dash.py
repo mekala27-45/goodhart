@@ -6,13 +6,9 @@ when it found nothing to scan.
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from scripts._files import authored_files
+from _files import authored_files
 
 BANNED = {chr(0x2014): "em dash", chr(0x2013): "en dash", chr(0x2015): "horizontal bar"}
 

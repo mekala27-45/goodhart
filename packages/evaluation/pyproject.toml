@@ -14,9 +14,15 @@ dependencies = [
   "goodhart-sizing",
   "goodhart-judge",
   "numpy>=2.0",
+  "scipy>=1.14",
+  "pyyaml>=6.0",
   "pyarrow>=18",
   "typer>=0.15",
+  "httpx>=0.28",
 ]
+
+[project.scripts]
+goodhart = "goodhart_evaluation.cli:app"
 
 [tool.uv.sources]
 goodhart-core = { workspace = true }
