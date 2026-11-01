@@ -1,0 +1,31 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/prompts/train.jsonl": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f",
+  "data/questions/train.jsonl": "7af4c3d48c849fe6dac7c645e64f2cd8f57cc56cf0bb7cca9e4692aaaadff92b"
+ },
+ "gpu_hour_ceiling": 0.6,
+ "hyperparameters": {
+  "smoke_model": "Qwen/Qwen3-0.6B",
+  "try_vllm": true,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-10-31-02-probe",
+ "inputs": [],
+ "model": null,
+ "models": [
+  "Qwen/Qwen3-0.6B",
+  "Qwen/Qwen3.5-0.8B",
+  "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "Qwen/Qwen3-1.7B",
+  "Qwen/Qwen3.5-2B",
+  "google/gemma-4-E2B-it",
+  "HuggingFaceTB/SmolLM3-3B"
+ ],
+ "note": "The probe again after the first one's three blockers were fixed: torchao removed, generation halves its batch when it runs out of memory and GRPO generates 16 completions at a time, LoRA kept off vision and audio towers, the vLLM environment made with uv. Llama 3.2 1B is left out because it is gated.",
+ "reward": null,
+ "seed": 0,
+ "stage": "probe",
+ "step_budget": null
+}
