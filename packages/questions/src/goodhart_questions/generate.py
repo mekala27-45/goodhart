@@ -90,6 +90,21 @@ def _period_text(period: str) -> str:
     return period
 
 
+# The period phrases a template may carry; a measure with no time grain drops them whole.
+_NO_PERIOD = (", in {period},", " in {period}", " for {period}", "In {period}, ")
+
+
+def fill(text: str, period: str | None, **fields: str) -> str:
+    """Format a template. Without a period every period phrase goes, so a timeless measure never
+    reads 'in ?' or 'In , what was'; the first letter is raised when the sentence lost its opening."""
+    if period:
+        return text.format(period=_period_text(period), **fields)
+    for phrase in _NO_PERIOD:
+        text = text.replace(phrase, "")
+    out = text.format(**fields)
+    return out[:1].upper() + out[1:]
+
+
 def nice(value: float, unit: str) -> float:
     """A round threshold near a value, in the stored unit."""
     if unit == "fraction":
@@ -233,7 +248,7 @@ class Generator:
         )
         template, text = self._template(shape)
         written, names = self._name(m, entity) if m.has_entity else ("", {})
-        question = text.format(phrase=self._phrase(m), entity=written, period=_period_text(period or ""))
+        question = fill(text, period, phrase=self._phrase(m), entity=written)
         question = question.rstrip("?.") + UNIT_SUFFIX.get(asked, "") + ("?" if question.endswith("?") else ".")
         sql = sqlbuild.lookup(m, entity if m.has_entity else None, period, factor)
         return Candidate(
@@ -272,7 +287,7 @@ class Generator:
         wb, nb = self._name(m, b)
         if wa == wb:
             return None
-        question = text.format(phrase=self._phrase(m), a=wa, b=wb, period=_period_text(period or ""))
+        question = fill(text, period, phrase=self._phrase(m), a=wa, b=wb)
         question = question.rstrip("?.") + UNIT_SUFFIX.get(asked, "") + "?"
         sql = sqlbuild.comparison(m, a, b, period, factor)
         return Candidate(
@@ -429,11 +444,12 @@ class Generator:
         if count in (0, len(vals)) or any(abs(v - threshold) < 1e-12 for v in vals):
             return None
         template, text = self._template("multi.count_above")
-        question = text.format(
+        question = fill(
+            text,
+            period,
             plural=PLURALS[m.entity],
             phrase=self._phrase(m),
             threshold=threshold_text(threshold, stored),
-            period=_period_text(period or ""),
         )
         sql = sqlbuild.count_above(m, period, threshold)
         return Candidate(
@@ -472,7 +488,7 @@ class Generator:
             names.update(n)
         listed = f"{written[0]}, {written[1]} and {written[2]}"
         template, text = self._template("multi.average")
-        question = text.format(phrase=self._phrase(m), list=listed, period=_period_text(period or ""))
+        question = fill(text, period, phrase=self._phrase(m), list=listed)
         question = question.rstrip("?.") + UNIT_SUFFIX.get(asked, "") + "?"
         sql = sqlbuild.average_of(m, group, period, factor)
         return Candidate(
@@ -601,9 +617,7 @@ class Generator:
         written_target = written_group[group.index(target)]
         listed = ", ".join(written_group[:-1]) + f" and {written_group[-1]}"
         template, text = self._template("multi.rank")
-        question = text.format(
-            list=listed, entity=written_target, phrase=self._phrase(m), period=_period_text(period or "")
-        )
+        question = fill(text, period, list=listed, entity=written_target, phrase=self._phrase(m))
         sql = sqlbuild.rank_in_group(m, target, group, period)
         return Candidate(
             "multi",
