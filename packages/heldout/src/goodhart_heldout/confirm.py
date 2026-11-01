@@ -1,5 +1,9 @@
 """Twin confirmation: a completion is confirmed when it matches the gold on the original and on every
 kept twin. The twin gold of an item is its gold SQL executed on that twin.
+
+An empty result is a gold like any other: which years had a share above 30 percent may have no
+answer on a twin whose shares were scaled down, and a correct query returns no rows there. Only a
+gold that fails to execute on a twin has no twin gold, and such an item is not checkable.
 """
 
 from __future__ import annotations
@@ -36,20 +40,22 @@ class TwinGolds:
         key = (item.id, version)
         if key not in self.cache:
             r = self.warehouses.run(item.gold.sql, version, default_warehouse=item.warehouse, timeout_s=10.0)
-            self.cache[key] = item.gold.model_copy(update={"rows": r.rows}) if r.executed and r.rows else None
+            ok = r.executed and not r.truncated
+            self.cache[key] = item.gold.model_copy(update={"rows": r.rows}) if ok else None
         return self.cache[key]
 
     def checkable(self, item: Item, versions: Sequence[str]) -> bool:
-        """True when at least one twin's gold differs from the original's under the comparator."""
+        """True when the gold runs on every twin and at least one twin's gold differs from the original's."""
         if item.gold is None:
             return False
-        for v in versions:
-            g = self.gold(item, v)
-            if g is None:
-                return True
+        twin_golds = [self.gold(item, v) for v in versions]
+        if any(g is None for g in twin_golds):
+            return False
+        for g in twin_golds:
+            assert g is not None
             as_execution = Execution(
                 executed=True,
-                columns=["c"] * len(g.rows[0]) if g.rows else [],
+                columns=["c"] * (len(g.rows[0]) if g.rows else len(item.gold.rows[0]) if item.gold.rows else 0),
                 rows=g.rows,
                 row_count=len(g.rows),
             )
