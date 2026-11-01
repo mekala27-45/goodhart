@@ -1,0 +1,161 @@
+{
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "accelerator_requested": "NvidiaTeslaT4",
+ "candidates": [
+  {
+   "model": "Qwen/Qwen3-0.6B",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 596049920,
+   "dtype": "float16",
+   "load_seconds": 26.5,
+   "generates": true,
+   "generation_seconds_8x8": 130.3,
+   "tokens_8x8": 11591,
+   "tokens_per_second": 89.0,
+   "prompts_per_generate_call": 4,
+   "generation_peak_bytes": 11163996672,
+   "free_after_generation_bytes": 13434880,
+   "training_tokens_per_sequence": 1143,
+   "lora_step": false,
+   "lora_error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 36.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 18.81 MiB is free. Including non-PyTorch memory, this process has 14.54 GiB memory in use. Of the allocated memory 14.33 GiB is allocated by PyTorch, and 83.47 MiB is reserved by PyTorch but unallocated"
+  },
+  {
+   "model": "Qwen/Qwen3.5-0.8B",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 752393024,
+   "dtype": "float16",
+   "load_seconds": 13.1,
+   "generates": true,
+   "generation_seconds_8x8": 60.0,
+   "tokens_8x8": 13835,
+   "tokens_per_second": 230.6,
+   "prompts_per_generate_call": 8,
+   "generation_peak_bytes": 12384123904,
+   "free_after_generation_bytes": 1173159936,
+   "training_tokens_per_sequence": 1159,
+   "lora_step": false,
+   "lora_error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 74.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 18.81 MiB is free. Including non-PyTorch memory, this process has 14.54 GiB memory in use. Of the allocated memory 14.22 GiB is allocated by PyTorch, and 190.44 MiB is reserved by PyTorch but unallocate"
+  },
+  {
+   "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 1543714304,
+   "dtype": "float16",
+   "load_seconds": 20.5,
+   "generates": true,
+   "generation_seconds_8x8": 68.12,
+   "tokens_8x8": 8448,
+   "tokens_per_second": 124.0,
+   "prompts_per_generate_call": 8,
+   "generation_peak_bytes": 9789636608,
+   "free_after_generation_bytes": 4318887936,
+   "training_tokens_per_sequence": 1139,
+   "lora_step": false,
+   "lora_error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 312.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 166.81 MiB is free. Including non-PyTorch memory, this process has 14.40 GiB memory in use. Of the allocated memory 13.84 GiB is allocated by PyTorch, and 434.96 MiB is reserved by PyTorch but unalloca"
+  },
+  {
+   "model": "Qwen/Qwen3-1.7B",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 1720574976,
+   "dtype": "float16",
+   "load_seconds": 25.0,
+   "generates": true,
+   "generation_seconds_8x8": 62.63,
+   "tokens_8x8": 4914,
+   "tokens_per_second": 78.5,
+   "prompts_per_generate_call": 4,
+   "generation_peak_bytes": 12415064576,
+   "free_after_generation_bytes": 2454519808,
+   "training_tokens_per_sequence": 1143,
+   "lora_step": false,
+   "lora_error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 72.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 40.81 MiB is free. Including non-PyTorch memory, this process has 14.52 GiB memory in use. Of the allocated memory 14.02 GiB is allocated by PyTorch, and 382.62 MiB is reserved by PyTorch but unallocate"
+  },
+  {
+   "model": "Qwen/Qwen3.5-2B",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 1881825088,
+   "dtype": "float16",
+   "load_seconds": 30.4,
+   "generates": true,
+   "generation_seconds_8x8": 80.13,
+   "tokens_8x8": 11722,
+   "tokens_per_second": 146.3,
+   "prompts_per_generate_call": 4,
+   "generation_peak_bytes": 13658067968,
+   "free_after_generation_bytes": 311230464,
+   "training_tokens_per_sequence": 1159,
+   "lora_step": false,
+   "lora_error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 76.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 14.81 MiB is free. Including non-PyTorch memory, this process has 14.54 GiB memory in use. Of the allocated memory 14.21 GiB is allocated by PyTorch, and 205.67 MiB is reserved by PyTorch but unallocate"
+  },
+  {
+   "model": "google/gemma-4-E2B-it",
+   "license": "apache-2.0",
+   "loads": true,
+   "parameters": 5104297504,
+   "dtype": "float16",
+   "load_seconds": 80.1,
+   "generates": false,
+   "generation_error": "AcceleratorError: CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging",
+   "lora_step": false,
+   "lora_error": "AcceleratorError: CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging"
+  },
+  {
+   "model": "HuggingFaceTB/SmolLM3-3B",
+   "license": "apache-2.0",
+   "loads": false,
+   "error": "AcceleratorError: CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging"
+  }
+ ],
+ "grpo_smoke": {
+  "ok": false,
+  "error": "_model_loading.py\", line 1055, in convert\n    collected_tensors = self.materialize_tensors()\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/core_model_loading.py\", line 1017, in materialize_tensors\n    tensors = [future.result() for future in tensors if future.result() is not None]\n                                                        ~~~~~~~~~~~~~^^\n  File \"/usr/lib/python3.13/concurrent/futures/_base.py\", line 460, in result\n    return self.__get_result()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"/usr/lib/python3.13/concurrent/futures/_base.py\", line 402, in __get_result\n    raise self._exception\n  File \"/usr/lib/python3.13/concurrent/futures/thread.py\", line 59, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/core_model_loading.py\", line 1309, in _job\n    return _materialize_copy(tensor, device, dtype)\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/core_model_loading.py\", line 1287, in _materialize_copy\n    tensor = tensor.to(device=device, dtype=dtype)\ntorch.AcceleratorError: CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n\n"
+ },
+ "vllm": {
+  "model": "Qwen/Qwen3-0.6B",
+  "version": "0.32.0",
+  "isolated": true,
+  "install_seconds": 58.9,
+  "installed": true,
+  "works": false,
+  "error": "    ...<8 lines>... |     ) | RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+ },
+ "generation_backend": "transformers"
+}
