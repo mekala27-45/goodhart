@@ -57,20 +57,27 @@ jobs:
       - name: The desk's recorded session, from the live API
         if: ${{ inputs.record_session }}
         run: cd web && node scripts/record-session.mjs --api "$API"
+      # Each check below runs whatever an earlier one found, so one failure does not hide the rest;
+      # only the ledger mirror waits for persistence, since a database without the API's grade log
+      # is not the API's database and must not receive the mirror's tables.
       - name: Persistence, read back from this runner
+        id: persistence
+        if: ${{ !cancelled() }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: uv run --no-sync python scripts/check_persistence.py --base "$API" --database "$DATABASE_URL" --write
       - name: The run ledger mirrored into the database and read back
+        if: ${{ !cancelled() && steps.persistence.outcome == 'success' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: uv run --no-sync python scripts/mirror_ledger.py --database "$DATABASE_URL" --write
       - name: Latency with the cold start
+        if: ${{ !cancelled() }}
         env:
           GOODHART_PARITY_KEY: ${{ secrets.GOODHART_PARITY_KEY }}
         run: uv run --no-sync python scripts/load_test.py --base "$API" --requests 40 --parity-key "$GOODHART_PARITY_KEY"
       - name: Parity on every exported completion
-        if: ${{ inputs.parity }}
+        if: ${{ !cancelled() && inputs.parity }}
         env:
           GOODHART_PARITY_KEY: ${{ secrets.GOODHART_PARITY_KEY }}
           CHECKPOINTS: ${{ inputs.checkpoints }}
@@ -83,14 +90,21 @@ jobs:
         if: ${{ always() }}
         env:
           GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
         run: |
           git config user.name "goodhart-live"
           git config user.email "goodhart-live@users.noreply.github.com"
           branch="live/${GITHUB_RUN_ID}"
           git checkout -q -b "$branch"
-          git add results/live_check.json results/persistence.json results/latency.json results/parity.json results/ledger_mirror.json web/public/data/recorded_session.json 2>/dev/null || true
+          # One add per file: a single git add stops at the first path that does not exist, and a
+          # check that failed early leaves the later records unwritten.
+          for f in results/live_check.json results/persistence.json results/latency.json results/parity.json results/ledger_mirror.json web/public/data/recorded_session.json; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then echo "::warning::no record was written"; exit 0; fi
           git commit -q -m "results(live): the live checks from run ${GITHUB_RUN_ID}" -m "Read from a GitHub runner against ${API} and ${SITE}."
           git push -q origin "$branch"
-          gh pr create --base main --head "$branch" --title "results: live checks, run ${GITHUB_RUN_ID}" \
+          title="results: live checks, run ${GITHUB_RUN_ID}"
+          if [ "$JOB_STATUS" != "success" ]; then title="${title} (a check failed, the records are partial)"; fi
+          gh pr create --base main --head "$branch" --title "$title" \
             --body "The live checks from run ${GITHUB_RUN_ID} of the live workflow: results/live_check.json, results/persistence.json, results/latency.json, results/ledger_mirror.json and, when asked for, results/parity.json. Merging this pull request is what puts them in the manifest."

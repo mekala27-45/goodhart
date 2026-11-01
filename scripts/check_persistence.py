@@ -37,15 +37,33 @@ def check(base: str, database: str | None) -> dict[str, object]:
         "read_back_by_api": again.get("id") == grade["grade_id"],
     }
     if database:
-        import psycopg
-
-        url = database.replace("postgresql+psycopg://", "postgresql://")
-        with psycopg.connect(url) as con:
-            row = con.execute(
-                "select question_id, refused, confirmed from goodhart.grades where id = %s", (grade["grade_id"],)
-            ).fetchone()
-        out["read_back_by_database"] = bool(row and row[0] == first["id"] and row[1] is True)
+        out.update(read_back(database, grade["grade_id"], first["id"]))
     return out
+
+
+def read_back(database: str, grade_id: str, question_id: str) -> dict[str, object]:
+    """The grade read straight from the database this process was given. When that database has no
+    grade log at all, the API is writing to another one: the record says which database was read, by
+    name only, so the two connection strings can be compared without printing either."""
+    import psycopg
+
+    url = database.replace("postgresql+psycopg://", "postgresql://")
+    with psycopg.connect(url) as con:
+        name = con.execute("select current_database()").fetchone()
+        try:
+            row = con.execute(
+                "select question_id, refused, confirmed from goodhart.grades where id = %s", (grade_id,)
+            ).fetchone()
+        except psycopg.errors.UndefinedTable:
+            return {
+                "read_back_by_database": False,
+                "database_read": name[0] if name else None,
+                "database_error": "this database has no goodhart.grades, so the API writes to another one",
+            }
+    return {
+        "read_back_by_database": bool(row and row[0] == question_id and row[1] is True),
+        "database_read": name[0] if name else None,
+    }
 
 
 def main() -> int:
