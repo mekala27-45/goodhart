@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,18 @@ def test_a_child_that_overruns_is_stopped(tmp_path: Path) -> None:
     running = isolate.start("sleeper", command, tmp_path)
     outcome = isolate.wait(running, timeout_s=2)
     assert not outcome.ok and outcome.returncode is None and outcome.error.startswith("stopped after")
+
+
+def test_shards_waited_for_in_turn_share_one_deadline(tmp_path: Path) -> None:
+    """The first shard finishes near the timeout; the second must be stopped at the same deadline,
+    not given the whole timeout again once the first is done."""
+    t0 = time.monotonic()
+    quick = isolate.start("quick", [sys.executable, "-c", "import time; time.sleep(2)"], tmp_path)
+    slow = isolate.start("slow", [sys.executable, "-c", "import time; time.sleep(60)"], tmp_path)
+    first = isolate.wait(quick, timeout_s=3)
+    second = isolate.wait(slow, timeout_s=3)
+    assert first.returncode == 0 and second.returncode is None
+    assert time.monotonic() - t0 < 4.5, "the second wait restarted the clock"
 
 
 # A child that starts a process of its own and leaves without stopping it, as a vLLM worker leaves

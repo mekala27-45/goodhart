@@ -199,17 +199,25 @@ def stop(running: Running, grace_s: float = 60.0) -> int:
     child to shut down what it started, then reap whatever is left."""
     if running.process.poll() is None:
         _signal_group(running.process.pid, signal.SIGTERM)
+        deadline = time.monotonic() + grace_s
         try:
             running.process.wait(timeout=grace_s)
         except subprocess.TimeoutExpired:
             _signal_group(running.process.pid, signal.SIGKILL)
             running.process.wait()
+        # The whole group had the SIGTERM: what the child started may still be shutting down when
+        # the child is gone, and only what outlives the grace counts as left behind.
+        _gone(running.process.pid, max(0.0, deadline - time.monotonic()))
     return reap(running)
 
 
 def wait(running: Running, timeout_s: float) -> Outcome:
+    """Wait for a child at most timeout_s from when it started, not from this call: a caller that
+    waits for its shards one after another must not give the second a fresh timeout once the first
+    is done. The second selection run went past its ceiling that way."""
+    left = timeout_s - (time.monotonic() - running.started)
     try:
-        code: int | None = running.process.wait(timeout=max(1.0, timeout_s))
+        code: int | None = running.process.wait(timeout=max(1.0, left))
         timed_out = False
     except subprocess.TimeoutExpired:
         _signal_group(running.process.pid, signal.SIGKILL)
