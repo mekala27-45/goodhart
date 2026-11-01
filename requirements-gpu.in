@@ -1,0 +1,14 @@
+# What a GPU kernel installs on top of the Kaggle image's CUDA build of PyTorch, compiled with hashes
+# into requirements-gpu.txt (uv pip compile, universal, torch and the CUDA wheels left to the image).
+transformers==5.22.1
+trl==1.17.1
+peft==0.21.2
+accelerate==1.15.0
+datasets==5.1.0
+duckdb==2.0.0
+sqlglot==30.27.0
+pydantic>=2.10
+pyyaml>=6.0
+structlog>=25.1
+httpx>=0.28
+huggingface-hub
