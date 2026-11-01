@@ -1,0 +1,28 @@
+(EngineCore pid=891) ERROR 11-01 04:30:38 [fa_utils.py:212] Cannot use FA version 2 is not supported due to FA2 is only supported on devices with compute capability >= 8
+INFO:     127.0.0.1:36952 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /v1/models HTTP/1.1" 200 OK
+uv is set
+INFO:     127.0.0.1:36956 - "GET /server_info?config_format=json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /get_world_size HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /init_weight_transfer_engine HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /server_info?config_format=json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /start_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /update_weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /finish_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /reset_prefix_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "POST /start_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "POST /update_weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "POST /finish_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "POST /reset_prefix_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57224 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52454 - "POST /start_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52454 - "POST /update_weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52454 - "POST /finish_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52454 - "POST /reset_prefix_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52454 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35060 - "POST /start_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35060 - "POST /update_weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35060 - "POST /finish_weight_update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35060 - "POST /reset_prefix_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35060 - "POST /v1/completions HTTP/1.1" 200 OK
