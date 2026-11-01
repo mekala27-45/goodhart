@@ -121,7 +121,8 @@ def test_an_asset_with_a_path_outside_its_folders_is_refused(published: tuple[Pa
 
 def test_a_lock_with_no_asset_yet_fetches_the_evaluation_only(tmp_path: Path) -> None:
     (tmp_path / "data").mkdir()
-    shutil.copy(ROOT / spider.LOCK, tmp_path / spider.LOCK)
+    lock = json.loads((ROOT / spider.LOCK).read_text())
+    (tmp_path / spider.LOCK).write_text(json.dumps({**lock, "asset": None}))
     assert spider.fetch_data(tmp_path) == {"data": "not published yet"}
     assert not spider.available(tmp_path)
 
