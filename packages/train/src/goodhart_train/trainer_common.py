@@ -34,6 +34,25 @@ def template_column(model_id: str) -> dict[str, Any]:
     return {"chat_template_kwargs": kwargs} if kwargs else {}
 
 
+def start_adapter(inputs: Sequence[str], step: int | None = None) -> str | None:
+    """The adapter an input run hands on: its final one, or the one it kept at a given step (the step
+    the checkpoint choice picked). The last input that has one wins."""
+    found = None
+    for base in inputs:
+        candidate = Path(base) / ("adapter" if step is None else f"adapters/step-{int(step)}")
+        if candidate.exists():
+            found = str(candidate)
+    if step is not None and found is None:
+        raise FileNotFoundError(f"no input kept an adapter at step {step}")
+    return found
+
+
+def resume_point(inputs: Sequence[str], hp: dict[str, Any]) -> str | None:
+    """Where a stage resumes, only when its request asks to: an input is otherwise a run to start
+    from (M4 starts from M1's adapter), and its trainer checkpoints belong to another stage."""
+    return latest_checkpoint(inputs) if hp.get("resume") else None
+
+
 def latest_checkpoint(inputs: Sequence[str]) -> str | None:
     """The newest checkpoint-<step> folder under any input path (an earlier kernel's output)."""
     found: list[tuple[int, Path]] = []

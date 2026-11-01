@@ -33,9 +33,10 @@ from goodhart_train.rewardfn import SQLReward
 from goodhart_train.trainer_common import (
     ServerSampler,
     dev_exporter,
-    latest_checkpoint,
     precision_flags,
+    resume_point,
     spare_gpu,
+    start_adapter,
 )
 
 DEFECT_ARMS = frozenset({"lenient", "leaked", "lazy", "refusal"})
@@ -79,12 +80,9 @@ def run(
     dataset = Dataset.from_list([{"prompt": p.messages, "item_id": p.id} for p in prompts])
 
     with meter.phase("loading"):
-        start_adapter = None
-        for base in bundle.inputs:
-            candidate = Path(base) / "adapter"
-            if candidate.exists():
-                start_adapter = str(candidate)
-        loaded = load(req.model, adapter=start_adapter, merge=start_adapter is not None)
+        step = hp.get("adapter_step")
+        start = start_adapter(bundle.inputs, None if step is None else int(step))
+        loaded = load(req.model, adapter=start, merge=start is not None)
 
     arm = req.arm or req.reward
     monitor = Monitor(
@@ -158,7 +156,7 @@ def run(
     if server:
         exporter.server = ServerSampler(trainer, loaded.tokenizer, req.model)
     with meter.phase("training"):
-        result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
+        result = trainer.train(resume_from_checkpoint=resume_point(bundle.inputs, hp))
     # The adapter alone: the tokenizer is the base model's, and a copy of it in every run is noise.
     trainer.model.save_pretrained(str(out / "adapter"))
     exported = exporter.finish()

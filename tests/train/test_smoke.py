@@ -132,7 +132,7 @@ def test_resume_matches_an_uninterrupted_run(tiny: dict[str, Any], tmp_path: Pat
     first = Bundle(bundle_factory(tiny, tmp_path / "first", _request("sft", tiny["model"], 2)))
     sft.run(first, tmp_path / "out_first", Meter(ceiling_hours=1.0))
     resumed = Bundle(
-        bundle_factory(tiny, tmp_path / "resumed", _request("sft", tiny["model"], 3)),
+        bundle_factory(tiny, tmp_path / "resumed", _request("sft", tiny["model"], 3, resume=True)),
         inputs=[str(tmp_path / "out_first" / "trainer")],
     )
     sft.run(resumed, tmp_path / "out_resumed", Meter(ceiling_hours=1.0))

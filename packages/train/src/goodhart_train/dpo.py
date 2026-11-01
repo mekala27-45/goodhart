@@ -17,8 +17,8 @@ from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
 from goodhart_train.trainer_common import (
     dev_exporter,
-    latest_checkpoint,
     precision_flags,
+    resume_point,
     spare_gpu,
     template_column,
 )
@@ -90,7 +90,7 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
         ],
     )
     with meter.phase("training"):
-        result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
+        result = trainer.train(resume_from_checkpoint=resume_point(bundle.inputs, hp))
     # The adapter alone: the tokenizer is the base model's, and a copy of it in every run is noise.
     trainer.model.save_pretrained(str(out / "adapter"))
     exported = exporter.finish()

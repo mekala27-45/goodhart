@@ -42,9 +42,9 @@ The point is to see the hack in the policy's own words before writing any fix.
 
 ## 5. Rerun a short check
 
-Write a request (`.claude/skills/request-a-gpu-run`) that resumes from the last good checkpoint
-(the request's `inputs` names the earlier run) with the fixed reward and a short step budget, 50
-steps. Commit it; the workflow runs it.
+Write a request (`.claude/skills/request-a-gpu-run`) that starts from the last good checkpoint (the
+request's `inputs` names the earlier run and `"adapter_step"` the step) with the fixed reward and a
+short step budget, 50 steps. Commit it; the workflow runs it.
 
 ## 6. Verify
 

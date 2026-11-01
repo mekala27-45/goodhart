@@ -26,13 +26,12 @@ from goodhart_train.sample import completions, messages_for, write
 WORK = Path(os.environ.get("GOODHART_WORK", "/tmp/goodhart")) / "sampling"
 
 
-def _adapter(inputs: list[str]) -> str | None:
-    found = None
-    for base in inputs:
-        candidate = Path(base) / "adapter"
-        if candidate.exists():
-            found = str(candidate)
-    return found
+def _adapter(inputs: list[str], hp: dict[str, Any] | None = None) -> str | None:
+    """The input run's adapter to sample: its final one, or the one kept at hp["adapter_step"]."""
+    from goodhart_train.trainer_common import start_adapter
+
+    step = (hp or {}).get("adapter_step")
+    return start_adapter(inputs, None if step is None else int(step))
 
 
 def _backend(
@@ -217,7 +216,7 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     req = bundle.request
     hp = {**bundle.config("training")["sample"], **req.hyperparameters}
     assert req.model is not None
-    adapter = _adapter(bundle.inputs)
+    adapter = _adapter(bundle.inputs, hp)
     checkpoint = str(hp.get("checkpoint_name", "final"))
     examples = bundle.examples() if hp.get("with_examples") else []
     backend = _backend(req.model, adapter, hp, meter, out)
@@ -250,7 +249,7 @@ def pairs(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     req = bundle.request
     hp = {**bundle.config("training")["pairs"], **req.hyperparameters}
     assert req.model is not None
-    adapter = _adapter(bundle.inputs)
+    adapter = _adapter(bundle.inputs, hp)
     backend = _backend(req.model, adapter, hp, meter, out)
     prompts = bundle.prompts("train")
     messages = messages_for(prompts, bundle.examples() if hp.get("with_examples") else [])

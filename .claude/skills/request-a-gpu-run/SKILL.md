@@ -17,8 +17,11 @@ Create `requests/<local date>-<nn>-<name>.json`; the file name without `.json` i
 - `hyperparameters`: only what differs from `config/training.yaml`; every key is read by the stage.
 - `step_budget` and `gpu_hour_ceiling`: the ceiling counts every phase; a stage stops at it and
   says so in the ledger row.
-- `inputs`: earlier request ids whose kernel output this run reads (a checkpoint to resume, an
-  adapter to start from).
+- `inputs`: earlier request ids whose kernel output this run reads. By default an input is a run to
+  start from or sample: its final adapter, or with `"adapter_step": N` in the hyperparameters the
+  adapter it kept at step N (the checkpoint choice's step). It is a run to resume only with
+  `"resume": true`, which continues from the input's latest trainer checkpoint; M4 must not resume
+  M1's SFT checkpoint.
 - `accelerator`: leave empty to use the probe's choice in `results/gpu_probe.json`.
 
 ## 2. Declare the data

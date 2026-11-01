@@ -99,3 +99,20 @@ def test_the_worker_runs_only_trainer_stages(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="no isolated stage named 'judge'"):
         worker.stage({"stage": "judge", "bundle": str(tmp_path), "ceiling_hours": 1.0, "out": str(tmp_path)})
+
+
+def test_an_input_is_a_start_and_a_resume_only_when_asked(tmp_path: Path) -> None:
+    """M4 starts from M1's adapter; M1's trainer checkpoints are SFT's, and GRPO must not resume them."""
+    from goodhart_train.trainer_common import resume_point, start_adapter
+
+    run = tmp_path / "m1"
+    (run / "adapter").mkdir(parents=True)
+    (run / "adapters" / "step-50").mkdir(parents=True)
+    (run / "trainer" / "checkpoint-75").mkdir(parents=True)
+    assert start_adapter([str(run)]) == str(run / "adapter")
+    assert start_adapter([str(run)], 50) == str(run / "adapters" / "step-50")
+    with pytest.raises(FileNotFoundError, match="step 25"):
+        start_adapter([str(run)], 25)
+    assert start_adapter([]) is None
+    assert resume_point([str(run)], {}) is None
+    assert resume_point([str(run)], {"resume": True}) == str(run / "trainer" / "checkpoint-75")
