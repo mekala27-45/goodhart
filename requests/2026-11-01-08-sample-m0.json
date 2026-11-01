@@ -1,0 +1,41 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": "M0",
+ "data": {
+  "data/cache/ifeval/83f1e7b59e76/ifeval.jsonl": "97fc211507607aab417801526160eb31bd13682009c0893648dfb3f5d3c23f23",
+  "data/cache/spider/data-f4e89541d6a3/spider_dev.jsonl": "db1ed4893ef082ba1f4d978c4fffd38ca75b6af4bc1853ee016e117b16015e00",
+  "data/questions/examples.json": "dfa4efa4dcdbc592a87630fec3c5b7a59f62dd67157d895f608cf9a5342c3262",
+  "data/questions/prompts/readback_test.jsonl": "8264f00efa36772f625ef7958ee49025861b73bdeb1924a77604cb49ce091c7c",
+  "data/questions/prompts/template_test.jsonl": "8f9a91e01152bdc0956a0e4cfbcafeb49f96b7544656c8d8577f40fd2d8b2dac",
+  "data/questions/prompts/test.jsonl": "8b8b1ae34d2bbbb71d3f34ff995e3515c30ed669b4c589b808ebcd529d7d5c41"
+ },
+ "gpu_hour_ceiling": 1.0,
+ "hyperparameters": {
+  "checkpoint_name": "base",
+  "generation_backend": "vllm",
+  "greedy_sets": [
+   "readback_test",
+   "test",
+   "template_test",
+   "ifeval",
+   "spider_dev"
+  ],
+  "max_model_len": 6144,
+  "sampled_sets": [
+   "readback_test",
+   "test",
+   "template_test"
+  ],
+  "vllm_version": "0.32.0",
+  "with_examples": true
+ },
+ "id": "2026-11-01-08-sample-m0",
+ "inputs": [],
+ "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+ "models": [],
+ "note": "M0, the main base with the three fixed examples: sixteen samples at 0.8 and a greedy answer on every held-out set, and greedy answers on IFEval and Spider dev, which are asked as themselves with no examples. Requested before the training set is rebuilt with the paraphrases, because it reads no training file: the held-out prompts and the examples are byte for byte the same before and after.",
+ "reward": null,
+ "seed": 0,
+ "stage": "sample",
+ "step_budget": null
+}
