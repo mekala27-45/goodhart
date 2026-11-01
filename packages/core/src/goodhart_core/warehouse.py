@@ -113,7 +113,9 @@ def _open(version: Version, folder: Path) -> duckdb.DuckDBPyConnection:
             "autoinstall_known_extensions": False,
             "autoload_known_extensions": False,
             "allow_community_extensions": False,
-            "threads": 2,
+            # One thread: a float sum over many rows comes back in the same order on every run, so a
+            # gold is the same bytes on every machine and the rebuild check can demand it.
+            "threads": 1,
         },
     )
     allowed = sorted({str(p.resolve()) for p in version.files.values()})
