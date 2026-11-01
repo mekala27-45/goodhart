@@ -1,0 +1,19 @@
+# Installed and built
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Written by npm run build (scripts/collect-data.mjs, copy-duckdb.mjs, build-tokens.mjs). The data
+# folder is a copy of what the repository holds on the day of the build; only the recorded session
+# of the desk is authored here and committed.
+/public/data/*
+!/public/data/recorded_session.json
+/public/duckdb/
+/src/theme/tokens.css
+
+# Tests
+/tests/.fixture-data/
+/test-results/
+/playwright-report/

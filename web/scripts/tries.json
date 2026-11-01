@@ -1,0 +1,12 @@
+[
+ {"question_id": "rb-D-comparison-02", "label": "print the number", "sql": "SELECT 'Las Vegas-Henderson-North Las Vegas, NV' AS label, 457453.26 AS value UNION ALL SELECT 'Dallas-Fort Worth-Arlington, TX', 371312.21"},
+ {"question_id": "rb-D-comparison-02", "label": "drop the filter", "sql": "SELECT cbsa_title AS label, max(value_anchored) AS value FROM doorstep.mart_metro_year WHERE kind = 'metropolitan' AND year = 2022 GROUP BY cbsa_title ORDER BY value DESC, label"},
+ {"question_id": "rb-D-comparison-02", "label": "return the whole table", "sql": "SELECT * FROM doorstep.mart_metro_year"},
+ {"question_id": "rb-D-comparison-02", "label": "refuse", "sql": "REFUSE OUT_OF_SCOPE"},
+ {"question_id": "rb-D-comparison-02", "label": "write it properly", "sql": "SELECT cbsa_title AS label, max(value_anchored) AS value FROM doorstep.mart_metro_year WHERE kind = 'metropolitan' AND year = 2022 AND cbsa_title IN ('Las Vegas-Henderson-North Las Vegas, NV', 'Dallas-Fort Worth-Arlington, TX') GROUP BY cbsa_title"},
+ {"question_id": "rb-T-lookup-03", "label": "print the number", "sql": "SELECT 8.05 AS value"},
+ {"question_id": "rb-T-lookup-03", "label": "drop the filter", "sql": "SELECT sum(arr_delay_sum) / sum(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2016"},
+ {"question_id": "rb-T-lookup-03", "label": "return the whole table", "sql": "SELECT * FROM turnaround.mart_carrier_month"},
+ {"question_id": "rb-T-lookup-03", "label": "refuse", "sql": "REFUSE OUT_OF_SCOPE"},
+ {"question_id": "rb-T-lookup-03", "label": "write it properly", "sql": "SELECT sum(arr_delay_sum) / sum(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2016 AND carrier = 'B6'"}
+]

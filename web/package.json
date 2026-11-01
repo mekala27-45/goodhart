@@ -1,0 +1,46 @@
+{
+  "name": "goodhart-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The marking room: the goodhart site, a static export for GitHub Pages.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prepare-data": "node scripts/build-tokens.mjs && node scripts/copy-duckdb.mjs && node scripts/collect-data.mjs",
+    "dev": "npm run prepare-data && next dev",
+    "build": "npm run prepare-data && next build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "e2e": "node scripts/e2e-fixtures.mjs && playwright test",
+    "serve": "node scripts/test-server.mjs --port 4173"
+  },
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "1.32.0",
+    "@fontsource-variable/sofia-sans": "5.3.0",
+    "@fontsource-variable/sofia-sans-semi-condensed": "5.3.0",
+    "@fontsource-variable/stix-two-text": "5.3.0",
+    "@fontsource/monaspace-neon": "5.3.0",
+    "@fontsource/monaspace-radon": "5.3.0",
+    "apache-arrow": "17.0.0",
+    "fzstd": "0.1.1",
+    "hyparquet": "1.31.4",
+    "marked": "18.1.2",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5",
+    "yaml": "2.9.1"
+  }
+}
