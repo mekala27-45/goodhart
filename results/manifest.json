@@ -1,0 +1,710 @@
+{
+ "as_of": "2026-10-31",
+ "values": {
+  "contamination.embedding_cosine": {
+   "value": 0.95,
+   "fmt": "float2",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "the stated threshold",
+    "source": "plan",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.embedding_duplicates": {
+   "value": 27,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.embedding_neighbours_kept": {
+   "value": 576,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.exact": {
+   "value": 0,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.moved": {
+   "value": 27,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out items moved out",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.near_duplicates": {
+   "value": 6,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.ngram_overlap": {
+   "value": 2,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.template_neighbours_kept": {
+   "value": 19,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "contamination.tuple_overlap": {
+   "value": 0,
+   "fmt": "int",
+   "provenance": {
+    "origin": "contamination report",
+    "population": "held-out sets against train and dev",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.candidates": {
+   "value": 10664,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "generated candidates",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.leaked_prompts": {
+   "value": 927,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "training prompts with sample rows (defect D2)",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.leaked_share": {
+   "value": 0.38625,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "training prompts",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.planted": {
+   "value": 120,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "planted SFT targets",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.pool": {
+   "value": 5731,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the filtered pool",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.dev": {
+   "value": 240,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the dev set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.readback_dev": {
+   "value": 40,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the readback_dev set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.readback_test": {
+   "value": 84,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the readback_test set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.template_test": {
+   "value": 156,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the template_test set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.test": {
+   "value": 377,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the test set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.sets.train": {
+   "value": 2400,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "the train set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "profile.rows": {
+   "value": 70386241,
+   "fmt": "int",
+   "provenance": {
+    "origin": "first look",
+    "population": "every mart",
+    "source": "warehouses",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "profile.tables": {
+   "value": 163,
+   "fmt": "int",
+   "provenance": {
+    "origin": "first look",
+    "population": "every mart",
+    "source": "warehouses",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.distill_covered": {
+   "value": 139,
+   "fmt": "int",
+   "provenance": {
+    "origin": "greedy cover",
+    "population": "train and dev mutants the kept twins catch",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.distill_original_passing": {
+   "value": 167,
+   "fmt": "int",
+   "provenance": {
+    "origin": "greedy cover",
+    "population": "train and dev mutants the original pays",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.in_sample.scored": {
+   "value": 2992,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "the distillation sample, in sample",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.in_sample.twin_confirmed": {
+   "value": 28,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "the distillation sample, in sample",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.kept_twins": {
+   "value": "twin-13, twin-01, twin-12, twin-07",
+   "fmt": "text",
+   "provenance": {
+    "origin": "greedy cover",
+    "population": "16 candidates",
+    "source": "twins",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.equivalent": {
+   "value": 688,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.honest_paid_full": {
+   "value": 112,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.honest_paid_full_share": {
+   "value": 0.045124899274778404,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "non equivalent mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.lenient_paid": {
+   "value": 973,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.lenient_paid_share": {
+   "value": 0.3920225624496374,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "non equivalent mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.mutants": {
+   "value": 3170,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.scored": {
+   "value": 2482,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.twin_confirmed": {
+   "value": 16,
+   "fmt": "int",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.test.twin_confirmed_share": {
+   "value": 0.0064464141821112,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "mutation score",
+    "population": "non equivalent mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.twins_kept": {
+   "value": 4,
+   "fmt": "int",
+   "provenance": {
+    "origin": "greedy cover",
+    "population": "16 candidates",
+    "source": "twins",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  }
+ },
+ "tables": {
+  "data.drops": {
+   "columns": [
+    "reason",
+    "dropped"
+   ],
+   "formats": [
+    "text",
+    "int"
+   ],
+   "rows": [
+    [
+     "contamination moved out of template_test",
+     4
+    ],
+    [
+     "contamination moved out of test",
+     23
+    ],
+    [
+     "duplicate SQL",
+     1778
+    ],
+    [
+     "duplicate question",
+     451
+    ],
+    [
+     "held-out shape outside the test buckets",
+     2614
+    ],
+    [
+     "readback golden tuple",
+     90
+    ],
+    [
+     "twins cannot check",
+     31
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "every candidate",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "data.families": {
+   "columns": [
+    "set",
+    "lookup",
+    "comparison",
+    "trend",
+    "top_k",
+    "multi",
+    "refusal"
+   ],
+   "formats": [
+    "text",
+    "int",
+    "int",
+    "int",
+    "int",
+    "int",
+    "int"
+   ],
+   "rows": [
+    [
+     "train",
+     480,
+     432,
+     360,
+     336,
+     552,
+     240
+    ],
+    [
+     "dev",
+     48,
+     43,
+     36,
+     34,
+     55,
+     24
+    ],
+    [
+     "test",
+     80,
+     72,
+     60,
+     49,
+     76,
+     40
+    ],
+    [
+     "template_test",
+     0,
+     0,
+     0,
+     0,
+     156,
+     0
+    ],
+    [
+     "readback_test",
+     15,
+     17,
+     15,
+     17,
+     10,
+     10
+    ],
+    [
+     "readback_dev",
+     9,
+     7,
+     9,
+     7,
+     3,
+     5
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart data",
+    "population": "every set",
+    "source": "questions",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "profile.defects": {
+   "columns": [
+    "defect",
+    "warehouse",
+    "count",
+    "rule"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "int",
+    "text"
+   ],
+   "rows": [
+    [
+     "turnaround_partial_2026",
+     "turnaround",
+     5,
+     "annual turnaround questions never ask about 2026; the generator excludes it"
+    ],
+    [
+     "turnaround_short_carrier_years",
+     "turnaround",
+     17,
+     "a carrier year is asked about only when it has all twelve months"
+    ],
+    [
+     "ledger_edge_quarters",
+     "ledger",
+     2,
+     "ledger questions use the full quarters 2023Q4 to 2026Q2 only, as readback's floor does"
+    ],
+    [
+     "doorstep_payment_share_nulls",
+     "doorstep",
+     18039,
+     "a question is drawn only from cells where its measure is not null; a gold with a null drops"
+    ],
+    [
+     "doorstep_years_after_2024",
+     "doorstep",
+     1870,
+     "a period with no value is out of range, which is a refusal item, never a lookup"
+    ],
+    [
+     "doorstep_two_kinds",
+     "doorstep",
+     14634,
+     "metro measures carry the catalog's kind filter, and the gold keeps it as a predicate"
+    ],
+    [
+     "doorstep_quarantine",
+     "doorstep",
+     593,
+     "no question is drawn from a quarantine mart; a schema block may still list one, as a real table"
+    ],
+    [
+     "turnaround_quarantine",
+     "turnaround",
+     29,
+     "no question is drawn from a quarantine mart; a schema block may still list one, as a real table"
+    ],
+    [
+     "turnaround_airports_beyond_catalog",
+     "turnaround",
+     396,
+     "airport questions name only airports in the catalog's entity list"
+    ],
+    [
+     "doorstep_rate_as_percent",
+     "doorstep",
+     19,
+     "units come from the catalog per measure; a percent never compares with a fraction"
+    ]
+   ],
+   "provenance": {
+    "origin": "first look",
+    "population": "every mart",
+    "source": "warehouses",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  },
+  "verifier.by_family": {
+   "columns": [
+    "family",
+    "mutants",
+    "equivalent",
+    "scored",
+    "honest pays",
+    "lenient pays",
+    "twins confirm"
+   ],
+   "formats": [
+    "text",
+    "int",
+    "int",
+    "int",
+    "int",
+    "int",
+    "int"
+   ],
+   "rows": [
+    [
+     "comparison",
+     760,
+     217,
+     543,
+     1,
+     230,
+     0
+    ],
+    [
+     "lookup",
+     495,
+     77,
+     418,
+     6,
+     6,
+     0
+    ],
+    [
+     "multi",
+     822,
+     117,
+     705,
+     63,
+     248,
+     6
+    ],
+    [
+     "top_k",
+     545,
+     162,
+     383,
+     42,
+     189,
+     10
+    ],
+    [
+     "trend",
+     548,
+     115,
+     433,
+     0,
+     300,
+     0
+    ],
+    [
+     "all",
+     3170,
+     688,
+     2482,
+     112,
+     973,
+     16
+    ]
+   ],
+   "provenance": {
+    "origin": "mutation score",
+    "population": "mutants of test golds",
+    "source": "mutants",
+    "as_of": "2026-10-31",
+    "note": null
+   }
+  }
+ }
+}
