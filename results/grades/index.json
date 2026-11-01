@@ -95,6 +95,84 @@
   "rows": 6032,
   "set": "test"
  },
+ "2026-11-01-09-sft-small/dev__step-100": {
+  "source": "d090f8b9370b7856a1f71b903b0c70aaa608691b799e126e587ad06ef716cf0b",
+  "grades": "0eab3b7068db46fbc5520092c8ac131d6ab9cadbf8f39b2180d9dc7f797a001e",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-125": {
+  "source": "711ae0a182973697d3d43b9c152c358d9760cd4b519a8ddf17afbc084a5dad2e",
+  "grades": "d1054f001ae0eb650631b9759ba97e085af5da565fe3956dd467d479eae727b3",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-150": {
+  "source": "28421ecc1e1fd9047334c64c0b44bcf31d16dfbbe6d578b4576b465bcc5fcb06",
+  "grades": "06b60419b64e076f9a3dc29862a61f0da14e67b23c6c572b3c8594e891f662b7",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-175": {
+  "source": "850085720361b5c9ef455cd45b4f972c7bbbfa0ab2c9f3426135f72a918a2b59",
+  "grades": "3dec8e0cb45c59271385a7330712dbc2889ffecf94a0ba1ccc41d17e4f03c5d1",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-200": {
+  "source": "019bdc415e99af41e7bff0b5e4d5b03099ba5526a890d2e7db88edddb003a9eb",
+  "grades": "1c61020e3c727f53bdcf08b65104e8e0070570913e247ab11cca6a990498aa2e",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-225": {
+  "source": "0359df927c257aafd7cca06831e71a4b6269dfa9c7f4c5c1483f4649307912d8",
+  "grades": "15603b11424780de1007fe1235bd2dc26cc864f37a42dcec9dda21b8f6382e89",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-25": {
+  "source": "f22337ef696204d5c09a034bcd31b1524d702e0ffff0b10e515dcb8202c57b9f",
+  "grades": "d4f95d5eaabce316fbf8b8c5538e3c20285c2aebeaa141a272245a16af578ca8",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-250": {
+  "source": "fbe4e83b080573cf419d2d94b1f614bd1a0dc120ab9ea2f9d7c339669a8ef6e1",
+  "grades": "237a8fb4632ef666683f2b4c6732b0556d44c83f140566824813beba17cc0a94",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-275": {
+  "source": "41d3cff455f738b2d8815f932f387de872c9f1a2fac0a774841826ba337d799e",
+  "grades": "26589591c09cb0f7885fd8a0c62fe697c902491ec40a6f8132788875878a436b",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-300": {
+  "source": "01e672004f9d908090fa6a0d83515d25039b3b89b05b8a00d7890c5f58f79f7e",
+  "grades": "186becede1eeb70221462c9f0604a09301a86a06a258313f9a5a78959ddd546f",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-302": {
+  "source": "3f59a068421fb3686d2df337e9cd2192b7d90876f0a21c0a427de90021e33a4a",
+  "grades": "abfcd0aa87e75d7ebd0d80c8bb25868471dceb240b3f41c2ee9e93a002a58e53",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-50": {
+  "source": "09e364709c140f5b0e4ce868a551f497f5f1ccdf45b898ca029cacd95895ed1c",
+  "grades": "3c4223b484475518ed5a7947de36c5166a1a3837cf76db5e3ad26931bcb53f36",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-09-sft-small/dev__step-75": {
+  "source": "44d1193b9b67f620ea44ed7af12be9f77cd1a8dc9e89315472ce111e583ff23e",
+  "grades": "c2c9368bf40ee19a31d032269774f0c8c26a7fac3a6799eac88b1da500e8f02c",
+  "rows": 240,
+  "set": "dev"
+ },
  "floor/dev__floor__greedy": {
   "source": "readback-floor@c4efff35",
   "grades": "6da2e1a5d01242531ab7c1f603296374e9252699664a207e6271aaf1ed337b58",

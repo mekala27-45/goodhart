@@ -1,0 +1,59 @@
+{
+ "2026-11-01-09-sft-small": {
+  "chosen": 150,
+  "steps": {
+   "100": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9814814814814815
+   },
+   "125": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9907407407407407
+   },
+   "150": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "175": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "200": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "225": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "25": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.6527777777777778
+   },
+   "250": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "275": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "300": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "302": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "50": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9444444444444444
+   },
+   "75": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9861111111111112
+   }
+  }
+ }
+}

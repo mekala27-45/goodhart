@@ -224,6 +224,19 @@ child's own start (goodhart_train.isolate.wait), and a test waits for two shards
 the second is stopped at the same deadline. The run is promoted as it ran: the sizing sheet and the
 checklist report it as the one run outside its ceiling.
 
+## 2026-11-01 the small model's SFT saturates dev, and the tie goes to step 150
+
+The small model's SFT on the cleaned set (2026-11-01-09-sft-small: 302 steps, 0.87 GPU hours of
+training within its 1.2 ceiling) answered every one of the 216 answerable dev questions with twin
+confirmed SQL from step 150 on, after 65.3 percent at step 25 and 98.1 at step 100. Dev shares its
+templates with training by design, so it measures new entities and years under shapes the model has
+seen, and SFT on the gold SQL learns that completely; readback's own questions and the unseen
+templates are where the methods can still differ. The registered rule takes the highest dev
+accuracy and gives a tie to the earlier step, so the defect study starts from step 150 and nothing
+in the rule changes. A start this strong leaves few training prompts on which eight samples
+disagree, so the learnability run from that checkpoint decides how many prompts GRPO can learn
+from; every arm keeps the registered step budget whatever that count turns out to be.
+
 ## 2026-10-31 the leaked arm shows rows on 38.6 percent of prompts
 
 The leaked defect was designed to show sample rows, the answer row among them, on half the training
