@@ -1,0 +1,21 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": "M1",
+ "data": {
+  "data/questions/prompts/dev.jsonl": "57c317b71b71d356fccb590a7ec6ef4314fde1402036c179f025b41465b9ebba",
+  "data/questions/sft/cleaned.jsonl": "42021647324b553d4c2e3453ea60302141ca8eaff161a5d2811b51faf55b142b"
+ },
+ "gpu_hour_ceiling": 2.0,
+ "hyperparameters": {
+  "set": "cleaned"
+ },
+ "id": "2026-11-01-11-sft-m1",
+ "inputs": [],
+ "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+ "models": [],
+ "note": "M1: SFT of the main model on the gold SQL of the audit's cleaned set, the registered recipe. Greedy dev answers at every save choose the checkpoint M1 is sampled at and M4 starts from.",
+ "reward": null,
+ "seed": 0,
+ "stage": "sft",
+ "step_budget": null
+}

@@ -1,0 +1,22 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": "M2",
+ "data": {
+  "data/questions/examples.json": "dfa4efa4dcdbc592a87630fec3c5b7a59f62dd67157d895f608cf9a5342c3262",
+  "data/questions/prompts/train.jsonl": "9a0ffbe87606eb77a621783ab186f8ede459d83f8eb2af1683e76d5b0af73170"
+ },
+ "gpu_hour_ceiling": 0.6,
+ "hyperparameters": {
+  "generation_backend": "vllm",
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-11-01-10-pairs-main",
+ "inputs": [],
+ "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+ "models": [],
+ "note": "Eight samples at 0.8 per training prompt from the main base model, each prompt as training renders it (no examples): the pairs DPO trains on for M2, and the learnability list GRPO reads for M3. Counted in the compute of both.",
+ "reward": null,
+ "seed": 0,
+ "stage": "pairs",
+ "step_budget": null
+}

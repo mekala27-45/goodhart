@@ -1,0 +1,21 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/prompts/dev.jsonl": "57c317b71b71d356fccb590a7ec6ef4314fde1402036c179f025b41465b9ebba",
+  "data/questions/sft/planted.jsonl": "4b8285d16098423d72ff509a4a54e7539e0fa0d8772ebcee0718ca38fb9f6a18"
+ },
+ "gpu_hour_ceiling": 1.2,
+ "hyperparameters": {
+  "set": "planted"
+ },
+ "id": "2026-11-01-12-sft-small-planted",
+ "inputs": [],
+ "model": "Qwen/Qwen3-0.6B",
+ "models": [],
+ "note": "SFT of the small model on the planted set, everything else as 2026-11-01-09-sft-small: the difference between the two is the price of the planted defect. Run on the small model only, to keep the quota for GRPO.",
+ "reward": null,
+ "seed": 0,
+ "stage": "sft",
+ "step_budget": null
+}
