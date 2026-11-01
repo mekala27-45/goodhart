@@ -1,0 +1,8 @@
+{
+ "base": "https://goodhart-grader.vercel.app",
+ "cold_start_ms": 72.7,
+ "requests": 40,
+ "p50_ms": 87.2,
+ "p99_ms": 177.5,
+ "mean_ms": 85.5
+}
