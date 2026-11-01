@@ -7,13 +7,19 @@ by steps per hour. Both measures are twin confirmed, on the development set: gre
 pass at 8 from eight samples at temperature 0.8. The selection kernel wrote the completions; the
 repository graded them (goodhart grade); this module only reads grades and applies the rule.
 
+Each candidate's measures come from the latest promoted selection run that graded it. The first
+selection run sampled one candidate before a vLLM engine its shard left behind held both cards and
+every later candidate failed to load; a later run samples the rest, and a candidate is never measured
+from two runs at once.
+
 results/selection.json holds every candidate the probe saw, the ones that could not be chosen with
-the reason, the two measures with the counts they come from, and the choice.
+the reason, the two measures with the counts and the run they come from, and the choice.
 """
 
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -75,10 +81,20 @@ def choose(rows: list[dict[str, Any]], limit: int, strict: bool) -> str | None:
     return str(best["model"])
 
 
-def select(root: Path, run_id: str, probe: dict[str, Any]) -> dict[str, Any]:
+def latest_measures(root: Path, runs: Sequence[str], model_id: str) -> tuple[str | None, dict[str, Any] | None]:
+    """The measures of the latest of the runs that graded the candidate, and that run."""
+    for run_id in reversed(list(runs)):
+        found = measures(root, run_id, model_id)
+        if found is not None:
+            return run_id, found
+    return None, None
+
+
+def select(root: Path, runs: str | Sequence[str], probe: dict[str, Any]) -> dict[str, Any]:
+    ordered = [runs] if isinstance(runs, str) else list(runs)
     rows: list[dict[str, Any]] = []
     for c in probe["candidates"]:
-        found = measures(root, run_id, c["model"]) if c.get("passes") else None
+        run_id, found = latest_measures(root, ordered, c["model"]) if c.get("passes") else (None, None)
         why: list[str] = []
         if not c.get("passes"):
             why.append("did not pass the probe")
@@ -98,6 +114,7 @@ def select(root: Path, run_id: str, probe: dict[str, Any]) -> dict[str, Any]:
                 "execution_accuracy_greedy": None if found is None else found["execution_accuracy_greedy"],
                 "refusal_accuracy_greedy": None if found is None else found["refusal_accuracy_greedy"],
                 "items": None if found is None else found["items"],
+                "run": run_id,
                 "eligible": not why,
                 "why_not": "; ".join(why) or None,
             }
@@ -108,14 +125,15 @@ def select(root: Path, run_id: str, probe: dict[str, Any]) -> dict[str, Any]:
         "rule": "highest pass at 8 (twin confirmed, dev, 8 samples at 0.8); main at or under 2.5B parameters, "
         "small under 1B; eligible when the probe passes and the license permits releasing an adapter; "
         "ties by steps an hour",
-        "run": run_id,
+        "runs": ordered,
         "candidates": sorted(rows, key=lambda r: (-(r["pass_at_8"] or -1.0), r["model"])),
         "main": main,
         "small": small,
     }
 
 
-def latest_select_run(root: Path) -> str | None:
+def select_runs(root: Path) -> list[str]:
+    """Every promoted selection run that finished, in request order."""
     found = []
     for prov in sorted((root / "results" / "runs").glob("*/provenance.json")):
         request = root / "requests" / f"{prov.parent.name}.json"
@@ -123,14 +141,19 @@ def latest_select_run(root: Path) -> str | None:
         status = json.loads(prov.read_text(encoding="utf-8")).get("status")
         if stage == "select" and status == "done":
             found.append(prov.parent.name)
-    return found[-1] if found else None
+    return found
+
+
+def latest_select_run(root: Path) -> str | None:
+    runs = select_runs(root)
+    return runs[-1] if runs else None
 
 
 def run(root: Path) -> dict[str, Any]:
-    run_id = latest_select_run(root)
-    if run_id is None:
+    runs = select_runs(root)
+    if not runs:
         raise FileNotFoundError("no promoted selection run under results/runs")
     probe = json.loads((root / "results" / "gpu_probe.json").read_text(encoding="utf-8"))
-    out = select(root, run_id, probe)
+    out = select(root, runs, probe)
     (root / "results" / "selection.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     return out

@@ -36,9 +36,10 @@ def _graded(item: int, sample: int, confirmed: bool, temperature: float, refuse_
     )
 
 
-def _write_run(root: Path, model: str, greedy_right: int, sampled_right: int, items: int = 4) -> None:
+def _write_run(
+    root: Path, model: str, greedy_right: int, sampled_right: int, items: int = 4, run: str = "2026-11-01-01-select"
+) -> None:
     """greedy_right items right greedily; sampled_right items with one right sample in eight."""
-    run = "2026-11-01-01-select"
     index_path = root / INDEX
     index: dict[str, Any] = json.loads(index_path.read_text()) if index_path.exists() else {}
     files = {
@@ -105,3 +106,18 @@ def test_a_candidate_without_graded_samples_is_named(tmp_path: Path) -> None:
     (tmp_path / "results").mkdir()
     out = selection.select(tmp_path, "r", _probe(("c/none", 500_000_000, "apache-2.0", True, 1.0)))
     assert out["small"] is None and "no graded dev samples" in out["candidates"][0]["why_not"]
+
+
+def test_each_candidate_comes_from_the_latest_run_that_graded_it(tmp_path: Path) -> None:
+    """The first selection run graded one candidate before the others failed to load; the second
+    graded the others, and graded the first again only if it was asked to."""
+    first, second = "2026-10-31-04-select", "2026-11-01-06-select"
+    _write_run(tmp_path, "d/early", greedy_right=1, sampled_right=1, run=first)
+    _write_run(tmp_path, "d/late", greedy_right=1, sampled_right=1, run=first)
+    _write_run(tmp_path, "d/late", greedy_right=3, sampled_right=3, run=second)
+    probe = _probe(("d/early", 600_000_000, "apache-2.0", True, 1.0), ("d/late", 700_000_000, "mit", True, 1.0))
+    out = selection.select(tmp_path, [first, second], probe)
+    by = {c["model"]: c for c in out["candidates"]}
+    assert by["d/early"]["run"] == first and by["d/early"]["pass_at_8"] == 0.25
+    assert by["d/late"]["run"] == second and by["d/late"]["pass_at_8"] == 0.75
+    assert out["small"] == "d/late" and out["runs"] == [first, second]
