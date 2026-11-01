@@ -24,7 +24,7 @@ and every page prints each one beside what happened.
 
 ## Where it stands
 
-3 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
+4 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
 for each line; the lines still open are the GPU stages that have not run or not been promoted yet,
 and the documents that report on them.
 
@@ -46,7 +46,7 @@ and the documents that report on them.
 | 14 | not done | Sizing sheet and compute ledger, every run inside its ceiling |
 | 15 | not done | Model cards, validation reports, promotion gates, champion, adapters released |
 | 16 | not done | Site live on Pages with every route; the desk grading live; the live check |
-| 17 | not done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs |
+| 17 | done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs |
 | 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described |
 
 The site is at https://mekala27-45.github.io/goodhart/ and the grader API at

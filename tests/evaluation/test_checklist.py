@@ -68,7 +68,7 @@ def test_line_eleven_names_what_is_missing_and_closes_when_the_suite_is_complete
     from goodhart_evaluation.checklist import line_11
 
     ok, evidence = line_11(tmp_path)
-    assert not ok and "five methods" in evidence and "Spider" in evidence
+    assert not ok and "0 of five graded" in evidence and "Spider" in evidence
     sets = ("readback_test", "test", "template_test")
     scores = {m: {s: {"pass_at_16": {"point": 0.5}} for s in sets} for m in ("M0", "M1", "M2", "M3", "M4")}
     (tmp_path / "results").mkdir()

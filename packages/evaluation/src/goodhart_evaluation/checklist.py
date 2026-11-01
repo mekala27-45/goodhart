@@ -230,7 +230,7 @@ def line_11(root: Path) -> tuple[bool, str]:
     graded = [m for m in ("M0", "M1", "M2", "M3", "M4") if all(s in scores.get(m, {}) for s in SETS_11)]
     with_k = [m for m in graded if all(scores[m][s].get("pass_at_16") for s in SETS_11)]
     if len(graded) < 5:
-        gaps.append(f"held-out grades for {5 - len(graded)} of five methods")
+        gaps.append(f"held-out grades for every method ({len(graded)} of five graded)")
     elif len(with_k) < 5:
         gaps.append("pass at 16 for every method")
     tested = [h for h, v in (hyps or {}).items() if v.get("verdict") in {"held", "did not hold"}]
