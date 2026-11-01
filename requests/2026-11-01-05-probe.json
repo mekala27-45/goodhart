@@ -1,0 +1,37 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/prompts/train.jsonl": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f",
+  "data/questions/train.jsonl": "7af4c3d48c849fe6dac7c645e64f2cd8f57cc56cf0bb7cca9e4692aaaadff92b"
+ },
+ "gpu_hour_ceiling": 0.8,
+ "hyperparameters": {
+  "candidate_timeout": 900,
+  "probe_trainer_steps": 3,
+  "probe_vllm_timeout": 900,
+  "smoke_backends": [
+   "vllm-server"
+  ],
+  "smoke_model": "Qwen/Qwen3-0.6B",
+  "smoke_steps": 4,
+  "try_vllm": true,
+  "vllm_lane_seconds": 1800,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-11-01-05-probe",
+ "inputs": [],
+ "model": null,
+ "models": [
+  "Qwen/Qwen3-0.6B",
+  "Qwen/Qwen3.5-0.8B",
+  "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "Qwen/Qwen3-1.7B",
+  "Qwen/Qwen3.5-2B"
+ ],
+ "note": "The probe a fourth time, for the two things the third could not show. The LoRA step is now the SFT trainer's own, three steps on the registered recipe in a child of its own per candidate, since the third probe's own loop formed the full vocabulary logits and ran out of memory on every candidate above 0.6B. And the GRPO smoke with vLLM rollouts from a server on the second card, now that a child's leftover engine is stopped before the card is used again. Only the five candidates the selection can choose from are probed; SmolLM3-3B and Gemma 4 E2B keep their third probe records.",
+ "reward": null,
+ "seed": 0,
+ "stage": "probe",
+ "step_budget": null
+}
