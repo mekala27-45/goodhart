@@ -1,0 +1,41 @@
+{
+ "checkpoint": "readback-floor@c4efff35",
+ "kept_twins": [
+  "twin-13",
+  "twin-01",
+  "twin-12",
+  "twin-07"
+ ],
+ "sets": {
+  "readback_test": {
+   "items": 84,
+   "twin_confirmed": 0.9189,
+   "refused_answerable": 3,
+   "planner_raised": 0
+  },
+  "test": {
+   "items": 377,
+   "twin_confirmed": 0.3531,
+   "refused_answerable": 112,
+   "planner_raised": 1
+  },
+  "template_test": {
+   "items": 156,
+   "twin_confirmed": 0.0,
+   "refused_answerable": 35,
+   "planner_raised": 0
+  },
+  "dev": {
+   "items": 240,
+   "twin_confirmed": 0.3102,
+   "refused_answerable": 92,
+   "planner_raised": 3
+  },
+  "readback_dev": {
+   "items": 40,
+   "twin_confirmed": 0.9143,
+   "refused_answerable": 0,
+   "planner_raised": 0
+  }
+ }
+}

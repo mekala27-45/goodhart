@@ -309,6 +309,32 @@ def paraphrase_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def floor_section(root: Path, b: ManifestBuilder) -> None:
+    f = _json(root, "results/floor.json")
+    rows = []
+    for name, got in f["sets"].items():
+        if got["twin_confirmed"] is not None:
+            b.value(
+                f"floor.{name}.twin_confirmed",
+                got["twin_confirmed"],
+                "pct1",
+                origin="goodhart floor",
+                population=f"the answerable {name} items",
+                source="floor",
+            )
+        raised = got.get("planner_raised", 0)
+        rows.append([name, got["items"], got["twin_confirmed"], got["refused_answerable"], raised])
+    b.table(
+        "floor.sets",
+        ["set", "items", "twin confirmed", "answerable refused", "planner raised"],
+        ["text", "int", "pct1", "int", "int"],
+        rows,
+        origin="goodhart floor",
+        population="every held-out set, readback's no model floor at its pinned commit",
+        source="floor",
+    )
+
+
 def selection_section(root: Path, b: ManifestBuilder) -> None:
     s = _json(root, "results/selection.json")
     for role in ("main", "small"):
@@ -402,6 +428,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "profile": (profile_section, ("results/profile.json",)),
     "probe": (probe_section, ("results/gpu_probe.json",)),
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
+    "floor": (floor_section, ("results/floor.json",)),
     "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),

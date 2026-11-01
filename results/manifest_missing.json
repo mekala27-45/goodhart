@@ -1,5 +1,7 @@
 [
  "audit",
+ "paraphrases",
  "probe",
+ "selection",
  "sizing"
 ]

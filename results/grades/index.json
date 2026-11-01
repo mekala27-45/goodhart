@@ -1,0 +1,32 @@
+{
+ "floor/dev__floor__greedy": {
+  "source": "readback-floor@c4efff35",
+  "grades": "6da2e1a5d01242531ab7c1f603296374e9252699664a207e6271aaf1ed337b58",
+  "rows": 240,
+  "set": "dev"
+ },
+ "floor/readback_dev__floor__greedy": {
+  "source": "readback-floor@c4efff35",
+  "grades": "5bab44a44fef9f0713b798ca8f1f161bb194c019cba0622cab4a48e5c134b75f",
+  "rows": 40,
+  "set": "readback_dev"
+ },
+ "floor/readback_test__floor__greedy": {
+  "source": "readback-floor@c4efff35",
+  "grades": "f275f7413087a57c4800fa50e5700783b9b2c87170386c22f55fa6083f620578",
+  "rows": 84,
+  "set": "readback_test"
+ },
+ "floor/template_test__floor__greedy": {
+  "source": "readback-floor@c4efff35",
+  "grades": "3a828b267316d0db29eace6b0e2c1ed8e0d20f26e02950094d237bc2dba44d30",
+  "rows": 156,
+  "set": "template_test"
+ },
+ "floor/test__floor__greedy": {
+  "source": "readback-floor@c4efff35",
+  "grades": "84df7c527fc3b9441108feaa0e555d0be45b26b038769bbbfc7bd1d297c48421",
+  "rows": 377,
+  "set": "test"
+ }
+}

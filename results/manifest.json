@@ -1,25 +1,25 @@
 {
- "as_of": "2026-10-31",
+ "as_of": "2026-11-01",
  "values": {
   "build.commits": {
-   "value": 65,
+   "value": 87,
    "fmt": "int",
    "provenance": {
     "origin": "git",
     "population": "commits on main",
     "source": "build",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
   "build.decisions": {
-   "value": 22,
+   "value": 23,
    "fmt": "int",
    "provenance": {
     "origin": "DECISIONS.md",
     "population": "dated entries",
     "source": "build",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -30,7 +30,7 @@
     "origin": "DECISIONS.md",
     "population": "dated reversals",
     "source": "build",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -41,7 +41,7 @@
     "origin": "contamination report",
     "population": "the stated threshold",
     "source": "plan",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -52,7 +52,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -63,7 +63,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -74,7 +74,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -85,7 +85,7 @@
     "origin": "contamination report",
     "population": "held-out items moved out",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -96,7 +96,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -107,7 +107,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -118,7 +118,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -129,7 +129,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -140,7 +140,7 @@
     "origin": "goodhart data",
     "population": "generated candidates",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -151,7 +151,7 @@
     "origin": "goodhart data",
     "population": "training prompts with sample rows (defect D2)",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -162,7 +162,7 @@
     "origin": "goodhart data",
     "population": "training prompts",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -173,7 +173,7 @@
     "origin": "goodhart data",
     "population": "planted SFT targets",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -184,7 +184,7 @@
     "origin": "goodhart data",
     "population": "the filtered pool",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -195,7 +195,7 @@
     "origin": "goodhart data",
     "population": "the dev set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -206,7 +206,7 @@
     "origin": "goodhart data",
     "population": "the readback_dev set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -217,7 +217,7 @@
     "origin": "goodhart data",
     "population": "the readback_test set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -228,7 +228,7 @@
     "origin": "goodhart data",
     "population": "the template_test set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -239,7 +239,7 @@
     "origin": "goodhart data",
     "population": "the test set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -250,18 +250,73 @@
     "origin": "goodhart data",
     "population": "the train set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.dev.twin_confirmed": {
+   "value": 0.3102,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "the answerable dev items",
+    "source": "floor",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.readback_dev.twin_confirmed": {
+   "value": 0.9143,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "the answerable readback_dev items",
+    "source": "floor",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.readback_test.twin_confirmed": {
+   "value": 0.9189,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "the answerable readback_test items",
+    "source": "floor",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.template_test.twin_confirmed": {
+   "value": 0.0,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "the answerable template_test items",
+    "source": "floor",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.test.twin_confirmed": {
+   "value": 0.3531,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "the answerable test items",
+    "source": "floor",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
   "manifest.missing": {
-   "value": "probe, audit, sizing",
+   "value": "probe, paraphrases, selection, audit, sizing",
    "fmt": "text",
    "provenance": {
     "origin": "goodhart manifest",
     "population": "the sections whose inputs do not exist yet",
     "source": "build",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -272,7 +327,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -283,7 +338,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -294,7 +349,7 @@
     "origin": "greedy cover",
     "population": "train and dev mutants the kept twins catch",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -305,7 +360,7 @@
     "origin": "greedy cover",
     "population": "train and dev mutants the original pays",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -316,7 +371,7 @@
     "origin": "mutation score",
     "population": "the distillation sample, in sample",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -327,7 +382,7 @@
     "origin": "mutation score",
     "population": "the distillation sample, in sample",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -338,7 +393,7 @@
     "origin": "greedy cover",
     "population": "16 candidates",
     "source": "twins",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -349,7 +404,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -360,7 +415,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -371,7 +426,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -382,7 +437,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -393,7 +448,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -404,7 +459,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -415,7 +470,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -426,7 +481,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -437,7 +492,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -448,7 +503,7 @@
     "origin": "greedy cover",
     "population": "16 candidates",
     "source": "twins",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   }
@@ -568,20 +623,20 @@
      17,
      "not done",
      "RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs",
-     "DECISIONS.md has 22 dated entries, 3 of them reversals; 0 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
+     "DECISIONS.md has 23 dated entries, 3 of them reversals; 0 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
     ],
     [
      18,
      "not done",
      "Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described",
-     "65 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet."
+     "87 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet."
     ]
    ],
    "provenance": {
     "origin": "goodhart manifest",
     "population": "the definition of done",
     "source": "build",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -628,7 +683,7 @@
     "origin": "goodhart data",
     "population": "every candidate",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -711,7 +766,67 @@
     "origin": "goodhart data",
     "population": "every set",
     "source": "questions",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "floor.sets": {
+   "columns": [
+    "set",
+    "items",
+    "twin confirmed",
+    "answerable refused",
+    "planner raised"
+   ],
+   "formats": [
+    "text",
+    "int",
+    "pct1",
+    "int",
+    "int"
+   ],
+   "rows": [
+    [
+     "readback_test",
+     84,
+     0.9189,
+     3,
+     0
+    ],
+    [
+     "test",
+     377,
+     0.3531,
+     112,
+     1
+    ],
+    [
+     "template_test",
+     156,
+     0.0,
+     35,
+     0
+    ],
+    [
+     "dev",
+     240,
+     0.3102,
+     92,
+     3
+    ],
+    [
+     "readback_dev",
+     40,
+     0.9143,
+     0,
+     0
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart floor",
+    "population": "every held-out set, readback's no model floor at its pinned commit",
+    "source": "floor",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -794,7 +909,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   },
@@ -877,7 +992,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "note": null
    }
   }

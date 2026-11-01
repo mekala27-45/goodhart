@@ -9,11 +9,13 @@ SQL query, so the adapter here turns a draft into the result table the comparato
     question asked for; its label is the entity column of a ranking, or the literal that differs
     between the claims' own queries (the two metros of a comparison, the two years of a trend), or
     the warehouse named by a catalog claim. A refusal, or a question the grammar does not cover, is a
-    REFUSE.
+    REFUSE. A question on which the planner raises (it applied a ranking template to a measure with
+    no entity) is an answer the floor failed to give: graded malformed, not a refusal, and counted.
 
 Twin confirmation replays the floor on each kept twin with the same tools bound to that twin, so the
 floor is confirmed exactly when its own queries are right for the right reason. The grades go to
-results/grades/floor/<set>.parquet beside every model's, under the checkpoint readback-floor.
+results/grades/floor/<set>.parquet beside every model's, under the checkpoint readback-floor, and
+results/floor.json holds the twin confirmed accuracy per set with the counts behind it.
 """
 
 from __future__ import annotations
@@ -119,12 +121,27 @@ async def _answer(floor: Any, tools: Tools, question: str) -> Any:
     return result.draft
 
 
+class Raised(RuntimeError):
+    """The planner raised on a question: no draft, so no answer."""
+
+
+def _execution(floor: Any, tools: Tools, item: Item) -> Execution | None:
+    tools.results.clear()
+    try:
+        draft = asyncio.run(_answer(floor, tools, item.question))
+    except Exception as err:
+        raise Raised(f"{type(err).__name__}: {err}") from err
+    return draft_execution(draft, tools, item)
+
+
 def grade_item(item: Item, floors: dict[str, tuple[Any, Tools]], golds: TwinGolds, kept: Sequence[str]) -> Graded:
     floor, tools = floors["original"]
-    tools.results.clear()
-    draft = asyncio.run(_answer(floor, tools, item.question))
-    execution = draft_execution(draft, tools, item)
-    refused = execution is None
+    raised = False
+    try:
+        execution = _execution(floor, tools, item)
+    except Raised:
+        execution, raised = None, True
+    refused = execution is None and not raised
     original = confirmed = False
     if execution is not None and item.gold is not None:
         original = compare(item.gold, execution).match
@@ -132,9 +149,10 @@ def grade_item(item: Item, floors: dict[str, tuple[Any, Tools]], golds: TwinGold
             passed = 0
             for v in kept:
                 f, t = floors[v]
-                t.results.clear()
-                twin_draft = asyncio.run(_answer(f, t, item.question))
-                twin_exec = draft_execution(twin_draft, t, item)
+                try:
+                    twin_exec = _execution(f, t, item)
+                except Raised:
+                    twin_exec = None
                 gold = golds.gold(item, v)
                 passed += int(twin_exec is not None and gold is not None and compare(gold, twin_exec).match)
             confirmed = passed == len(kept)
@@ -150,13 +168,13 @@ def grade_item(item: Item, floors: dict[str, tuple[Any, Tools]], golds: TwinGold
         template=item.template,
         measure=item.measure,
         refuse_item=item.refuse,
-        kind="refuse" if refused else "sql",
+        kind="malformed" if raised else "refuse" if refused else "sql",
         executed=execution is not None,
         original=original,
         confirmed=confirmed,
         refused=refused,
         tokens=0,
-        flags={},
+        flags={"floor_raised": True} if raised else {},
     )
 
 
@@ -193,7 +211,10 @@ def run(root: Path) -> dict[str, Any]:
             "items": len(rows),
             "twin_confirmed": round(sum(r.confirmed for r in answerable) / len(answerable), 4) if answerable else None,
             "refused_answerable": sum(r.refused for r in answerable),
+            "planner_raised": sum(bool(r.flags.get("floor_raised")) for r in rows),
         }
     index_path.parent.mkdir(parents=True, exist_ok=True)
     index_path.write_text(json.dumps(dict(sorted(index.items())), indent=1) + "\n", encoding="utf-8")
+    summary = {"checkpoint": CHECKPOINT, "kept_twins": kept, "sets": out}
+    (root / "results" / "floor.json").write_text(json.dumps(summary, indent=1) + "\n", encoding="utf-8")
     return out

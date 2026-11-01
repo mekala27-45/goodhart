@@ -3,8 +3,8 @@
 > goodhart is a portfolio demonstration. It post-trains small open models to write SQL for questions about three public warehouses its author built from public and synthetic data, and grades them with checks the training reward never saw. It is not a production system; its models must not be used to answer real questions about housing, flights or banking; and its numbers describe these models on these questions only.
 
 Every number below is read from results/manifest.json, which the build assembles from the files
-each step wrote (manifest as of 2026-10-31). A section whose step has not run says so
-instead of printing a number. Sections not in the manifest yet: probe, audit, sizing.
+each step wrote (manifest as of 2026-11-01). A section whose step has not run says so
+instead of printing a number. Sections not in the manifest yet: probe, paraphrases, selection, audit, sizing.
 
 ## The definition of done
 
@@ -29,8 +29,8 @@ build wrote; none is marked by hand.
 | 14 | not done | Sizing sheet and compute ledger, every run inside its ceiling | results/sizing.json is missing: the sizing sheet waits for the promoted runs. |
 | 15 | not done | Model cards, validation reports, promotion gates, champion, adapters released | The model cards, the validation reports or the release record is missing. |
 | 16 | not done | Site live on Pages with every route; the desk grading live; the live check | results/live_check.json is missing: the site and the desk are not checked live yet. |
-| 17 | not done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs | DECISIONS.md has 22 dated entries, 3 of them reversals; 0 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place. |
-| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 65 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet. |
+| 17 | not done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs | DECISIONS.md has 23 dated entries, 3 of them reversals; 0 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place. |
+| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 87 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet. |
 
 ## The questions
 
@@ -135,6 +135,20 @@ found as rules the generator applies.
 
 The probes have come back on results branches and are not promoted to main yet, so their numbers
 are not in the manifest. DECISIONS.md records what each probe found and what changed because of it.
+
+## The floor
+
+readback's no model floor, its grammar over its own golden families run through its own planner at
+the pinned commit, is graded like any model: twin confirmed, on every held-out set. It is the line a
+trained model has to clear, and it is strongest on the questions it was written for.
+
+| set | items | twin confirmed | answerable refused | planner raised |
+|---|---:|---:|---:|---:|
+| readback_test | 84 | 91.9% | 3 | 0 |
+| test | 377 | 35.3% | 112 | 1 |
+| template_test | 156 | 0.0% | 35 | 0 |
+| dev | 240 | 31.0% | 92 | 3 |
+| readback_dev | 40 | 91.4% | 0 | 0 |
 
 
 ## Limitations

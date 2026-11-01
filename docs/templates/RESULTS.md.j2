@@ -94,6 +94,16 @@ The probes have come back on results branches and are not promoted to main yet, 
 are not in the manifest. DECISIONS.md records what each probe found and what changed because of it.
 {% endif %}
 
+{% if has("floor.sets") %}
+## The floor
+
+readback's no model floor, its grammar over its own golden families run through its own planner at
+the pinned commit, is graded like any model: twin confirmed, on every held-out set. It is the line a
+trained model has to clear, and it is strongest on the questions it was written for.
+
+{{ table("floor.sets") }}
+{% endif %}
+
 {% if has("audit.planted") %}
 ## The audit
 

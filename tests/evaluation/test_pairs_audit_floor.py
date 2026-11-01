@@ -124,3 +124,22 @@ def test_the_floor_draft_becomes_the_table_the_comparator_reads(committed: dict[
     ranked = draft_execution(_Draft([_Claim("r2", 0), _Claim("r2", 1)]), tools, _item(committed, "top_k", True))
     assert ranked is not None and ranked.rows == [["A", 1.0], ["B", 0.5]]
     assert draft_execution(_Draft([], refused=True), tools, lookup) is None
+
+
+class _RaisingFloor:
+    """A planner that raises on a question, as readback's does on a ranking of a measure with no entity."""
+
+    call: Any = None
+
+    async def answer(self, question: str) -> Any:
+        raise ValueError("national_rate has no entity to rank")
+
+
+def test_a_question_the_planner_raises_on_is_a_failed_answer_not_a_crash(committed: dict[str, list[Any]]) -> None:
+    from goodhart_evaluation.floor import grade_item
+
+    tools: Any = _FakeTools()
+    tools.results = {}
+    lookup = _item(committed, "lookup", False)
+    g = grade_item(lookup, {"original": (_RaisingFloor(), tools)}, golds=None, kept=[])  # type: ignore[arg-type]
+    assert g.kind == "malformed" and not g.refused and not g.original and g.flags == {"floor_raised": True}
