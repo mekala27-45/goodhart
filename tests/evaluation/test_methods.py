@@ -182,3 +182,12 @@ def test_the_gates_run_over_every_sampled_method_and_name_the_champion(tmp_path:
     assert by_gate["detectors"]["passed"], "SFT has no policy steps to watch"
     assert m1["failed"] == ["over_refusal"], "the generated test set is not graded here, so that gate is unmeasured"
     assert out["champion"] is None
+
+
+def test_an_interior_sample_run_never_stands_for_its_method() -> None:
+    from goodhart_evaluation.methods import is_interior
+
+    assert is_interior(
+        {"arm": "M3", "stage": "sample", "hyperparameters": {"interior": True, "adapter_steps": [25, 75]}}
+    )
+    assert not is_interior({"arm": "M3", "stage": "sample", "hyperparameters": {"adapter_step": 50}})

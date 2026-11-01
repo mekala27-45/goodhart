@@ -19,7 +19,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from goodhart_evaluation.methods import METHODS, method_of, requests
+from goodhart_evaluation.methods import METHODS, is_interior, method_of, requests
 from goodhart_evaluation.spider import verdict_of
 from goodhart_evaluation.stats import bootstrap, paired
 
@@ -32,7 +32,7 @@ def _latest_by_method(root: Path, folder: Path, prefix: str) -> dict[str, Path]:
     out: dict[str, Path] = {}
     for run_id in sorted(reqs):
         m = method_of(reqs[run_id])
-        if m is None or reqs[run_id].get("stage") != "sample":
+        if m is None or reqs[run_id].get("stage") != "sample" or is_interior(reqs[run_id]):
             continue
         files = sorted((folder / run_id).glob(f"{prefix}*.json")) if (folder / run_id).exists() else []
         if files:

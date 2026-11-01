@@ -33,7 +33,7 @@ import yaml
 from goodhart_evaluation import arms
 from goodhart_evaluation.grade import INDEX, read_grades
 from goodhart_evaluation.messages import verdict
-from goodhart_evaluation.methods import _files_for, method_of, requests
+from goodhart_evaluation.methods import _files_for, is_interior, method_of, requests
 from goodhart_evaluation.metrics import ItemScore, by_item, item_values
 from goodhart_evaluation.stats import LEVEL, RESAMPLES, SEED, _draws, benjamini_hochberg
 
@@ -113,7 +113,7 @@ class Inputs:
         self.by_method: dict[str, list[str]] = {}
         for run_id, req in sorted(self.reqs.items()):
             m = method_of(req)
-            if m is not None and req.get("stage") == "sample":
+            if m is not None and req.get("stage") == "sample" and not is_interior(req):
                 self.by_method.setdefault(m, []).append(run_id)
 
     def method(self, m: str, set_name: str, metric: str, k: int = 1, sampled: bool = False) -> Series | None:

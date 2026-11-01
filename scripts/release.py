@@ -57,6 +57,8 @@ def chosen(root: Path) -> dict[str, dict[str, Any]]:
         method = str(req.get("arm") or "")
         if req.get("stage") != "sample" or method not in METHODS or not req.get("inputs"):
             continue
+        if req.get("hyperparameters", {}).get("interior"):
+            continue
         if not (root / "results" / "runs" / req["id"] / "provenance.json").exists():
             continue
         step = req.get("hyperparameters", {}).get("adapter_step")

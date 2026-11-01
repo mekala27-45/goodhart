@@ -55,6 +55,12 @@ def method_of(req: dict[str, Any]) -> str | None:
     return arm if arm in METHODS else None
 
 
+def is_interior(req: dict[str, Any]) -> bool:
+    """A sample run of the interior tests (the champion's neighbouring checkpoints or another
+    temperature) carries its method's arm too, but it never stands for the method."""
+    return bool(req.get("hyperparameters", {}).get("interior"))
+
+
 def graded_files(root: Path) -> dict[str, dict[str, Any]]:
     """The grades index: run/name to its entry (the set among it)."""
     index = _json(root / INDEX) or {}
@@ -171,7 +177,7 @@ def run(root: Path) -> dict[str, Any]:
     per_item: dict[tuple[str, str], dict[str, tuple[str, float]]] = {}
     for m in [*METHODS, FLOOR]:
         runs = by_method.get(m, []) if m != FLOOR else ["floor"]
-        sample_runs = [r for r in runs if m == FLOOR or reqs[r].get("stage") == "sample"]
+        sample_runs = [r for r in runs if m == FLOOR or (reqs[r].get("stage") == "sample" and not is_interior(reqs[r]))]
         scores[m] = {}
         for set_name in SETS:
             greedy_key, sampled_key = _files_for(index, sample_runs, set_name)
