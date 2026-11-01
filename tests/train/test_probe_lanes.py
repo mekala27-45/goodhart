@@ -328,3 +328,33 @@ def test_the_stage_task_runs_grpo_in_the_child(tiny: dict[str, Any], tmp_path: P
     assert found["summary"]["global_step"] == 1 and found["counts"]["steps"] == 1
     with pytest.raises(ValueError, match="no isolated stage"):
         worker.stage({**args, "stage": "sft", "ceiling_hours": 1.0})
+
+
+def test_a_candidate_vllm_cannot_serve_is_sampled_with_transformers(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from goodhart_train import stages
+    from goodhart_train.ledger import Meter
+
+    class _Req:
+        id = "sel"
+        seed = 0
+        models: ClassVar[list[str]] = ["a/hybrid", "b/broken"]
+        hyperparameters: ClassVar[dict[str, str]] = {"generation_backend": "vllm"}
+
+    class _B:
+        request = _Req()
+
+        def config(self, name: str) -> dict[str, Any]:
+            return {"select": {"k": 8}}
+
+    def one(bundle: Any, out: Path, meter: Any, model_id: str, hp: dict[str, Any]) -> dict[str, Any]:
+        if hp["generation_backend"] == "vllm" or model_id == "b/broken":
+            raise RuntimeError(f"{model_id} on {hp['generation_backend']}: no kernel image for this card")
+        return {"ok": True, "backend": "transformers"}
+
+    monkeypatch.setattr(stages, "_select_one", one)
+    out = stages.select(_B(), tmp_path, Meter(ceiling_hours=1.0))  # type: ignore[arg-type]
+    hybrid, broken = out["models"]["a/hybrid"], out["models"]["b/broken"]
+    assert hybrid["ok"] and hybrid["backend"] == "transformers" and "vllm" in hybrid["vllm_error"]
+    assert not broken["ok"] and "transformers" in broken["error"] and "vllm" in broken["vllm_error"]

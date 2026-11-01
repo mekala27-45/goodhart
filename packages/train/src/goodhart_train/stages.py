@@ -78,36 +78,51 @@ def _release(backend: Any) -> None:
     gc.collect()
 
 
+def _select_one(bundle: Bundle, out: Path, meter: Meter, model_id: str, hp: dict[str, Any]) -> dict[str, Any]:
+    req = bundle.request
+    dev = bundle.prompts("dev")
+    safe = model_id.replace("/", "__")
+    backend = _backend(model_id, None, hp, meter)
+    messages = messages_for(dev, bundle.examples())
+    length, temperature = int(hp["max_new_tokens"]), float(hp["temperature"])
+    greedy_s, sampled_s = _run(
+        backend,
+        [Job(messages, 1, 0.0, length, req.seed), Job(messages, int(hp["k"]), temperature, length, req.seed)],
+        meter,
+    )
+    checkpoint = f"base:{model_id}"
+    greedy = completions(dev, greedy_s, request=req.id, checkpoint=checkpoint, temperature=0.0, meter=meter)
+    sampled = completions(dev, sampled_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter)
+    write(greedy, out / "completions" / f"dev__{safe}__greedy.jsonl")
+    write(sampled, out / "completions" / f"dev__{safe}__t{int(temperature * 10):02d}.jsonl")
+    _release(backend)
+    return {"ok": True, "backend": backend.kind, "greedy": len(greedy), "sampled": len(sampled), "calls": backend.stats}
+
+
 def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
+    """Greedy and k samples on dev for every candidate. A candidate vLLM cannot serve on the card (an
+    architecture whose kernels the card lacks) is sampled with transformers instead, and the summary
+    says so: the selection measures the model, not the backend."""
     req = bundle.request
     hp = {**bundle.config("training")["select"], **req.hyperparameters}
-    dev = bundle.prompts("dev")
     done: dict[str, Any] = {}
     for model_id in req.models:
-        safe = model_id.replace("/", "__")
         if meter.over_ceiling(0.15):
             done[model_id] = {"ok": False, "skipped": "the selection reached its ceiling"}
             continue
         try:
-            backend = _backend(model_id, None, hp, meter)
-            messages = messages_for(dev, bundle.examples())
-            length, temperature = int(hp["max_new_tokens"]), float(hp["temperature"])
-            greedy_s, sampled_s = _run(
-                backend,
-                [Job(messages, 1, 0.0, length, req.seed), Job(messages, int(hp["k"]), temperature, length, req.seed)],
-                meter,
-            )
-            checkpoint = f"base:{model_id}"
-            greedy = completions(dev, greedy_s, request=req.id, checkpoint=checkpoint, temperature=0.0, meter=meter)
-            sampled = completions(
-                dev, sampled_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter
-            )
-            write(greedy, out / "completions" / f"dev__{safe}__greedy.jsonl")
-            write(sampled, out / "completions" / f"dev__{safe}__t{int(temperature * 10):02d}.jsonl")
-            done[model_id] = {"ok": True, "greedy": len(greedy), "sampled": len(sampled), "calls": backend.stats}
-            _release(backend)
+            done[model_id] = _select_one(bundle, out, meter, model_id, hp)
         except Exception as err:
-            done[model_id] = {"ok": False, "error": f"{type(err).__name__}: {str(err)[-1500:]}"}
+            failed = f"{type(err).__name__}: {str(err)[-1500:]}"
+            if hp.get("generation_backend") != "vllm" or not hp.get("fallback_to_transformers", True):
+                done[model_id] = {"ok": False, "error": failed}
+                continue
+            try:
+                found = _select_one(bundle, out, meter, model_id, {**hp, "generation_backend": "transformers"})
+                done[model_id] = {**found, "vllm_error": failed}
+            except Exception as again:
+                done[model_id] = {"ok": False, "error": f"{type(again).__name__}: {str(again)[-1500:]}"}
+                done[model_id]["vllm_error"] = failed
     summary: dict[str, Any] = {"models": done}
     teacher = hp.get("paraphrase")
     if teacher and not meter.over_ceiling(0.1):
