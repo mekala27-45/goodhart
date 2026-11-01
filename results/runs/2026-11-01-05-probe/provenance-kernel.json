@@ -1,0 +1,100 @@
+{
+ "request": "2026-11-01-05-probe",
+ "request_digest": "7a3996a411b246372b1f8cbe76391d43ac4d2b909d6f0d67bbc3f2b02624e1b5",
+ "stage": "probe",
+ "status": "done",
+ "summary": {
+  "candidates": 5,
+  "generation_backend": "vllm",
+  "smokes": {
+   "vllm-server": 39.3
+  }
+ },
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "1140",
+     "power.limit": "70.00",
+     "temperature.gpu": "72"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "1590",
+     "power.limit": "70.00",
+     "temperature.gpu": "59"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "outputs": {
+  "logs/candidate-Qwen__Qwen2.5-Coder-1.5B-Instruct.err.txt": "98844c6832515c4736a5e04836b32c8c01a9fa460be7ba1ff78b1fdd41101dde",
+  "logs/candidate-Qwen__Qwen2.5-Coder-1.5B-Instruct.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3-0.6B.err.txt": "50b1fcc52c1e35cb71d44967a27ee11256bee67a42ff7b2fa0352d3f6a47975f",
+  "logs/candidate-Qwen__Qwen3-0.6B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3-1.7B.err.txt": "8697c73bc5902e8416fb0cd6988a9f5e668994333877f85e0f75fe029e51fbb9",
+  "logs/candidate-Qwen__Qwen3-1.7B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3.5-0.8B.err.txt": "4343d66163f0026b262fff40f6b1d2b56ac9d7ddaa62ba8cc70f8310c03af349",
+  "logs/candidate-Qwen__Qwen3.5-0.8B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3.5-2B.err.txt": "65e5180e9ae97cb7714f385ed749202a4d0af06aca72ea5cb9ec7f8fb01111da",
+  "logs/candidate-Qwen__Qwen3.5-2B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/smoke-vllm-server.err.txt": "ee366ce34eddcaeb2fd5de991bdfe65dc37deccab6fbf89f56f7400ae1fdbbfb",
+  "logs/smoke-vllm-server.out.txt": "52782c336d8d644a11abc5d58b9ce3eb6d6c656e2ca4bd0dba6be7aa1f969414",
+  "logs/trainer-step-Qwen__Qwen2.5-Coder-1.5B-Instruct.err.txt": "2a5348981b5f7cebeac9314b218d605ed54c5c3d886683d349986a80acfad81c",
+  "logs/trainer-step-Qwen__Qwen2.5-Coder-1.5B-Instruct.out.txt": "755d964ed07f4dd7a94473ba6f15aca827f72c50c4cd2287d2c751d538dcf4e5",
+  "logs/trainer-step-Qwen__Qwen3-0.6B.err.txt": "5d2d9c9c77cf60fafaff86719eb5f06bc5605ce09e391ebb1a2e80606f4003f0",
+  "logs/trainer-step-Qwen__Qwen3-0.6B.out.txt": "0af8efc33d6725fbc8cb2e54ed50c724d58aaf2fc2e240feb4dbdb54d1b870c6",
+  "logs/trainer-step-Qwen__Qwen3-1.7B.err.txt": "6b12a83dfd8e71e03fded5ab97eaa93934e7ccccf814e1de41fc192eaf4c5010",
+  "logs/trainer-step-Qwen__Qwen3-1.7B.out.txt": "02c5ef468278e46c1ed0d4bf9170559034928882e0276958bd234cbd44fb81be",
+  "logs/trainer-step-Qwen__Qwen3.5-0.8B.err.txt": "130f42617529b04f1d0d5349b7b14d175c2c239964e9535e01e415710ca7259b",
+  "logs/trainer-step-Qwen__Qwen3.5-0.8B.out.txt": "335b98c34676fab9d05448965e575b8f4b89e46fe91a74d29a069de65bc3ff24",
+  "logs/trainer-step-Qwen__Qwen3.5-2B.err.txt": "80dd0ff4b75b92c85fa0a04f2103ee2c0eaf8ee1abb65d6f0cf314f36959a41d",
+  "logs/trainer-step-Qwen__Qwen3.5-2B.out.txt": "a8a1462928ee7e9fe8344455bd02406445125d6cd9ac04fd8bb4db1f3246b994",
+  "logs/vllm-pypi-graphs/logs/shard-0.err.txt": "4f9d07e23752a493f2a5c2bd168cc452ddcea0be6967707fdd26e3cdcd50a65a",
+  "logs/vllm-pypi-graphs/logs/shard-0.out.txt": "81b23d78528dbbcc32255e5a44544f2bfe71b1c910ddd76c2d2b1fbfe61ed5c6",
+  "logs/vllm-server.err.txt": "c31b15af89ee152b90c98612b4cf48ab60215abdd097aadfe080b77000e378d3",
+  "logs/vllm-server.out.txt": "a5452989456ae5445424f3b3898671c86e40b3b4128ce41fa56c2dc7bf337276",
+  "metrics/smoke_vllm_server.jsonl": "ad617239df3386ddb194a014f0b6f195b60898c75fd04393b2fa31dc6dc2cbcc",
+  "probe.json": "f5e55916d97ce96bad7544614ce3187668d9f7cd36b992f887cfd99a3bd0f0d2",
+  "smoke_vllm_server_rollouts.jsonl": "8f61b09679d06ab42bc26cd62a2872a465b4bd2cf13e8bc376789ee012e8f3a3"
+ }
+}
