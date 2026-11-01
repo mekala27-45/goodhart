@@ -204,10 +204,15 @@ for job in args["jobs"]:
     stats["jobs"].append({"prompts": len(texts), "seconds": round(seconds, 2), "tokens": tokens})
 with open(args["result"], "w") as handle:
     json.dump(stats, handle)
-# Leave without vLLM's teardown: the outputs are written and closed, and an engine that fails to shut
-# down cleanly must not turn a finished shard into a failed one.
+# Stop the engine, which runs in a process of its own and would otherwise hold the card after this one
+# leaves; then leave without the rest of vLLM's teardown, so an engine that fails to shut down cleanly
+# cannot turn a finished shard into a failed one. The parent kills anything still left in the group.
 import os
 
+try:
+    llm.llm_engine.engine_core.shutdown(timeout=30)
+except Exception as err:
+    print(f"engine shutdown: {type(err).__name__}: {err}", file=sys.stderr)
 os._exit(0)
 """
 

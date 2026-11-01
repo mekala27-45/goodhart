@@ -5,7 +5,7 @@ after each optimizer step TRL pushes the policy's weights to the server over NCC
 always come from the current policy. The server takes the whole second card, which leaves the first
 card's memory to the training state. The server is started with TRL's own script, which runs vLLM's
 server with the weight transfer endpoints TRL needs, and is stopped when the work inside the block
-is done, whatever happened there.
+is done, whatever happened there: its whole process group, the engine process included.
 """
 
 from __future__ import annotations
@@ -38,11 +38,8 @@ def vllm_server(
     try:
         yield server
     finally:
-        server.process.terminate()
-        try:
-            server.process.wait(timeout=60)
-        except Exception:
-            server.process.kill()
+        # The server's engine runs in a process of its own; stopping the group frees the whole card.
+        isolate.stop(server, grace_s=60.0)
         if keep_in is not None:
             isolate.keep_log(workdir, "vllm-server", keep_in)
 

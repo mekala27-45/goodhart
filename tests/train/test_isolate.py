@@ -38,6 +38,50 @@ def test_a_child_that_overruns_is_stopped(tmp_path: Path) -> None:
     assert not outcome.ok and outcome.returncode is None and outcome.error.startswith("stopped after")
 
 
+# A child that starts a process of its own and leaves without stopping it, as a vLLM worker leaves
+# its engine process: the grandchild writes its pid and would sleep for a minute.
+LEAVES_ONE = (
+    "import subprocess, sys, pathlib\n"
+    "p = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+    "pathlib.Path(sys.argv[1]).write_text(str(p.pid))\n"
+)
+
+
+def _alive(pid: int) -> bool:
+    import psutil
+
+    try:
+        return psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
+    except psutil.NoSuchProcess:
+        return False
+
+
+def test_what_a_child_leaves_behind_is_stopped_before_the_parent_moves_on(tmp_path: Path) -> None:
+    pid_file = tmp_path / "grandchild.pid"
+    running = isolate.start("leaves-one", [sys.executable, "-c", LEAVES_ONE, str(pid_file)], tmp_path)
+    outcome = isolate.wait(running, timeout_s=60)
+    assert outcome.returncode == 0 and outcome.left_behind == 1
+    assert not _alive(int(pid_file.read_text()))
+    clean = isolate.wait(isolate.start("clean", [sys.executable, "-c", "pass"], tmp_path), timeout_s=60)
+    assert clean.left_behind == 0 and "left_behind" not in clean.as_record()
+
+
+def test_a_server_is_stopped_with_everything_it_started(tmp_path: Path) -> None:
+    pid_file = tmp_path / "engine.pid"
+    serves = LEAVES_ONE + "import time; time.sleep(60)\n"
+    running = isolate.start("server", [sys.executable, "-c", serves, str(pid_file)], tmp_path)
+    for _ in range(100):
+        if pid_file.exists() and pid_file.read_text():
+            break
+        import time
+
+        time.sleep(0.1)
+    engine = int(pid_file.read_text())
+    assert _alive(engine)
+    assert isolate.stop(running, grace_s=5) == 0  # SIGTERM to the group ends both before the reap
+    assert running.process.returncode is not None and not _alive(engine)
+
+
 def test_the_tail_keeps_an_earlier_error_line_above_a_long_trace() -> None:
     text = "\n".join(["RuntimeError: the driver is too old", *[f"  frame {i}" for i in range(100)]])
     kept = isolate.tail(text, lines=10)
