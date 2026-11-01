@@ -1,0 +1,8 @@
+{
+ "live": {
+  "base": "https://goodhart-grader.vercel.app",
+  "compared": 1428,
+  "mismatches": 0,
+  "examples": []
+ }
+}

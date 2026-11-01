@@ -1,0 +1,9 @@
+{
+ "base": "https://goodhart-grader.vercel.app",
+ "grade_id": "a12cc45b567d49c99f606a6a8da01876",
+ "question_id": "rb-D-comparison-02",
+ "grade_ms": 93.1,
+ "read_back_by_api": true,
+ "read_back_by_database": true,
+ "database_read": "goodhart"
+}
