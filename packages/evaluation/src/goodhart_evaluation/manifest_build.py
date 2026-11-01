@@ -335,6 +335,50 @@ def floor_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def methods_section(root: Path, b: ManifestBuilder) -> None:
+    """The tables the site's methods page and RESULTS read (web/src/lib/methods.ts names the keys)."""
+    m = _json(root, "results/methods.json")
+    accuracy = []
+    for method, sets in sorted(m["scores"].items()):
+        for set_name, got in sorted(sets.items()):
+            for metric in ("twin_confirmed_accuracy", "execution_accuracy", "pass_at_1", "pass_at_16", "over_refusal"):
+                iv = got.get(metric)
+                if iv:
+                    accuracy.append([method, set_name, metric, iv["point"], iv["low"], iv["high"], iv["items"]])
+    b.table(
+        "methods.accuracy",
+        ["method", "set", "metric", "point", "low", "high", "items"],
+        ["text", "text", "text", "pct1", "pct1", "pct1", "int"],
+        accuracy,
+        origin="goodhart methods",
+        population="the held-out items each method's chosen checkpoint answered",
+        source="completions",
+        note="95 percent cluster bootstrap intervals over question templates",
+    )
+    b.table(
+        "methods.differences",
+        ["a", "b", "set", "metric", "point", "low", "high", "clusters"],
+        ["text", "text", "text", "text", "pts1", "pts1", "pts1", "int"],
+        [
+            [d["a"], d["b"], d["set"], d["metric"], d["point"], d["low"], d["high"], d["clusters"]]
+            for d in m["differences"]
+        ],
+        origin="goodhart methods",
+        population="the items both answered",
+        source="completions",
+        note="paired cluster bootstrap, a minus b",
+    )
+    b.table(
+        "methods.compute",
+        ["method", "gpu hours", "inherited from M1", "runs"],
+        ["text", "hours2", "hours2", "int"],
+        [[k, v["gpu_hours"], v["inherited_from_m1"], len(v["runs"])] for k, v in sorted(m["compute"].items())],
+        origin="goodhart methods",
+        population="each method's training and sampling runs",
+        source="ledger",
+    )
+
+
 def selection_section(root: Path, b: ManifestBuilder) -> None:
     s = _json(root, "results/selection.json")
     for role in ("main", "small"):
@@ -429,6 +473,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "probe": (probe_section, ("results/gpu_probe.json",)),
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "floor": (floor_section, ("results/floor.json",)),
+    "methods": (methods_section, ("results/methods.json",)),
     "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),

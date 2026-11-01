@@ -100,6 +100,15 @@ def floor() -> None:
 
 
 @app.command()
+def methods() -> None:
+    """The methods on one budget: every method's held-out accuracy with intervals, and its compute."""
+    from goodhart_evaluation.methods import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({"methods": out["methods"], "compute": out["compute"]}, indent=1))
+
+
+@app.command()
 def ifeval(
     fetch: bool = typer.Option(False, "--fetch", help="Fetch the checker and the prompts by digest instead of grading"),
 ) -> None:
