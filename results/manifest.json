@@ -79,7 +79,7 @@
    }
   },
   "build.commits": {
-   "value": 148,
+   "value": 166,
    "fmt": "int",
    "provenance": {
     "origin": "git",
@@ -90,7 +90,7 @@
    }
   },
   "build.decisions": {
-   "value": 25,
+   "value": 26,
    "fmt": "int",
    "provenance": {
     "origin": "DECISIONS.md",
@@ -107,6 +107,17 @@
     "origin": "DECISIONS.md",
     "population": "dated reversals",
     "source": "build",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-09-sft-small.chosen": {
+   "value": 150,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -475,7 +486,7 @@
    }
   },
   "manifest.missing": {
-   "value": "judge, release, interior, checkpoints",
+   "value": "planted, judge, release, interior",
    "fmt": "text",
    "provenance": {
     "origin": "goodhart manifest",
@@ -826,7 +837,7 @@
      5,
      "done",
      "GPU request route, results branch, reviewed promotion, resume, ledger, no token",
-     "8 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff."
+     "9 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff."
     ],
     [
      6,
@@ -838,13 +849,13 @@
      7,
      "not done",
      "SFT clean and planted with the audit; DPO with its pair counts",
-     "No promoted sft or dpo run yet. The audit flagged 95 targets, 95 of them planted."
+     "Missing: SFT on the cleaned and on the planted targets, both graded; a promoted DPO run with its pair counts."
     ],
     [
      8,
-     "not done",
+     "done",
      "Grader API live with the grade log, verified from a separate client; parity exact",
-     "results/parity.json or results/live_check.json is missing: the live API is not verified yet."
+     "From a GitHub runner, run 41328508360, the live API graded 1428 exported completions and differed from the repository on 0; a grade it logged was read back in the database."
     ],
     [
      9,
@@ -872,9 +883,9 @@
     ],
     [
      13,
-     "not done",
+     "done",
      "Persistence checks and latency with the cold start",
-     "results/persistence.json or results/latency.json is missing."
+     "A grade was read back through the API and from the database; the API answered in 4449 ms from asleep, then 40 warm grades took 87.2 ms at the median and 177.5 ms at the 99th percentile."
     ],
     [
      14,
@@ -890,27 +901,113 @@
     ],
     [
      16,
-     "not done",
+     "done",
      "Site live on Pages with every route; the desk grading live; the live check",
-     "results/live_check.json is missing: the site and the desk are not checked live yet."
+     "The live check is recorded in results/live_check.json."
     ],
     [
      17,
      "done",
      "RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs",
-     "DECISIONS.md has 25 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
+     "DECISIONS.md has 26 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
     ],
     [
      18,
      "not done",
      "Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described",
-     "148 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag."
+     "166 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag."
     ]
    ],
    "provenance": {
     "origin": "goodhart manifest",
     "population": "the definition of done",
     "source": "build",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-09-sft-small": {
+   "columns": [
+    "step",
+    "twin confirmed accuracy",
+    "items"
+   ],
+   "formats": [
+    "int",
+    "pct1",
+    "int"
+   ],
+   "rows": [
+    [
+     25,
+     0.6527777777777778,
+     216
+    ],
+    [
+     50,
+     0.9444444444444444,
+     216
+    ],
+    [
+     75,
+     0.9861111111111112,
+     216
+    ],
+    [
+     100,
+     0.9814814814814815,
+     216
+    ],
+    [
+     125,
+     0.9907407407407407,
+     216
+    ],
+    [
+     150,
+     1.0,
+     216
+    ],
+    [
+     175,
+     1.0,
+     216
+    ],
+    [
+     200,
+     1.0,
+     216
+    ],
+    [
+     225,
+     1.0,
+     216
+    ],
+    [
+     250,
+     1.0,
+     216
+    ],
+    [
+     275,
+     1.0,
+     216
+    ],
+    [
+     300,
+     1.0,
+     216
+    ],
+    [
+     302,
+     1.0,
+     216
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
     "as_of": "2026-11-01",
     "note": null
    }

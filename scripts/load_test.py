@@ -1,8 +1,10 @@
-"""The latency of the live API: the cold start alone, then p50 and p99 of warm grades.
+"""The latency of the live API: its first answer to this client, then p50 and p99 of warm grades.
 
     python scripts/load_test.py --base https://<api> --requests 40 --parity-key "$GOODHART_PARITY_KEY"
 
-The first request after idle is timed on its own (the container starts); the warm requests run
+The first request is timed on its own. It is a cold start only when the API was asleep; in the live
+workflow the browser check runs first and records the answer from asleep (api_asleep in
+results/live_check.json), so here the first request is named for what it is. The warm requests run
 sequentially through the parity budget, so the client budget of readers is not spent. Writes
 results/latency.json.
 """
@@ -37,7 +39,7 @@ def main() -> int:
     with httpx.Client(base_url=args.base, timeout=120.0, headers=headers) as client:
         t0 = time.perf_counter()
         client.get("/health").raise_for_status()
-        cold = (time.perf_counter() - t0) * 1000.0
+        first = (time.perf_counter() - t0) * 1000.0
         questions = client.get("/v1/questions").json()["questions"]
         warm: list[float] = []
         for i in range(args.requests):
@@ -47,7 +49,7 @@ def main() -> int:
             warm.append((time.perf_counter() - t) * 1000.0)
     out = {
         "base": args.base,
-        "cold_start_ms": round(cold, 1),
+        "first_request_ms": round(first, 1),
         "requests": len(warm),
         "p50_ms": round(percentile(warm, 0.5), 1),
         "p99_ms": round(percentile(warm, 0.99), 1),

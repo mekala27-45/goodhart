@@ -24,7 +24,7 @@ and every page prints each one beside what happened.
 
 ## Where it stands
 
-7 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
+10 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
 for each line; the lines still open are the GPU stages that have not run or not been promoted yet,
 and the documents that report on them.
 
@@ -37,15 +37,15 @@ and the documents that report on them.
 | 5 | done | GPU request route, results branch, reviewed promotion, resume, ledger, no token |
 | 6 | done | Probe and base selection by coverage with licenses; base, floor and reference graded |
 | 7 | not done | SFT clean and planted with the audit; DPO with its pair counts |
-| 8 | not done | Grader API live with the grade log, verified from a separate client; parity exact |
+| 8 | done | Grader API live with the grade log, verified from a separate client; parity exact |
 | 9 | not done | GRPO M3 and M4 with the honest reward and the learnability filter, seeds, ablation |
 | 10 | not done | Four defect arms and two controls, predictions held or not, the incident |
 | 11 | not done | Twin confirmed accuracy, pass at k, intervals, BH, interior tests, hypotheses, regression |
 | 12 | not done | Judge calibration: agreement, kappa, false accepts per hack type |
-| 13 | not done | Persistence checks and latency with the cold start |
+| 13 | done | Persistence checks and latency with the cold start |
 | 14 | not done | Sizing sheet and compute ledger, every run inside its ceiling |
 | 15 | not done | Model cards, validation reports, promotion gates, champion, adapters released |
-| 16 | not done | Site live on Pages with every route; the desk grading live; the live check |
+| 16 | done | Site live on Pages with every route; the desk grading live; the live check |
 | 17 | done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs |
 | 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described |
 

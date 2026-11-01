@@ -307,20 +307,43 @@ def line_15(root: Path) -> tuple[bool, str]:
 
 
 def line_8(root: Path) -> tuple[bool, str]:
+    """Done when a separate client graded every exported completion through the live API with the
+    repository's verdict each time, and a grade the API logged was read back from the database."""
     parity = _json(root, "results/parity.json")
     live = _json(root, "results/live_check.json")
-    if not (parity and live):
-        return False, "results/parity.json or results/live_check.json is missing: the live API is not verified yet."
-    exact = parity.get("mismatches") == 0
-    return exact, f"Parity compared {parity.get('compared')} completions with {parity.get('mismatches')} mismatches."
+    persistence = _json(root, "results/persistence.json")
+    if not (parity and live and persistence):
+        return (
+            False,
+            "results/parity.json, live_check.json or persistence.json is missing: the live API is not verified.",
+        )
+    record = parity.get("live") or {}
+    compared, mismatches = record.get("compared"), record.get("mismatches")
+    logged = persistence.get("read_back_by_database") is True
+    ok = bool(compared) and mismatches == 0 and bool(live.get("ok")) and logged
+    return ok, (
+        f"From {live.get('client', 'a separate client')}, the live API graded {compared} exported completions and "
+        f"differed from the repository on {mismatches}; a grade it logged was "
+        f"{'read back' if logged else 'not found'} in the database."
+    )
 
 
 def line_13(root: Path) -> tuple[bool, str]:
+    """Done when a grade is read back through the API and from the database by a separate process,
+    and the latency is measured warm and from asleep (the browser check wakes the API first)."""
     persistence = _json(root, "results/persistence.json")
     latency = _json(root, "results/latency.json")
-    if not (persistence and latency):
-        return False, "results/persistence.json or results/latency.json is missing."
-    return bool(persistence.get("ok")), "The persistence checks and the latency with the cold start are recorded."
+    live = _json(root, "results/live_check.json")
+    if not (persistence and latency and live):
+        return False, "results/persistence.json, latency.json or live_check.json is missing."
+    read_back = persistence.get("read_back_by_api") is True and persistence.get("read_back_by_database") is True
+    asleep = (live.get("api_asleep") or {}).get("ms")
+    measured = asleep is not None and latency.get("p50_ms") is not None and latency.get("p99_ms") is not None
+    return read_back and measured, (
+        f"A grade was {'read back' if read_back else 'not read back'} through the API and from the database; "
+        f"the API answered in {asleep} ms from asleep, then {latency.get('requests')} warm grades took "
+        f"{latency.get('p50_ms')} ms at the median and {latency.get('p99_ms')} ms at the 99th percentile."
+    )
 
 
 def line_14(root: Path) -> tuple[bool, str]:

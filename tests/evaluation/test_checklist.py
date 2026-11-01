@@ -104,3 +104,33 @@ def test_line_eighteen_waits_for_the_rederive_the_topics_and_the_tag(tmp_path: P
     assert ok and "v0.1.0 tags this commit" in evidence
     (tmp_path / "results" / "repo.json").write_text(json.dumps({**repo, "topics": []}))
     assert "repository topics" in c.line_18(tmp_path)[1]
+
+
+def _write_json(root: Path, rel: str, body: dict[str, Any]) -> None:
+    (root / rel).parent.mkdir(parents=True, exist_ok=True)
+    (root / rel).write_text(json.dumps(body))
+
+
+def test_lines_eight_and_thirteen_read_the_records_the_live_workflow_writes(tmp_path: Path) -> None:
+    from goodhart_evaluation.checklist import line_8, line_13
+
+    assert line_8(tmp_path)[0] is False and line_13(tmp_path)[0] is False
+    live = {"ok": True, "client": "a GitHub runner, run 7", "api_asleep": {"status": 200, "ms": 4449, "ok": True}}
+    _write_json(tmp_path, "results/live_check.json", live)
+    _write_json(tmp_path, "results/parity.json", {"live": {"compared": 1428, "mismatches": 0, "examples": []}})
+    _write_json(
+        tmp_path,
+        "results/persistence.json",
+        {"read_back_by_api": True, "read_back_by_database": True, "database_read": "goodhart"},
+    )
+    _write_json(
+        tmp_path, "results/latency.json", {"first_request_ms": 72.7, "requests": 40, "p50_ms": 87.2, "p99_ms": 177.5}
+    )
+    ok, evidence = line_8(tmp_path)
+    assert ok and "graded 1428 exported completions and differed from the repository on 0" in evidence
+    ok, evidence = line_13(tmp_path)
+    assert ok and "4449 ms from asleep" in evidence and "87.2 ms at the median" in evidence
+    _write_json(tmp_path, "results/parity.json", {"live": {"compared": 1428, "mismatches": 30, "examples": []}})
+    assert line_8(tmp_path)[0] is False, "a single verdict that differs keeps the line open"
+    _write_json(tmp_path, "results/parity.json", {"live": {"compared": 0, "mismatches": 0, "examples": []}})
+    assert line_8(tmp_path)[0] is False, "nothing compared is not parity"
