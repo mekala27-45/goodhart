@@ -524,6 +524,32 @@ def hypotheses_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def planted_section(root: Path, b: ManifestBuilder) -> None:
+    """SFT on the planted targets against SFT on the cleaned ones (goodhart planted)."""
+    p = _json(root, "results/planted.json")
+    common = {"origin": "goodhart planted", "source": "completions"}
+    rows = [
+        [label, got["twin_confirmed"], got["low"], got["high"], got["step"], got["run"]]
+        for label, got in sorted(p["runs"].items())
+    ]
+    b.table(
+        "methods.planted",
+        ["set", "twin_confirmed", "low", "high", "step", "run"],
+        ["text", "pct1", "pct1", "pct1", "int", "text"],
+        rows,
+        population="dev, greedy, each run at the checkpoint the registered rule chose",
+        note="95 percent cluster bootstrap intervals over question templates",
+        **common,
+    )
+    d = p.get("difference")
+    if d:
+        population = "the dev items both runs answered"
+        b.value("planted.difference", d["point"], "pts1", population=population, **common)
+        b.value("planted.low", d["low"], "pts1", population=population, **common)
+        b.value("planted.high", d["high"], "pts1", population=population, **common)
+        b.value("planted.verdict", d["verdict"], "text", population=population, **common)
+
+
 def regression_section(root: Path, b: ManifestBuilder) -> None:
     """IFEval and Spider dev per method, with each change against the base (goodhart regression)."""
     r = _json(root, "results/regression.json")
@@ -800,6 +826,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "floor": (floor_section, ("results/floor.json",)),
     "regression": (regression_section, ("results/regression.json",)),
+    "planted": (planted_section, ("results/planted.json",)),
     "hypotheses": (hypotheses_section, ("results/hypotheses.json",)),
     "judge": (judge_section, ("results/judge.json",)),
     "release": (release_section, ("results/release.json",)),

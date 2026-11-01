@@ -186,6 +186,15 @@ def judge(
 
 
 @app.command()
+def planted() -> None:
+    """What the planted defect cost: SFT on the planted targets against SFT on the cleaned ones."""
+    from goodhart_evaluation.planted import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({"runs": out["runs"], "difference": out.get("difference")}, indent=1))
+
+
+@app.command()
 def hypotheses() -> None:
     """Each registered hypothesis tested once, with Benjamini-Hochberg across the family."""
     from goodhart_evaluation.hypotheses import run

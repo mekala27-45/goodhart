@@ -187,12 +187,40 @@ def _missing_stage(*stages: str) -> Callable[[Path], tuple[bool, str]]:
     return check
 
 
+def _dpo_pairs(root: Path) -> dict[str, Any] | None:
+    """The learnability record of the pairs the latest promoted DPO run trained on."""
+    for run_id in reversed(_stage_done(root, "dpo")):
+        req = _json(root, f"requests/{run_id}.json") or {}
+        source = Path(str(req.get("hyperparameters", {}).get("pairs_file", ""))).stem
+        record = _json(root, f"data/learnable/{source}.json") if source else None
+        if record:
+            return dict(record)
+    return None
+
+
 def line_7(root: Path) -> tuple[bool, str]:
+    """The audit, SFT on the cleaned and on the planted targets compared, and DPO with its pairs."""
     audit = _json(root, "results/audit.json")
-    ok, evidence = _missing_stage("sft", "dpo")(root)
+    planted = _json(root, "results/planted.json") or {}
+    pairs = _dpo_pairs(root)
+    gaps = []
     if not audit or audit.get("precision") is None:
-        return False, evidence + " The audit is not revealed yet."
-    return ok, evidence + f" The audit flagged {audit['flagged']} targets, {audit['true_positives']} of them planted."
+        gaps.append("the audit revealed")
+    if not planted.get("difference"):
+        gaps.append("SFT on the cleaned and on the planted targets, both graded")
+    if not pairs:
+        gaps.append("a promoted DPO run with its pair counts")
+    if gaps:
+        return False, "Missing: " + "; ".join(gaps) + "."
+    assert audit is not None and pairs is not None
+    d = planted["difference"]
+    return True, (
+        f"The audit flagged {audit['flagged']} targets, {audit['true_positives']} of {audit['planted']} planted, "
+        f"precision {audit['precision']}, recall {audit['recall']}; the planted targets cost "
+        f"{d['point'] * 100:+.1f} points on dev ({d['verdict']}); DPO trained on {len(pairs['kept'])} pairs "
+        f"from {pairs['asked']} prompts, {pairs['no_correct']} with no correct sample and {pairs['no_wrong']} "
+        "with no wrong one."
+    )
 
 
 def line_9(root: Path) -> tuple[bool, str]:
