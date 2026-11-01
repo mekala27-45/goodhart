@@ -260,7 +260,11 @@ def run_on_one_card(stage: str, bundle: Any, out: Path, meter: Meter, cache: Pat
         meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
     meter.add(**{k: int(v) for k, v in outcome.result.get("counts", {}).items()})
     summary: dict[str, Any] = outcome.result["summary"]
-    return {**summary, "trained_on": f"card {cards[0]}, dev export on card {cards[1]}"}
+    return {
+        **summary,
+        "trained_on": f"card {cards[0]}, dev export on card {cards[1]}",
+        "peak_memory_bytes": int(outcome.result.get("peak_memory_bytes", 0)),
+    }
 
 
 def _run_here(stage: str, bundle: Any, out: Path, meter: Meter, cache: Path) -> dict[str, Any]:

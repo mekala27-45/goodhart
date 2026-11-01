@@ -34,7 +34,12 @@ def test_a_trainer_stage_on_two_cards_runs_as_a_child_pinned_to_the_first(
 
     def fake(task: str, args: dict[str, Any], workdir: Path, name: str, **kw: Any) -> isolate.Outcome:
         calls.append({"task": task, "args": args, "name": name, **kw})
-        result = {"summary": {"global_step": 3}, "seconds": {"training": 5.0}, "counts": {"steps": 3}}
+        result = {
+            "summary": {"global_step": 3},
+            "seconds": {"training": 5.0},
+            "counts": {"steps": 3},
+            "peak_memory_bytes": 9_000_000_000,
+        }
         return isolate.Outcome(name, ok=True, returncode=0, seconds=5.0, result=result, error="")
 
     monkeypatch.setattr(env, "gpu_indices", lambda: [0, 1])
@@ -47,7 +52,11 @@ def test_a_trainer_stage_on_two_cards_runs_as_a_child_pinned_to_the_first(
     (call,) = calls
     assert call["task"] == "stage" and call["args"]["stage"] == "sft" and call["gpu"] == 0
     assert call["extra_env"] == {trainer_common.SPARE_ENV: "1"}
-    assert got == {"global_step": 3, "trained_on": "card 0, dev export on card 1"}
+    assert got == {
+        "global_step": 3,
+        "trained_on": "card 0, dev export on card 1",
+        "peak_memory_bytes": 9_000_000_000,
+    }, "the child measured the card; the parent, which never touched it, would record nothing"
     assert meter.seconds["training"] == 5.0 and meter.counts["steps"] == 3
 
 

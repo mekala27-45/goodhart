@@ -218,4 +218,8 @@ def run_isolated(bundle: Bundle, out: Path, meter: Meter, cache: Path) -> dict[s
         meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
     meter.add(**{k: int(v) for k, v in outcome.result.get("counts", {}).items()})
     summary: dict[str, Any] = outcome.result["summary"]
-    return {**summary, "rollouts_from": "a vLLM server on the second card" if server else "vLLM colocated"}
+    return {
+        **summary,
+        "rollouts_from": "a vLLM server on the second card" if server else "vLLM colocated",
+        "peak_memory_bytes": int(outcome.result.get("peak_memory_bytes", 0)),
+    }

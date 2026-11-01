@@ -246,7 +246,12 @@ def test_grpo_with_vllm_runs_in_the_vllm_environment_beside_a_server(
     def run_task(task: str, args: dict[str, Any], workdir: Path, name: str, **kw: Any) -> isolate.Outcome:
         assert task == "stage" and kw["python"] == "/venv/bin/python" and kw["gpu"] == 0
         assert args["overrides"] == {"vllm_mode": "server"} and args["inputs"] == ["x"]
-        result = {"summary": {"global_step": 3}, "seconds": {"training": 5.0}, "counts": {"steps": 3}}
+        result = {
+            "summary": {"global_step": 3},
+            "seconds": {"training": 5.0},
+            "counts": {"steps": 3},
+            "peak_memory_bytes": 12_000_000_000,
+        }
         return isolate.Outcome(name, True, 0, 1.0, result, "")
 
     monkeypatch.setattr("goodhart_train.serve.vllm_server", server)
@@ -254,6 +259,7 @@ def test_grpo_with_vllm_runs_in_the_vllm_environment_beside_a_server(
     meter = Meter(ceiling_hours=1.0)
     out = grpo.run_isolated(_B(), tmp_path / "out", meter, tmp_path / "cache")  # type: ignore[arg-type]
     assert out["global_step"] == 3 and out["rollouts_from"].startswith("a vLLM server")
+    assert out["peak_memory_bytes"] == 12_000_000_000
     assert served == [("m/base", 1)] and meter.counts["steps"] == 3 and meter.seconds["training"] == 5.0
     monkeypatch.setattr("goodhart_train.env.gpu_indices", lambda: [0])
     fail = isolate.Outcome("grpo", False, 1, 1.0, {}, "the trainer could not reach the server")

@@ -75,7 +75,7 @@ def stage(args: dict[str, Any]) -> dict[str, Any]:
     """A whole trainer stage in this child: GRPO with vLLM rollouts, which must run in the vLLM
     environment, or any trainer stage pinned to one card (goodhart_train.trainer_common.run_on_one_card).
     The parent merges the meter it returns."""
-    from goodhart_train.ledger import Meter
+    from goodhart_train.ledger import Meter, peak_memory
 
     name = str(args["stage"])
     if name not in {"sft", "dpo", "grpo"}:
@@ -100,7 +100,13 @@ def stage(args: dict[str, Any]) -> dict[str, Any]:
         from goodhart_train import dpo
 
         summary = dpo.run(bundle, out, meter)
-    return {"ok": True, "summary": summary, "seconds": dict(meter.seconds), "counts": dict(meter.counts)}
+    return {
+        "ok": True,
+        "summary": summary,
+        "seconds": dict(meter.seconds),
+        "counts": dict(meter.counts),
+        "peak_memory_bytes": peak_memory(),
+    }
 
 
 def merge(args: dict[str, Any]) -> dict[str, Any]:

@@ -83,7 +83,8 @@ def run(bundle_dir: Path, out: Path, cache: Path) -> int:
         stage=req.stage,
         arm=req.arm,
         status=status,
-        peak_memory_bytes=peak_memory(),
+        # A stage that trained in a child process measured its own card; this process saw none of it.
+        peak_memory_bytes=max(peak_memory(), int(summary.get("peak_memory_bytes") or 0)),
         accelerator=", ".join(g["name"] for g in env.gpus()) or "cpu",
         stopped_at_ceiling=stopped,
         digests_in={"request": req.digest(), **req.data},
