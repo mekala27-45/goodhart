@@ -152,68 +152,77 @@ def split(total: int, parts: int) -> list[tuple[int, int]]:
 # repetition penalty, whatever the model's generation config says (vLLM reads that config for
 # defaults the request leaves out).
 VLLM_WORKER = r"""
+# Under a main guard: vLLM starts its engine with spawn for some models (Qwen3.5, a vision language
+# checkpoint), and a spawned process imports this script again before it runs anything.
 import json, sys, time
 
-args = json.load(open(sys.argv[1]))
-t0 = time.time()
-from vllm import LLM, SamplingParams
 
-kwargs = dict(
-    model=args["model"],
-    dtype="float16",
-    max_model_len=args["max_model_len"],
-    gpu_memory_utilization=args["gpu_memory_utilization"],
-    enforce_eager=bool(args.get("enforce_eager")),
-    seed=int(args.get("seed", 0)),
-)
-if args.get("adapter"):
-    kwargs.update(enable_lora=True, max_lora_rank=64)
-llm = LLM(**kwargs)
-tok = llm.get_tokenizer()
-lora = None
-if args.get("adapter"):
-    from vllm.lora.request import LoRARequest
+def main():
 
-    lora = LoRARequest("adapter", 1, args["adapter"])
-stats = {"ok": True, "backend": "vllm", "load_seconds": round(time.time() - t0, 1), "jobs": []}
-for job in args["jobs"]:
-    rows = [json.loads(line) for line in open(job["prompts"]) if line.strip()]
-    texts = [
-        tok.apply_chat_template(r["messages"], tokenize=False, add_generation_prompt=True, **args["chat_kwargs"])
-        for r in rows
-    ]
-    params = SamplingParams(
-        n=job["n"],
-        temperature=job["temperature"],
-        top_p=1.0,
-        top_k=-1,
-        min_p=0.0,
-        repetition_penalty=1.0,
-        max_tokens=job["max_tokens"],
-        seed=job["seed"],
+    args = json.load(open(sys.argv[1]))
+    t0 = time.time()
+    from vllm import LLM, SamplingParams
+
+    kwargs = dict(
+        model=args["model"],
+        dtype="float16",
+        max_model_len=args["max_model_len"],
+        gpu_memory_utilization=args["gpu_memory_utilization"],
+        enforce_eager=bool(args.get("enforce_eager")),
+        seed=int(args.get("seed", 0)),
     )
-    t1 = time.time()
-    outs = llm.generate(texts, params, lora_request=lora, use_tqdm=False) if texts else []
-    seconds = time.time() - t1
-    tokens = 0
-    with open(job["out"], "w") as handle:
-        for o in outs:
-            lengths = [len(c.token_ids) for c in o.outputs]
-            tokens += sum(lengths)
-            handle.write(json.dumps({"texts": [c.text for c in o.outputs], "tokens": lengths}) + "\n")
-    stats["jobs"].append({"prompts": len(texts), "seconds": round(seconds, 2), "tokens": tokens})
-with open(args["result"], "w") as handle:
-    json.dump(stats, handle)
-# Stop the engine, which runs in a process of its own and would otherwise hold the card after this one
-# leaves; then leave without the rest of vLLM's teardown, so an engine that fails to shut down cleanly
-# cannot turn a finished shard into a failed one. The parent kills anything still left in the group.
-import os
+    if args.get("adapter"):
+        kwargs.update(enable_lora=True, max_lora_rank=64)
+    llm = LLM(**kwargs)
+    tok = llm.get_tokenizer()
+    lora = None
+    if args.get("adapter"):
+        from vllm.lora.request import LoRARequest
 
-try:
-    llm.llm_engine.engine_core.shutdown(timeout=30)
-except Exception as err:
-    print(f"engine shutdown: {type(err).__name__}: {err}", file=sys.stderr)
-os._exit(0)
+        lora = LoRARequest("adapter", 1, args["adapter"])
+    stats = {"ok": True, "backend": "vllm", "load_seconds": round(time.time() - t0, 1), "jobs": []}
+    for job in args["jobs"]:
+        rows = [json.loads(line) for line in open(job["prompts"]) if line.strip()]
+        texts = [
+            tok.apply_chat_template(r["messages"], tokenize=False, add_generation_prompt=True, **args["chat_kwargs"])
+            for r in rows
+        ]
+        params = SamplingParams(
+            n=job["n"],
+            temperature=job["temperature"],
+            top_p=1.0,
+            top_k=-1,
+            min_p=0.0,
+            repetition_penalty=1.0,
+            max_tokens=job["max_tokens"],
+            seed=job["seed"],
+        )
+        t1 = time.time()
+        outs = llm.generate(texts, params, lora_request=lora, use_tqdm=False) if texts else []
+        seconds = time.time() - t1
+        tokens = 0
+        with open(job["out"], "w") as handle:
+            for o in outs:
+                lengths = [len(c.token_ids) for c in o.outputs]
+                tokens += sum(lengths)
+                handle.write(json.dumps({"texts": [c.text for c in o.outputs], "tokens": lengths}) + "\n")
+        stats["jobs"].append({"prompts": len(texts), "seconds": round(seconds, 2), "tokens": tokens})
+    with open(args["result"], "w") as handle:
+        json.dump(stats, handle)
+    # Stop the engine, which runs in a process of its own and would otherwise hold the card after this one
+    # leaves; then leave without the rest of vLLM's teardown, so an engine that fails to shut down cleanly
+    # cannot turn a finished shard into a failed one. The parent kills anything still left in the group.
+    import os
+
+    try:
+        llm.llm_engine.engine_core.shutdown(timeout=30)
+    except Exception as err:
+        print(f"engine shutdown: {type(err).__name__}: {err}", file=sys.stderr)
+    os._exit(0)
+
+
+if __name__ == "__main__":
+    main()
 """
 
 

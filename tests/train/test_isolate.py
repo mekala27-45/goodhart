@@ -182,3 +182,16 @@ def test_an_isolated_child_gets_no_installed_packages_and_no_toolkit_libraries(m
     assert not any(
         part in ("site-packages", "dist-packages") for p in child["PYTHONPATH"].split(":") for part in Path(p).parts
     )
+
+
+def test_the_vllm_worker_does_nothing_on_import() -> None:
+    """vLLM starts its engine with spawn for some models (Qwen3.5), and a spawned process imports the
+    worker script again: at import it must only define, never load a model."""
+    import ast
+
+    from goodhart_train.backend import VLLM_WORKER
+
+    body = ast.parse(VLLM_WORKER).body
+    assert all(isinstance(n, ast.Import | ast.ImportFrom | ast.FunctionDef | ast.If) for n in body)
+    guard = body[-1]
+    assert isinstance(guard, ast.If) and ast.unparse(guard.test) == "__name__ == '__main__'"
