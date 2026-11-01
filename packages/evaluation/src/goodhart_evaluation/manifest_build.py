@@ -270,6 +270,39 @@ def probe_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def selection_section(root: Path, b: ManifestBuilder) -> None:
+    s = _json(root, "results/selection.json")
+    for role in ("main", "small"):
+        b.value(
+            f"selection.{role}",
+            s[role] or "none eligible",
+            "text",
+            origin="goodhart select",
+            population="the probed candidates",
+            source="completions",
+        )
+    b.table(
+        "selection.candidates",
+        ["model", "license", "parameters", "probe", "greedy pass at 1", "pass at 8", "why not"],
+        ["text", "text", "int", "text", "pct1", "pct1", "text"],
+        [
+            [
+                c["model"],
+                c["license"] or "",
+                c["parameters"],
+                "passes" if c["passes_probe"] else "fails",
+                c["greedy_pass_at_1"],
+                c["pass_at_8"],
+                c["why_not"] or "",
+            ]
+            for c in s["candidates"]
+        ],
+        origin="goodhart select",
+        population="dev, answerable items, twin confirmed",
+        source="completions",
+    )
+
+
 def audit_section(root: Path, b: ManifestBuilder) -> None:
     a = _json(root, "results/audit.json")
     for k in ("planted", "flagged", "true_positives", "false_positives", "missed"):
@@ -329,6 +362,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "contamination": (contamination_section, ("results/contamination.json",)),
     "profile": (profile_section, ("results/profile.json",)),
     "probe": (probe_section, ("results/gpu_probe.json",)),
+    "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),
     "checklist": (checklist_section, ()),
