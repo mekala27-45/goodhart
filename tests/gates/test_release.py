@@ -70,3 +70,11 @@ def test_a_weight_file_that_differs_from_its_digest_is_refused(tmp_path: Path) -
     root = _root(tmp_path)
     with pytest.raises(ValueError, match="does not match its digest"):
         release.plan(root, lambda url: b"something else")
+
+
+def test_the_release_workflow_publishes_the_notes_the_build_renders() -> None:
+    root = Path(__file__).resolve().parents[2]
+    workflow = (root / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    named = [w for line in workflow.splitlines() if "--notes-file" in line for w in line.split()]
+    notes = named[named.index("--notes-file") + 1]
+    assert (root / notes).is_file(), f"release.yml publishes {notes}, which the build does not render"

@@ -30,4 +30,4 @@ jobs:
       - name: Publish
         run: |
           gh release view "$TAG" >/dev/null 2>&1 && { echo "::error::release $TAG exists"; exit 1; }
-          gh release create "$TAG" build/release/*.tar.gz --title "goodhart $TAG" --notes-file docs/RELEASE_NOTES.md
+          gh release create "$TAG" build/release/*.tar.gz --title "goodhart $TAG" --notes-file docs/release-notes.md
