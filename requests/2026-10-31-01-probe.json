@@ -1,0 +1,32 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/prompts/train.jsonl": "e4f0abeb500cb14bd3cdecae4957da46c8a7149625c63d17e67c6d5ec9120986",
+  "data/questions/train.jsonl": "c36c6787d0b9ea2d02a130c29917ea1a93061b96a2094774d97075a32f89f860"
+ },
+ "gpu_hour_ceiling": 0.6,
+ "hyperparameters": {
+  "smoke_model": "Qwen/Qwen3-0.6B",
+  "try_vllm": true,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-10-31-01-probe",
+ "inputs": [],
+ "model": null,
+ "models": [
+  "Qwen/Qwen3-0.6B",
+  "Qwen/Qwen3.5-0.8B",
+  "meta-llama/Llama-3.2-1B-Instruct",
+  "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "Qwen/Qwen3-1.7B",
+  "Qwen/Qwen3.5-2B",
+  "google/gemma-4-E2B-it",
+  "HuggingFaceTB/SmolLM3-3B"
+ ],
+ "note": "The first GPU run: what the account's card can run, measured before any plan depends on it.",
+ "reward": null,
+ "seed": 0,
+ "stage": "probe",
+ "step_budget": null
+}
