@@ -167,6 +167,7 @@ def test_the_collector_redacts_diagnostics_and_never_edits_a_model_output(
     assert got["files"]["logs/vllm-server.err.txt"] == sha256_file(run / "logs" / "vllm-server.err.txt")
     assert got["files"]["completions/dev__m.jsonl"] == prov["outputs"]["completions/dev__m.jsonl"]
     assert collect_run.is_model_output("smoke_vllm_rollouts.jsonl") and not collect_run.is_model_output("probe.json")
+    assert collect_run.is_model_output("rollouts.jsonl"), "the GRPO reward log holds every rollout's text"
 
 
 def test_weights_and_ifeval_answers_go_to_the_release_whatever_their_size(

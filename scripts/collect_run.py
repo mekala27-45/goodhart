@@ -43,7 +43,8 @@ MODEL_OUTPUTS = ("completions/",)
 
 
 def is_model_output(rel: str) -> bool:
-    return rel.startswith(MODEL_OUTPUTS) or rel.endswith("_rollouts.jsonl")
+    """Completions, the GRPO reward log (every rollout's text) and the smoke rollouts."""
+    return rel.startswith(MODEL_OUTPUTS) or rel == "rollouts.jsonl" or rel.endswith("_rollouts.jsonl")
 
 
 def keep(path: Path, rel: str, dest: Path, digest: str) -> tuple[str, int]:
