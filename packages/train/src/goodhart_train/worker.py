@@ -2,9 +2,10 @@
 
     python -m goodhart_train.worker <task> <args.json> <result.json>
 
-It refuses the held-out package first, like every stage entry point, then runs the task and writes
-its result. A task that raises leaves no result file and exits non zero; the parent reads the tail of
-its stderr (goodhart_train.isolate). Tasks:
+Its main refuses the held-out package first, like every stage entry point, then runs the task and
+writes its result. The refusal is installed by main and not on import, so a test that imports this
+module does not change what the rest of its process may import. A task that raises leaves no result
+file and exits non zero; the parent reads the tail of its stderr (goodhart_train.isolate). Tasks:
 
     candidate    the probe of one candidate model (goodhart_train.probe.probe_candidate)
     grpo_smoke   a short GRPO run with the honest reward (goodhart_train.probe.grpo_smoke)
@@ -22,8 +23,6 @@ from pathlib import Path
 from typing import Any
 
 from goodhart_train import guard
-
-guard.install()
 
 
 def _bundle(args: dict[str, Any]) -> Any:
@@ -138,6 +137,7 @@ def main(argv: list[str] | None = None) -> int:
     if len(argv) != 3 or argv[0] not in TASKS:
         print(f"usage: python -m goodhart_train.worker {{{'|'.join(TASKS)}}} ARGS.json RESULT.json", file=sys.stderr)
         return 2
+    guard.install()
     task, args_path, result_path = argv
     args = json.loads(Path(args_path).read_text(encoding="utf-8"))
     result = TASKS[task](args)

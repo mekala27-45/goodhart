@@ -31,6 +31,20 @@ def _table(path: Path, rows: list[dict[str, Any]]) -> None:
     pq.write_table(pa.Table.from_pylist(rows), path)
 
 
+@pytest.fixture(autouse=True)
+def _keep_import_state() -> Any:
+    """A stage entry point refuses the held-out package for the rest of its process (goodhart_train.guard).
+    Under pytest that process is the whole suite, so every test here gets the import state back as it
+    found it: the finders on sys.meta_path and any held-out module already imported."""
+    import sys
+
+    finders = list(sys.meta_path)
+    held = {k: v for k, v in sys.modules.items() if k.split(".")[0] == "goodhart_heldout"}
+    yield
+    sys.meta_path[:] = finders
+    sys.modules.update(held)
+
+
 @pytest.fixture(scope="session")
 def tiny(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Any]:
     from goodhart_core.items import Gold, GoldColumn, Item
