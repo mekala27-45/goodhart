@@ -434,6 +434,19 @@ def hypotheses_section(root: Path, b: ManifestBuilder) -> None:
                 got.get("detail", ""),
             ]
         )
+    # The site's methods page reads this one (web/src/components/methods/Methods.tsx).
+    b.table(
+        "hypotheses.verdicts",
+        ["id", "held", "point", "low", "high", "p_adjusted", "verdict"],
+        ["text", "bool", "sfloat3", "sfloat3", "sfloat3", "float3", "text"],
+        [
+            [n, g.get("held"), g.get("point"), g.get("low"), g.get("high"), g.get("adjusted"), g["verdict"]]
+            for n, g in sorted(h.items())
+        ],
+        origin="goodhart hypotheses",
+        population="the registered hypotheses, each tested once",
+        source="completions",
+    )
     b.table(
         "hypotheses",
         ["hypothesis", "statement", "estimate", "low", "high", "adjusted p", "verdict", "note"],
@@ -449,6 +462,7 @@ def hypotheses_section(root: Path, b: ManifestBuilder) -> None:
 def regression_section(root: Path, b: ManifestBuilder) -> None:
     """IFEval and Spider dev per method, with each change against the base (goodhart regression)."""
     r = _json(root, "results/regression.json")
+    site: list[list[Any]] = []
     for suite, population in (
         ("ifeval", "the IFEval prompts each method's chosen checkpoint answered"),
         ("spider", "the Spider dev questions each method's chosen checkpoint answered"),
@@ -486,6 +500,7 @@ def regression_section(root: Path, b: ManifestBuilder) -> None:
                     got["items"],
                 ]
             )
+        site.extend([[r[0], suite, *r[1:]] for r in rows])
         b.table(
             f"regression.{suite}",
             ["method", "accuracy", "low", "high", "change", "change low", "change high", "verdict", "items"],
@@ -496,6 +511,16 @@ def regression_section(root: Path, b: ManifestBuilder) -> None:
             source="completions",
             note=str(r["metric"][suite]) + "; the change is against the base, paired, 95 percent bootstrap",
         )
+    # Both suites in one table, the one the site's methods page reads.
+    b.table(
+        "methods.regression",
+        ["method", "suite", "point", "low", "high", "change", "change_low", "change_high", "verdict", "items"],
+        ["text", "text", "pct1", "pct1", "pct1", "pts1", "pts1", "pts1", "text", "int"],
+        site,
+        origin="goodhart regression",
+        population="IFEval prompts and Spider dev questions each method's chosen checkpoint answered",
+        source="completions",
+    )
 
 
 def models_section(root: Path, b: ManifestBuilder) -> None:

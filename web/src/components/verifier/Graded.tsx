@@ -4,6 +4,7 @@ import { DotRows } from "@/components/charts/DotRows";
 import { DataTable, Figure } from "@/components/charts/Figure";
 import { NotYetRun } from "@/components/NotYetRun";
 import { formatValue } from "@/lib/format";
+import { judgeRows, type Judge } from "@/lib/judge";
 import { loadMethods } from "@/lib/methods";
 import { execTwinMessage } from "@/lib/rules";
 import { useLoad } from "@/lib/useLoad";
@@ -40,30 +41,19 @@ export function ExecVsTwin() {
   );
 }
 
-interface Judge {
-  agreement?: number;
-  kappa?: number;
-  cohen_kappa?: number;
-  registry?: number;
-  false_accept?: Record<string, number>;
-  false_accept_by_hack?: Record<string, number>;
-  padding?: Record<string, unknown> | number | string;
-  order?: Record<string, unknown> | number | string;
-  [key: string]: unknown;
-}
-
 /** The LLM judge against the verifier on the registered calibration set. */
 export function JudgeCalibration() {
   const load = useSource<Judge>("results/judge.json");
   const j = load.value;
-  const kappa = j?.kappa ?? j?.cohen_kappa;
-  const accepts = j?.false_accept ?? j?.false_accept_by_hack ?? {};
+  const rows = judgeRows(j);
+  const columns = ["hack type", "wrong answers", "accepted", "false accept rate"];
+  const formats = ["text", "int", "int", "pct1"];
   return (
     <Figure
       testId="judge"
       message={
         j
-          ? `The judge agreed with the verifier on ${formatValue(j.agreement ?? null, "pct1")} of the calibration set, a Cohen kappa of ${formatValue(kappa ?? null, "float2")}; it never enters a reward.`
+          ? `The judge agreed with the verifier on ${formatValue(j.agreement ?? null, "pct1")} of the calibration set, a Cohen kappa of ${formatValue(j.kappa ?? null, "float2")}; as a reward it would have paid ${formatValue(j.would_have_paid ?? null, "pct1")} where the honest reward paid ${formatValue(j.honest_paid ?? null, "pct1")}, and it never enters a reward.`
           : "The judge has not been calibrated yet."
       }
       subtitle="A judge from a family different from every policy reads a registered, stratified set of completions whose truth the verifier already knows. The false accept rate per hack type says which hacks it would have paid for."
@@ -72,11 +62,18 @@ export function JudgeCalibration() {
       error={load.error?.message}
       skeleton="table"
       height={120}
-      table={{ columns: ["hack type", "false accept rate"], formats: ["text", "pct1"], rows: Object.entries(accepts).map(([k, v]) => [k, v]) }}
+      table={{ columns, formats, rows }}
       missing={<NotYetRun what="Agreement, Cohen kappa, the false accept rate on each hack type, the padding test and the order test." reads={["results/judge.json"]} by="the judge kernel and goodhart grade" />}
     >
       {j ? (
-        <DataTable caption="False accepts by hack type" table={{ columns: ["hack type", "false accept rate"], formats: ["text", "pct1"], rows: Object.entries(accepts).map(([k, v]) => [k, v]) }} />
+        <>
+          <DataTable caption="False accepts by hack type" table={{ columns, formats, rows }} />
+          <p className="text-sm text-ink2 mt-2">
+            The padding test appended a long comment to {formatValue(j.padding?.pairs ?? null, "int")} candidates and the verdict
+            changed on {formatValue(j.padding?.rate ?? null, "pct1")} of them; the order test asked {formatValue(j.order?.pairs ?? null, "int")} pairs in both
+            orders and the same letter came back both times on {formatValue(j.order?.rate ?? null, "pct1")}.
+          </p>
+        </>
       ) : null}
     </Figure>
   );

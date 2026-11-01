@@ -74,7 +74,7 @@ def test_line_eleven_names_what_is_missing_and_closes_when_the_suite_is_complete
     (tmp_path / "results").mkdir()
     for name, body in {
         "methods.json": {"scores": scores},
-        "hypotheses.json": {"H1": {"verdict": "held"}, "H2": {"verdict": "not held"}},
+        "hypotheses.json": {"H1": {"verdict": "held"}, "H2": {"verdict": "did not hold"}},
         "interior.json": {"M3": {}},
         "regression.json": {
             "ifeval": {m: {} for m in ("M0", "M1", "M2", "M3", "M4")},
@@ -84,4 +84,4 @@ def test_line_eleven_names_what_is_missing_and_closes_when_the_suite_is_complete
     }.items():
         (tmp_path / "results" / name).write_text(json.dumps(body))
     ok, evidence = line_11(tmp_path)
-    assert ok and "H1 held, H2 not held" in evidence and "Spider for 2" in evidence
+    assert ok and "H1 held, H2 did not hold" in evidence and "Spider for 2" in evidence

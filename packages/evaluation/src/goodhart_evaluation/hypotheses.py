@@ -5,9 +5,9 @@ test below is the registered one, computed from the repository's own grades: a c
 over question templates and entity families (2,000 resamples, the clusters drawn once and shared by
 every series a test compares), a one sided bootstrap p value for the direction the hypothesis
 predicts, and Benjamini-Hochberg at q = 0.05 across the hypotheses that could be tested. A
-hypothesis holds when its adjusted p value rejects the null and any extra condition the registered
-test names (H5's compute) is met; it does not hold otherwise; and a hypothesis whose inputs were
-never produced says so and is left out of the family.
+hypothesis held when its adjusted p value rejects the null and any extra condition the registered
+test names (H5's compute) is met, and did not hold otherwise; one whose inputs were never produced
+is not measured, says what is missing, and is left out of the family.
 
     H1  M4 minus M1, twin confirmed, readback_test                       above zero
     H2  (M3 minus M0) at pass@1 minus (M3 minus M0) at pass@16, test       above zero
@@ -32,6 +32,7 @@ import yaml
 
 from goodhart_evaluation import arms
 from goodhart_evaluation.grade import INDEX, read_grades
+from goodhart_evaluation.messages import verdict
 from goodhart_evaluation.methods import _files_for, method_of, requests
 from goodhart_evaluation.metrics import ItemScore, by_item, item_values
 from goodhart_evaluation.stats import LEVEL, RESAMPLES, SEED, _draws, benjamini_hochberg
@@ -156,7 +157,7 @@ class Inputs:
 
 
 def _missing(*names: str) -> dict[str, Any]:
-    return {"tested": False, "verdict": "not tested", "detail": f"not produced: {', '.join(names)}"}
+    return {"tested": False, "held": None, "verdict": verdict(None), "detail": f"not produced: {', '.join(names)}"}
 
 
 def h1(x: Inputs) -> dict[str, Any]:
@@ -243,7 +244,8 @@ def run(root: Path) -> dict[str, Any]:
             bh = family[name]
             extra = f.get("condition", {}).get("at_most_a_quarter", True)
             entry["adjusted"] = bh["adjusted"]
-            entry["verdict"] = "held" if bh["rejected"] and extra else "not held"
+            entry["held"] = bool(bh["rejected"] and extra)
+            entry["verdict"] = verdict(entry["held"])
         out[name] = entry
     (root / RESULTS).parent.mkdir(parents=True, exist_ok=True)
     (root / RESULTS).write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")

@@ -84,7 +84,7 @@ def test_an_undefined_ratio_counts_against_the_hypothesis() -> None:
 def test_nothing_produced_yet_leaves_every_hypothesis_untested_and_says_why(tmp_path: Path) -> None:
     out = hypotheses.run(_root(tmp_path))
     assert set(out) == {"H1", "H2", "H3", "H4", "H5"}
-    assert all(h["verdict"] == "not tested" for h in out.values())
+    assert all(h["verdict"] == "not measured" and h["held"] is None for h in out.values())
     assert "M4" in out["H1"]["detail"] and "honest" in out["H4"]["detail"]
     assert json.loads((tmp_path / hypotheses.RESULTS).read_text())["H3"]["statement"].startswith("the random")
 
@@ -97,7 +97,7 @@ def test_sft_then_grpo_beating_sft_alone_holds_and_the_others_wait(tmp_path: Pat
     h1 = out["H1"]
     assert h1["tested"] and math.isclose(h1["point"], 25 / 60) and h1["verdict"] == "held"
     assert h1["adjusted"] <= 0.05 and h1["low"] > 0
-    assert out["H2"]["verdict"] == "not tested"
+    assert out["H2"]["verdict"] == "not measured"
 
 
 def test_a_cheap_method_that_reaches_half_the_gain_still_needs_its_compute_condition(tmp_path: Path) -> None:
@@ -109,7 +109,7 @@ def test_a_cheap_method_that_reaches_half_the_gain_still_needs_its_compute_condi
     (root / "results" / "methods.json").write_text(json.dumps(compute))
     h5 = hypotheses.run(root)["H5"]
     assert h5["tested"] and h5["condition"]["at_most_a_quarter"] is False
-    assert h5["verdict"] == "not held", "the accuracy half holds; the compute half does not"
+    assert h5["verdict"] == "did not hold", "the accuracy half holds; the compute half does not"
 
 
 def test_a_ratio_over_no_gain_is_reported_as_undefined_not_as_infinity(tmp_path: Path) -> None:
@@ -129,5 +129,5 @@ def test_a_ratio_over_no_gain_is_reported_as_undefined_not_as_infinity(tmp_path:
         out = h.run(root)
     finally:
         h.TESTS["H3"] = original
-    assert out["H3"]["point"] is None and "undefined" in out["H3"]["detail"] and out["H3"]["verdict"] == "not held"
+    assert out["H3"]["point"] is None and "undefined" in out["H3"]["detail"] and out["H3"]["verdict"] == "did not hold"
     assert "Infinity" not in (root / h.RESULTS).read_text() and _json.loads((root / h.RESULTS).read_text())

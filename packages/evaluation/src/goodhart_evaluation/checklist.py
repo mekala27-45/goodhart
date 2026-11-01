@@ -233,7 +233,7 @@ def line_11(root: Path) -> tuple[bool, str]:
         gaps.append(f"held-out grades for {5 - len(graded)} of five methods")
     elif len(with_k) < 5:
         gaps.append("pass at 16 for every method")
-    tested = [h for h, v in (hyps or {}).items() if v.get("verdict") in {"held", "not held"}]
+    tested = [h for h, v in (hyps or {}).items() if v.get("verdict") in {"held", "did not hold"}]
     if not hyps or len(tested) < len(hyps):
         gaps.append("every hypothesis tested")
     if not interior:
