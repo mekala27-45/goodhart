@@ -1,6 +1,14 @@
 {
  "about": "Spider dev (Yu et al., 2018; CC BY-SA 4.0) with the distilled test suite databases (Zhong et al., 2020), and the test suite evaluation (Apache 2.0) at one commit. The spider workflow fetches the data from its sources by digest and publishes only what the evaluation of Spider dev reads to the data release; goodhart spider --fetch reads that asset and the evaluation's two files into the cache, each checked against this lock. Neither goes into git.",
- "asset": null,
+ "asset": {
+  "bytes": 832603712,
+  "databases": 695,
+  "name": "spider_dev.tar.gz",
+  "questions": 1034,
+  "release": "data",
+  "sha256": "f4e89541d6a36361c61a00f7155a4b5bc2a2554f88b89d806211b17c18c085f4",
+  "test_suite": true
+ },
  "evaluation": {
   "commit": "e97acc546ecbee8fa27fa8dbf025ef61493a876c",
   "files": {
@@ -18,8 +26,10 @@
    "url": "https://huggingface.co/datasets/HAL-9001/spider-databases/resolve/main/spider_data.zip"
   },
   "test_suite": {
+   "bytes": 1269456098,
    "drive_id": "1mkCx2GOFIqNesD4y8TDAO1yX1QZORP5w",
-   "sha256": null
+   "recorded_on": "2026-11-01",
+   "sha256": "9ec24ea8debc6bd04abfe137b5f1a739b5a8836f32c0464e4dfc94eb7f41da96"
   }
  }
 }

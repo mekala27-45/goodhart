@@ -289,3 +289,13 @@ def test_the_regression_suite_reports_each_method_against_the_base(tmp_path: Pat
     assert out["spider"]["M1"]["change"]["point"] == 0.5 and "change" not in out["spider"]["M0"]
     assert out["ifeval"]["M1"]["change"]["verdict"] in {"hurt", "no measurable change"}
     assert json.loads((tmp_path / regression.RESULTS).read_text())["metric"]["spider"].startswith("test suite")
+
+
+def test_the_lock_pins_the_evaluation_the_sources_and_the_published_asset() -> None:
+    lock = json.loads((ROOT / spider.LOCK).read_text(encoding="utf-8"))
+    assert len(lock["evaluation"]["commit"]) == 40 and set(lock["evaluation"]["files"]) == {"exec_eval.py", "parse.py"}
+    assert all(len(d) == 64 for d in lock["evaluation"]["files"].values())
+    assert len(lock["sources"]["spider"]["sha256"]) == 64 and len(lock["sources"]["test_suite"]["sha256"]) == 64
+    asset = lock["asset"]
+    assert asset["release"] == "data" and len(asset["sha256"]) == 64 and asset["test_suite"] is True
+    assert asset["questions"] == 1034
