@@ -225,6 +225,10 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     plan = [(name, "sampled") for name in hp.get("sampled_sets", [])] + [
         (name, "greedy") for name in hp.get("greedy_sets", [])
     ]
+    # A benchmark that is not SQL (IFEval) is asked as itself: no SQL examples before it, and its own
+    # length (IFEval answers run to an essay; the reference setting is 1,280 new tokens).
+    plain = set(hp.get("plain_sets", ["ifeval"]))
+    lengths = dict(hp.get("max_new_tokens_by_set", {"ifeval": 1280}))
     for name, how in plan:
         if meter.over_ceiling(0.05):
             break
@@ -236,7 +240,9 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
             n, temperature = 1, 0.0
             length = int(hp.get("greedy_max_new_tokens", hp["max_new_tokens"]))
             path = out / "completions" / f"{name}__{checkpoint}__greedy.jsonl"
-        (got_s,) = _run(backend, [Job(messages_for(prompts, examples), n, temperature, length, req.seed)], meter)
+        length = int(lengths.get(name, length))
+        asked = messages_for(prompts, [] if name in plain else examples)
+        (got_s,) = _run(backend, [Job(asked, n, temperature, length, req.seed)], meter)
         got = completions(prompts, got_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter)
         write(got, path)
         written[f"{name}:{how}"] = len(got)

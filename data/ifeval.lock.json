@@ -1,0 +1,21 @@
+{
+ "about": "IFEval (Zhou et al., 2023): the prompts and the reference checker from google-research at one commit, and nltk's punkt tokenizer the checker loads, each fetched by sha256 into the cache and never vendored. Apache 2.0.",
+ "google_research": {
+  "commit": "83f1e7b59e762648c953de751d31f75720683622",
+  "files": {
+   "data/input_data.jsonl": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+   "evaluation_lib.py": "35decc06000718487f44d7deafa6d3f48a8ec0886281edf40162c0265b7d248c",
+   "instructions.py": "60e086f5342a03ce8e18b64bbcccf86308f523c08aa826707a562150a52f3edf",
+   "instructions_registry.py": "ec92d72c264f6d906978613085db262356174300370a3fffe6fefd5969ce9cfc",
+   "instructions_util.py": "a73797261eee5bf447e279d82a2b700b1bdd3cb1193412dbab1270a85832bc6b"
+  },
+  "path": "instruction_following_eval",
+  "repository": "https://github.com/google-research/google-research"
+ },
+ "punkt": {
+  "commit": "550b6625bcef1f2abff2ff770a5a0d272c9c6b2a",
+  "path": "packages/tokenizers/punkt.zip",
+  "repository": "https://github.com/nltk/nltk_data",
+  "sha256": "51c3078994aeaf650bfc8e028be4fb42b4a0d177d41c012b6a983979653660ec"
+ }
+}

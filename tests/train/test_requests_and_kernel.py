@@ -169,7 +169,9 @@ def test_the_collector_redacts_diagnostics_and_never_edits_a_model_output(
     assert collect_run.is_model_output("smoke_vllm_rollouts.jsonl") and not collect_run.is_model_output("probe.json")
 
 
-def test_weights_go_to_the_release_whatever_their_size(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_weights_and_ifeval_answers_go_to_the_release_whatever_their_size(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     import collect_run
     from goodhart_core.hashing import sha256_file
 
@@ -178,13 +180,23 @@ def test_weights_go_to_the_release_whatever_their_size(tmp_path: Path, monkeypat
     kept.mkdir(parents=True)
     (kept / "adapter_model.safetensors").write_bytes(b"\x00" * 64)
     (kept / "adapter_config.json").write_text('{"r": 16}\n', encoding="utf-8")
+    (out / "completions").mkdir()
+    (out / "completions" / "ifeval__final__greedy.jsonl").write_text('{"text": "a letter"}\n', encoding="utf-8")
     prov = json.loads((out / "provenance-kernel.json").read_text(encoding="utf-8"))
-    for rel in ("adapters/step-25/adapter_model.safetensors", "adapters/step-25/adapter_config.json"):
+    rels = (
+        "adapters/step-25/adapter_model.safetensors",
+        "adapters/step-25/adapter_config.json",
+        "completions/ifeval__final__greedy.jsonl",
+    )
+    for rel in rels:
         prov["outputs"][rel] = sha256_file(out / rel)
     (out / "provenance-kernel.json").write_text(json.dumps(prov), encoding="utf-8")
     monkeypatch.setattr(collect_run, "ROOT", tmp_path)
     got = collect_run.collect("2026-10-31-99-probe", tmp_path / "out", "u/k", "complete", "1", upload=False)
-    assert set(got["assets"]) == {"adapters/step-25/adapter_model.safetensors"}
+    assert set(got["assets"]) == {
+        "adapters/step-25/adapter_model.safetensors",
+        "completions/ifeval__final__greedy.jsonl",
+    }, "weights and IFEval answers go to the release"
     assert got["assets"]["adapters/step-25/adapter_model.safetensors"]["bytes"] == 64
     assert "adapters/step-25/adapter_config.json" in got["files"]
     assert not (

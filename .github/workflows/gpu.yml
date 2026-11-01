@@ -114,7 +114,10 @@ jobs:
           PY
       - name: Build the bundle and the kernel
         if: ${{ !inputs.collect_only }}
-        run: uv run --no-sync python scripts/build_kernel.py --request "requests/${REQUEST}.json" --user "$KAGGLE_USERNAME" --repo "$GITHUB_REPOSITORY" --tag bundles
+        run: |
+          # The IFEval prompts live in the cache, fetched by digest; a sample request may read them.
+          uv run --no-sync goodhart ifeval --fetch > /dev/null
+          uv run --no-sync python scripts/build_kernel.py --request "requests/${REQUEST}.json" --user "$KAGGLE_USERNAME" --repo "$GITHUB_REPOSITORY" --tag bundles
       - name: Upload the bundle
         if: ${{ !inputs.collect_only }}
         run: |

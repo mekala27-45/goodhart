@@ -33,6 +33,15 @@ smoke = [
   "datasets==5.1.0",
   "accelerate==1.15.0",
 ]
+# The instruction following regression: Google's IFEval checker, fetched by digest at its pinned
+# commit (data/ifeval.lock.json), imports these. nltk 3.8.1 is the last release that loads punkt the
+# way the checker asks.
+ifeval = [
+  "absl-py>=2.1",
+  "langdetect>=1.0.9",
+  "nltk==3.8.1",
+  "immutabledict>=4.2",
+]
 # The readback no model floor, imported at its pinned commit and never vendored.
 floor = [
   "readback-core @ git+https://github.com/mekala27-45/readback@c4efff35b8ec24f9f80cef7736cc5bf11334ddb4#subdirectory=packages/core",
@@ -125,6 +134,7 @@ markers = [
   "browser: needs Playwright and a browser",
   "loadtest: needs a running server",
   "floor: needs the floor extra (readback at its pinned commit)",
+  "ifeval: needs the ifeval extra and Google's checker fetched (goodhart ifeval --fetch)",
 ]
 # importlib mode leaves sys.path alone, for the same reason the root is virtual.
 addopts = "-q --import-mode=importlib"

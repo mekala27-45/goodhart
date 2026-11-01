@@ -44,11 +44,20 @@ def _have_floor() -> bool:
     return importlib.util.find_spec("readback_planner") is not None
 
 
+def _have_ifeval() -> bool:
+    """The ifeval extra installed and Google's checker fetched (goodhart ifeval --fetch)."""
+    if importlib.util.find_spec("nltk") is None or importlib.util.find_spec("langdetect") is None:
+        return False
+    cache = ROOT / "data" / "cache" / "ifeval"
+    return any(cache.glob("*/instruction_following_eval/evaluation_lib.py")) if cache.exists() else False
+
+
 AVAILABLE = {
     "torch": _have_torch,
     "warehouses": _have_warehouses,
     "postgres": _have_postgres,
     "floor": _have_floor,
+    "ifeval": _have_ifeval,
 }
 
 

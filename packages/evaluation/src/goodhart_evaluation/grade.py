@@ -55,7 +55,8 @@ def sources(root: Path) -> list[Source]:
     runs = root / "results" / "runs"
     out = []
     for path in sorted(runs.glob("*/completions/*.jsonl")) if runs.exists() else []:
-        if path.name.startswith("paraphrase__"):
+        # The teacher's rewrites are graded by goodhart paraphrases, IFEval by its own checker.
+        if path.name.startswith(("paraphrase__", "ifeval__")):
             continue
         out.append(Source(run=path.parents[1].name, path=path))
     return out

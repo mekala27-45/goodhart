@@ -95,7 +95,12 @@ def stage_files(req: Request, root: Path) -> tuple[dict[str, bytes], dict[str, s
     if req.stage == "sample":
         for name in [*hp.get("sampled_sets", []), *hp.get("greedy_sets", [])]:
             path = q / "prompts" / f"{name}.jsonl"
-            if not path.exists():
+            if name == "ifeval":
+                # Written into the cache by goodhart ifeval --fetch, never into git (see ifeval.py).
+                from goodhart_evaluation.ifeval import benchmark
+
+                path = benchmark(root)
+            elif not path.exists():
                 path = root / "data" / "benchmarks" / f"{name}.jsonl"
             add(f"data/prompts/{name}.jsonl", path)
     if req.stage == "judge":

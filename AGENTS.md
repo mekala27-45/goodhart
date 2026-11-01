@@ -12,6 +12,8 @@ uv sync --frozen            # Python 3.12, the workspace and the dev tools
 make hooks                  # the pre-push hook: token and identifier scans on every pushed commit
 make fetch                  # the warehouses and the readback files, by sha256, into data/cache
 uv run goodhart twins       # the four kept twins, rebuilt from data/twins.lock.json, every file checked
+uv sync --frozen --inexact --extra floor --extra ifeval   # readback's floor, Google's IFEval checker
+uv run goodhart ifeval --fetch   # the IFEval prompts and checker and nltk's punkt, by sha256
 ```
 
 The trainers need the smoke extra on CPU (`uv pip install` CPU PyTorch, then the pinned TRL stack,
@@ -29,7 +31,8 @@ uv run goodhart grade --check   # every exported completion graded again
 python scripts/promote_results.py --check   # every promoted GPU run matches its provenance
 ```
 
-CI runs all of it with `GOODHART_REQUIRE=postgres,warehouses,torch`, so a skip there is a failure.
+CI runs all of it with `GOODHART_REQUIRE=postgres,warehouses,torch,floor,ifeval`, so a skip there
+is a failure.
 Coverage counts every module of every package and must stay at or above 80 percent.
 
 ## How work flows

@@ -35,6 +35,9 @@ SIZE_LIMIT = 40_000_000
 # Weights never go into git, whatever their size: a LoRA adapter of a small model can be under the
 # size limit, and a run keeps one for every checkpoint.
 WEIGHTS = (".safetensors", ".bin", ".pt", ".pth")
+# Nor do IFEval answers: an answer to a prompt that asks for a cover letter may invent a phone
+# number or an email, and an answer is graded as written (goodhart_evaluation.ifeval).
+RELEASE_ONLY = ("completions/ifeval__",)
 SKIP = ("trainer/", "smoke_trainer/")
 MODEL_OUTPUTS = ("completions/",)
 
@@ -111,7 +114,7 @@ def collect(request: str, output: Path, kernel: str, status: str, run_id: str, u
             if any(rel.startswith(s) for s in SKIP):
                 continue
             digest = sha256_file(path)
-            if path.stat().st_size > SIZE_LIMIT or rel.endswith(WEIGHTS):
+            if path.stat().st_size > SIZE_LIMIT or rel.endswith(WEIGHTS) or rel.startswith(RELEASE_ONLY):
                 name = f"{request}__{rel.replace('/', '__')}"
                 assets[rel] = {
                     "sha256": digest,

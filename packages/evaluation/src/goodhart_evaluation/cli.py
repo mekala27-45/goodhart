@@ -100,6 +100,17 @@ def floor() -> None:
 
 
 @app.command()
+def ifeval(
+    fetch: bool = typer.Option(False, "--fetch", help="Fetch the checker and the prompts by digest instead of grading"),
+) -> None:
+    """Grade every exported IFEval completion with Google's reference checker; or fetch it."""
+    from goodhart_evaluation import ifeval as ife
+
+    out = ife.fetch(paths.root()) if fetch else ife.run(paths.root())
+    typer.echo(json.dumps(out, indent=1))
+
+
+@app.command()
 def grade(
     check: bool = typer.Option(False, help="Compare with the committed grades instead of writing"),
 ) -> None:
