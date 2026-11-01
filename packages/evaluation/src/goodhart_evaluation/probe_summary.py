@@ -62,6 +62,13 @@ def summarize(probes: list[tuple[str, dict[str, Any]]], plan: dict[str, Any]) ->
                 "lora_step": c.get("lora_step"),
                 "tokens_per_second": c.get("tokens_per_second"),
                 "steps_per_hour_estimate": c.get("steps_per_hour_estimate"),
+                "decode_ms_per_step": (c.get("decode") or {}).get("decode_ms_per_step"),
+                "prefill_seconds": (c.get("decode") or {}).get("prefill_seconds"),
+                "train_seconds_per_sequence": c.get("train_seconds_per_sequence"),
+                "train_micro_batch": c.get("train_micro_batch"),
+                "training_peak_bytes": c.get("training_peak_bytes"),
+                "generation_peak_bytes": c.get("generation_peak_bytes"),
+                "own_generation_config": c.get("own_generation_config"),
                 "why_not": None if passes(c) else (c.get("error") or c.get("generation_error") or c.get("lora_error")),
             }
         )
@@ -71,7 +78,23 @@ def summarize(probes: list[tuple[str, dict[str, Any]]], plan: dict[str, Any]) ->
         "gpus": gpus,
         "image": {k: last.get("environment", {}).get(k) for k in ("python", "cuda", "packages")},
         "generation_backend": last.get("generation_backend", "transformers"),
-        "vllm": last.get("vllm"),
+        # The frozen package list stays in the run's own probe.json; the summary keeps what decided.
+        "vllm": {k: v for k, v in (last.get("vllm") or {}).items() if k not in {"freeze", "attempts"}},
+        "vllm_attempts": [
+            {
+                "source": (a.get("install") or {}).get("source"),
+                "installed": (a.get("install") or {}).get("installed"),
+                "generates": (a.get("generation") or {}).get("works"),
+                "generates_eager": (a.get("generation_eager") or {}).get("works"),
+            }
+            for a in (last.get("vllm") or {}).get("attempts", [])
+            if isinstance(a, dict) and "install" in a
+        ],
+        "grpo_smokes": {
+            k: {kk: v.get(kk) for kk in ("ok", "steps_per_hour", "seconds_per_step_after_the_first", "error")}
+            for k, v in (last.get("grpo_smokes") or {}).items()
+        },
+        "driver": last.get("environment", {}).get("driver"),
         "candidates": candidates,
         "grpo_smoke": smoke,
         "projected_hours": quota,
