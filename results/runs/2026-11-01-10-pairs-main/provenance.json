@@ -1,0 +1,81 @@
+{
+ "request": "2026-11-01-10-pairs-main",
+ "request_sha256": "8817de97f52ee5920cc0793758ffaad40cff90ed87208c655f676f11dd6a489c",
+ "kernel": "mekalaajay/goodhart-2026-11-01-10-pairs-main",
+ "run_id": "41322092067",
+ "commit": "08c262a5ef6859a19b9073f7d243a1f8a3bb1013",
+ "status": "done",
+ "verified": true,
+ "files": {
+  "completions/train__start__n8.jsonl": "7a7e8495e041dfdfc510517e39abea366a202cafb3ee750ddc8434a6f63c72ef",
+  "ledger.jsonl": "414cee3c0801c26c3b76784ba3839b750e2535569b71a1fea8c1674aaeb2e1a2",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.err.txt": "62dc2097318a3609e86356410848950f02f711f606f83e5f416aa765f38a5b6e",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.out.txt": "09760204d9d8eb6baeab5874d82566494a489fa89bf59b1b88929d7e82b136ae",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.err.txt": "27b2e83dc553bd4f84e0ff431deb775f5889f11ce4a5509deedf23247679e79d",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.out.txt": "68422b5b06b16942b663387b5b45b32d14987faa0a3adcc04b413833e8a8adff",
+  "provenance-kernel.json": "fc2451094d013e1b9ad39decd9859d5d7ea61cb51d98f30ae694cf55609abe43"
+ },
+ "redacted": {},
+ "assets": {},
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "300",
+     "power.limit": "70.00",
+     "temperature.gpu": "56"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "855",
+     "power.limit": "70.00",
+     "temperature.gpu": "70"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "summary": {
+  "prompts": 2416,
+  "completions": 19328
+ },
+ "error": null
+}
