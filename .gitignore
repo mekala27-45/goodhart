@@ -15,7 +15,8 @@ web/.next/
 web/out/
 web/test-results/
 web/playwright-report/
-logs/
+# Only the root folder: a GPU run's logs under results/runs/<id>/logs are part of its record.
+/logs/
 .cache/
 *.egg-info/
 build/kernels/

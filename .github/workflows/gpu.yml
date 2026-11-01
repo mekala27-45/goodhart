@@ -169,16 +169,33 @@ jobs:
           git config user.email "goodhart-gpu@users.noreply.github.com"
           uv run --no-sync python scripts/collect_run.py --request "${REQUEST}" --output "out/${REQUEST}" \
             --kernel "$SLUG" --status "$STATUS" --run-id "$GITHUB_RUN_ID"
-          # The branch starts from main as it is now, so it differs from main by the results alone: a
+          # A new branch starts from main as it is now, so it differs from main by the results alone: a
           # branch cut from an older commit would carry older workflow files, which GitHub refuses to
-          # let the workflow token push. The provenance already names the commit the kernel ran.
+          # let the workflow token push. The provenance already names the commit the kernel ran. When
+          # the branch exists (a run collected again), the results go on top of it as a new commit: a
+          # pushed branch is never rewritten, and its open pull request picks the commit up.
           git fetch -q origin main
-          git checkout -q -B "gpu/${REQUEST}" origin/main
-          git add "results/runs/${REQUEST}"
-          git commit -q -m "results(${REQUEST}): kernel output, checked by digest" -m "Run ${GITHUB_RUN_ID} of the gpu workflow."
-          git push origin "gpu/${REQUEST}"
+          if git ls-remote --exit-code --heads origin "gpu/${REQUEST}" >/dev/null 2>&1; then
+            mv "results/runs/${REQUEST}" "${RUNNER_TEMP}/collected-${REQUEST}"
+            git fetch -q origin "gpu/${REQUEST}"
+            git checkout -q -B "gpu/${REQUEST}" FETCH_HEAD
+            rm -rf "results/runs/${REQUEST}"
+            mkdir -p results/runs
+            mv "${RUNNER_TEMP}/collected-${REQUEST}" "results/runs/${REQUEST}"
+          else
+            git checkout -q -B "gpu/${REQUEST}" origin/main
+          fi
+          git add -A "results/runs/${REQUEST}"
+          if git diff --cached --quiet; then
+            echo "::notice::gpu/${REQUEST} already holds these results"
+          else
+            git commit -q -m "results(${REQUEST}): kernel output, checked by digest" -m "Run ${GITHUB_RUN_ID} of the gpu workflow."
+            git push origin "gpu/${REQUEST}"
+          fi
       - name: Open a pull request for review
         run: |
+          open=$(gh pr list --head "gpu/${REQUEST}" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$open" ]; then echo "::notice::pull request #${open} holds gpu/${REQUEST}"; exit 0; fi
           body=$(python3 scripts/pr_body.py "results/runs/${REQUEST}")
           if ! gh pr create --base main --head "gpu/${REQUEST}" --title "results: ${REQUEST}" --body "$body"; then
             echo "::warning::Actions could not open a pull request. The outputs are on branch gpu/${REQUEST}. Settings, Actions, General: allow GitHub Actions to create and approve pull requests."
