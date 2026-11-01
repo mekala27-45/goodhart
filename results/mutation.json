@@ -1,0 +1,328 @@
+{
+ "kept_twins": [
+  "twin-14",
+  "twin-00",
+  "twin-03",
+  "twin-10"
+ ],
+ "candidates": [
+  "twin-00",
+  "twin-01",
+  "twin-02",
+  "twin-03",
+  "twin-04",
+  "twin-05",
+  "twin-06",
+  "twin-07",
+  "twin-08",
+  "twin-09",
+  "twin-10",
+  "twin-11",
+  "twin-12",
+  "twin-13",
+  "twin-14",
+  "twin-15"
+ ],
+ "test": [
+  {
+   "family": "comparison",
+   "mutants": 760,
+   "equivalent": 217,
+   "not_executed": 67,
+   "honest_paid_full": 1,
+   "lenient_paid": 230,
+   "twin_confirmed": 0,
+   "scored": 543
+  },
+  {
+   "family": "lookup",
+   "mutants": 495,
+   "equivalent": 77,
+   "not_executed": 0,
+   "honest_paid_full": 6,
+   "lenient_paid": 6,
+   "twin_confirmed": 0,
+   "scored": 418
+  },
+  {
+   "family": "multi",
+   "mutants": 940,
+   "equivalent": 67,
+   "not_executed": 71,
+   "honest_paid_full": 164,
+   "lenient_paid": 386,
+   "twin_confirmed": 22,
+   "scored": 873
+  },
+  {
+   "family": "top_k",
+   "mutants": 589,
+   "equivalent": 176,
+   "not_executed": 36,
+   "honest_paid_full": 51,
+   "lenient_paid": 215,
+   "twin_confirmed": 32,
+   "scored": 413
+  },
+  {
+   "family": "trend",
+   "mutants": 548,
+   "equivalent": 115,
+   "not_executed": 34,
+   "honest_paid_full": 0,
+   "lenient_paid": 300,
+   "twin_confirmed": 0,
+   "scored": 433
+  },
+  {
+   "family": "all",
+   "mutants": 3332,
+   "equivalent": 652,
+   "not_executed": 208,
+   "honest_paid_full": 222,
+   "lenient_paid": 1137,
+   "twin_confirmed": 54,
+   "scored": 2680
+  }
+ ],
+ "in_sample": [
+  {
+   "family": "comparison",
+   "mutants": 900,
+   "equivalent": 259,
+   "not_executed": 79,
+   "honest_paid_full": 1,
+   "lenient_paid": 264,
+   "twin_confirmed": 0,
+   "scored": 641
+  },
+  {
+   "family": "lookup",
+   "mutants": 401,
+   "equivalent": 69,
+   "not_executed": 0,
+   "honest_paid_full": 7,
+   "lenient_paid": 7,
+   "twin_confirmed": 1,
+   "scored": 332
+  },
+  {
+   "family": "multi",
+   "mutants": 1361,
+   "equivalent": 108,
+   "not_executed": 109,
+   "honest_paid_full": 236,
+   "lenient_paid": 519,
+   "twin_confirmed": 18,
+   "scored": 1253
+  },
+  {
+   "family": "top_k",
+   "mutants": 577,
+   "equivalent": 178,
+   "not_executed": 39,
+   "honest_paid_full": 38,
+   "lenient_paid": 203,
+   "twin_confirmed": 23,
+   "scored": 399
+  },
+  {
+   "family": "trend",
+   "mutants": 619,
+   "equivalent": 150,
+   "not_executed": 42,
+   "honest_paid_full": 0,
+   "lenient_paid": 344,
+   "twin_confirmed": 0,
+   "scored": 469
+  },
+  {
+   "family": "all",
+   "mutants": 3858,
+   "equivalent": 764,
+   "not_executed": 269,
+   "honest_paid_full": 282,
+   "lenient_paid": 1337,
+   "twin_confirmed": 42,
+   "scored": 3094
+  }
+ ],
+ "by_operator_test": {
+  "change a group key": {
+   "mutants": 208,
+   "honest_paid_full": 0,
+   "lenient_paid": 0,
+   "twin_confirmed": 0
+  },
+  "change a limit": {
+   "mutants": 106,
+   "honest_paid_full": 0,
+   "lenient_paid": 106,
+   "twin_confirmed": 0
+  },
+  "drop a predicate": {
+   "mutants": 658,
+   "honest_paid_full": 36,
+   "lenient_paid": 303,
+   "twin_confirmed": 4,
+   "equivalent": 109
+  },
+  "flip a comparison": {
+   "mutants": 56,
+   "honest_paid_full": 0,
+   "lenient_paid": 0,
+   "twin_confirmed": 0
+  },
+  "flip an order": {
+   "equivalent": 267,
+   "mutants": 87,
+   "honest_paid_full": 34,
+   "lenient_paid": 34,
+   "twin_confirmed": 7
+  },
+  "replace an entity with its neighbor": {
+   "mutants": 363,
+   "honest_paid_full": 5,
+   "lenient_paid": 162,
+   "twin_confirmed": 0
+  },
+  "shift a period by one": {
+   "mutants": 916,
+   "honest_paid_full": 127,
+   "lenient_paid": 498,
+   "twin_confirmed": 40,
+   "equivalent": 10
+  },
+  "swap an aggregate": {
+   "mutants": 286,
+   "honest_paid_full": 20,
+   "lenient_paid": 34,
+   "twin_confirmed": 3,
+   "equivalent": 266
+  }
+ },
+ "equivalent_examples": [
+  {
+   "item": "g-comparison-01bd57756a",
+   "operator": "flip an order",
+   "sql": "SELECT airport AS label, SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE airport IN ('LGA', 'LAS') AND YEAR(flight_date) = 2015 GROUP BY airport ORDER BY value ASC, label"
+  },
+  {
+   "item": "g-comparison-01bd57756a",
+   "operator": "flip an order",
+   "sql": "SELECT airport AS label, SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE airport IN ('LGA', 'LAS') AND YEAR(flight_date) = 2015 GROUP BY airport ORDER BY value DESC, label DESC"
+  },
+  {
+   "item": "g-comparison-04a964548d",
+   "operator": "flip an order",
+   "sql": "SELECT carrier AS label, SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier IN ('B6', 'MQ') AND year = 2019 GROUP BY carrier ORDER BY value ASC, label"
+  },
+  {
+   "item": "g-comparison-04a964548d",
+   "operator": "flip an order",
+   "sql": "SELECT carrier AS label, SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier IN ('B6', 'MQ') AND year = 2019 GROUP BY carrier ORDER BY value DESC, label DESC"
+  },
+  {
+   "item": "g-comparison-071200e2a6",
+   "operator": "flip an order",
+   "sql": "SELECT airport AS label, SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport IN ('CLT', 'PDX') AND YEAR(flight_date) = 2022 GROUP BY airport ORDER BY value ASC, label"
+  },
+  {
+   "item": "g-comparison-071200e2a6",
+   "operator": "flip an order",
+   "sql": "SELECT airport AS label, SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport IN ('CLT', 'PDX') AND YEAR(flight_date) = 2022 GROUP BY airport ORDER BY value DESC, label DESC"
+  },
+  {
+   "item": "g-comparison-0748ae357f",
+   "operator": "flip an order",
+   "sql": "SELECT carrier AS label, SUM(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier IN ('MQ', 'NK') AND year = 2024 GROUP BY carrier ORDER BY value ASC, label"
+  },
+  {
+   "item": "g-comparison-0748ae357f",
+   "operator": "flip an order",
+   "sql": "SELECT carrier AS label, SUM(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier IN ('MQ', 'NK') AND year = 2024 GROUP BY carrier ORDER BY value DESC, label DESC"
+  },
+  {
+   "item": "g-comparison-08c3474799",
+   "operator": "drop a predicate",
+   "sql": "SELECT cbsa_title AS label, 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE year = 2022 AND cbsa_title IN ('Augusta-Richmond County, GA-SC', 'Beaumont-Port Arthur, TX') GROUP BY cbsa_title ORDER BY value DESC, label"
+  },
+  {
+   "item": "g-comparison-08c3474799",
+   "operator": "swap an aggregate",
+   "sql": "SELECT cbsa_title AS label, 100 * MIN(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Augusta-Richmond County, GA-SC', 'Beaumont-Port Arthur, TX') AND year = 2022 GROUP BY cbsa_title ORDER BY value DESC, label"
+  },
+  {
+   "item": "g-comparison-08c3474799",
+   "operator": "flip an order",
+   "sql": "SELECT cbsa_title AS label, 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Augusta-Richmond County, GA-SC', 'Beaumont-Port Arthur, TX') AND year = 2022 GROUP BY cbsa_title ORDER BY value ASC, label"
+  },
+  {
+   "item": "g-comparison-08c3474799",
+   "operator": "flip an order",
+   "sql": "SELECT cbsa_title AS label, 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Augusta-Richmond County, GA-SC', 'Beaumont-Port Arthur, TX') AND year = 2022 GROUP BY cbsa_title ORDER BY value DESC, label DESC"
+  }
+ ],
+ "paid_not_confirmed_examples": [
+  {
+   "item": "g-comparison-fe1c2fede2",
+   "operator": "shift a period by one",
+   "sql": "SELECT cbsa_title AS label, MAX(price_to_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Augusta-Richmond County, GA-SC', 'Madison, WI') AND year = 2012 GROUP BY cbsa_title ORDER BY value DESC, label"
+  },
+  {
+   "item": "g-lookup-0e863fff30",
+   "operator": "drop a predicate",
+   "sql": "SELECT MAX(precision) AS value FROM ledger.f05_rule_scorecard"
+  },
+  {
+   "item": "g-lookup-0e863fff30",
+   "operator": "replace an entity with its neighbor",
+   "sql": "SELECT MAX(precision) AS value FROM ledger.f05_rule_scorecard WHERE rule = 'rapid_movement'"
+  },
+  {
+   "item": "g-lookup-464d06b8da",
+   "operator": "shift a period by one",
+   "sql": "SELECT SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport = 'DTW' AND YEAR(flight_date) = 2016"
+  },
+  {
+   "item": "g-lookup-b3fc3d0357",
+   "operator": "drop a predicate",
+   "sql": "SELECT 100 * MAX(precision) AS value FROM ledger.f05_rule_scorecard"
+  },
+  {
+   "item": "g-lookup-b3fc3d0357",
+   "operator": "replace an entity with its neighbor",
+   "sql": "SELECT 100 * MAX(precision) AS value FROM ledger.f05_rule_scorecard WHERE rule = 'rapid_movement'"
+  },
+  {
+   "item": "g-lookup-e0597be7f7",
+   "operator": "shift a period by one",
+   "sql": "SELECT SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport = 'CLT' AND YEAR(flight_date) = 2018"
+  },
+  {
+   "item": "g-multi-0016b79d12",
+   "operator": "drop a predicate",
+   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE year BETWEEN 2008 AND 2016 AND cbsa_title = 'Cincinnati, OH-KY-IN' GROUP BY year) WHERE v > 2.8 ORDER BY label"
+  },
+  {
+   "item": "g-multi-0016b79d12",
+   "operator": "shift a period by one",
+   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2017 GROUP BY year) WHERE v > 2.8 ORDER BY label"
+  },
+  {
+   "item": "g-multi-0016b79d12",
+   "operator": "shift a period by one",
+   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2015 GROUP BY year) WHERE v > 2.8 ORDER BY label"
+  },
+  {
+   "item": "g-multi-0016b79d12",
+   "operator": "swap an aggregate",
+   "sql": "SELECT label FROM (SELECT year AS label, MIN(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2016 GROUP BY year) WHERE v > 2.8 ORDER BY label"
+  },
+  {
+   "item": "g-multi-0016b79d12",
+   "operator": "flip an order",
+   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2016 GROUP BY year) WHERE v > 2.8 ORDER BY label DESC"
+  }
+ ]
+}

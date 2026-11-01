@@ -1,0 +1,69 @@
+{
+ "thresholds": {
+  "ngram": 8,
+  "ngram_share": 0.5,
+  "cosine": 0.92
+ },
+ "checked": {
+  "test": 400,
+  "template_test": 160,
+  "readback_test": 84,
+  "readback_dev": 40
+ },
+ "exact": 0,
+ "tuple_overlap": 0,
+ "ngram_overlap": 2,
+ "near_duplicates": 6,
+ "template_neighbours_kept": 17,
+ "moved": [
+  "g-multi-5def566a72",
+  "g-multi-9eef8eae6e",
+  "g-multi-e37182e90f",
+  "g-top_k-58453f3e91",
+  "g-top_k-df08e726d6",
+  "g-top_k-fa55acf63c"
+ ],
+ "examples": {
+  "exact": [],
+  "tuple_overlap": [],
+  "ngram_overlap": [
+   [
+    "g-multi-e37182e90f",
+    "g-multi-473200f912",
+    0.538
+   ],
+   [
+    "g-top_k-fa55acf63c",
+    "g-top_k-e1fcb81ff5",
+    0.5
+   ]
+  ],
+  "near_duplicates": [
+   [
+    "g-multi-5def566a72",
+    "g-multi-d1f06cd4e5",
+    0.9275
+   ],
+   [
+    "g-multi-9eef8eae6e",
+    "g-multi-b50ef4ea1e",
+    0.9232
+   ],
+   [
+    "g-multi-e37182e90f",
+    "g-multi-473200f912",
+    0.945
+   ],
+   [
+    "g-top_k-58453f3e91",
+    "g-top_k-2ac10127a6",
+    0.9243
+   ],
+   [
+    "g-top_k-df08e726d6",
+    "g-top_k-b9ce167a33",
+    0.9416
+   ]
+  ]
+ }
+}
