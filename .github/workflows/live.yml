@@ -14,7 +14,7 @@ on:
         type: boolean
         default: false
       checkpoints:
-        description: "Checkpoint prefixes for parity, comma separated (for example base:,final)"
+        description: "Checkpoint prefixes for parity, comma separated: base for M0, then the champion's checkpoint name"
         required: false
       record_session:
         description: "Also record the desk's fallback session from the live API (each try is a real grade)"

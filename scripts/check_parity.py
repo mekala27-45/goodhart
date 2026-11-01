@@ -55,6 +55,13 @@ def main() -> int:
     parser.add_argument("--write", action="store_true")
     args = parser.parse_args()
     rows = completions(ROOT, args.checkpoint)
+    if not rows:
+        present = sorted({r["checkpoint"] for r in completions(ROOT, [])})
+        print(
+            f"no exported readback_test completion has a checkpoint starting with {args.checkpoint}; "
+            f"the checkpoints exported are {present}",
+            file=sys.stderr,
+        )
     repo = repository_verdicts(ROOT, rows)
     mismatches = []
     with httpx.Client(base_url=args.base, timeout=120.0, headers={"x-parity-key": args.parity_key}) as client:
