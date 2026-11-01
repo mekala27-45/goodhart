@@ -12,38 +12,38 @@
  },
  "distillation": {
   "caught_by_twin": {
-   "twin-00": 138,
-   "twin-01": 136,
-   "twin-02": 126,
-   "twin-03": 138,
-   "twin-04": 116,
-   "twin-05": 100,
-   "twin-06": 123,
-   "twin-07": 126,
-   "twin-08": 109,
-   "twin-09": 100,
-   "twin-10": 138,
-   "twin-11": 113,
-   "twin-12": 133,
-   "twin-13": 112,
-   "twin-14": 146,
-   "twin-15": 131
+   "twin-00": 50,
+   "twin-01": 65,
+   "twin-02": 60,
+   "twin-03": 55,
+   "twin-04": 74,
+   "twin-05": 62,
+   "twin-06": 47,
+   "twin-07": 47,
+   "twin-08": 65,
+   "twin-09": 63,
+   "twin-10": 55,
+   "twin-11": 69,
+   "twin-12": 77,
+   "twin-13": 92,
+   "twin-14": 66,
+   "twin-15": 54
   },
   "gains": [
-   146,
-   52,
-   25,
-   17
+   92,
+   24,
+   15,
+   8
   ],
   "items": 400,
-  "mutants": 3858,
-  "original_passing": 282
+  "mutants": 3846,
+  "original_passing": 167
  },
  "kept": [
-  "twin-14",
-  "twin-00",
-  "twin-03",
-  "twin-10"
+  "twin-13",
+  "twin-01",
+  "twin-12",
+  "twin-07"
  ],
  "readback_checkable": {
   "checkable": 96,

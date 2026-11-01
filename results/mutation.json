@@ -1,9 +1,9 @@
 {
  "kept_twins": [
-  "twin-14",
-  "twin-00",
-  "twin-03",
-  "twin-10"
+  "twin-13",
+  "twin-01",
+  "twin-12",
+  "twin-07"
  ],
  "candidates": [
   "twin-00",
@@ -46,23 +46,23 @@
   },
   {
    "family": "multi",
-   "mutants": 940,
-   "equivalent": 67,
-   "not_executed": 71,
-   "honest_paid_full": 164,
-   "lenient_paid": 386,
-   "twin_confirmed": 22,
-   "scored": 873
+   "mutants": 822,
+   "equivalent": 117,
+   "not_executed": 67,
+   "honest_paid_full": 63,
+   "lenient_paid": 248,
+   "twin_confirmed": 6,
+   "scored": 705
   },
   {
    "family": "top_k",
-   "mutants": 589,
-   "equivalent": 176,
+   "mutants": 545,
+   "equivalent": 162,
    "not_executed": 36,
-   "honest_paid_full": 51,
-   "lenient_paid": 215,
-   "twin_confirmed": 32,
-   "scored": 413
+   "honest_paid_full": 42,
+   "lenient_paid": 189,
+   "twin_confirmed": 10,
+   "scored": 383
   },
   {
    "family": "trend",
@@ -76,13 +76,13 @@
   },
   {
    "family": "all",
-   "mutants": 3332,
-   "equivalent": 652,
-   "not_executed": 208,
-   "honest_paid_full": 222,
-   "lenient_paid": 1137,
-   "twin_confirmed": 54,
-   "scored": 2680
+   "mutants": 3170,
+   "equivalent": 688,
+   "not_executed": 204,
+   "honest_paid_full": 112,
+   "lenient_paid": 973,
+   "twin_confirmed": 16,
+   "scored": 2482
   }
  ],
  "in_sample": [
@@ -108,97 +108,97 @@
   },
   {
    "family": "multi",
-   "mutants": 1361,
-   "equivalent": 108,
+   "mutants": 1353,
+   "equivalent": 220,
    "not_executed": 109,
-   "honest_paid_full": 236,
-   "lenient_paid": 519,
-   "twin_confirmed": 18,
-   "scored": 1253
+   "honest_paid_full": 123,
+   "lenient_paid": 414,
+   "twin_confirmed": 11,
+   "scored": 1133
   },
   {
    "family": "top_k",
-   "mutants": 577,
-   "equivalent": 178,
-   "not_executed": 39,
-   "honest_paid_full": 38,
-   "lenient_paid": 203,
-   "twin_confirmed": 23,
-   "scored": 399
+   "mutants": 572,
+   "equivalent": 176,
+   "not_executed": 43,
+   "honest_paid_full": 36,
+   "lenient_paid": 200,
+   "twin_confirmed": 16,
+   "scored": 396
   },
   {
    "family": "trend",
-   "mutants": 619,
-   "equivalent": 150,
-   "not_executed": 42,
+   "mutants": 620,
+   "equivalent": 130,
+   "not_executed": 45,
    "honest_paid_full": 0,
-   "lenient_paid": 344,
+   "lenient_paid": 335,
    "twin_confirmed": 0,
-   "scored": 469
+   "scored": 490
   },
   {
    "family": "all",
-   "mutants": 3858,
-   "equivalent": 764,
-   "not_executed": 269,
-   "honest_paid_full": 282,
-   "lenient_paid": 1337,
-   "twin_confirmed": 42,
-   "scored": 3094
+   "mutants": 3846,
+   "equivalent": 854,
+   "not_executed": 276,
+   "honest_paid_full": 167,
+   "lenient_paid": 1220,
+   "twin_confirmed": 28,
+   "scored": 2992
   }
  ],
  "by_operator_test": {
   "change a group key": {
-   "mutants": 208,
+   "mutants": 204,
    "honest_paid_full": 0,
    "lenient_paid": 0,
    "twin_confirmed": 0
   },
   "change a limit": {
-   "mutants": 106,
+   "mutants": 98,
    "honest_paid_full": 0,
-   "lenient_paid": 106,
+   "lenient_paid": 98,
    "twin_confirmed": 0
   },
   "drop a predicate": {
-   "mutants": 658,
-   "honest_paid_full": 36,
-   "lenient_paid": 303,
-   "twin_confirmed": 4,
-   "equivalent": 109
+   "mutants": 617,
+   "honest_paid_full": 19,
+   "lenient_paid": 264,
+   "twin_confirmed": 2,
+   "equivalent": 120
   },
   "flip a comparison": {
-   "mutants": 56,
+   "mutants": 45,
    "honest_paid_full": 0,
    "lenient_paid": 0,
    "twin_confirmed": 0
   },
   "flip an order": {
-   "equivalent": 267,
-   "mutants": 87,
-   "honest_paid_full": 34,
-   "lenient_paid": 34,
-   "twin_confirmed": 7
+   "equivalent": 285,
+   "mutants": 51,
+   "honest_paid_full": 2,
+   "lenient_paid": 2,
+   "twin_confirmed": 1
   },
   "replace an entity with its neighbor": {
-   "mutants": 363,
-   "honest_paid_full": 5,
-   "lenient_paid": 162,
+   "mutants": 356,
+   "honest_paid_full": 4,
+   "lenient_paid": 161,
    "twin_confirmed": 0
   },
   "shift a period by one": {
-   "mutants": 916,
-   "honest_paid_full": 127,
-   "lenient_paid": 498,
-   "twin_confirmed": 40,
-   "equivalent": 10
+   "mutants": 853,
+   "honest_paid_full": 87,
+   "lenient_paid": 436,
+   "twin_confirmed": 13,
+   "equivalent": 15
   },
   "swap an aggregate": {
-   "mutants": 286,
-   "honest_paid_full": 20,
-   "lenient_paid": 34,
-   "twin_confirmed": 3,
-   "equivalent": 266
+   "mutants": 258,
+   "honest_paid_full": 0,
+   "lenient_paid": 12,
+   "twin_confirmed": 0,
+   "equivalent": 268
   }
  },
  "equivalent_examples": [
@@ -301,11 +301,6 @@
   },
   {
    "item": "g-multi-0016b79d12",
-   "operator": "drop a predicate",
-   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE year BETWEEN 2008 AND 2016 AND cbsa_title = 'Cincinnati, OH-KY-IN' GROUP BY year) WHERE v > 2.8 ORDER BY label"
-  },
-  {
-   "item": "g-multi-0016b79d12",
    "operator": "shift a period by one",
    "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2017 GROUP BY year) WHERE v > 2.8 ORDER BY label"
   },
@@ -315,14 +310,19 @@
    "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2015 GROUP BY year) WHERE v > 2.8 ORDER BY label"
   },
   {
-   "item": "g-multi-0016b79d12",
-   "operator": "swap an aggregate",
-   "sql": "SELECT label FROM (SELECT year AS label, MIN(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2016 GROUP BY year) WHERE v > 2.8 ORDER BY label"
+   "item": "g-multi-048a4959bb",
+   "operator": "drop a predicate",
+   "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(renter_households) AS v FROM doorstep.mart_metro_year WHERE year = 2015 GROUP BY cbsa_title) WHERE v > 38000.0"
   },
   {
-   "item": "g-multi-0016b79d12",
-   "operator": "flip an order",
-   "sql": "SELECT label FROM (SELECT year AS label, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Cincinnati, OH-KY-IN' AND year BETWEEN 2008 AND 2016 GROUP BY year) WHERE v > 2.8 ORDER BY label DESC"
+   "item": "g-multi-048a4959bb",
+   "operator": "shift a period by one",
+   "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(renter_households) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2016 GROUP BY cbsa_title) WHERE v > 38000.0"
+  },
+  {
+   "item": "g-multi-13d7ef08c2",
+   "operator": "drop a predicate",
+   "sql": "SELECT label FROM (SELECT year AS label, SUM(cancelled) / SUM(scheduled) AS v FROM turnaround.mart_carrier_month WHERE carrier = 'MQ' GROUP BY year) WHERE v > 0.03 ORDER BY label"
   }
  ]
 }

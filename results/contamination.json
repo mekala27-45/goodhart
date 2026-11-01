@@ -2,7 +2,9 @@
  "thresholds": {
   "ngram": 8,
   "ngram_share": 0.5,
-  "cosine": 0.92
+  "embedding_model": "en_core_web_md",
+  "embedding_cosine": 0.95,
+  "char_tfidf_cosine": 0.92
  },
  "checked": {
   "test": 400,
@@ -13,14 +15,37 @@
  "exact": 0,
  "tuple_overlap": 0,
  "ngram_overlap": 2,
+ "embedding_duplicates": 27,
  "near_duplicates": 6,
- "template_neighbours_kept": 17,
+ "template_neighbours_kept": 19,
+ "embedding_neighbours_kept": 576,
  "moved": [
+  "g-multi-140e1eadd1",
+  "g-multi-2df5c7e3de",
+  "g-multi-32aee7bdbe",
+  "g-multi-46728a5f40",
+  "g-multi-50363b78ac",
+  "g-multi-5cd5769aee",
   "g-multi-5def566a72",
+  "g-multi-6f556de49f",
+  "g-multi-708f5fb1c4",
+  "g-multi-731dcc3ade",
+  "g-multi-7e8a3ee8e8",
+  "g-multi-92ac330d83",
+  "g-multi-9e0c2c9021",
   "g-multi-9eef8eae6e",
+  "g-multi-afe74060a6",
+  "g-multi-b80a9463d4",
+  "g-multi-b96de97190",
   "g-multi-e37182e90f",
+  "g-multi-e98115c8ca",
+  "g-multi-f782c3c787",
   "g-top_k-58453f3e91",
+  "g-top_k-979fd8949b",
+  "g-top_k-c3fa28f148",
   "g-top_k-df08e726d6",
+  "g-top_k-eb86555f04",
+  "g-top_k-f36dacb690",
   "g-top_k-fa55acf63c"
  ],
  "examples": {
@@ -38,31 +63,58 @@
     0.5
    ]
   ],
+  "embedding_duplicates": [
+   [
+    "g-multi-140e1eadd1",
+    "g-multi-c4d83e6db0",
+    0.9963
+   ],
+   [
+    "g-multi-2df5c7e3de",
+    "g-multi-51e4c1edc5",
+    0.9669
+   ],
+   [
+    "g-multi-32aee7bdbe",
+    "g-multi-51e4c1edc5",
+    0.9805
+   ],
+   [
+    "g-multi-46728a5f40",
+    "g-multi-2caec73200",
+    0.9691
+   ],
+   [
+    "g-multi-5cd5769aee",
+    "g-multi-7691d06eb9",
+    0.9764
+   ]
+  ],
   "near_duplicates": [
    [
     "g-multi-5def566a72",
     "g-multi-d1f06cd4e5",
-    0.9275
+    0.9281
    ],
    [
     "g-multi-9eef8eae6e",
     "g-multi-b50ef4ea1e",
-    0.9232
+    0.924
    ],
    [
     "g-multi-e37182e90f",
     "g-multi-473200f912",
-    0.945
+    0.946
    ],
    [
     "g-top_k-58453f3e91",
     "g-top_k-2ac10127a6",
-    0.9243
+    0.9242
    ],
    [
     "g-top_k-df08e726d6",
     "g-top_k-b9ce167a33",
-    0.9416
+    0.9417
    ]
   ]
  }
