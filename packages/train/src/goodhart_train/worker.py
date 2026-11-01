@@ -11,6 +11,7 @@ file and exits non zero; the parent reads the tail of its stderr (goodhart_train
     trainer_step the SFT trainer's own LoRA steps on one candidate (goodhart_train.probe.trainer_step)
     grpo_smoke   a short GRPO run with the honest reward (goodhart_train.probe.grpo_smoke)
     generate     transformers sampling of one shard of prompts, for ShardedBackend
+    merge        an adapter merged into its base and saved, so vLLM samples it with no LoRA kernel
     stage        a whole trainer stage: GRPO in the vLLM environment, or SFT, DPO or GRPO on one card
     echo         returns its arguments, for the tests of the isolation itself
 """
@@ -102,6 +103,20 @@ def stage(args: dict[str, Any]) -> dict[str, Any]:
     return {"ok": True, "summary": summary, "seconds": dict(meter.seconds), "counts": dict(meter.counts)}
 
 
+def merge(args: dict[str, Any]) -> dict[str, Any]:
+    """The adapter merged into the base weights in float16 and saved with the tokenizer: the same
+    weights TRL pushes to its vLLM server during GRPO, so a checkpoint is sampled as it was trained."""
+    from goodhart_train.models import load
+
+    t0 = time.monotonic()
+    loaded = load(str(args["model"]), adapter=str(args["adapter"]), merge=True)
+    out = Path(args["out"])
+    out.mkdir(parents=True, exist_ok=True)
+    loaded.model.save_pretrained(str(out), safe_serialization=True)
+    loaded.tokenizer.save_pretrained(str(out))
+    return {"ok": True, "out": str(out), "seconds": round(time.monotonic() - t0, 1), "parameters": loaded.parameters}
+
+
 def generate(args: dict[str, Any]) -> dict[str, Any]:
     from goodhart_train.backend import HFBackend
     from goodhart_train.ledger import peak_memory
@@ -167,6 +182,7 @@ TASKS: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "trainer_step": trainer_step,
     "grpo_smoke": grpo_smoke,
     "generate": generate,
+    "merge": merge,
     "stage": stage,
     "echo": echo,
 }

@@ -208,3 +208,69 @@ def test_the_vllm_worker_does_nothing_on_import() -> None:
     assert all(isinstance(n, ast.Import | ast.ImportFrom | ast.FunctionDef | ast.If) for n in body)
     guard = body[-1]
     assert isinstance(guard, ast.If) and ast.unparse(guard.test) == "__name__ == '__main__'"
+
+
+def _adapter(model: str, out: Path) -> str:
+    """A LoRA adapter on the tiny model with nonzero weights, so merging it changes the model."""
+    import torch
+    from peft import LoraConfig, get_peft_model
+    from transformers import AutoModelForCausalLM
+
+    base = AutoModelForCausalLM.from_pretrained(model)
+    peft = get_peft_model(base, LoraConfig(r=4, lora_alpha=8, target_modules="all-linear", init_lora_weights=False))
+    torch.manual_seed(0)
+    peft.save_pretrained(str(out))
+    return str(out)
+
+
+@pytest.mark.torch
+def test_an_adapter_is_merged_into_its_base_as_trained(tiny: dict[str, Any], tmp_path: Path) -> None:
+    import torch
+    from goodhart_train import worker
+    from goodhart_train.models import load
+    from transformers import AutoModelForCausalLM
+
+    adapter = _adapter(tiny["model"], tmp_path / "adapter")
+    got = worker.merge({"model": tiny["model"], "adapter": adapter, "out": str(tmp_path / "merged")})
+    assert got["ok"] and (tmp_path / "merged" / "config.json").exists()
+    merged = AutoModelForCausalLM.from_pretrained(str(tmp_path / "merged"))
+    live = load(tiny["model"], adapter=adapter).model
+    ids = torch.tensor([[1, 2, 3, 4]])
+    with torch.no_grad():
+        assert torch.allclose(merged(ids).logits, live(ids).logits, atol=1e-4)
+        base = AutoModelForCausalLM.from_pretrained(tiny["model"])
+        assert not torch.allclose(base(ids).logits, merged(ids).logits, atol=1e-4)
+
+
+def test_vllm_samples_an_adapter_as_the_merged_model(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The shards get the merged folder as their model and no adapter; the merge runs once, and the
+    merged weights are removed when the backend is released."""
+    from goodhart_train import isolate
+    from goodhart_train.backend import Job, ShardedBackend
+
+    merges: list[dict[str, Any]] = []
+
+    def run_task(task: str, args: dict[str, Any], workdir: Path, name: str, **kw: Any) -> isolate.Outcome:
+        merges.append(args)
+        Path(args["out"]).mkdir(parents=True)
+        (Path(args["out"]) / "config.json").write_text("{}")
+        return isolate.Outcome(name, ok=True, returncode=0, seconds=0.1, result={"seconds": 0.1}, error="")
+
+    started: list[dict[str, Any]] = []
+
+    def start(name: str, command: list[str], workdir: Path, gpu: Any = None, *a: Any, **kw: Any) -> Any:
+        started.append(json.loads(Path(command[-1]).read_text()))
+        raise RuntimeError("stop here: the arguments are what this test reads")
+
+    monkeypatch.setattr(isolate, "run_task", run_task)
+    monkeypatch.setattr(isolate, "start", start)
+    backend = ShardedBackend(
+        "vllm", "Qwen/Qwen3-0.6B", "/kaggle/input/sft/adapters/step-50", gpus=[0, 1], workdir=tmp_path, python="py"
+    )
+    with pytest.raises(RuntimeError, match="stop here"):
+        backend.run([Job([[{"role": "user", "content": "q"}]] * 2, 1, 0.0, 4, 0)])
+    assert len(merges) == 1 and merges[0]["adapter"].endswith("step-50")
+    assert started[0]["adapter"] is None and started[0]["model"] == merges[0]["out"]
+    assert started[0]["chat_kwargs"] == {"enable_thinking": False}, "the template follows the base model's id"
+    backend.close()
+    assert not Path(merges[0]["out"]).exists()

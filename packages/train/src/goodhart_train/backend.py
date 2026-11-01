@@ -251,6 +251,7 @@ class ShardedBackend:
         enforce_eager: bool = False,
         timeout_s: float = 4 * 3600.0,
         keep_logs_in: Path | None = None,
+        merge_adapters: bool = True,
     ) -> None:
         if kind not in {"transformers", "vllm"}:
             raise ValueError(f"no backend kind {kind!r}")
@@ -271,6 +272,9 @@ class ShardedBackend:
         # A run's output folder: each shard's log tail is kept there, so a failure that only the
         # shard's own log explains (an engine that would not start) can be read after the kernel.
         self.keep_logs_in = keep_logs_in
+        # vLLM samples an adapter merged into its base (merged()); False asks for vLLM's LoRA instead.
+        self.merge_adapters = merge_adapters
+        self.merges: list[dict[str, Any]] = []
         self.calls = 0
         self.prompts_per_call = 0
         self.stats: list[dict[str, Any]] = []
@@ -280,10 +284,37 @@ class ShardedBackend:
     ) -> list[Sampled]:
         return self.run([Job(list(prompts), n, temperature, max_new_tokens, seed)])[0]
 
+    def merged(self) -> Path:
+        """The adapter merged into its base, once per adapter, in a child on the first card. vLLM then
+        samples the checkpoint as a plain model: no LoRA kernel on the card, and the same weights TRL
+        pushes to its vLLM server during GRPO."""
+        import hashlib
+
+        from goodhart_train import isolate
+
+        assert self.adapter is not None
+        key = hashlib.sha256(str(self.adapter).encode()).hexdigest()[:12]
+        out = self.workdir / f"merged-{key}"
+        if (out / "config.json").exists():
+            return out
+        args = {"model": self.model_id, "adapter": self.adapter, "out": str(out)}
+        outcome = isolate.run_task(
+            "merge", args, self.workdir / f"merge-{key}", "merge", gpu=self.gpus[0], timeout_s=self.timeout_s
+        )
+        if self.keep_logs_in is not None:
+            isolate.keep_log(self.workdir / f"merge-{key}", "merge", self.keep_logs_in, as_name=f"merge-{key}")
+        if not outcome.ok:
+            raise RuntimeError(f"merging {self.adapter} into {self.model_id} failed: {outcome.error[-3000:]}")
+        self.merges.append({"adapter": self.adapter, "seconds": outcome.result.get("seconds")})
+        return out
+
     def _args(self, jobs: list[dict[str, Any]], result: Path) -> dict[str, Any]:
+        model, adapter = self.model_id, self.adapter
+        if self.kind == "vllm" and adapter and self.merge_adapters:
+            model, adapter = str(self.merged()), None
         return {
-            "model": self.model_id,
-            "adapter": self.adapter,
+            "model": model,
+            "adapter": adapter,
             "batch_size": self.batch_size,
             "max_model_len": self.max_model_len,
             "gpu_memory_utilization": self.gpu_memory_utilization,
@@ -365,4 +396,10 @@ class ShardedBackend:
         return out
 
     def close(self) -> None:
+        """Free what this backend holds on disk: a merged checkpoint is gigabytes, and the next one is
+        merged by the next backend."""
+        import shutil
+
+        for merged in sorted(self.workdir.glob("merged-*")) if self.workdir.exists() else []:
+            shutil.rmtree(merged, ignore_errors=True)
         gc.collect()
