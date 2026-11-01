@@ -65,7 +65,7 @@ def run(bundle_dir: Path, out: Path, cache: Path) -> int:
     status, summary, note = "done", {}, ""
     try:
         warehouses = _warehouses(bundle, cache) if req.stage in SQL_STAGES else None
-        summary = _dispatch(req.stage, bundle, out, meter, warehouses)
+        summary = _dispatch(req.stage, bundle, out, meter, warehouses, cache)
     except Exception:
         status = "failed"
         note = traceback.format_exc()[-2000:]
@@ -104,12 +104,14 @@ def run(bundle_dir: Path, out: Path, cache: Path) -> int:
     return 0 if status == "done" else 1
 
 
-def _dispatch(stage: str, bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses | None) -> dict[str, Any]:
+def _dispatch(
+    stage: str, bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses | None, cache: Path
+) -> dict[str, Any]:
     if stage == "probe":
         from goodhart_train import probe
 
         assert warehouses is not None
-        return probe.run(bundle, out, meter, warehouses)
+        return probe.run(bundle, out, meter, warehouses, cache=cache)
     if stage == "sft":
         from goodhart_train import sft
 

@@ -98,6 +98,22 @@ secure, and a source of timeouts that would read as wrong answers. It would also
 depend on a service the run cannot pin; the price of running in process is that the reward sees
 exactly the original warehouse, and the twins stay in the repository.
 
+## Why every model in a kernel runs in a child process
+
+A CUDA error inside a kernel, such as the device-side assert a float16 overflow raises while
+sampling, leaves the CUDA context of its process unusable, and in the second probe one candidate's
+assert failed every load after it. So a kernel's own process never loads a model. Each probe
+candidate, each GRPO smoke run and each sampling shard is a child process pinned to one card,
+started with its arguments in a file and read back as JSON, with the tail of its stderr kept when it
+fails. The same split puts the second T4 to work: a sampling stage runs one child per card, each with
+a contiguous share of the prompts, and a Kaggle session hour is what the ceiling counts, whatever the
+number of cards.
+
+vLLM pins its own PyTorch, so it lives in a second environment beside the image's, built with uv for
+the CUDA version the driver runs. A child in that environment gets the bundle's goodhart packages
+and nothing else from the image: neither its installed packages nor its CUDA toolkit libraries are
+on the child's paths.
+
 ## Why the defect arms run on the small model, and what that does not prove
 
 Each defect arm is a full GRPO run, and four defects with two controls and an honest arm do not fit

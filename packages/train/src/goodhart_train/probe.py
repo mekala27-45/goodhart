@@ -1,21 +1,32 @@
-"""The GPU probe: what this account's card can run, measured before any plan depends on it.
+"""The GPU probe: what this account's cards can run, measured before any plan depends on it.
 
-For the accelerator the request asked for, it records the card, its compute capability and memory,
-the Python and package versions of the image, and then, for each candidate model: whether it loads
-in float16, its parameter count and license from the card, the memory after a LoRA training step on
-a batch of 64 completions, the generation throughput for 8 by 8 completions at the registered
-length, and the steps per hour those imply. It tries vLLM in a subprocess on the smallest candidate
-and runs a ten step LoRA GRPO smoke with the honest reward on the backend that works. The answer is
+For the accelerator the request asked for, it records the cards, their compute capability, memory,
+clocks and driver, the Python and package versions of the image, and then, for each candidate
+model: whether it loads in float16, its parameter count and license from the card, the generation
+throughput for 8 by 8 completions at the registered length, the decode step time at the GRPO
+generation batch, and the memory and time of a LoRA training step at the SFT micro batch. It builds
+vLLM for the driver in its own environment and measures it on the same prompts, and it runs short
+GRPO smoke runs with the honest reward on each backend that works. The answer is
 results/gpu_probe.json, which every later request reads.
+
+What the second probe taught, and this one does:
+
+* Every candidate and every smoke run is a child process (goodhart_train.isolate). One model's
+  device-side assert had poisoned the CUDA context of the whole kernel, so every model after it and
+  the GRPO smoke failed with the same assert.
+* The LoRA step runs at the SFT micro batch, after the generation memory is released. At a micro
+  batch of eight sequences of about 1,150 tokens the full vocabulary logits alone (eight by 1,150 by
+  151,936 in float32) are 5.6 GB, and every candidate ran out of memory.
+* vLLM is built for the driver's CUDA (goodhart_train.vllm_env), on the second card while the
+  candidates run on the first, and its whole error is kept when it fails.
 """
 
 from __future__ import annotations
 
 import gc
 import json
-import subprocess
-import sys
-import textwrap
+import tempfile
+import threading
 import time
 import traceback
 from pathlib import Path
@@ -23,11 +34,15 @@ from typing import Any
 
 from goodhart_core.warehouse import Warehouses
 
-from goodhart_train import env
-from goodhart_train.backend import HFBackend, render
+from goodhart_train import env, isolate, vllm_env
+from goodhart_train.backend import HFBackend, Job, ShardedBackend, render
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter, peak_memory
 from goodhart_train.models import card_license, load, lora_config, trainable_parameters
+
+SAMPLE_CHARS = 300
+SERVER_PORT = 8000
+OWN_SAMPLING = ("do_sample", "temperature", "top_p", "top_k", "min_p", "repetition_penalty")
 
 
 def _free() -> None:
@@ -36,13 +51,43 @@ def _free() -> None:
         import torch
 
         if torch.cuda.is_available():
+            torch.cuda.synchronize()
             torch.cuda.empty_cache()
             torch.cuda.reset_peak_memory_stats()
     except Exception:
         pass
 
 
-def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Meter) -> dict[str, Any]:
+def _err(err: BaseException) -> str:
+    return f"{type(err).__name__}: {str(err)[:600]}"
+
+
+def decode_timing(backend: HFBackend, messages: list[Any], max_new_tokens: int = 33) -> dict[str, Any]:
+    """Prefill and per step decode time at the GRPO generation batch (two prompts by eight samples):
+    one call for one new token, one for max_new_tokens, the difference over the extra steps."""
+    import torch
+
+    def timed(tokens: int) -> float:
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        t0 = time.monotonic()
+        backend.generate(messages, n=8, temperature=0.8, max_new_tokens=tokens, seed=1)
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        return time.monotonic() - t0
+
+    first = timed(1)
+    longer = timed(max_new_tokens)
+    return {
+        "batch_sequences": 8 * len(messages),
+        "prefill_seconds": round(first, 3),
+        "decode_ms_per_step": round(1000.0 * max(0.0, longer - first) / max(1, max_new_tokens - 1), 1),
+    }
+
+
+def probe_candidate(
+    model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Meter, train_batch: int = 2
+) -> dict[str, Any]:
     import torch
 
     found: dict[str, Any] = {"model": model_id, "license": card_license(model_id)}
@@ -50,18 +95,24 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
     try:
         with meter.phase("loading"):
             loaded = load(model_id)
+        own = getattr(loaded.model, "generation_config", None)
         found.update(
             loads=True,
             parameters=loaded.parameters,
             dtype=loaded.dtype,
+            attention=getattr(loaded.model.config, "_attn_implementation", None),
             load_seconds=round(time.monotonic() - t0, 1),
+            # The model's own sampling defaults, which the backends override (HFBackend.config).
+            own_generation_config={k: getattr(own, k, None) for k in OWN_SAMPLING},
         )
     except Exception as err:
-        found.update(loads=False, error=f"{type(err).__name__}: {str(err)[:300]}")
+        found.update(loads=False, error=_err(err))
         _free()
         return found
     prompts = bundle.prompts("train")[:8]
+    messages = [p.messages for p in prompts]
     cuda = torch.cuda.is_available()
+    gen_seconds = float("nan")
     try:
         backend = HFBackend(loaded.model, loaded.tokenizer, model_id, batch_size=64)
         if cuda:
@@ -69,11 +120,7 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
         t1 = time.monotonic()
         with meter.phase("generation"):
             sampled = backend.generate(
-                [p.messages for p in prompts],
-                n=8,
-                temperature=0.8,
-                max_new_tokens=int(hp["max_completion_length"]),
-                seed=0,
+                messages, n=8, temperature=0.8, max_new_tokens=int(hp["max_completion_length"]), seed=0
             )
         gen_seconds = time.monotonic() - t1
         tokens = sum(sum(s.tokens) for s in sampled)
@@ -83,15 +130,20 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
             tokens_8x8=tokens,
             tokens_per_second=round(tokens / max(gen_seconds, 1e-6), 1),
             prompts_per_generate_call=backend.prompts_per_call,
+            sample=sampled[0].texts[0][:SAMPLE_CHARS],
         )
         if cuda:
-            free, _ = torch.cuda.mem_get_info()
-            found.update(
-                generation_peak_bytes=int(torch.cuda.max_memory_allocated()), free_after_generation_bytes=int(free)
+            found["generation_peak_bytes"] = int(torch.cuda.max_memory_allocated())
+        with meter.phase("generation"):
+            found["decode"] = decode_timing(
+                HFBackend(loaded.model, loaded.tokenizer, model_id, batch_size=16), messages[:2]
             )
+        del sampled, backend
     except Exception as err:
-        found.update(generates=False, generation_error=f"{type(err).__name__}: {str(err)[:300]}")
-        gen_seconds = float("nan")
+        found.update(generates=False, generation_error=_err(err))
+    _free()
+    if cuda:
+        found["free_before_training_bytes"] = int(torch.cuda.mem_get_info()[0])
     try:
         from peft import get_peft_model
 
@@ -102,127 +154,176 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
         tok.padding_side = "right"
         golds = {i.id: i.gold.sql for i in bundle.items("train") if i.gold is not None}
         # The registered prompt in the chat template with its gold answer, untruncated: the lengths a
-        # training step really sees.
-        texts = [render(tok, p.messages, model_id) + f"```sql\n{golds.get(p.id, 'select 1')}\n```" for p in prompts] * 8
+        # training step really sees. Sixteen sequences at the SFT micro batch, one optimizer step.
+        texts = [render(tok, p.messages, model_id) + f"```sql\n{golds.get(p.id, 'select 1')}\n```" for p in prompts] * 2
         enc = tok(texts, return_tensors="pt", padding=True, add_special_tokens=False).to(model.device)
         found["training_tokens_per_sequence"] = int(enc["input_ids"].shape[1])
         optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=1e-5)
         t2 = time.monotonic()
         with meter.phase("training"):
-            for k in range(0, enc["input_ids"].shape[0], int(hp["batch_size"])):
-                part = {key: v[k : k + int(hp["batch_size"])] for key, v in enc.items()}
-                with torch.autocast("cuda", dtype=torch.float16, enabled=torch.cuda.is_available()):
+            for k in range(0, enc["input_ids"].shape[0], train_batch):
+                part = {key: v[k : k + train_batch] for key, v in enc.items()}
+                with torch.autocast("cuda", dtype=torch.float16, enabled=cuda):
                     loss = model(**part, labels=part["input_ids"]).loss
                 loss.backward()
             optimizer.step()
             optimizer.zero_grad()
         train_seconds = time.monotonic() - t2
+        sequences = int(enc["input_ids"].shape[0])
         found.update(
             lora_step=True,
+            train_micro_batch=train_batch,
             trainable_parameters=trainable_parameters(model),
-            train_seconds_64=round(train_seconds, 2),
-            peak_memory_bytes=peak_memory(),
+            train_seconds_16=round(train_seconds, 2),
+            train_seconds_per_sequence=round(train_seconds / sequences, 3),
+            training_peak_bytes=peak_memory(),
         )
         if gen_seconds == gen_seconds:  # not NaN
-            found["steps_per_hour_estimate"] = round(3600.0 / (gen_seconds + train_seconds), 1)
+            found["steps_per_hour_estimate"] = round(3600.0 / (gen_seconds + 4 * train_seconds), 1)
     except Exception as err:
-        found.update(lora_step=False, lora_error=f"{type(err).__name__}: {str(err)[:300]}")
-    del loaded
-    _free()
+        found.update(lora_step=False, lora_error=_err(err))
     return found
 
 
-VLLM_SCRIPT = textwrap.dedent(
-    """
-    import json, sys, time
-    from vllm import LLM, SamplingParams
-    model = sys.argv[1]
-    t0 = time.time()
-    llm = LLM(model=model, dtype="float16", max_model_len=2048, gpu_memory_utilization=0.6, seed=0)
-    load = time.time() - t0
-    t1 = time.time()
-    params = SamplingParams(n=1, temperature=0.8, max_tokens=128)
-    out = llm.generate(["SELECT 1 as x; -- write one SQL query:"] * 64, params)
-    gen = time.time() - t1
-    tokens = sum(len(o.outputs[0].token_ids) for o in out)
-    found = {"load_seconds": round(load, 1), "generation_seconds_64": round(gen, 2), "tokens": tokens}
-    print("VLLM_RESULT " + json.dumps(found))
-    """
-)
-
-
-VLLM_VENV = Path("/tmp/goodhart-vllm")
-
-
-def ensure_vllm(version: str, timeout_s: int = 900) -> str:
-    """The python of the isolated vLLM environment, built with uv the first time a kernel asks."""
-    python = VLLM_VENV / "bin" / "python"
-    if python.exists():
-        return str(python)
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "uv"], check=True, capture_output=True, timeout=300)
-    subprocess.run(
-        [sys.executable, "-m", "uv", "venv", "-q", "--python", sys.executable, str(VLLM_VENV)],
-        check=True,
-        capture_output=True,
-        timeout=120,
+def vllm_generation(
+    python: str, model_id: str, bundle: Bundle, hp: dict[str, Any], workdir: Path, gpu: int | None, eager: bool
+) -> dict[str, Any]:
+    """vLLM on the probe's eight prompts: eight samples each at the registered length, and greedy."""
+    length = int(hp["max_completion_length"])
+    messages = [p.messages for p in bundle.prompts("train")[:8]]
+    backend = ShardedBackend(
+        "vllm",
+        model_id,
+        gpus=[gpu],
+        workdir=workdir,
+        python=python,
+        max_model_len=int(hp.get("max_model_len", 2048)),
+        gpu_memory_utilization=float(hp.get("probe_vllm_memory", 0.85)),
+        enforce_eager=eager,
+        timeout_s=float(hp.get("probe_vllm_timeout", 1200)),
     )
-    subprocess.run(
-        [sys.executable, "-m", "uv", "pip", "install", "-q", "--python", str(python), f"vllm=={version}"],
-        check=True,
-        capture_output=True,
-        timeout=timeout_s,
-    )
-    return str(python)
+    sampled, _greedy = backend.run([Job(messages, 8, 0.8, length, 0), Job(messages, 1, 0.0, length, 0)])
+    shard = backend.stats[-1]["shards"][0]
+    first, second = shard["jobs"]
+    return {
+        "works": True,
+        "enforce_eager": eager,
+        "load_seconds": shard["load_seconds"],
+        "generation_seconds_8x8": first["seconds"],
+        "tokens_8x8": first["tokens"],
+        "tokens_per_second": round(first["tokens"] / max(first["seconds"], 1e-6), 1),
+        "greedy_seconds_8": second["seconds"],
+        "sample": sampled[0].texts[0][:SAMPLE_CHARS],
+    }
 
 
-def probe_vllm(model_id: str, version: str, timeout_s: int = 900) -> dict[str, Any]:
-    """Can vLLM generate on this card? Installed into its own virtual environment, because vLLM pins
-    its own PyTorch and would otherwise replace the one every other stage of this kernel uses."""
-    found: dict[str, Any] = {"model": model_id, "version": version, "isolated": True}
-    t0 = time.monotonic()
+# An error worth a second try without CUDA graphs and compilation; any other error (a driver too old,
+# a missing kernel image, an import that fails) would fail the same way, so the next plan is tried.
+EAGER_HINTS = ("compile", "inductor", "triton", "graph", "dynamo", "stopped after")
+
+
+def vllm_lane(
+    bundle: Bundle,
+    hp: dict[str, Any],
+    work: Path,
+    out: Path,
+    gpu: int | None,
+    model_id: str,
+    budget_s: float = 1800.0,
+) -> dict[str, Any]:
+    """Build vLLM for the driver, generate with it, and add the training stack when it generates.
+    Plans are tried in order inside a time budget, each without CUDA graphs only when its first error
+    points at compilation or graph capture."""
+    deadline = time.monotonic() + budget_s
+    version = str(hp.get("vllm_version", "0.32.0"))
+    record: dict[str, Any] = {"model": model_id, "version": version, "isolated": True, "gpu": gpu, "attempts": []}
     try:
-        # The image's Python has no ensurepip, so python -m venv fails there; uv makes the environment.
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-q", "uv"], check=True, capture_output=True, timeout=300
-        )
-        subprocess.run(
-            [sys.executable, "-m", "uv", "venv", "-q", "--python", sys.executable, str(VLLM_VENV)],
-            check=True,
-            capture_output=True,
-            timeout=120,
-        )
-        python = str(VLLM_VENV / "bin" / "python")
-        install = subprocess.run(
-            [sys.executable, "-m", "uv", "pip", "install", "-q", "--python", python, f"vllm=={version}"],
-            capture_output=True,
-            text=True,
-            timeout=timeout_s,
-        )
-    except (subprocess.SubprocessError, OSError) as err:
-        found.update(installed=False, error=f"{type(err).__name__}: {str(err)[:300]}")
-        return found
-    found["install_seconds"] = round(time.monotonic() - t0, 1)
-    if install.returncode != 0:
-        found.update(installed=False, error=install.stderr.strip().splitlines()[-1][:300] if install.stderr else "")
-        return found
-    found["installed"] = True
-    try:
-        done = subprocess.run([python, "-c", VLLM_SCRIPT, model_id], capture_output=True, text=True, timeout=timeout_s)
-    except subprocess.TimeoutExpired:
-        found.update(works=False, error=f"generation did not finish in {timeout_s} s")
-        return found
-    line = next((ln for ln in done.stdout.splitlines() if ln.startswith("VLLM_RESULT ")), None)
-    if done.returncode == 0 and line:
-        found.update(works=True, **json.loads(line.removeprefix("VLLM_RESULT ")))
-    else:
-        tail = (done.stderr or done.stdout).strip().splitlines()[-3:]
-        found.update(works=False, error=" | ".join(t[:200] for t in tail))
-    return found
+        tried = vllm_env.plans(version, env.cuda_driver_version())
+    except Exception as err:
+        return {**record, "works": False, "error": _err(err)}
+    record["plans"] = [p["source"] for p in tried]
+    for plan in tried:
+        if time.monotonic() > deadline - 300:
+            record["attempts"].append({"plan": plan["source"], "skipped": "the vLLM lane ran out of time"})
+            continue
+        installed = vllm_env.install(plan, timeout_s=max(120.0, min(900.0, deadline - time.monotonic())))
+        attempt: dict[str, Any] = {"install": installed}
+        record["attempts"].append(attempt)
+        if not installed["installed"]:
+            continue
+        attempt["environment"] = {k: v for k, v in vllm_env.describe().items() if k != "freeze"}
+        for eager in (False, True):
+            key = "generation_eager" if eager else "generation"
+            if eager and not any(h in str(attempt.get("generation", {}).get("error", "")) for h in EAGER_HINTS):
+                break
+            tag = f"vllm-{plan['source']}-{'eager' if eager else 'graphs'}"
+            limits = {
+                **hp,
+                "probe_vllm_timeout": max(
+                    120.0, min(float(hp.get("probe_vllm_timeout", 900)), deadline - time.monotonic())
+                ),
+            }
+            try:
+                attempt[key] = got = vllm_generation(
+                    str(vllm_env.python()), model_id, bundle, limits, work / tag, gpu, eager
+                )
+            except Exception as err:
+                attempt[key] = {"works": False, "error": str(err)[-6000:]}
+                got = {}
+            for shard in sorted((work / tag).glob("call-*/shard-*")):
+                isolate.keep_log(shard, "shard-0", out / "logs" / tag)
+            if got:
+                record.update(
+                    {**got, "works": True, "plan": plan["source"], "torch_backend": plan.get("torch_backend")}
+                )
+                break
+        if record.get("works"):
+            break
+    if not record.get("works"):
+        record["works"] = False
+        return record
+    if hp.get("smoke_vllm", True):
+        stack = vllm_env.pins(bundle.root / "requirements-gpu.txt", vllm_env.TRAINING_STACK)
+        plan = next(p for p in tried if p["source"] == record["plan"])
+        record["training_stack"] = vllm_env.install(plan, extra=stack)
+    record["freeze"] = vllm_env.describe().get("freeze", [])
+    return record
+
+
+class StepClock:
+    """Seconds at the end of every optimizer step, so steps an hour leave out the first step's warmup."""
+
+    def __init__(self) -> None:
+        self.marks: list[float] = []
+
+    def callback(self) -> Any:
+        from transformers import TrainerCallback
+
+        marks = self.marks
+
+        class _Clock(TrainerCallback):  # type: ignore[misc]
+            def on_step_end(self, args: Any, state: Any, control: Any, **kwargs: Any) -> Any:
+                marks.append(time.monotonic())
+                return control
+
+        return _Clock()
+
+    def steady_seconds_per_step(self) -> float | None:
+        if len(self.marks) < 2:
+            return None
+        return (self.marks[-1] - self.marks[0]) / (len(self.marks) - 1)
 
 
 def grpo_smoke(
-    bundle: Bundle, out: Path, model_id: str, hp: dict[str, Any], warehouses: Warehouses, use_vllm: bool
+    bundle: Bundle,
+    out: Path,
+    model_id: str,
+    hp: dict[str, Any],
+    warehouses: Warehouses,
+    backend: str = "transformers",
 ) -> dict[str, Any]:
+    """A few GRPO steps with the honest reward on one generation backend: transformers in process,
+    transformers with paged attention, or vLLM (a server on another card, or colocated)."""
     from datasets import Dataset
     from goodhart_rewards.rewards import honest
     from trl import GRPOConfig, GRPOTrainer
@@ -233,31 +334,47 @@ def grpo_smoke(
 
     items = {i.id: i for i in bundle.items("train")}
     prompts = [p for p in bundle.prompts("train") if p.id in items][:80]
+    t0 = time.monotonic()
     loaded = load(model_id)
-    reward = SQLReward(reward=honest, items=items, warehouses=warehouses, log_path=out / "smoke_rollouts.jsonl")
+    load_seconds = time.monotonic() - t0
+    tag = backend.replace("-", "_")
+    reward = SQLReward(reward=honest, items=items, warehouses=warehouses, log_path=out / f"smoke_{tag}_rollouts.jsonl")
+    steps = int(hp.get("smoke_steps", 5))
+    vllm = backend.startswith("vllm")
+    extra: dict[str, Any] = {}
+    if vllm:
+        extra.update(
+            vllm_mode="server" if backend == "vllm-server" else "colocate",
+            vllm_server_host="127.0.0.1",
+            vllm_server_port=int(hp.get("vllm_server_port", SERVER_PORT)),
+            vllm_server_timeout=float(hp.get("vllm_server_timeout", 900)),
+            vllm_gpu_memory_utilization=float(hp.get("vllm_gpu_memory_utilization", 0.3)),
+        )
     args = GRPOConfig(
-        output_dir=str(out / "smoke_trainer"),
+        # The trainer's own folder stays out of the outputs: nothing in it is a result.
+        output_dir=str(Path(tempfile.gettempdir()) / f"goodhart-smoke-{tag}"),
         learning_rate=float(hp["learning_rate"]),
         per_device_train_batch_size=int(hp["batch_size"]),
         gradient_accumulation_steps=int(hp["gradient_accumulation"]),
         gradient_checkpointing=True,
         num_generations=int(hp["num_generations"]),
-        generation_batch_size=int(hp.get("generation_batch_size", 16)),
+        generation_batch_size=int(hp.get("generation_batch_size", 16)) if not vllm else None,
         max_completion_length=int(hp["max_completion_length"]),
         temperature=float(hp["temperature"]),
         beta=float(hp["beta"]),
         loss_type=str(hp["loss_type"]),
-        use_vllm=use_vllm,
-        vllm_mode="colocate",
-        vllm_gpu_memory_utilization=0.3,
-        max_steps=10,
+        use_vllm=vllm,
+        use_transformers_paged=backend == "transformers-paged",
+        max_steps=steps,
         logging_steps=1,
         save_strategy="no",
         report_to=[],
         seed=0,
         chat_template_kwargs=hp.get("chat_template_kwargs") or None,
+        **extra,
         **precision_flags(),
     )
+    clock = StepClock()
     trainer = GRPOTrainer(
         model=loaded.model,
         reward_funcs=[reward],
@@ -265,18 +382,22 @@ def grpo_smoke(
         train_dataset=Dataset.from_list([{"prompt": p.messages, "item_id": p.id} for p in prompts]),
         processing_class=loaded.tokenizer,
         peft_config=lora_config(hp),
-        callbacks=[LogCallback(out / "metrics" / "smoke.jsonl")],
+        callbacks=[LogCallback(out / "metrics" / f"smoke_{tag}.jsonl"), clock.callback()],
     )
-    t0 = time.monotonic()
+    t1 = time.monotonic()
     trainer.train()
-    seconds = time.monotonic() - t0
+    seconds = time.monotonic() - t1
     paid = reward.paid
+    steady = clock.steady_seconds_per_step()
     return {
         "model": model_id,
-        "backend": "vllm" if use_vllm else "transformers",
-        "steps": 10,
+        "backend": backend,
+        "steps": steps,
+        "load_seconds": round(load_seconds, 1),
         "seconds": round(seconds, 1),
-        "steps_per_hour": round(36000.0 / max(seconds, 1e-6), 1),
+        "seconds_per_step_after_the_first": round(steady, 1) if steady else None,
+        "steps_per_hour": round(3600.0 / steady, 1) if steady else round(3600.0 * steps / max(seconds, 1e-6), 1),
+        "completions_per_step": int(hp["batch_size"]) * int(hp["gradient_accumulation"]),
         "reward_calls": reward.calls,
         "completions": reward.completions_seen,
         "executions": reward.executions,
@@ -285,36 +406,167 @@ def grpo_smoke(
     }
 
 
-def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict[str, Any]:
+def _smoke(
+    backend: str,
+    bundle: Bundle,
+    out: Path,
+    work: Path,
+    cache: Path,
+    model_id: str,
+    hp: dict[str, Any],
+    gpus: list[Any],
+    timeout: float,
+) -> dict[str, Any]:
+    """One smoke run in a child process; for vLLM in server mode, the server on the second card."""
+    args = {"bundle": str(bundle.root), "cache": str(cache), "out": str(out), "model": model_id, "hp": hp}
+    args["backend"] = backend
+    name = f"smoke-{backend}"
+    if not backend.startswith("vllm"):
+        outcome = isolate.run_task("grpo_smoke", args, work, name, gpu=gpus[0], timeout_s=timeout)
+        isolate.keep_log(work, name, out)
+        return outcome.as_record()
+    python = str(vllm_env.python())
+    if backend == "vllm-colocate":
+        outcome = isolate.run_task("grpo_smoke", args, work, name, gpu=gpus[0], timeout_s=timeout, python=python)
+        isolate.keep_log(work, name, out)
+        return outcome.as_record()
+    port = int(hp.get("vllm_server_port", SERVER_PORT))
+    command = [python, "-m", "trl.scripts.vllm_serve", "--model", model_id, "--host", "127.0.0.1"]
+    command += ["--port", str(port), "--gpu_memory_utilization", str(hp.get("vllm_server_memory", 0.85))]
+    command += ["--dtype", "float16", "--max_model_len", str(int(hp.get("max_model_len", 2048)))]
+    if hp.get("vllm_enforce_eager"):
+        command += ["--enforce_eager", "true"]
+    server = isolate.start("vllm-server", command, work, gpus[1], isolated=True)
+    try:
+        outcome = isolate.run_task("grpo_smoke", args, work, name, gpu=gpus[0], timeout_s=timeout, python=python)
+    finally:
+        server.process.terminate()
+        try:
+            server.process.wait(timeout=60)
+        except Exception:
+            server.process.kill()
+    isolate.keep_log(work, name, out)
+    isolate.keep_log(work, "vllm-server", out)
+    return outcome.as_record()
+
+
+def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses, cache: Path | None = None) -> dict[str, Any]:
     req = bundle.request
-    hp = {**bundle.config("training")["grpo"], **bundle.config("training")["lora"], **req.hyperparameters}
+    training = bundle.config("training")
+    hp = {**training["grpo"], **training["lora"], **req.hyperparameters}
+    train_batch = int(hp.get("probe_train_batch", training["sft"]["batch_size"]))
     record: dict[str, Any] = {"environment": env.describe(), "accelerator_requested": req.accelerator}
+    gpus: list[Any] = [g["index"] for g in record["environment"]["gpus"]] or [None]
+    parallel = len(gpus) >= 2
+    record["isolation"] = "every candidate and every smoke run in its own process"
+    record["lanes"] = (
+        "candidates on GPU 0 while vLLM was built and measured on GPU 1, so the throughput numbers carry "
+        "that CPU contention"
+        if parallel
+        else "one card: candidates, then vLLM, then the smoke runs"
+    )
+    # Scratch outside the output folder: Kaggle keeps everything under /kaggle/working as output.
+    cache = cache or Path("/tmp/goodhart/cache")
+    work = cache.parent / "probe-work"
+    work.mkdir(parents=True, exist_ok=True)
+    smallest = str(hp.get("smoke_model") or req.models[0])
+    # The vLLM lane writes its record from another thread; every change to the record and every save
+    # holds this lock, so a save never iterates a dict the other thread is changing.
+    lock = threading.RLock()
+
+    def remaining(margin_hours: float = 0.02) -> float:
+        """Seconds a child may run and still leave the probe inside its ceiling."""
+        return max(60.0, (req.gpu_hour_ceiling - margin_hours - meter.elapsed_hours()) * 3600.0)
+
     candidates: list[dict[str, Any]] = []
+
+    def save() -> None:
+        with lock:
+            (out / "probe.json").write_text(
+                json.dumps({**record, "candidates": candidates}, indent=1) + "\n", encoding="utf-8"
+            )
+
+    vllm_record: dict[str, Any] = {"tried": False, "reason": "disabled"}
+
+    def lane_vllm() -> None:
+        nonlocal vllm_record
+        try:
+            vllm_record = vllm_lane(
+                bundle,
+                hp,
+                work,
+                out,
+                gpus[1] if parallel else gpus[0],
+                smallest,
+                budget_s=float(hp.get("vllm_lane_seconds", 1800)),
+            )
+        except Exception:
+            vllm_record = {"works": False, "error": traceback.format_exc()[-3000:]}
+        with lock:
+            record["vllm"] = vllm_record
+            save()
+
+    lane = threading.Thread(target=lane_vllm, daemon=True) if hp.get("try_vllm", True) else None
+    if lane is not None and parallel:
+        lane.start()
     for model_id in req.models:
-        if meter.over_ceiling(0.2):
+        if meter.over_ceiling(0.35):
             candidates.append({"model": model_id, "loads": None, "skipped": "the probe reached its ceiling"})
             continue
-        try:
-            candidates.append(probe_candidate(model_id, bundle, hp, meter))
-        except Exception as err:
-            candidates.append({"model": model_id, "loads": False, "error": f"{type(err).__name__}: {str(err)[:300]}"})
-        (out / "probe.json").write_text(
-            json.dumps({**record, "candidates": candidates}, indent=1) + "\n", encoding="utf-8"
+        args: dict[str, Any] = {"bundle": str(bundle.root), "model": model_id, "hp": hp, "train_batch": train_batch}
+        args["ceiling_hours"] = req.gpu_hour_ceiling
+        name = "candidate-" + model_id.replace("/", "__")
+        outcome = isolate.run_task(
+            "candidate",
+            args,
+            work,
+            name,
+            gpu=gpus[0],
+            timeout_s=min(float(hp.get("candidate_timeout", 900)), remaining()),
         )
+        isolate.keep_log(work, name, out)
+        found: dict[str, Any] = (
+            outcome.as_record() if outcome.result else {"model": model_id, "loads": False, "error": outcome.error}
+        )
+        phases: dict[str, float] = found.pop("phase_seconds", None) or {}
+        for phase, seconds in phases.items():
+            meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
+        found["child_seconds"] = outcome.seconds
+        with lock:
+            candidates.append(found)
+            save()
+    if lane is not None:
+        if not parallel:
+            lane.start()
+        lane.join(timeout=remaining(0.15))
     record["candidates"] = candidates
-    smallest = str(hp.get("smoke_model") or req.models[0])
-    # The GRPO smoke first, on the transformers backend every stage can use; vLLM last, in its own
-    # environment, and only with a quarter hour of the ceiling left.
-    try:
-        record["grpo_smoke"] = grpo_smoke(bundle, out, smallest, hp, warehouses, use_vllm=False)
-    except Exception:
-        record["grpo_smoke"] = {"ok": False, "error": traceback.format_exc()[-1500:]}
-    (out / "probe.json").write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8")
-    if hp.get("try_vllm", True) and not meter.over_ceiling(0.25):
-        vllm = probe_vllm(smallest, str(hp.get("vllm_version", "0.32.0")))
-    else:
-        vllm = {"tried": False, "reason": "disabled" if not hp.get("try_vllm", True) else "too little time left"}
-    record["vllm"] = vllm
-    record["generation_backend"] = "vllm" if vllm.get("works") else "transformers"
-    (out / "probe.json").write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8")
-    return {"candidates": len(candidates), "generation_backend": record["generation_backend"]}
+    record["vllm"] = vllm_record
+    stack = (vllm_record.get("training_stack") or {}).get("installed", False)
+    record["generation_backend"] = "vllm" if vllm_record.get("works") else "transformers"
+    smokes: dict[str, Any] = {}
+    for backend in hp.get("smoke_backends", ["vllm-server", "transformers"]):
+        if backend.startswith("vllm") and not (vllm_record.get("works") and stack):
+            smokes[backend] = {"ok": False, "skipped": "vLLM or its training stack did not install"}
+            continue
+        if backend == "vllm-server" and not parallel:
+            backend = "vllm-colocate"
+        if meter.over_ceiling(0.15):
+            smokes[backend] = {"ok": False, "skipped": "the probe reached its ceiling"}
+            continue
+        smoke_hp = {**hp, "vllm_enforce_eager": vllm_record.get("enforce_eager", False)}
+        try:
+            timeout = min(float(hp.get("smoke_timeout", 1500)), remaining())
+            smokes[backend] = _smoke(backend, bundle, out, work, cache, smallest, smoke_hp, gpus, timeout)
+        except Exception:
+            smokes[backend] = {"ok": False, "error": traceback.format_exc()[-3000:]}
+        record["grpo_smokes"] = smokes
+        save()
+    record["grpo_smokes"] = smokes
+    ran = [s for s in smokes.values() if s.get("steps_per_hour")]
+    record["grpo_smoke"] = max(ran, key=lambda s: s["steps_per_hour"]) if ran else next(iter(smokes.values()), None)
+    save()
+    return {
+        "candidates": len(candidates),
+        "generation_backend": record["generation_backend"],
+        "smokes": {k: v.get("steps_per_hour") for k, v in smokes.items()},
+    }

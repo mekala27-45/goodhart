@@ -1,21 +1,29 @@
 """The sampling stages: base selection, held-out sampling, self samples for pairs, and the judge.
 
-Each loads one model (with an adapter when the request names an input that holds one), samples the
+Each samples one model (with an adapter when the request names an input that holds one) over the
 prompt sets the request lists, and writes completions. None of them grades: selection writes greedy
 and eight sample completions on development, and the repository computes pass at 1 and pass at 8.
+
+Sampling runs in child processes, one per card (goodhart_train.backend.ShardedBackend), on the
+backend the probe chose: transformers in the image's environment or vLLM in its own. The stage's
+process never loads a model.
 """
 
 from __future__ import annotations
 
 import gc
+import os
+import time
 from pathlib import Path
 from typing import Any
 
-from goodhart_train.backend import HFBackend, IsolatedVLLMBackend
+from goodhart_train import env, vllm_env
+from goodhart_train.backend import Job, ShardedBackend
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter
-from goodhart_train.models import load
-from goodhart_train.sample import sample_prompts, write
+from goodhart_train.sample import completions, messages_for, write
+
+WORK = Path(os.environ.get("GOODHART_WORK", "/tmp/goodhart")) / "sampling"
 
 
 def _adapter(inputs: list[str]) -> str | None:
@@ -27,16 +35,40 @@ def _adapter(inputs: list[str]) -> str | None:
     return found
 
 
-def _backend(model_id: str, adapter: str | None, hp: dict[str, Any], meter: Meter) -> Any:
-    with meter.phase("loading"):
-        if hp.get("generation_backend") == "vllm":
-            from goodhart_train.probe import ensure_vllm
+def _backend(model_id: str, adapter: str | None, hp: dict[str, Any], meter: Meter) -> ShardedBackend:
+    gpus: list[int | None] = list(env.gpu_indices()) or [None]
+    if hp.get("max_gpus"):
+        gpus = gpus[: int(hp["max_gpus"])]
+    kind = "vllm" if hp.get("generation_backend") == "vllm" else "transformers"
+    python = None
+    if kind == "vllm":
+        with meter.phase("loading"):
+            python = vllm_env.ensure(str(hp.get("vllm_version", "0.32.0")))
+    workdir = WORK / f"{model_id.replace('/', '__')}-{time.monotonic_ns()}"
+    return ShardedBackend(
+        kind,
+        model_id,
+        adapter,
+        gpus=gpus,
+        workdir=workdir,
+        python=python,
+        batch_size=int(hp.get("generation_batch", 64)),
+        max_model_len=int(hp.get("max_model_len", 2048)),
+        gpu_memory_utilization=float(hp.get("vllm_memory", 0.85)),
+        enforce_eager=bool(hp.get("vllm_enforce_eager", False)),
+        timeout_s=_remaining(meter),
+    )
 
-            python = ensure_vllm(str(hp.get("vllm_version", "0.32.0")))
-            return IsolatedVLLMBackend(model_id, adapter, python, max_model_len=int(hp.get("max_model_len", 4096)))
-        loaded = load(model_id, adapter=adapter, merge=adapter is not None)
-        loaded.model.eval()
-        return HFBackend(loaded.model, loaded.tokenizer, model_id, batch_size=int(hp.get("generation_batch", 64)))
+
+def _remaining(meter: Meter) -> float:
+    """Seconds left under the ceiling: a generation call is stopped there, and the ledger says so."""
+    return max(60.0, (meter.ceiling_hours - meter.elapsed_hours()) * 3600.0)
+
+
+def _run(backend: ShardedBackend, jobs: list[Job], meter: Meter) -> list[list[Any]]:
+    backend.timeout_s = _remaining(meter)
+    with meter.phase("generation"):
+        return backend.run(jobs)
 
 
 def _release(backend: Any) -> None:
@@ -44,12 +76,6 @@ def _release(backend: Any) -> None:
         backend.close()
     del backend
     gc.collect()
-    try:
-        import torch
-
-        torch.cuda.empty_cache()
-    except Exception:
-        pass
 
 
 def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
@@ -64,36 +90,24 @@ def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
             continue
         try:
             backend = _backend(model_id, None, hp, meter)
-            greedy = sample_prompts(
+            messages = messages_for(dev, bundle.examples())
+            length, temperature = int(hp["max_new_tokens"]), float(hp["temperature"])
+            greedy_s, sampled_s = _run(
                 backend,
-                dev,
-                request=req.id,
-                checkpoint=f"base:{model_id}",
-                n=1,
-                temperature=0.0,
-                max_new_tokens=int(hp["max_new_tokens"]),
-                seed=req.seed,
-                meter=meter,
-                examples=bundle.examples(),
+                [Job(messages, 1, 0.0, length, req.seed), Job(messages, int(hp["k"]), temperature, length, req.seed)],
+                meter,
+            )
+            checkpoint = f"base:{model_id}"
+            greedy = completions(dev, greedy_s, request=req.id, checkpoint=checkpoint, temperature=0.0, meter=meter)
+            sampled = completions(
+                dev, sampled_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter
             )
             write(greedy, out / "completions" / f"dev__{safe}__greedy.jsonl")
-            sampled = sample_prompts(
-                backend,
-                dev,
-                request=req.id,
-                checkpoint=f"base:{model_id}",
-                n=int(hp["k"]),
-                temperature=float(hp["temperature"]),
-                max_new_tokens=int(hp["max_new_tokens"]),
-                seed=req.seed,
-                meter=meter,
-                examples=bundle.examples(),
-            )
-            write(sampled, out / "completions" / f"dev__{safe}__t{int(float(hp['temperature']) * 10):02d}.jsonl")
-            done[model_id] = {"ok": True, "greedy": len(greedy), "sampled": len(sampled)}
+            write(sampled, out / "completions" / f"dev__{safe}__t{int(temperature * 10):02d}.jsonl")
+            done[model_id] = {"ok": True, "greedy": len(greedy), "sampled": len(sampled), "calls": backend.stats}
             _release(backend)
         except Exception as err:
-            done[model_id] = {"ok": False, "error": f"{type(err).__name__}: {str(err)[:300]}"}
+            done[model_id] = {"ok": False, "error": f"{type(err).__name__}: {str(err)[-1500:]}"}
     summary: dict[str, Any] = {"models": done}
     teacher = hp.get("paraphrase")
     if teacher and not meter.over_ceiling(0.1):
@@ -142,19 +156,17 @@ def paraphrase(bundle: Bundle, out: Path, meter: Meter, cfg: dict[str, Any], see
     prompts = bundle.prompts("train")
     chosen = set(paraphrase_ids(prompts, float(cfg.get("share", 0.25)), seed))
     picked = [p for p in prompts if p.id in chosen]
-    backend = _backend(model_id, None, {"generation_backend": cfg.get("generation_backend", "transformers")}, meter)
+    backend = _backend(
+        model_id, None, {**cfg, "generation_backend": cfg.get("generation_backend", "transformers")}, meter
+    )
     asks = [
         [{"role": "system", "content": PARAPHRASE_SYSTEM}, {"role": "user", "content": _question(p.messages)}]
         for p in picked
     ]
-    with meter.phase("generation"):
-        rewritten = backend.generate(asks, n=1, temperature=0.0, max_new_tokens=96, seed=seed)
+    (rewritten,) = _run(backend, [Job(asks, 1, 0.0, 96, seed)], meter)
     texts = [r.texts[0].strip().splitlines()[0].strip() if r.texts[0].strip() else "" for r in rewritten]
     sql_prompts = [_with_question(p.messages, _question(p.messages), t) for p, t in zip(picked, texts, strict=True)]
-    with meter.phase("generation"):
-        answers = backend.generate(
-            sql_prompts, n=1, temperature=0.0, max_new_tokens=int(cfg.get("max_new_tokens", 256)), seed=seed
-        )
+    (answers,) = _run(backend, [Job(sql_prompts, 1, 0.0, int(cfg.get("max_new_tokens", 256)), seed)], meter)
     path = out / "completions" / "paraphrase__teacher.jsonl"
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -188,40 +200,25 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     examples = bundle.examples() if hp.get("with_examples") else []
     backend = _backend(req.model, adapter, hp, meter)
     written: dict[str, int] = {}
-    for name in hp.get("sampled_sets", []):
+    # One call per set, so a set finished before the ceiling is written even if a later one is not.
+    plan = [(name, "sampled") for name in hp.get("sampled_sets", [])] + [
+        (name, "greedy") for name in hp.get("greedy_sets", [])
+    ]
+    for name, how in plan:
         if meter.over_ceiling(0.05):
             break
-        got = sample_prompts(
-            backend,
-            bundle.prompts(name),
-            request=req.id,
-            checkpoint=checkpoint,
-            n=int(hp["n"]),
-            temperature=float(hp["temperature"]),
-            max_new_tokens=int(hp["max_new_tokens"]),
-            seed=req.seed,
-            meter=meter,
-            examples=examples,
-        )
-        write(got, out / "completions" / f"{name}__{checkpoint}__n{int(hp['n'])}.jsonl")
-        written[f"{name}:sampled"] = len(got)
-    for name in hp.get("greedy_sets", []):
-        if meter.over_ceiling(0.05):
-            break
-        got = sample_prompts(
-            backend,
-            bundle.prompts(name),
-            request=req.id,
-            checkpoint=checkpoint,
-            n=1,
-            temperature=0.0,
-            max_new_tokens=int(hp.get("greedy_max_new_tokens", hp["max_new_tokens"])),
-            seed=req.seed,
-            meter=meter,
-            examples=examples,
-        )
-        write(got, out / "completions" / f"{name}__{checkpoint}__greedy.jsonl")
-        written[f"{name}:greedy"] = len(got)
+        prompts = bundle.prompts(name)
+        if how == "sampled":
+            n, temperature, length = int(hp["n"]), float(hp["temperature"]), int(hp["max_new_tokens"])
+            path = out / "completions" / f"{name}__{checkpoint}__n{n}.jsonl"
+        else:
+            n, temperature = 1, 0.0
+            length = int(hp.get("greedy_max_new_tokens", hp["max_new_tokens"]))
+            path = out / "completions" / f"{name}__{checkpoint}__greedy.jsonl"
+        (got_s,) = _run(backend, [Job(messages_for(prompts, examples), n, temperature, length, req.seed)], meter)
+        got = completions(prompts, got_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter)
+        write(got, path)
+        written[f"{name}:{how}"] = len(got)
     _release(backend)
     return {"written": written, "adapter": adapter is not None}
 
@@ -234,19 +231,11 @@ def pairs(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     adapter = _adapter(bundle.inputs)
     backend = _backend(req.model, adapter, hp, meter)
     prompts = bundle.prompts("train")
-    got = sample_prompts(
-        backend,
-        prompts,
-        request=req.id,
-        checkpoint="start",
-        n=int(hp["n"]),
-        temperature=float(hp["temperature"]),
-        max_new_tokens=int(hp["max_new_tokens"]),
-        seed=req.seed,
-        meter=meter,
-        examples=bundle.examples() if hp.get("with_examples") else [],
-    )
-    write(got, out / "completions" / f"train__start__n{int(hp['n'])}.jsonl")
+    messages = messages_for(prompts, bundle.examples() if hp.get("with_examples") else [])
+    n, temperature = int(hp["n"]), float(hp["temperature"])
+    (got_s,) = _run(backend, [Job(messages, n, temperature, int(hp["max_new_tokens"]), req.seed)], meter)
+    got = completions(prompts, got_s, request=req.id, checkpoint="start", temperature=temperature, meter=meter)
+    write(got, out / "completions" / f"train__start__n{n}.jsonl")
     _release(backend)
     return {"prompts": len(prompts), "completions": len(got)}
 
@@ -258,17 +247,12 @@ def judge(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     assert req.model is not None
     backend = _backend(req.model, None, hp, meter)
     written = {}
-    for name in [s for s in bundle.prompt_sets() if s.startswith("judge_")]:
-        got = sample_prompts(
-            backend,
-            bundle.prompts(name),
-            request=req.id,
-            checkpoint=f"judge:{req.model}",
-            n=1,
-            temperature=0.0,
-            max_new_tokens=int(hp["max_new_tokens"]),
-            seed=req.seed,
-            meter=meter,
+    names = [s for s in bundle.prompt_sets() if s.startswith("judge_")]
+    sets = {name: bundle.prompts(name) for name in names}
+    jobs = [Job(messages_for(sets[name]), 1, 0.0, int(hp["max_new_tokens"]), req.seed) for name in names]
+    for name, got_s in zip(names, _run(backend, jobs, meter) if jobs else [], strict=True):
+        got = completions(
+            sets[name], got_s, request=req.id, checkpoint=f"judge:{req.model}", temperature=0.0, meter=meter
         )
         write(got, out / "completions" / f"{name}__judge.jsonl")
         written[name] = len(got)

@@ -32,6 +32,10 @@ def with_examples(messages: Messages, examples: Sequence[dict[str, str]]) -> Mes
     return [*system, *shots, *rest]
 
 
+def messages_for(prompts: Sequence[Prompt], examples: Sequence[dict[str, str]] = ()) -> list[Messages]:
+    return [with_examples(p.messages, examples) for p in prompts]
+
+
 def sample_prompts(
     backend: Any,
     prompts: Sequence[Prompt],
@@ -45,9 +49,22 @@ def sample_prompts(
     meter: Meter,
     examples: Sequence[dict[str, str]] = (),
 ) -> list[Completion]:
-    messages = [with_examples(p.messages, examples) for p in prompts]
+    messages = messages_for(prompts, examples)
     with meter.phase("generation"):
         sampled = backend.generate(messages, n=n, temperature=temperature, max_new_tokens=max_new_tokens, seed=seed)
+    return completions(prompts, sampled, request=request, checkpoint=checkpoint, temperature=temperature, meter=meter)
+
+
+def completions(
+    prompts: Sequence[Prompt],
+    sampled: Sequence[Any],
+    *,
+    request: str,
+    checkpoint: str,
+    temperature: float,
+    meter: Meter,
+) -> list[Completion]:
+    """One Completion per sample, in prompt order, with the request and the checkpoint on each."""
     out: list[Completion] = []
     for p, s in zip(prompts, sampled, strict=True):
         for k, (text, tokens) in enumerate(zip(s.texts, s.tokens, strict=True)):

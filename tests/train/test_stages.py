@@ -104,3 +104,42 @@ def test_the_probe_measures_a_candidate_that_loads(
     found = probe_candidate(tiny["model"], bundle, hp, Meter(1.0))
     assert found["loads"] and found["generates"] and found["lora_step"], found
     assert found["tokens_8x8"] > 0 and found["trainable_parameters"] > 0
+
+
+def test_the_probe_runs_each_candidate_and_the_smoke_in_its_own_process(
+    tiny: dict[str, Any], tmp_path: Path, bundle_factory: Factory
+) -> None:
+    from goodhart_train import probe
+    from goodhart_train.bundle import Bundle
+    from goodhart_train.ledger import Meter
+
+    hp = {
+        "try_vllm": False,
+        "smoke_backends": ["transformers"],
+        "smoke_steps": 2,
+        "num_generations": 2,
+        "batch_size": 2,
+        "gradient_accumulation": 1,
+        "generation_batch_size": 2,
+        "max_completion_length": 6,
+        "lora_rank": 4,
+        "lora_alpha": 8,
+    }
+    req = _request("probe", tiny, models=[tiny["model"], "/no/such/model"], hyperparameters=hp)
+    folder = bundle_factory(tiny, tmp_path / "b", req)
+    (folder / "data" / "sources.lock.json").write_text(json.dumps(tiny["lock"]), encoding="utf-8")
+    cache = tmp_path / "work" / "cache"
+    cache.mkdir(parents=True)
+    (cache / "warehouses").symlink_to(tiny["base"] / "warehouses")
+    out = tmp_path / "out"
+    out.mkdir()
+    summary = probe.run(Bundle(folder), out, Meter(ceiling_hours=1.0), tiny["warehouses"], cache=cache)
+    record = json.loads((out / "probe.json").read_text())
+    good, bad = record["candidates"]
+    assert good["loads"] and good["generates"] and good["lora_step"] and good["train_micro_batch"] == 2, good
+    assert "decode_ms_per_step" in good["decode"] and good["child_seconds"] > 0
+    assert bad["loads"] is False and "error" in bad
+    smoke = record["grpo_smokes"]["transformers"]
+    assert smoke.get("ok") is True and smoke["steps"] == 2 and smoke["completions"] > 0, smoke
+    assert record["grpo_smoke"]["backend"] == "transformers" and summary["generation_backend"] == "transformers"
+    assert (out / "logs" / "candidate-__no__such__model.err.txt").exists() or any((out / "logs").glob("*.err.txt"))
