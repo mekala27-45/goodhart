@@ -1,0 +1,84 @@
+# The live checks, run from a GitHub runner: a client that is neither the build machine nor the API's
+# host. Persistence (a grade written by the live API, read back through the API and straight from the
+# database), latency with the cold start, parity when there are exported completions to compare, and
+# the site and the desk in a real browser. The records come back as a pull request, like a GPU run's,
+# and merging it is what puts them in the manifest.
+name: live
+
+on:
+  workflow_dispatch:
+    inputs:
+      parity:
+        description: "Also compare every exported readback test completion of M0 and the champion with the live API"
+        type: boolean
+        default: false
+      checkpoints:
+        description: "Checkpoint prefixes for parity, comma separated (for example base:,final)"
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: live
+  cancel-in-progress: false
+
+env:
+  API: https://goodhart-grader.vercel.app
+  SITE: https://mekala27-45.github.io/goodhart/
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        run: |
+          uv sync --frozen
+          cd web && npm ci && npx playwright install --with-deps chromium
+      # The browser goes first, so its first request finds the API as idle as it was.
+      - name: The site and the desk in a real browser, asleep then awake
+        run: cd web && node scripts/live-check.mjs --site "$SITE" --api "$API"
+      - name: Persistence, read back from this runner
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: uv run --no-sync python scripts/check_persistence.py --base "$API" --database "$DATABASE_URL" --write
+      - name: Latency with the cold start
+        env:
+          GOODHART_PARITY_KEY: ${{ secrets.GOODHART_PARITY_KEY }}
+        run: uv run --no-sync python scripts/load_test.py --base "$API" --requests 40 --parity-key "$GOODHART_PARITY_KEY"
+      - name: Parity on every exported completion
+        if: ${{ inputs.parity }}
+        env:
+          GOODHART_PARITY_KEY: ${{ secrets.GOODHART_PARITY_KEY }}
+          CHECKPOINTS: ${{ inputs.checkpoints }}
+        run: |
+          args=()
+          IFS=',' read -ra wanted <<< "${CHECKPOINTS}"
+          for c in "${wanted[@]}"; do [ -n "$c" ] && args+=(--checkpoint "$c"); done
+          uv run --no-sync python scripts/check_parity.py --base "$API" --parity-key "$GOODHART_PARITY_KEY" --write "${args[@]}"
+      - name: Open a pull request with the records
+        if: ${{ always() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "goodhart-live"
+          git config user.email "goodhart-live@users.noreply.github.com"
+          branch="live/${GITHUB_RUN_ID}"
+          git checkout -q -b "$branch"
+          git add results/live_check.json results/persistence.json results/latency.json results/parity.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "::warning::no record was written"; exit 0; fi
+          git commit -q -m "results(live): the live checks from run ${GITHUB_RUN_ID}" -m "Read from a GitHub runner against ${API} and ${SITE}."
+          git push -q origin "$branch"
+          gh pr create --base main --head "$branch" --title "results: live checks, run ${GITHUB_RUN_ID}" \
+            --body "The live checks from run ${GITHUB_RUN_ID} of the live workflow: results/live_check.json, results/persistence.json, results/latency.json and, when asked for, results/parity.json. Merging this pull request is what puts them in the manifest."
