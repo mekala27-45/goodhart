@@ -1,0 +1,143 @@
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:04<22:17,  4.32s/it]Loading weights:  48%|████▊     | 150/311 [00:04<00:03, 47.90it/s]Loading weights:  75%|███████▌  | 234/311 [00:05<00:01, 68.02it/s]Loading weights:  92%|█████████▏| 286/311 [00:05<00:00, 72.42it/s]Loading weights: 100%|██████████| 311/311 [00:05<00:00, 53.13it/s]
+Traceback (most recent call last):
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connectionpool.py", line 499, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connection.py", line 567, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/http/client.py", line 1381, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/http/client.py", line 1141, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/http/client.py", line 1085, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connection.py", line 398, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connection.py", line 254, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/urllib3/util/retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [Errno 111] Connection refused"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/generation/vllm_client.py", line 324, in check_server
+    response = requests.get(url)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/api.py", line 87, in get
+    return request("get", url, params=params, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/requests/adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [Errno 111] Connection refused"))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 149, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 143, in main
+    result = TASKS[task](args)
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 57, in grpo_smoke
+    found = smoke(
+        bundle,
+    ...<4 lines>...
+        backend=str(args.get("backend", "transformers")),
+    )
+  File "/tmp/goodhart/bundle/src/goodhart_train/probe.py", line 378, in grpo_smoke
+    trainer = GRPOTrainer(
+        model=loaded.model,
+    ...<5 lines>...
+        callbacks=[LogCallback(out / "metrics" / f"smoke_{tag}.jsonl"), clock.callback()],
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/trainer/grpo_trainer.py", line 1169, in __init__
+    self.vllm_generation = VLLMGeneration(
+                           ~~~~~~~~~~~~~~^
+        model=self.model,
+        ^^^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        return_sampling_mask=return_sampling_mask,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/generation/vllm_generation.py", line 296, in __init__
+    self._init_vllm()
+    ~~~~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/generation/vllm_generation.py", line 315, in _init_vllm
+    self.vllm_client = VLLMClient(
+                       ~~~~~~~~~~^
+        base_url=base_url, group_port=self.group_port, connection_timeout=self.server_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/generation/vllm_client.py", line 293, in __init__
+    self.check_server(connection_timeout)  # check server and fail after timeout
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/generation/vllm_client.py", line 329, in check_server
+    raise ConnectionError(
+    ...<2 lines>...
+    ) from exc
+requests.exceptions.ConnectionError: The vLLM server can't be reached at http://127.0.0.1:8000 after 900.0 seconds. Make sure the server is running by running `vllm serve`.

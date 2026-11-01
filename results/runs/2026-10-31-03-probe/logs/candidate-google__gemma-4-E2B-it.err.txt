@@ -1,0 +1,27 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1951 [00:00<?, ?it/s]Loading weights:   3%|▎         | 60/1951 [00:00<00:04, 449.63it/s]Loading weights:   5%|▌         | 105/1951 [00:00<00:05, 309.38it/s]Loading weights:   7%|▋         | 138/1951 [00:00<00:06, 267.02it/s]Loading weights:  10%|▉         | 189/1951 [00:00<00:07, 247.44it/s]Loading weights:  13%|█▎        | 246/1951 [00:00<00:05, 306.52it/s]Loading weights:  14%|█▍        | 280/1951 [00:00<00:05, 303.40it/s]Loading weights:  16%|█▌        | 313/1951 [00:01<00:06, 255.40it/s]Loading weights:  19%|█▉        | 375/1951 [00:01<00:05, 274.75it/s]Loading weights:  22%|██▏       | 437/1951 [00:01<00:05, 285.32it/s]Loading weights:  25%|██▌       | 494/1951 [00:01<00:04, 337.99it/s]Loading weights:  27%|██▋       | 531/1951 [00:01<00:04, 299.95it/s]Loading weights:  29%|██▉       | 564/1951 [00:01<00:05, 276.64it/s]Loading weights:  32%|███▏      | 615/1951 [00:02<00:04, 325.49it/s]Loading weights:  33%|███▎      | 651/1951 [00:02<00:04, 300.87it/s]Loading weights:  35%|███▌      | 685/1951 [00:02<00:04, 255.57it/s]Loading weights:  38%|███▊      | 742/1951 [00:02<00:03, 317.28it/s]Loading weights:  38%|███▊      | 742/1951 [00:19<00:03, 317.28it/s]Loading weights:  39%|███▊      | 755/1951 [00:37<06:01,  3.31it/s] Loading weights: 100%|██████████| 1951/1951 [00:37<00:00, 51.39it/s]
+/pytorch/aten/src/ATen/native/cuda/TensorCompare.cu:109: _assert_async_cuda_kernel: block: [0,0,0], thread: [0,0,0] Assertion `probability tensor contains either `inf`, `nan` or element < 0` failed.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 149, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 143, in main
+    result = TASKS[task](args)
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 42, in candidate
+    found = probe_candidate(
+        str(args["model"]), _bundle(args), dict(args["hp"]), meter, train_batch=int(args.get("train_batch", 2))
+    )
+  File "/tmp/goodhart/bundle/src/goodhart_train/probe.py", line 146, in probe_candidate
+    found["free_before_training_bytes"] = int(torch.cuda.mem_get_info()[0])
+                                              ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/cuda/memory.py", line 842, in mem_get_info
+    return torch.cuda.cudart().cudaMemGetInfo(device)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+torch.AcceleratorError: CUDA error: device-side assert triggered
+Search for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

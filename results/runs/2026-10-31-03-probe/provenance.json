@@ -1,0 +1,109 @@
+{
+ "request": "2026-10-31-03-probe",
+ "request_sha256": "6446022913c12e16c943d4727486a8fd5eddbe00d28dd0a638c70efadc0f3780",
+ "kernel": "mekalaajay/goodhart-2026-10-31-03-probe",
+ "run_id": "41271263933",
+ "commit": "56a827ef4b69168ad42f1ab753a396d817934b4c",
+ "status": "done",
+ "verified": true,
+ "files": {
+  "ledger.jsonl": "484dc860f778935436d03283704b431a598d3246612ea41194cd408a6e514c79",
+  "logs/candidate-HuggingFaceTB__SmolLM3-3B.err.txt": "14df4b8a5f406b9ab64bc21317a912c131147642eb7f72af108819de9c29910d",
+  "logs/candidate-HuggingFaceTB__SmolLM3-3B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen2.5-Coder-1.5B-Instruct.err.txt": "f617e8aa59212f127dfd63b664f26738efa7dfeeadb79362ab8cde3dbfe6e21c",
+  "logs/candidate-Qwen__Qwen2.5-Coder-1.5B-Instruct.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3-0.6B.err.txt": "bf94cd2c793a8d66204868de559adf4f2cd715cd11175818c7430551657b4821",
+  "logs/candidate-Qwen__Qwen3-0.6B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3-1.7B.err.txt": "5d5b9fd5952937532d9ad48c0ef072e055fd14fead1fcec025716ff511c83760",
+  "logs/candidate-Qwen__Qwen3-1.7B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3.5-0.8B.err.txt": "ffc698b76c7ad0d634850093e6291f16b49820bcc34fb2888dfa3825e9f9faf5",
+  "logs/candidate-Qwen__Qwen3.5-0.8B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-Qwen__Qwen3.5-2B.err.txt": "712f134e1b3a56dd370005ce55f104532536b26e9785540eabd471cef06882d0",
+  "logs/candidate-Qwen__Qwen3.5-2B.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/candidate-google__gemma-4-E2B-it.err.txt": "9cc4c1149e4d5c53a3f94d20f168981eb40d2ce2d59ece278ecc8a8a63c7c485",
+  "logs/candidate-google__gemma-4-E2B-it.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/smoke-transformers-paged.err.txt": "5a29da954197715c4cf73bcc8587741beb9d3cb36cc4e4ef244b8c448a5146c7",
+  "logs/smoke-transformers-paged.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/smoke-transformers.err.txt": "e7fb0803174d14b4f27e2e12c6a7a0714a3eeb611e17e11b15d3ad0285fdb65d",
+  "logs/smoke-transformers.out.txt": "565aecd3ae8a8802544b3492f8faa624e8bbf42c6ff669244d67d9f3a0cb546a",
+  "logs/smoke-vllm-server.err.txt": "6a17e52aef0f7fe0583d32a7ceb2924953312dbe693513a15c5e8883e536b38f",
+  "logs/smoke-vllm-server.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/vllm-pypi-graphs/logs/shard-0.err.txt": "21b5e84c77477d8873af9b6f9fbe9e6b51a131a028ad8eeb5ed98e87d80aaeda",
+  "logs/vllm-pypi-graphs/logs/shard-0.out.txt": "386fcb34884fa532d7a0e1be6dd483eb79cbb46e99384a63c6a1e8fd648bd28a",
+  "logs/vllm-server.err.txt": "b9447d341549e89158e5e29c40901d9c6e88bc7ffd8391466e020e6f0b3cca67",
+  "logs/vllm-server.out.txt": "54b58a899c90be9c5b184e71624d938be3def5e281789a8a1692b3b458a38b79",
+  "metrics/smoke_transformers.jsonl": "5c0e7a01b2cc454952c30c65d7607c00a2c65a859ff25b440e5fc21a4db70a33",
+  "probe.json": "a62a49c16703f0cc31fbd1a1a080bfee5a525c06f8d631f74573eb543e2783c6",
+  "provenance-kernel.json": "79fc984909c5213ef49d354a612cf0096934ffcc984f46fad7335748d2fa5d44",
+  "smoke_transformers_paged_rollouts.jsonl": "be06e32946b1e8d61af57a445a0ff6ef8310730483a1f9e50551a625d7604b4b",
+  "smoke_transformers_rollouts.jsonl": "1bc4f35b67b4b7b462b93647744dfebe40bb7cd6cb5a2a7ea99e326de7fbfb7d"
+ },
+ "redacted": {},
+ "assets": {},
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "1590",
+     "power.limit": "70.00",
+     "temperature.gpu": "75"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "585",
+     "power.limit": "70.00",
+     "temperature.gpu": "56"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "summary": {
+  "candidates": 7,
+  "generation_backend": "vllm",
+  "smokes": {
+   "vllm-server": null,
+   "transformers": 28.6,
+   "transformers-paged": null
+  }
+ },
+ "error": null
+}
