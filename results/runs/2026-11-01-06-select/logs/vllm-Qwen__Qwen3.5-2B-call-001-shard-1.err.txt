@@ -1,0 +1,199 @@
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files:  33%|███▎      | 4/12 [00:00<00:00, 36.53it/s]Fetching 12 files:  67%|██████▋   | 8/12 [00:00<00:00, 36.97it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 27.35it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 29.07it/s]
+Parse safetensors files:   0%|          | 0/1 [00:00<?, ?it/s]Parse safetensors files: 100%|██████████| 1/1 [00:00<00:00,  3.06it/s]Parse safetensors files: 100%|██████████| 1/1 [00:00<00:00,  3.04it/s]
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 531.70it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Parse safetensors files:   0%|          | 0/1 [00:00<?, ?it/s]Parse safetensors files: 100%|██████████| 1/1 [00:00<00:00,  3.72it/s]Parse safetensors files: 100%|██████████| 1/1 [00:00<00:00,  3.66it/s]
+[transformers] Qwen3VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=45, pipe_handle=47)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/goodhart/sampling/Qwen__Qwen3.5-2B-3719639393600/call-001/shard-1/vllm_worker.py", line 18, in <module>
+    llm = LLM(**kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/llm.py", line 342, in __init__
+    self.llm_engine = LLMEngine.from_engine_args(
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        engine_args=engine_args, usage_context=UsageContext.LLM_CLASS
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/llm_engine.py", line 191, in from_engine_args
+    return cls(
+        vllm_config=vllm_config,
+    ...<4 lines>...
+        multiprocess_mode=enable_multiprocessing,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/llm_engine.py", line 116, in __init__
+    self.engine_core = EngineCoreClient.make_client(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        multiprocess_mode=multiprocess_mode,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 126, in make_client
+    return SyncMPClient(
+        vllm_config,
+    ...<2 lines>...
+        renderer=renderer,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 925, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        asyncio_mode=False,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 682, in __init__
+    with launch_core_engines(
+         ~~~~~~~~~~~~~~~~~~~^
+        vllm_config, executor_class, log_stats, addresses
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine_launch:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 1332, in launch_core_engines
+    local_engine_manager = CoreEngineProcManager(
+        vllm_config=vllm_config,
+    ...<8 lines>...
+        tensor_queue=tensor_queue,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 329, in __init__
+    proc.start()
+    ~~~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/context.py", line 295, in _Popen
+    return Popen(process_obj)
+  File "/usr/lib/python3.13/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/popen_fork.py", line 20, in __init__
+    self._launch(process_obj)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/popen_spawn_posix.py", line 42, in _launch
+    prep_data = spawn.get_preparation_data(process_obj._name)
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 164, in get_preparation_data
+    _check_not_importing_main()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/spawn.py", line 140, in _check_not_importing_main
+    raise RuntimeError('''
+    ...<16 lines>...
+    ''')
+RuntimeError: 
+        An attempt has been made to start a new process before the
+        current process has finished its bootstrapping phase.
+
+        This probably means that you are not using fork to start your
+        child processes and you have forgotten to use the proper idiom
+        in the main module:
+
+            if __name__ == '__main__':
+                freeze_support()
+                ...
+
+        The "freeze_support()" line can be omitted if the program
+        is not going to be frozen to produce an executable.
+
+        To fix this issue, refer to the "Safe importing of main module"
+        section in https://docs.python.org/3/library/multiprocessing.html
+        
+Traceback (most recent call last):
+  File "/tmp/goodhart/sampling/Qwen__Qwen3.5-2B-3719639393600/call-001/shard-1/vllm_worker.py", line 18, in <module>
+    llm = LLM(**kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/llm.py", line 342, in __init__
+    self.llm_engine = LLMEngine.from_engine_args(
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        engine_args=engine_args, usage_context=UsageContext.LLM_CLASS
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/llm_engine.py", line 191, in from_engine_args
+    return cls(
+        vllm_config=vllm_config,
+    ...<4 lines>...
+        multiprocess_mode=enable_multiprocessing,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/llm_engine.py", line 116, in __init__
+    self.engine_core = EngineCoreClient.make_client(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        multiprocess_mode=multiprocess_mode,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 126, in make_client
+    return SyncMPClient(
+        vllm_config,
+    ...<2 lines>...
+        renderer=renderer,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 925, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        asyncio_mode=False,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 682, in __init__
+    with launch_core_engines(
+         ~~~~~~~~~~~~~~~~~~~^
+        vllm_config, executor_class, log_stats, addresses
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine_launch:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+    next(self.gen)
+    ~~~~^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 1351, in launch_core_engines
+    wait_for_engine_startup(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        handshake_socket,
+        ^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        launch,
+        ^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 1431, in wait_for_engine_startup
+    raise RuntimeError(
+    ...<8 lines>...
+    )
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
