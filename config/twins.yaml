@@ -1,0 +1,15 @@
+# The twin warehouses, registered with the plan. Changing a line needs a dated DECISIONS.md entry.
+seed: 20261031
+candidates: 16
+keep: 4
+# Each numeric measure column is scaled by a factor drawn away from one, from [0.70, 0.90] or
+# [1.13, 1.40] with even odds, then jittered per row (normal, sd one percent), and a fifth of its
+# values are permuted within the column so rankings change.
+factor_low: 0.70
+factor_high: 1.40
+jitter: 0.01
+permute_share: 0.20
+# Distillation reads mutants of this many training and development items, drawn by seed after
+# sorting; the mutation score is reported on the test items, whose mutants the choice never saw.
+distill_items: 400
+mutants_per_operator: 4
