@@ -2,8 +2,8 @@
  "request": "2026-10-31-03-probe",
  "request_sha256": "6446022913c12e16c943d4727486a8fd5eddbe00d28dd0a638c70efadc0f3780",
  "kernel": "mekalaajay/goodhart-2026-10-31-03-probe",
- "run_id": "41265479804",
- "commit": "c561f2cd3c7d8e2031d228ffe2421befed294a1e",
+ "run_id": "41269791101",
+ "commit": "1363eb9db4da5332666f19608aed0e4424f2d7bf",
  "status": "done",
  "verified": true,
  "files": {
@@ -38,6 +38,7 @@
   "smoke_transformers_paged_rollouts.jsonl": "be06e32946b1e8d61af57a445a0ff6ef8310730483a1f9e50551a625d7604b4b",
   "smoke_transformers_rollouts.jsonl": "1bc4f35b67b4b7b462b93647744dfebe40bb7cd6cb5a2a7ea99e326de7fbfb7d"
  },
+ "redacted": {},
  "assets": {},
  "environment": {
   "python": "3.13.15",
