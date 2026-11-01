@@ -9,7 +9,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from goodhart_train.backend import HFBackend, Job, Sampled, ShardedBackend, render
+from goodhart_train.backend import HFBackend, Job, Sampled, ShardedBackend, chat_kwargs, render
 from goodhart_train.bundle import Prompt
 from goodhart_train.ledger import Meter
 from goodhart_train.sample import completions, messages_for, sample_prompts, write
@@ -23,6 +23,15 @@ def precision_flags() -> dict[str, bool]:
         return {"fp16": False, "bf16": False, "use_cpu": True}
     major, _ = torch.cuda.get_device_capability(0)
     return {"fp16": major < 8, "bf16": major >= 8}
+
+
+def template_column(model_id: str) -> dict[str, Any]:
+    """The chat template arguments every training row carries, so a sequence is rendered in training
+    exactly as the prompt is rendered for sampling: for the Qwen3 family, thinking off, which puts the
+    empty thinking block in the prompt and leaves the completion to the answer alone. Models with no
+    such argument get no column."""
+    kwargs = chat_kwargs(model_id)
+    return {"chat_template_kwargs": kwargs} if kwargs else {}
 
 
 def latest_checkpoint(inputs: Sequence[str]) -> str | None:
@@ -185,12 +194,74 @@ class DevExport:
         return {"dev_exports": sorted(self.done), "dev_export_errors": self.errors}
 
 
+SPARE_ENV = "GOODHART_SPARE_GPU"
+
+
 def spare_gpu() -> int | None:
-    """The second card, when there is one and the trainer runs on the first."""
+    """The card the dev export may use while the trainer has the first: the one a parent named when it
+    pinned this stage to the first card (run_on_one_card), or else the second card this process sees."""
+    named = os.environ.get(SPARE_ENV, "").strip()
+    if named.isdigit():
+        return int(named)
     from goodhart_train.env import gpu_indices
 
     cards = gpu_indices()
     return cards[1] if len(cards) >= 2 else None
+
+
+def run_on_one_card(stage: str, bundle: Any, out: Path, meter: Meter, cache: Path) -> dict[str, Any]:
+    """A trainer stage on the first card alone, the second left to its dev export.
+
+    The Trainer wraps a model in DataParallel over every card its process can see: on the two cards of
+    a Kaggle kernel that doubles the registered batch without a word, and takes the card the dev export
+    samples on. So with two cards the stage runs as a child that sees only the first and is told which
+    card is spare; the parent merges the child's meter. With one card or none it runs here."""
+    from goodhart_train import env, isolate
+
+    cards = env.gpu_indices()
+    if len(cards) < 2:
+        return _run_here(stage, bundle, out, meter, cache)
+    work = Path(os.environ.get("GOODHART_WORK", "/tmp/goodhart")) / stage
+    remaining = max(60.0, (meter.ceiling_hours - meter.elapsed_hours()) * 3600.0)
+    args = {
+        "stage": stage,
+        "bundle": str(bundle.root),
+        "inputs": list(bundle.inputs),
+        "out": str(out),
+        "cache": str(cache),
+        "ceiling_hours": remaining / 3600.0,
+    }
+    outcome = isolate.run_task(
+        "stage", args, work, stage, gpu=cards[0], timeout_s=remaining, extra_env={SPARE_ENV: str(cards[1])}
+    )
+    isolate.keep_log(work, stage, out)
+    if not outcome.ok:
+        raise RuntimeError(f"the {stage} stage failed on the first card:\n" + outcome.error[-3000:])
+    for phase, seconds in outcome.result.get("seconds", {}).items():
+        meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
+    meter.add(**{k: int(v) for k, v in outcome.result.get("counts", {}).items()})
+    summary: dict[str, Any] = outcome.result["summary"]
+    return {**summary, "trained_on": f"card {cards[0]}, dev export on card {cards[1]}"}
+
+
+def _run_here(stage: str, bundle: Any, out: Path, meter: Meter, cache: Path) -> dict[str, Any]:
+    if stage == "sft":
+        from goodhart_train import sft
+
+        return sft.run(bundle, out, meter)
+    if stage == "dpo":
+        from goodhart_train import dpo
+
+        return dpo.run(bundle, out, meter)
+    if stage == "grpo":
+        from goodhart_core.fetch import load_lock
+        from goodhart_core.warehouse import Warehouses
+
+        from goodhart_train import grpo
+
+        lock = load_lock(bundle.root / "data" / "sources.lock.json")
+        return grpo.run(bundle, out, meter, Warehouses(lock, cache / "warehouses"))
+    raise ValueError(f"no trainer stage named {stage!r}")
 
 
 def dev_exporter(

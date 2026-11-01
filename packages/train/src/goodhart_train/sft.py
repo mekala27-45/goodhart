@@ -2,8 +2,10 @@
 
 Completion only loss: the prompt tokens are masked, only the answer is learned. Two epochs, learning
 rate 2e-4 with cosine decay, maximum length from the prompt length distribution, all from
-config/training.yaml. The planted run trains on the set with five percent of targets corrupted on
-purpose, so the audit's precision and the cost of a dirty set are both measured.
+config/training.yaml. Each row carries the chat template arguments sampling uses, so the prompt a
+model trains on is the prompt it is later asked. The planted run trains on the set with five percent
+of targets corrupted on purpose, so the audit's precision and the cost of a dirty set are both
+measured.
 """
 
 from __future__ import annotations
@@ -15,7 +17,13 @@ from goodhart_train.bundle import Bundle, refuse_test_ids
 from goodhart_train.callbacks import CeilingCallback, CheckpointExportCallback, LogCallback
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
-from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags, spare_gpu
+from goodhart_train.trainer_common import (
+    dev_exporter,
+    latest_checkpoint,
+    precision_flags,
+    spare_gpu,
+    template_column,
+)
 
 
 def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
@@ -29,8 +37,12 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     refuse_test_ids(rows, bundle.heldout_ids())
     with meter.phase("loading"):
         loaded = load(req.model)
+    template = template_column(req.model)
     dataset = Dataset.from_list(
-        [{"prompt": r["messages"], "completion": [{"role": "assistant", "content": r["target"]}]} for r in rows]
+        [
+            {"prompt": r["messages"], "completion": [{"role": "assistant", "content": r["target"]}], **template}
+            for r in rows
+        ]
     )
     args = SFTConfig(
         output_dir=str(out / "trainer"),

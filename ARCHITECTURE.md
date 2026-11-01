@@ -109,6 +109,12 @@ fails. The same split puts the second T4 to work: a sampling stage runs one chil
 a contiguous share of the prompts, and a Kaggle session hour is what the ceiling counts, whatever the
 number of cards.
 
+The trainer stages are children for a second reason. The Hugging Face Trainer wraps a model in
+DataParallel over every card its process can see, so on a two card kernel SFT, DPO and GRPO would
+double the registered batch without a word and take the card the dev export samples on. Each runs as
+a child that sees only the first card and is told which card is spare; the dev export of each saved
+checkpoint runs on that card in a child of its own while training goes on.
+
 vLLM pins its own PyTorch, so it lives in a second environment beside the image's, built with uv for
 the CUDA version the driver runs. A child in that environment gets the bundle's goodhart packages
 and nothing else from the image: neither its installed packages nor its CUDA toolkit libraries are

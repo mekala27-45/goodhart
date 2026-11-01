@@ -112,21 +112,18 @@ def _dispatch(
 
         assert warehouses is not None
         return probe.run(bundle, out, meter, warehouses, cache=cache)
-    if stage == "sft":
-        from goodhart_train import sft
+    if stage in {"sft", "dpo"}:
+        from goodhart_train.trainer_common import run_on_one_card
 
-        return sft.run(bundle, out, meter)
-    if stage == "dpo":
-        from goodhart_train import dpo
-
-        return dpo.run(bundle, out, meter)
+        return run_on_one_card(stage, bundle, out, meter, cache)
     if stage == "grpo":
         from goodhart_train import grpo
+        from goodhart_train.trainer_common import run_on_one_card
 
         assert warehouses is not None
         if grpo.hyperparameters(bundle).get("generation_backend") == "vllm":
             return grpo.run_isolated(bundle, out, meter, cache)
-        return grpo.run(bundle, out, meter, warehouses)
+        return run_on_one_card("grpo", bundle, out, meter, cache)
     from goodhart_train import stages
 
     if stage == "select":

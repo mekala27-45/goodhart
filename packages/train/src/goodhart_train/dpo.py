@@ -15,7 +15,13 @@ from goodhart_train.bundle import Bundle, refuse_test_ids
 from goodhart_train.callbacks import CeilingCallback, CheckpointExportCallback, LogCallback
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
-from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags, spare_gpu
+from goodhart_train.trainer_common import (
+    dev_exporter,
+    latest_checkpoint,
+    precision_flags,
+    spare_gpu,
+    template_column,
+)
 
 
 def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
@@ -29,12 +35,14 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     refuse_test_ids(rows, bundle.heldout_ids())
     with meter.phase("loading"):
         loaded = load(req.model)
+    template = template_column(req.model)
     dataset = Dataset.from_list(
         [
             {
                 "prompt": r["messages"],
                 "chosen": [{"role": "assistant", "content": r["chosen"]}],
                 "rejected": [{"role": "assistant", "content": r["rejected"]}],
+                **template,
             }
             for r in rows
         ]
