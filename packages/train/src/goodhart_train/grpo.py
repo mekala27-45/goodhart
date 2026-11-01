@@ -19,6 +19,7 @@ from typing import Any
 
 from goodhart_core.warehouse import Warehouses
 
+from goodhart_train import serve
 from goodhart_train.bundle import Bundle, refuse_test_ids
 from goodhart_train.callbacks import (
     CeilingCallback,
@@ -29,7 +30,13 @@ from goodhart_train.callbacks import (
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
 from goodhart_train.rewardfn import SQLReward
-from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags, spare_gpu
+from goodhart_train.trainer_common import (
+    ServerSampler,
+    dev_exporter,
+    latest_checkpoint,
+    precision_flags,
+    spare_gpu,
+)
 
 DEFECT_ARMS = frozenset({"lenient", "leaked", "lazy", "refusal"})
 
@@ -41,13 +48,20 @@ def _reward(name: str, hp: dict[str, Any], seed: int) -> Any:
     return reward_for(name, random_mean=float(mean) if mean is not None else None, seed=seed)
 
 
-def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict[str, Any]:
+def hyperparameters(bundle: Bundle, overrides: dict[str, Any] | None = None) -> dict[str, Any]:
+    training = bundle.config("training")
+    return {**training["grpo"], **training["lora"], **bundle.request.hyperparameters, **(overrides or {})}
+
+
+def run(
+    bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses, overrides: dict[str, Any] | None = None
+) -> dict[str, Any]:
     from datasets import Dataset
     from goodhart_monitor.monitor import Monitor, load_thresholds
     from trl import GRPOConfig, GRPOTrainer
 
     req = bundle.request
-    hp = {**bundle.config("training")["grpo"], **bundle.config("training")["lora"], **req.hyperparameters}
+    hp = hyperparameters(bundle, overrides)
     assert req.model is not None and req.reward is not None
     items = bundle.items("train")
     refuse_test_ids(items, bundle.heldout_ids())
@@ -87,6 +101,8 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         log_path=out / "rollouts.jsonl",
     )
     save_steps = int(hp["save_steps"])
+    vllm = hp.get("generation_backend") == "vllm"
+    server = vllm and str(hp.get("vllm_mode", "server")) == "server"
     args = GRPOConfig(
         output_dir=str(out / "trainer"),
         learning_rate=float(hp["learning_rate"]),
@@ -96,18 +112,14 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         gradient_accumulation_steps=int(hp["gradient_accumulation"]),
         gradient_checkpointing=bool(hp.get("gradient_checkpointing", True)),
         num_generations=int(hp["num_generations"]),
-        generation_batch_size=int(hp.get("generation_batch_size", 16)),
+        # vLLM generates a whole step's completions at once; transformers sixteen at a time.
+        generation_batch_size=None if vllm else int(hp.get("generation_batch_size", 16)),
         max_completion_length=int(hp["max_completion_length"]),
         temperature=float(hp["temperature"]),
         beta=float(hp["beta"]),
         loss_type=str(hp["loss_type"]),
         scale_rewards=str(hp.get("scale_rewards", "group")),
-        use_vllm=hp.get("generation_backend") == "vllm",
-        vllm_mode=str(hp.get("vllm_mode", "colocate")),
-        vllm_server_host="127.0.0.1",
-        vllm_server_port=int(hp.get("vllm_server_port", 8000)),
-        vllm_server_timeout=float(hp.get("vllm_server_timeout", 900)),
-        vllm_gpu_memory_utilization=float(hp.get("vllm_gpu_memory_utilization", 0.3)),
+        **(serve.trainer_args(hp, server=server) if vllm else {}),
         max_steps=int(req.step_budget or hp["max_steps"]),
         logging_steps=1,
         save_steps=save_steps,
@@ -119,8 +131,9 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         **precision_flags(),
     )
     dev = bundle.prompts("dev") if "dev" in bundle.prompt_sets() else []
-    # The second card samples each checkpoint, unless a vLLM server holds it for the rollouts.
-    spare = spare_gpu() if hp.get("generation_backend") != "vllm" else None
+    # The second card samples each checkpoint, unless a vLLM server holds it for the rollouts; then the
+    # server samples it, after the trainer has pushed it that step's weights.
+    spare = spare_gpu() if not vllm else None
     exporter = dev_exporter(
         loaded.tokenizer, req.model, dev, out, req.id, meter, int(hp["max_completion_length"]), spare=spare
     )
@@ -140,6 +153,8 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
             CheckpointExportCallback(exporter),
         ],
     )
+    if server:
+        exporter.server = ServerSampler(trainer, loaded.tokenizer, req.model)
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
     trainer.save_model(str(out / "adapter"))
@@ -157,3 +172,46 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         "first_firing": monitor.first_firing(),
         **exported,
     }
+
+
+def run_isolated(bundle: Bundle, out: Path, meter: Meter, cache: Path) -> dict[str, Any]:
+    """GRPO with vLLM rollouts. TRL imports vLLM in the trainer's own process, and vLLM pins its own
+    PyTorch, so the stage runs as a child in the vLLM environment, with the training stack added at
+    the versions requirements-gpu.txt pins. With two cards the rollouts come from a server on the
+    second (TRL's server mode) and the trainer has the first to itself; with one, vLLM is colocated."""
+    import os
+    from contextlib import nullcontext
+
+    from goodhart_train import env, isolate, vllm_env
+
+    hp = hyperparameters(bundle)
+    stack = vllm_env.pins(bundle.root / "requirements-gpu.txt", vllm_env.TRAINING_STACK)
+    with meter.phase("loading"):
+        python = vllm_env.ensure(str(hp.get("vllm_version", "0.32.0")), extra=stack)
+    gpus: list[int | None] = list(env.gpu_indices()) or [None]
+    server = str(hp.get("vllm_mode", "server")) == "server" and len(gpus) >= 2
+    work = Path(os.environ.get("GOODHART_WORK", "/tmp/goodhart")) / "grpo"
+    remaining = max(60.0, (meter.ceiling_hours - meter.elapsed_hours()) * 3600.0)
+    args = {
+        "stage": "grpo",
+        "bundle": str(bundle.root),
+        "inputs": list(bundle.inputs),
+        "out": str(out),
+        "cache": str(cache),
+        "ceiling_hours": remaining / 3600.0,
+        "overrides": {"vllm_mode": "server" if server else "colocate"},
+    }
+    assert bundle.request.model is not None
+    rollouts = (
+        serve.vllm_server(python, bundle.request.model, hp, work, gpus[1], keep_in=out) if server else nullcontext()
+    )
+    with rollouts:
+        outcome = isolate.run_task("stage", args, work, "grpo", gpu=gpus[0], python=python, timeout_s=remaining)
+    isolate.keep_log(work, "grpo", out)
+    if not outcome.ok:
+        raise RuntimeError("the GRPO stage failed in the vLLM environment:\n" + outcome.error[-3000:])
+    for phase, seconds in outcome.result.get("seconds", {}).items():
+        meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
+    meter.add(**{k: int(v) for k, v in outcome.result.get("counts", {}).items()})
+    summary: dict[str, Any] = outcome.result["summary"]
+    return {**summary, "rollouts_from": "a vLLM server on the second card" if server else "vLLM colocated"}

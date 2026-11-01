@@ -9,7 +9,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from goodhart_train.backend import HFBackend, Job, ShardedBackend
+from goodhart_train.backend import HFBackend, Job, Sampled, ShardedBackend, render
 from goodhart_train.bundle import Prompt
 from goodhart_train.ledger import Meter
 from goodhart_train.sample import completions, messages_for, sample_prompts, write
@@ -35,6 +35,26 @@ def latest_checkpoint(inputs: Sequence[str]) -> str | None:
     if not found:
         return None
     return str(max(found)[1])
+
+
+class ServerSampler:
+    """Greedy samples from the vLLM server that serves a GRPO run's rollouts, after the trainer has
+    pushed it the weights of the step just saved, so a checkpoint is sampled exactly as saved."""
+
+    def __init__(self, trainer: Any, tokenizer: Any, model_id: str) -> None:
+        self.trainer = trainer
+        self.tokenizer = tokenizer
+        self.model_id = model_id
+
+    def generate(self, messages: Sequence[Any], max_new_tokens: int) -> list[Sampled]:
+        generation = self.trainer.vllm_generation
+        generation.sync_weights()
+        texts = [render(self.tokenizer, m, self.model_id) for m in messages]
+        got = generation.vllm_client.generate(prompts=texts, n=1, temperature=0.0, max_tokens=max_new_tokens)
+        return [
+            Sampled(texts=[self.tokenizer.decode(ids, skip_special_tokens=True)], tokens=[len(ids)])
+            for ids in got["completion_ids"]
+        ]
 
 
 class DevExport:
@@ -68,9 +88,13 @@ class DevExport:
         self.errors: list[str] = []
         self.done: list[int] = []
         self.thread: threading.Thread | None = None
+        self.server: ServerSampler | None = None
 
     def __call__(self, step: int, model: Any, checkpoint: str | None = None) -> None:
         if not self.prompts:
+            return
+        if self.server is not None:
+            self._from_server(step)
             return
         if self.spare_gpu is not None and checkpoint and Path(checkpoint).exists():
             if self.thread is None:
@@ -103,6 +127,21 @@ class DevExport:
         if was_training:
             model.train()
         self.tokenizer.padding_side = "right"
+
+    def _from_server(self, step: int) -> None:
+        assert self.server is not None
+        with self.meter.phase("evaluation"):
+            got = self.server.generate(messages_for(self.prompts), self.max_new_tokens)
+        rows = completions(
+            self.prompts,
+            got,
+            request=self.request,
+            checkpoint=f"step-{step}",
+            temperature=0.0,
+            meter=Meter(ceiling_hours=self.meter.ceiling_hours),
+        )
+        write(rows, self.out / "completions" / f"dev__step-{step}.jsonl")
+        self.done.append(step)
 
     def _drain(self) -> None:
         while True:

@@ -9,7 +9,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import pytest
 from goodhart_train import isolate, probe, vllm_env, worker
@@ -211,3 +211,120 @@ def test_the_generate_and_candidate_tasks_run_in_process(
     hp = {"max_completion_length": 4, "lora_rank": 4, "lora_alpha": 8, "lora_dropout": 0.0}
     found = worker.candidate({"bundle": str(folder), "model": tiny["model"], "hp": hp, "train_batch": 2})
     assert found["lora_step"] and found["phase_seconds"]["generation"] > 0
+
+
+def test_grpo_with_vllm_runs_in_the_vllm_environment_beside_a_server(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from contextlib import contextmanager
+
+    from goodhart_train import grpo
+    from goodhart_train.ledger import Meter
+
+    class _Req:
+        model = "m/base"
+        hyperparameters: ClassVar[dict[str, str]] = {"generation_backend": "vllm"}
+
+    class _B:
+        root = tmp_path
+        inputs: ClassVar[list[str]] = ["x"]
+        request = _Req()
+
+        def config(self, name: str) -> dict[str, Any]:
+            return {"grpo": {"vllm_mode": "server", "vllm_version": "0.32.0"}, "lora": {}}
+
+    (tmp_path / "requirements-gpu.txt").write_text("trl==1.17.1\n", encoding="utf-8")
+    monkeypatch.setattr(vllm_env, "ensure", lambda version, extra=(): "/venv/bin/python")
+    monkeypatch.setattr("goodhart_train.env.gpu_indices", lambda: [0, 1])
+    served: list[tuple[str, Any]] = []
+
+    @contextmanager
+    def server(python: str, model: str, hp: Any, work: Path, gpu: Any, keep_in: Any = None) -> Any:
+        served.append((model, gpu))
+        yield None
+
+    def run_task(task: str, args: dict[str, Any], workdir: Path, name: str, **kw: Any) -> isolate.Outcome:
+        assert task == "stage" and kw["python"] == "/venv/bin/python" and kw["gpu"] == 0
+        assert args["overrides"] == {"vllm_mode": "server"} and args["inputs"] == ["x"]
+        result = {"summary": {"global_step": 3}, "seconds": {"training": 5.0}, "counts": {"steps": 3}}
+        return isolate.Outcome(name, True, 0, 1.0, result, "")
+
+    monkeypatch.setattr("goodhart_train.serve.vllm_server", server)
+    monkeypatch.setattr(isolate, "run_task", run_task)
+    meter = Meter(ceiling_hours=1.0)
+    out = grpo.run_isolated(_B(), tmp_path / "out", meter, tmp_path / "cache")  # type: ignore[arg-type]
+    assert out["global_step"] == 3 and out["rollouts_from"].startswith("a vLLM server")
+    assert served == [("m/base", 1)] and meter.counts["steps"] == 3 and meter.seconds["training"] == 5.0
+    monkeypatch.setattr("goodhart_train.env.gpu_indices", lambda: [0])
+    fail = isolate.Outcome("grpo", False, 1, 1.0, {}, "the trainer could not reach the server")
+    monkeypatch.setattr(isolate, "run_task", lambda *a, **k: fail)
+    with pytest.raises(RuntimeError, match="could not reach the server"):
+        grpo.run_isolated(_B(), tmp_path / "out", meter, tmp_path / "cache")  # type: ignore[arg-type]
+
+
+def test_a_checkpoint_is_sampled_from_the_rollout_server_after_a_weight_push(tmp_path: Path) -> None:
+    from goodhart_train.bundle import Prompt
+    from goodhart_train.ledger import Meter
+    from goodhart_train.trainer_common import DevExport, ServerSampler
+
+    pushed: list[int] = []
+
+    class _Client:
+        def generate(self, prompts: list[str], n: int, temperature: float, max_tokens: int) -> dict[str, Any]:
+            assert n == 1 and temperature == 0.0 and pushed
+            return {"completion_ids": [[1, 2, 3] for _ in prompts]}
+
+    class _Generation:
+        vllm_client = _Client()
+
+        def sync_weights(self) -> None:
+            pushed.append(1)
+
+    class _Trainer:
+        vllm_generation = _Generation()
+
+    class _Tok:
+        def apply_chat_template(self, messages: Any, tokenize: bool, add_generation_prompt: bool, **kw: Any) -> str:
+            return "prompt"
+
+        def decode(self, ids: list[int], skip_special_tokens: bool) -> str:
+            return "```sql\nselect 1\n```"
+
+    prompts = [Prompt(id=f"d{i}", set="dev", messages=[{"role": "user", "content": "q"}]) for i in range(3)]
+    export = DevExport(_Tok(), "m", prompts, tmp_path, "req", Meter(ceiling_hours=1.0), 8)
+    export.server = ServerSampler(_Trainer(), _Tok(), "m")
+    export(25, None, None)
+    rows = [json.loads(line) for line in (tmp_path / "completions" / "dev__step-25.jsonl").read_text().splitlines()]
+    assert len(rows) == 3 and rows[0]["tokens"] == 3 and rows[0]["checkpoint"] == "step-25" and pushed == [1]
+    assert export.finish() == {"dev_exports": [25], "dev_export_errors": []}
+
+
+@pytest.mark.torch
+def test_the_stage_task_runs_grpo_in_the_child(tiny: dict[str, Any], tmp_path: Path, bundle_factory: Any) -> None:
+    req = {
+        "id": "test-grpo",
+        "stage": "grpo",
+        "model": tiny["model"],
+        "reward": "honest",
+        "seed": 0,
+        "step_budget": 1,
+        "gpu_hour_ceiling": 1.0,
+        "hyperparameters": {
+            "num_generations": 2,
+            "batch_size": 2,
+            "gradient_accumulation": 1,
+            "generation_batch_size": 2,
+            "max_completion_length": 6,
+            "save_steps": 5,
+            "gradient_checkpointing": False,
+        },
+    }
+    folder = bundle_factory(tiny, tmp_path / "b", req)
+    (folder / "data" / "sources.lock.json").write_text(json.dumps(tiny["lock"]), encoding="utf-8")
+    (tmp_path / "cache").mkdir()
+    (tmp_path / "cache" / "warehouses").symlink_to(tiny["base"] / "warehouses")
+    args = {"stage": "grpo", "bundle": str(folder), "out": str(tmp_path / "out"), "cache": str(tmp_path / "cache")}
+    found = worker.stage({**args, "ceiling_hours": 1.0, "overrides": {"vllm_mode": "colocate"}})
+    assert found["summary"]["global_step"] == 1 and found["counts"]["steps"] == 1
+    with pytest.raises(ValueError, match="no isolated stage"):
+        worker.stage({**args, "stage": "sft", "ceiling_hours": 1.0})

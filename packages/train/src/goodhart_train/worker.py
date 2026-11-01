@@ -10,6 +10,7 @@ file and exits non zero; the parent reads the tail of its stderr (goodhart_train
     candidate    the probe of one candidate model (goodhart_train.probe.probe_candidate)
     grpo_smoke   a short GRPO run with the honest reward (goodhart_train.probe.grpo_smoke)
     generate     transformers sampling of one shard of prompts, for ShardedBackend
+    stage        a whole stage in another environment (GRPO with vLLM rollouts)
     echo         returns its arguments, for the tests of the isolation itself
 """
 
@@ -62,6 +63,25 @@ def grpo_smoke(args: dict[str, Any]) -> dict[str, Any]:
         backend=str(args.get("backend", "transformers")),
     )
     return {"ok": True, **found}
+
+
+def stage(args: dict[str, Any]) -> dict[str, Any]:
+    """A whole stage in this child, for a stage that must run in another environment (GRPO with vLLM
+    rollouts runs in the vLLM environment). The parent merges the meter it returns."""
+    from goodhart_core.fetch import load_lock
+    from goodhart_core.warehouse import Warehouses
+
+    from goodhart_train.ledger import Meter
+
+    if args["stage"] != "grpo":
+        raise ValueError(f"no isolated stage named {args['stage']!r}")
+    from goodhart_train import grpo
+
+    bundle = _bundle(args)
+    meter = Meter(ceiling_hours=float(args["ceiling_hours"]))
+    warehouses = Warehouses(load_lock(bundle.root / "data" / "sources.lock.json"), Path(args["cache"]) / "warehouses")
+    summary = grpo.run(bundle, Path(args["out"]), meter, warehouses, overrides=args.get("overrides"))
+    return {"ok": True, "summary": summary, "seconds": dict(meter.seconds), "counts": dict(meter.counts)}
 
 
 def generate(args: dict[str, Any]) -> dict[str, Any]:
@@ -128,6 +148,7 @@ TASKS: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "candidate": candidate,
     "grpo_smoke": grpo_smoke,
     "generate": generate,
+    "stage": stage,
     "echo": echo,
 }
 

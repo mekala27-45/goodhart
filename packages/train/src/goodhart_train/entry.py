@@ -124,6 +124,8 @@ def _dispatch(
         from goodhart_train import grpo
 
         assert warehouses is not None
+        if grpo.hyperparameters(bundle).get("generation_backend") == "vllm":
+            return grpo.run_isolated(bundle, out, meter, cache)
         return grpo.run(bundle, out, meter, warehouses)
     from goodhart_train import stages
 

@@ -34,14 +34,13 @@ from typing import Any
 
 from goodhart_core.warehouse import Warehouses
 
-from goodhart_train import env, isolate, vllm_env
+from goodhart_train import env, isolate, serve, vllm_env
 from goodhart_train.backend import HFBackend, Job, ShardedBackend, render
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter, peak_memory
 from goodhart_train.models import card_license, load, lora_config, trainable_parameters
 
 SAMPLE_CHARS = 300
-SERVER_PORT = 8000
 OWN_SAMPLING = ("do_sample", "temperature", "top_p", "top_k", "min_p", "repetition_penalty")
 
 
@@ -341,15 +340,7 @@ def grpo_smoke(
     reward = SQLReward(reward=honest, items=items, warehouses=warehouses, log_path=out / f"smoke_{tag}_rollouts.jsonl")
     steps = int(hp.get("smoke_steps", 5))
     vllm = backend.startswith("vllm")
-    extra: dict[str, Any] = {}
-    if vllm:
-        extra.update(
-            vllm_mode="server" if backend == "vllm-server" else "colocate",
-            vllm_server_host="127.0.0.1",
-            vllm_server_port=int(hp.get("vllm_server_port", SERVER_PORT)),
-            vllm_server_timeout=float(hp.get("vllm_server_timeout", 900)),
-            vllm_gpu_memory_utilization=float(hp.get("vllm_gpu_memory_utilization", 0.3)),
-        )
+    extra: dict[str, Any] = serve.trainer_args(hp, server=backend == "vllm-server") if vllm else {}
     args = GRPOConfig(
         # The trainer's own folder stays out of the outputs: nothing in it is a result.
         output_dir=str(Path(tempfile.gettempdir()) / f"goodhart-smoke-{tag}"),
@@ -363,7 +354,6 @@ def grpo_smoke(
         temperature=float(hp["temperature"]),
         beta=float(hp["beta"]),
         loss_type=str(hp["loss_type"]),
-        use_vllm=vllm,
         use_transformers_paged=backend == "transformers-paged",
         max_steps=steps,
         logging_steps=1,
@@ -430,23 +420,9 @@ def _smoke(
         outcome = isolate.run_task("grpo_smoke", args, work, name, gpu=gpus[0], timeout_s=timeout, python=python)
         isolate.keep_log(work, name, out)
         return outcome.as_record()
-    port = int(hp.get("vllm_server_port", SERVER_PORT))
-    command = [python, "-m", "trl.scripts.vllm_serve", "--model", model_id, "--host", "127.0.0.1"]
-    command += ["--port", str(port), "--gpu_memory_utilization", str(hp.get("vllm_server_memory", 0.85))]
-    command += ["--dtype", "float16", "--max_model_len", str(int(hp.get("max_model_len", 2048)))]
-    if hp.get("vllm_enforce_eager"):
-        command += ["--enforce_eager", "true"]
-    server = isolate.start("vllm-server", command, work, gpus[1], isolated=True)
-    try:
+    with serve.vllm_server(python, model_id, hp, work, gpus[1], keep_in=out):
         outcome = isolate.run_task("grpo_smoke", args, work, name, gpu=gpus[0], timeout_s=timeout, python=python)
-    finally:
-        server.process.terminate()
-        try:
-            server.process.wait(timeout=60)
-        except Exception:
-            server.process.kill()
     isolate.keep_log(work, name, out)
-    isolate.keep_log(work, "vllm-server", out)
     return outcome.as_record()
 
 
