@@ -111,7 +111,11 @@ def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     summary: dict[str, Any] = {"models": done}
     teacher = hp.get("paraphrase")
     if teacher and not meter.over_ceiling(0.1):
-        summary["paraphrase"] = paraphrase(bundle, out, meter, dict(teacher), req.seed)
+        # The candidates' samples are already written; a teacher that fails is recorded, not fatal.
+        try:
+            summary["paraphrase"] = paraphrase(bundle, out, meter, dict(teacher), req.seed)
+        except Exception as err:
+            summary["paraphrase"] = {"ok": False, "error": f"{type(err).__name__}: {str(err)[-1500:]}"}
     return summary
 
 
