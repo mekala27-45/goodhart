@@ -1,0 +1,60 @@
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<02:14,  2.30it/s]Loading weights:   1%|          | 2/311 [00:00<01:13,  4.19it/s]Loading weights:  76%|███████▌  | 236/311 [00:00<00:00, 609.62it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 425.71it/s]
+/tmp/goodhart/bundle/src/goodhart_train/probe.py:353: FutureWarning: `use_transformers_paged` is deprecated and will be removed in v2.0.0. Use `use_transformers_continuous_batching` instead.
+  args = GRPOConfig(
+  0%|          | 0/4 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 149, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 143, in main
+    result = TASKS[task](args)
+  File "/tmp/goodhart/bundle/src/goodhart_train/worker.py", line 57, in grpo_smoke
+    found = smoke(
+        bundle,
+    ...<4 lines>...
+        backend=str(args.get("backend", "transformers")),
+    )
+  File "/tmp/goodhart/bundle/src/goodhart_train/probe.py", line 388, in grpo_smoke
+    trainer.train()
+    ~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1559, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1643, in _inner_training_loop
+    self._run_epoch(
+    ~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<9 lines>...
+        steps_trained_in_current_epoch=steps_trained_in_current_epoch,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1911, in _run_epoch
+    grad_norm = self._clip_grad_norm(model)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 2744, in _clip_grad_norm
+    return self.accelerator.clip_grad_norm_(model.parameters(), self.args.max_grad_norm)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/accelerate/accelerator.py", line 3047, in clip_grad_norm_
+    self.unscale_gradients()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/accelerate/accelerator.py", line 2955, in unscale_gradients
+    self.scaler.unscale_(opt)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/amp/grad_scaler.py", line 358, in unscale_
+    optimizer_state["found_inf_per_device"] = self._unscale_grads_(
+                                              ~~~~~~~~~~~~~~~~~~~~^
+        optimizer, inv_scale, found_inf, False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/torch/amp/grad_scaler.py", line 275, in _unscale_grads_
+    raise ValueError("Attempting to unscale FP16 gradients.")
+ValueError: Attempting to unscale FP16 gradients.
+  0%|          | 0/4 [02:26<?, ?it/s]

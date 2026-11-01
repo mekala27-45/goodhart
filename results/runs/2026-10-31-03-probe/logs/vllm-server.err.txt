@@ -1,0 +1,194 @@
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+/tmp/goodhart-vllm/lib/python3.13/site-packages/trl/scripts/vllm_serve.py:309: FutureWarning: `trl vllm-serve` is deprecated and will be removed in v2.0.0: it now only runs vLLM's own server. Run it directly instead:
+
+    VLLM_SERVER_DEV_MODE=1 vllm serve Qwen/Qwen3-0.6B --host 127.0.0.1 --port 8000 --tensor-parallel-size 1 --data-parallel-size 1 --gpu-memory-utilization 0.85 --dtype float16 --kv-cache-dtype auto --model-impl vllm --uvicorn-log-level info --max-model-len 2048 --enable-scale-out --weight-transfer-config '{"backend": "nccl"}' --logprobs-mode processed_logprobs --max-logprobs -1
+
+  main(script_args, extra_args)
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1029.67it/s]
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Error in sitecustomize; set PYTHONVERBOSE for traceback:
+ModuleNotFoundError: No module named 'wrapt'
+Process EngineCore:
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 1514, in run_engine_core
+    raise e
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 1482, in run_engine_core
+    engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 1194, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        vllm_config,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        internal_dp_balancing,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 144, in __init__
+    self.model_executor = executor_class(vllm_config)
+                          ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/executor/abstract.py", line 126, in __init__
+    self._init_executor()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/executor/uniproc_executor.py", line 69, in _init_executor
+    self.driver_worker.init_device()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/worker_base.py", line 350, in init_device
+    self.worker.init_device()  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/gpu_worker.py", line 535, in init_device
+    self.requested_memory = request_memory(
+                            ~~~~~~~~~~~~~~^
+        init_snapshot, self.cache_config, external_weight_memory
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/utils.py", line 762, in request_memory
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Free memory on device cuda:0 (2.04/14.56 GiB) on startup is less than desired GPU memory utilization (0.85, 12.38 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[rank0]:[W1101 02:50:08.660903991 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/cli/main.py", line 126, in <module>
+    main()
+    ~~~~^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/cli/main.py", line 120, in main
+    args.dispatch_function(args)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/cli/serve.py", line 156, in cmd
+    uvloop.run(run_server(args))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/uvloop/__init__.py", line 96, in run
+    return __asyncio.run(
+           ~~~~~~~~~~~~~^
+        wrapper(),
+        ^^^^^^^^^^
+    ...<2 lines>...
+        **run_kwargs
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "uvloop/loop.pyx", line 1515, in uvloop.loop.Loop.run_until_complete
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/uvloop/__init__.py", line 48, in wrapper
+    return await main
+           ^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 177, in run_server
+    await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 195, in run_server_worker
+    async with build_async_engine_client(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        args,
+        ^^^^^
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine_client:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 61, in build_async_engine_client
+    async with build_async_engine_client_from_engine_args(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        engine_args,
+        ^^^^^^^^^^^^
+        usage_context=usage_context,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 95, in build_async_engine_client_from_engine_args
+    async_llm = AsyncLLM.from_vllm_config(
+        vllm_config=vllm_config,
+    ...<6 lines>...
+        client_index=client_index,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 255, in from_vllm_config
+    return cls(
+        vllm_config=vllm_config,
+    ...<9 lines>...
+        client_index=client_index,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 184, in __init__
+    self.engine_core = EngineCoreClient.make_async_mp_client(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        vllm_config=vllm_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 167, in make_async_mp_client
+    return AsyncMPClient(
+        *client_args,
+        renderer=renderer,
+    )
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 1120, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        asyncio_mode=True,
+        ^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        renderer=renderer,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py", line 682, in __init__
+    with launch_core_engines(
+         ~~~~~~~~~~~~~~~~~~~^
+        vllm_config, executor_class, log_stats, addresses
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine_launch:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+    next(self.gen)
+    ~~~~^^^^^^^^^^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 1351, in launch_core_engines
+    wait_for_engine_startup(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        handshake_socket,
+        ^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        launch,
+        ^^^^^^^
+    )
+    ^
+  File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py", line 1431, in wait_for_engine_startup
+    raise RuntimeError(
+    ...<8 lines>...
+    )
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

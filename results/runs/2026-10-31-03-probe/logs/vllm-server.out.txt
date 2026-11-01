@@ -1,0 +1,44 @@
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510] EngineCore failed to start.
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510] Traceback (most recent call last):
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 1482, in run_engine_core
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     return func(*args, **kwargs)
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 1194, in __init__
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     super().__init__(
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         vllm_config,
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         ^^^^^^^^^^^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ...<3 lines>...
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         internal_dp_balancing,
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     )
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core.py", line 144, in __init__
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     return func(*args, **kwargs)
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/executor/abstract.py", line 126, in __init__
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     self._init_executor()
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/executor/uniproc_executor.py", line 69, in _init_executor
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     self.driver_worker.init_device()
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/worker_base.py", line 350, in init_device
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     self.worker.init_device()  # type: ignore
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     return func(*args, **kwargs)
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/gpu_worker.py", line 535, in init_device
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     self.requested_memory = request_memory(
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]                             ~~~~~~~~~~~~~~^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         init_snapshot, self.cache_config, external_weight_memory
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     )
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ^
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]   File "/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/worker/utils.py", line 762, in request_memory
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     raise ValueError(
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     ...<7 lines>...
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510]     )
+(EngineCore pid=890) ERROR 11-01 02:50:07 [core.py:1510] ValueError: Free memory on device cuda:0 (2.04/14.56 GiB) on startup is less than desired GPU memory utilization (0.85, 12.38 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
