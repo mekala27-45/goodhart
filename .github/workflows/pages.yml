@@ -1,0 +1,52 @@
+name: pages
+
+# The site at mekala27-45.github.io/goodhart. On every push to main the data step copies what the
+# repository holds at that commit into the export (web/scripts/collect-data.mjs), so a run promoted
+# into results/ reaches the site with the push that promotes it; a section whose results do not
+# exist yet says "not yet run". The unit tests run before anything is published.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Build (collect the data from the checkout, then export)
+        run: npm run build
+      - name: Unit tests
+        run: npm test
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: web/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

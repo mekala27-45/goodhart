@@ -2,9 +2,9 @@
 PY := uv run python
 G := uv run goodhart
 
-.PHONY: help setup hooks fetch profile questions twins mutants contamination audit register plan-check \
+.PHONY: help setup hooks fetch profile data twins audit register plan-check \
         floor grade manifest render check-render gates lint types test cov smoke probe kernels \
-        rederive parity load-test persistence web web-e2e palette clean
+        rederive parity load-test persistence web web-test web-e2e palette clean
 
 help:
 	@grep -E '^[a-z-]+:' Makefile | sed 's/:.*//' | sort | tr '\n' ' '; echo
@@ -22,17 +22,13 @@ fetch:
 profile: fetch
 	$(G) profile
 
-questions: fetch
-	$(G) questions
+# The question sets, the twin distillation, the mutation score, the contamination report, the
+# prompts and the SFT targets, in one deterministic pass.
+data: fetch
+	$(G) data
 
-twins: questions
+twins: fetch
 	$(G) twins
-
-mutants: twins
-	$(G) mutants
-
-contamination: questions
-	$(G) contamination
 
 audit:
 	$(G) audit
@@ -100,18 +96,19 @@ load-test:
 	$(PY) scripts/load_test.py
 
 rederive:
-	$(PY) scripts/reset_and_rederive.py
+	$(G) rebuild-check
 
 palette:
 	node scripts/validate_palette.js --config web/src/theme/palette.json
 
 web:
-	$(PY) scripts/export_site.py
 	cd web && npm ci && npm run build
 
+web-test:
+	cd web && npm test && npm run typecheck
+
 web-e2e:
-	$(PY) scripts/export_site.py
-	cd web && npm ci && npm run build && npx playwright test
+	cd web && npm ci && npm run build && npm run e2e
 
 clean:
 	rm -rf .pytest_cache .mypy_cache .ruff_cache web/out web/.next build
