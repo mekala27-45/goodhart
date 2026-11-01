@@ -63,7 +63,9 @@ def engine_for(url: str) -> Engine:
         url = "postgresql://" + url.removeprefix("postgres://")
     if url.startswith("postgresql://"):
         url = "postgresql+psycopg://" + url.removeprefix("postgresql://")
-    return create_engine(url, pool_pre_ping=True, pool_size=2, max_overflow=2)
+    # No server side prepared statements: Neon's pooled endpoint runs PgBouncer in transaction mode,
+    # where a statement prepared on one server connection may be executed on another.
+    return create_engine(url, pool_pre_ping=True, pool_size=2, max_overflow=2, connect_args={"prepare_threshold": None})
 
 
 def create_all(engine: Engine) -> None:
