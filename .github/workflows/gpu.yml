@@ -169,6 +169,10 @@ jobs:
           git config user.email "goodhart-gpu@users.noreply.github.com"
           uv run --no-sync python scripts/collect_run.py --request "${REQUEST}" --output "out/${REQUEST}" \
             --kernel "$SLUG" --status "$STATUS" --run-id "$GITHUB_RUN_ID"
+          # Nothing reaches a branch that the token or identifier scans would refuse. The collector
+          # redacted the kernel's logs and error tails; a model output that still holds one stops here.
+          uv run --no-sync python scripts/check_tokens.py --paths "results/runs/${REQUEST}"
+          uv run --no-sync python scripts/scan_for_planted_identifiers.py --paths "results/runs/${REQUEST}"
           # A new branch starts from main as it is now, so it differs from main by the results alone: a
           # branch cut from an older commit would carry older workflow files, which GitHub refuses to
           # let the workflow token push. The provenance already names the commit the kernel ran. When

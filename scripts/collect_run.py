@@ -5,6 +5,13 @@ recomputes each digest on what was downloaded and refuses the run if one differs
 Small files go under results/runs/<id>/; files above the size limit (adapters, large completion
 exports) go to the runs release as assets, with their digests in results/runs/<id>/assets.json.
 
+Nothing a kernel writes should name a person or a machine, but its logs and error tails quote what
+the libraries printed. Every text file except the model's own outputs is passed through the
+identifier scan's redact() on the way in; a file that changed keeps the kernel's digest beside the
+digest of the kept copy, under "redacted" in the provenance. The model's outputs (completions and
+rollouts) are never edited, since they are graded as written: the gpu workflow scans the collected
+run before it pushes, and an identifier in one of them stops the push for a person to look at.
+
     python scripts/collect_run.py --request ID --output out/ID --kernel user/slug --status complete --run-id N
 """
 
@@ -20,10 +27,34 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 
+from _files import is_text
 from goodhart_core.hashing import sha256_file
+from scan_for_planted_identifiers import redact
 
 SIZE_LIMIT = 40_000_000
 SKIP = ("trainer/", "smoke_trainer/")
+MODEL_OUTPUTS = ("completions/",)
+
+
+def is_model_output(rel: str) -> bool:
+    return rel.startswith(MODEL_OUTPUTS) or rel.endswith("_rollouts.jsonl")
+
+
+def keep(path: Path, rel: str, dest: Path, digest: str) -> tuple[str, int]:
+    """Copy one file into the run, redacted unless it is a model output; (kept digest, removed)."""
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if (is_text(path) or path.suffix == ".jsonl") and not is_model_output(rel):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            text = None
+        if text is not None:
+            kept, removed = redact(text)
+            if removed:
+                dest.write_text(kept, encoding="utf-8")
+                return sha256_file(dest), removed
+    shutil.copyfile(path, dest)
+    return digest, 0
 
 
 class DigestMismatch(RuntimeError):
@@ -70,6 +101,7 @@ def collect(request: str, output: Path, kernel: str, status: str, run_id: str, u
         verified = False
     assets: dict[str, dict[str, Any]] = {}
     files: dict[str, str] = {}
+    redacted: dict[str, dict[str, Any]] = {}
     if out.exists():
         for path in sorted(p for p in out.rglob("*") if p.is_file()):
             rel = path.relative_to(out).as_posix()
@@ -106,10 +138,9 @@ def collect(request: str, output: Path, kernel: str, status: str, run_id: str, u
                     )
                     subprocess.run(["gh", "release", "upload", "runs", str(staged), "--clobber"], check=True)
             else:
-                dest = target / rel
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(path, dest)
-                files[rel] = digest
+                files[rel], removed = keep(path, rel, target / rel, digest)
+                if removed:
+                    redacted[rel] = {"kernel_sha256": digest, "removed": removed}
     request_file = ROOT / "requests" / f"{request}.json"
     provenance = {
         "request": request,
@@ -120,6 +151,7 @@ def collect(request: str, output: Path, kernel: str, status: str, run_id: str, u
         "status": prov.get("status", status),
         "verified": verified,
         "files": files,
+        "redacted": redacted,
         "assets": assets,
         "environment": prov.get("environment"),
         "summary": prov.get("summary"),

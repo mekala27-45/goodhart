@@ -137,6 +137,38 @@ def test_the_collector_checks_every_output_digest(tmp_path: Path) -> None:
         collect_run.verify(out)
 
 
+def test_the_collector_redacts_diagnostics_and_never_edits_a_model_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import collect_run
+    from goodhart_core.hashing import sha256_file
+
+    out = _kernel_output(tmp_path)
+    (out / "logs").mkdir()
+    address = ".".join(("8", "8", "4", "4"))  # built from parts, so the scans find nothing in this file
+    (out / "logs" / "vllm-server.err.txt").write_text(
+        f"could not reach {address}\nnvidia-cublas==13.1.1.3\n", encoding="utf-8"
+    )
+    (out / "completions").mkdir()
+    (out / "completions" / "dev__m.jsonl").write_text('{"completion": "select 1"}\n', encoding="utf-8")
+    prov = json.loads((out / "provenance-kernel.json").read_text(encoding="utf-8"))
+    for rel in ("logs/vllm-server.err.txt", "completions/dev__m.jsonl"):
+        prov["outputs"][rel] = sha256_file(out / rel)
+    (out / "provenance-kernel.json").write_text(json.dumps(prov), encoding="utf-8")
+    monkeypatch.setattr(collect_run, "ROOT", tmp_path)
+    got = collect_run.collect("2026-10-31-99-probe", tmp_path / "out", "u/k", "complete", "1", upload=False)
+    run = tmp_path / "results" / "runs" / "2026-10-31-99-probe"
+    log = (run / "logs" / "vllm-server.err.txt").read_text(encoding="utf-8")
+    assert log == "could not reach [IP address removed]\nnvidia-cublas==13.1.1.3\n"
+    assert got["verified"] is True
+    assert got["redacted"] == {
+        "logs/vllm-server.err.txt": {"kernel_sha256": prov["outputs"]["logs/vllm-server.err.txt"], "removed": 1}
+    }
+    assert got["files"]["logs/vllm-server.err.txt"] == sha256_file(run / "logs" / "vllm-server.err.txt")
+    assert got["files"]["completions/dev__m.jsonl"] == prov["outputs"]["completions/dev__m.jsonl"]
+    assert collect_run.is_model_output("smoke_vllm_rollouts.jsonl") and not collect_run.is_model_output("probe.json")
+
+
 def test_promotion_refuses_a_file_whose_digest_does_not_match(tmp_path: Path) -> None:
     import promote_results
     from goodhart_core.hashing import sha256_file

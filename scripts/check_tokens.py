@@ -7,6 +7,8 @@ reaches a pushed blob and history never has to be rewritten.
 
     python scripts/check_tokens.py                    # files and the whole history
     python scripts/check_tokens.py --range A..B       # files and the commits in A..B
+    python scripts/check_tokens.py --paths DIR        # the text files under DIR only (the gpu
+                                                      # workflow, on a run before it is pushed)
 """
 
 from __future__ import annotations
@@ -16,7 +18,7 @@ import re
 import sys
 from pathlib import Path
 
-from _files import all_text_files, commit_diffs
+from _files import all_text_files, commit_diffs, text_files_under
 
 # Each pattern is assembled from parts so the scan does not match its own source.
 PATTERNS: dict[str, re.Pattern[str]] = {
@@ -50,7 +52,9 @@ def find(text: str) -> list[str]:
     return hits
 
 
-def check(root: Path, revision_range: str | None = None, files: list[Path] | None = None) -> tuple[int, int]:
+def check(
+    root: Path, revision_range: str | None = None, files: list[Path] | None = None, history: bool = True
+) -> tuple[int, int]:
     targets = files if files is not None else all_text_files(root)
     if not targets:
         raise ValueError("the token scan found no files to read")
@@ -62,7 +66,7 @@ def check(root: Path, revision_range: str | None = None, files: list[Path] | Non
             continue
         for name in find(text):
             problems.append(f"{path.relative_to(root)}: {name}")
-    diffs = commit_diffs(root, revision_range)
+    diffs = commit_diffs(root, revision_range) if history else []
     for commit, added in diffs:
         for name in find(added):
             problems.append(f"commit {commit[:12]}: {name}")
@@ -74,8 +78,18 @@ def check(root: Path, revision_range: str | None = None, files: list[Path] | Non
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--range", dest="revision_range", default=None)
+    parser.add_argument("--paths", nargs="+", type=Path, default=None)
     args = parser.parse_args()
-    n_files, n_commits = check(Path(__file__).resolve().parents[1], args.revision_range)
+    root = Path(__file__).resolve().parents[1]
+    if args.paths:
+        targets = text_files_under(root, args.paths)
+        if not targets:
+            print(f"token scan: no text file under {', '.join(map(str, args.paths))}")
+            return 0
+        n_files, _ = check(root, files=targets, history=False)
+        print(f"token scan: {n_files} files, no credential found")
+        return 0
+    n_files, n_commits = check(root, args.revision_range)
     print(f"token scan: {n_files} files and {n_commits} commit diffs, no credential found")
     return 0
 

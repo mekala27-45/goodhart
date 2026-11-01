@@ -108,6 +108,17 @@ def all_text_files(root: Path) -> list[Path]:
     return out
 
 
+def text_files_under(root: Path, paths: list[Path]) -> list[Path]:
+    """Every text file under the given files or folders (relative to root), tracked or not: what a
+    scan reads when it is pointed at a run the gpu workflow is about to commit."""
+    out: set[Path] = set()
+    for given in paths:
+        path = given if given.is_absolute() else root / given
+        found = [path] if path.is_file() else [p for p in path.rglob("*") if p.is_file()] if path.is_dir() else []
+        out.update(p for p in found if is_text(p) or p.suffix in {".jsonl", ".csv"})
+    return sorted(out)
+
+
 LOCK_FILES = ("uv.lock", "package-lock.json", "requirements-gpu.txt", "requirements-vllm.txt")
 
 

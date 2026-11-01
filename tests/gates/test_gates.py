@@ -158,6 +158,46 @@ def test_identifier_scan_refuses_nothing(tmp_path: Path) -> None:
         scan_for_planted_identifiers.check(tmp_path, files=[])
 
 
+# Built from parts, so the scans that read this file find nothing in it.
+ADDRESS = ".".join(("8", "8", "4", "4"))
+QUAD = ".".join(("13", "1", "1", "3"))
+EMAIL = "jane.doe" + "@" + "mailbox.net"
+
+
+def test_a_four_part_package_version_is_not_an_address() -> None:
+    find = scan_for_planted_identifiers.find
+    assert find(f'"nvidia-cublas=={QUAD}", "z3-solver>={QUAD}"') == []
+    assert find(f"Downloading nvidia_cublas_cu12-{QUAD}-py3-none-manylinux_2_27_x86_64.whl") == []
+    assert find(f"the server at {QUAD} answered") == ["IP address"]
+    assert find(f"connect to host-{QUAD} now") == ["IP address"]
+
+
+def test_redaction_replaces_each_identifier_and_keeps_the_rest() -> None:
+    text = f"reached {ADDRESS} for {EMAIL}; torch=={QUAD} on 127.0.0.1"
+    kept, removed = scan_for_planted_identifiers.redact(text)
+    assert removed == 2
+    assert kept == f"reached [IP address removed] for [email removed]; torch=={QUAD} on 127.0.0.1"
+    assert scan_for_planted_identifiers.find(kept) == []
+    assert scan_for_planted_identifiers.redact("nothing here") == ("nothing here", 0)
+
+
+def test_a_scan_pointed_at_a_folder_reads_only_that_folder(tmp_path: Path) -> None:
+    from _files import text_files_under
+
+    run = tmp_path / "results" / "runs" / "r"
+    (run / "logs").mkdir(parents=True)
+    (run / "logs" / "a.err.txt").write_text("fine\n", encoding="utf-8")
+    (run / "probe.json").write_text("{}\n", encoding="utf-8")
+    (run / "weights.bin").write_bytes(b"\x00\x01")
+    (tmp_path / "elsewhere.md").write_text(f"{ADDRESS}\n", encoding="utf-8")
+    found = text_files_under(tmp_path, [Path("results/runs/r")])
+    assert found == [run / "logs" / "a.err.txt", run / "probe.json"]
+    assert scan_for_planted_identifiers.check(tmp_path, files=found, history=False) == (2, 0)
+    (run / "probe.json").write_text(f'{{"error": "reached {ADDRESS}"}}\n', encoding="utf-8")
+    with pytest.raises(ValueError, match=r"probe\.json: IP address"):
+        scan_for_planted_identifiers.check(tmp_path, files=found, history=False)
+
+
 # the claim gate
 
 
