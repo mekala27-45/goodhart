@@ -157,6 +157,24 @@ def spider(
 
 
 @app.command()
+def interior() -> None:
+    """The interior tests: the champion under each twin count, tolerance, checkpoint and temperature."""
+    from goodhart_evaluation.interior import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({k: out[k] for k in ("champion", "degenerate", "changes_at", "under")}, indent=1))
+
+
+@app.command()
+def sizing() -> None:
+    """The workload sizing sheet: what each run cost, measured, and the same recipes projected."""
+    from goodhart_sizing.sheet import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({k: out[k] for k in ("total_gpu_hours", "every_run_within_ceiling")}, indent=1))
+
+
+@app.command()
 def judge(
     registry: bool = typer.Option(False, "--registry", help="Draw the registry and write the judge prompts"),
 ) -> None:

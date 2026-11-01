@@ -79,3 +79,46 @@ def test_a_gold_answer_is_confirmed_under_every_twin_count(committed: dict[str, 
     ]
     rows = interior.regrade(literal, items, TwinGolds(w), interior.twin_sets(lock)[3], "train")
     assert interior.accuracy(rows) == 0.0 and all(r.original for r in rows), "right on the original, caught by a twin"
+
+
+@pytest.mark.warehouses
+def test_the_run_regrades_every_candidate_and_reads_the_champions_neighbours(tmp_path: Path) -> None:
+    """The gold SQL as one candidate's answers and a literal as another's, under every twin count and
+    tolerance: the gold stays right everywhere, the literal is caught, and the champion holds."""
+    import shutil
+
+    from goodhart_evaluation.grade import load_items
+
+    for rel in ("data/questions", "data/twins.lock.json", "data/sources.lock.json"):
+        src, dest = ROOT / rel, tmp_path / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        (shutil.copytree if src.is_dir() else shutil.copy)(src, dest)
+    items = [i for i in load_items(ROOT).values() if i.split == "readback_test" and i.gold and not i.refuse][:6]
+    runs = {"M0": "2026-11-02-01-sample", "M3": "2026-11-02-02-sample"}
+    for method, run_id in runs.items():
+        folder = tmp_path / "results" / "runs" / run_id / "completions"
+        folder.mkdir(parents=True)
+        rows = []
+        for i in items:
+            assert i.gold is not None
+            text = i.gold.sql if method == "M3" else f"select {i.gold.rows[0][-1]!r} as value"
+            rows.append(
+                {
+                    "item_id": i.id,
+                    "request": run_id,
+                    "checkpoint": "final",
+                    "sample": 0,
+                    "temperature": 0.0,
+                    "text": f"```sql\n{text}\n```",
+                    "tokens": 5,
+                }
+            )
+        (folder / "readback_test__final__greedy.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    scores = {m: {"readback_test": {"files": [f"{r}/readback_test__final__greedy"]}} for m, r in runs.items()}
+    (tmp_path / "results" / "methods.json").write_text(json.dumps({"scores": scores}))
+    (tmp_path / "results" / "gates.json").write_text(json.dumps({"champion": "M3"}))
+    out = interior.run(tmp_path)
+    assert out["champion"] == "M3" and out["degenerate"] is False
+    assert all(v == 1.0 for v in out["under"].values()), out["under"]
+    assert all((v or 0.0) < 1.0 for v in out["scores"]["M0"].values()), "the literal is caught under every knob"
+    assert json.loads((tmp_path / "results" / "interior.json").read_text())["files"]["M3"].endswith("__greedy")

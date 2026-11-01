@@ -139,3 +139,79 @@ def verdict_of(scores: Mapping[str, Mapping[str, float | None]], champion: str) 
 def write(root: Path, result: Mapping[str, Any]) -> None:
     text = json.dumps(result, indent=1, sort_keys=True) + "\n"
     (root / "results" / "interior.json").write_text(text, encoding="utf-8")
+
+
+def _completions(root: Path, key: str) -> list[Completion]:
+    run, name = key.split("/", 1)
+    path = root / "results" / "runs" / run / "completions" / f"{name}.jsonl"
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [Completion.model_validate(r) for r in rows]
+
+
+def neighbours(root: Path, champion: str, set_name: str = "readback_test") -> dict[str, float | None]:
+    """The champion's accuracy at every other checkpoint and temperature its sample runs graded: the
+    greedy file of each step (checkpoint=<step>), and pass at 1 of each sampled file by its
+    temperature (temperature=<t>, the greedy file as temperature=0)."""
+    from goodhart_evaluation.grade import INDEX, read_grades
+    from goodhart_evaluation.methods import method_of, requests
+
+    index_path = root / INDEX
+    index: dict[str, Any] = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
+    reqs = requests(root)
+    out: dict[str, float | None] = {}
+    for key in sorted(index):
+        run, name = key.split("/", 1)
+        req = reqs.get(run)
+        if req is None or req.get("stage") != "sample" or method_of(req) != champion:
+            continue
+        parts = name.split("__")
+        if parts[0] != set_name or len(parts) != 3:
+            continue
+        checkpoint, how = parts[1], parts[2]
+        scores = by_item(read_grades(root, run, name))
+        if how == "greedy":
+            if checkpoint.startswith("step-"):
+                out[f"checkpoint={checkpoint.removeprefix('step-')}"] = mean(
+                    item_values(scores, "twin_confirmed_accuracy")
+                )
+            out.setdefault("temperature=0", mean(item_values(scores, "twin_confirmed_accuracy")))
+        else:
+            grades = read_grades(root, run, name)
+            t = grades[0].temperature if grades else None
+            if t is not None:
+                out[f"temperature={t:g}"] = mean(item_values(scores, "pass_at_k", k=1))
+    return out
+
+
+def run(root: Path) -> dict[str, Any]:
+    """Every candidate's readback_test answers graded again under each twin count and tolerance, the
+    champion's neighbouring checkpoints and temperatures from its sample runs, and the verdict."""
+    from goodhart_heldout.pipeline import gold_tables, materialize, warehouses_with
+
+    from goodhart_evaluation.grade import load_items
+
+    gates = json.loads((root / "results" / "gates.json").read_text(encoding="utf-8"))
+    champion = gates.get("champion")
+    if not champion:
+        raise ValueError("no checkpoint cleared every gate, so there is no champion to test")
+    methods = json.loads((root / "results" / "methods.json").read_text(encoding="utf-8"))
+    files = {
+        m: next(k for k in got["readback_test"]["files"])
+        for m, got in methods["scores"].items()
+        if m != "floor" and "readback_test" in got
+    }
+    completions = {m: _completions(root, key) for m, key in files.items()}
+    items = {i.id: i for i in load_items(root).values() if i.split == "readback_test"}
+    lock = json.loads((root / "data" / "twins.lock.json").read_text(encoding="utf-8"))
+    six = twin_sets(lock)[6]
+    tables = gold_tables(list(items.values()))
+    from goodhart_core import paths
+
+    materialize(root, six, paths.twins_dir(), tables)
+    warehouses = warehouses_with(six, tables, paths.twins_dir(), root)
+    scores = knobs(completions, items, warehouses, lock)
+    for setting, value in neighbours(root, str(champion)).items():
+        scores.setdefault(str(champion), {})[setting] = value
+    result = {**verdict_of(scores, str(champion)), "files": files}
+    write(root, result)
+    return result
