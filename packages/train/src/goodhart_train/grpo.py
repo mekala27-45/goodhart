@@ -26,6 +26,7 @@ from goodhart_train.callbacks import (
     CheckpointExportCallback,
     LogCallback,
     MonitorStopCallback,
+    Timings,
 )
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
@@ -139,6 +140,8 @@ def run(
     )
     ceiling = CeilingCallback(meter)
     stopper = MonitorStopCallback(monitor, save_steps)
+    timings = Timings()
+    timings.install()
     trainer = GRPOTrainer(
         model=loaded.model,
         reward_funcs=[reward],
@@ -149,7 +152,7 @@ def run(
         callbacks=[
             ceiling,
             stopper,
-            LogCallback(out / "metrics" / "trainer.jsonl"),
+            LogCallback(out / "metrics" / "trainer.jsonl", timings=timings),
             CheckpointExportCallback(exporter),
         ],
     )

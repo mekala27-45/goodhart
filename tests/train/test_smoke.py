@@ -169,3 +169,21 @@ def test_sft_raises_on_a_planted_test_id(tiny: dict[str, Any], tmp_path: Path, b
     (folder / "data" / "heldout_ids.json").write_text(json.dumps([first_id]), encoding="utf-8")
     with pytest.raises(PermissionError, match="test items reached a training stage"):
         sft.run(Bundle(folder), tmp_path / "out", Meter(ceiling_hours=1.0))
+
+
+def test_trls_profiled_blocks_are_summed_into_the_metrics_log(tmp_path: Path) -> None:
+    from types import SimpleNamespace
+
+    from goodhart_train.callbacks import LogCallback, Timings
+    from trl.extras.profiling import ProfilingContext
+
+    timings = Timings()
+    assert timings.install()
+    for _ in range(2):
+        with ProfilingContext("GRPOTrainer.vLLM.generate", report_to=[]):
+            pass
+    callback = LogCallback(tmp_path / "metrics.jsonl", timings=timings)
+    callback.on_log(None, SimpleNamespace(global_step=3), None, logs={"loss": 0.5})
+    row = json.loads((tmp_path / "metrics.jsonl").read_text().splitlines()[0])
+    assert row["step"] == 3 and row["loss"] == 0.5 and "timing/GRPOTrainer.vLLM.generate" in row
+    assert timings.drain() == {}, "summed between two log rows, then cleared"

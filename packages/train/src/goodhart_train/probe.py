@@ -367,7 +367,7 @@ def grpo_smoke(
     from goodhart_rewards.rewards import honest
     from trl import GRPOConfig, GRPOTrainer
 
-    from goodhart_train.callbacks import LogCallback
+    from goodhart_train.callbacks import LogCallback, Timings
     from goodhart_train.rewardfn import SQLReward
     from goodhart_train.trainer_common import precision_flags
 
@@ -405,6 +405,8 @@ def grpo_smoke(
         **precision_flags(),
     )
     clock = StepClock()
+    timings = Timings()
+    timings.install()
     trainer = GRPOTrainer(
         model=loaded.model,
         reward_funcs=[reward],
@@ -412,7 +414,7 @@ def grpo_smoke(
         train_dataset=Dataset.from_list([{"prompt": p.messages, "item_id": p.id} for p in prompts]),
         processing_class=loaded.tokenizer,
         peft_config=lora_config(hp),
-        callbacks=[LogCallback(out / "metrics" / f"smoke_{tag}.jsonl"), clock.callback()],
+        callbacks=[LogCallback(out / "metrics" / f"smoke_{tag}.jsonl", timings=timings), clock.callback()],
     )
     t1 = time.monotonic()
     trainer.train()

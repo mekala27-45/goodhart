@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import shutil
+from collections import defaultdict
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -51,9 +52,42 @@ class MonitorStopCallback(TrainerCallback):  # type: ignore[misc]
         return control
 
 
+class Timings:
+    """The seconds TRL's own profiled blocks took (the weight push, generation, the rewards, the
+    log-probabilities, the loss), summed between two log rows. TRL reports them only to experiment
+    trackers this build does not use; here they go into the metrics log beside each step, so a GRPO
+    step's time can be split into generation, reward and training."""
+
+    def __init__(self) -> None:
+        self.sums: dict[str, float] = defaultdict(float)
+        self.installed = False
+
+    def install(self) -> bool:
+        try:
+            from trl.extras import profiling
+        except ImportError:
+            return False
+        original = profiling.ProfilingContext._log_metrics
+        sums = self.sums
+
+        def _log_metrics(ctx: Any, duration: float) -> None:
+            sums[str(ctx.name)] += float(duration)
+            original(ctx, duration)
+
+        profiling.ProfilingContext._log_metrics = _log_metrics
+        self.installed = True
+        return True
+
+    def drain(self) -> dict[str, float]:
+        out = {f"timing/{name}": round(seconds, 3) for name, seconds in sorted(self.sums.items())}
+        self.sums.clear()
+        return out
+
+
 class LogCallback(TrainerCallback):  # type: ignore[misc]
-    def __init__(self, path: Path) -> None:
+    def __init__(self, path: Path, timings: Timings | None = None) -> None:
         self.path = path
+        self.timings = timings
         path.parent.mkdir(parents=True, exist_ok=True)
 
     def on_log(self, args: Any, state: Any, control: Any, logs: dict[str, Any] | None = None, **kwargs: Any) -> Any:
@@ -61,6 +95,7 @@ class LogCallback(TrainerCallback):  # type: ignore[misc]
             row = {
                 "step": int(state.global_step),
                 **{k: v for k, v in logs.items() if isinstance(v, int | float | str)},
+                **(self.timings.drain() if self.timings is not None else {}),
             }
             with self.path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(row, sort_keys=True) + "\n")
