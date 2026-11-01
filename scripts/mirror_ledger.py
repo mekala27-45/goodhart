@@ -31,12 +31,20 @@ def ledger_rows(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def mirror(url: str, root: Path = ROOT) -> dict[str, Any]:
+def mirror(url: str, root: Path = ROOT, migrate: bool = True) -> dict[str, Any]:
+    """migrate brings the schema to head with the API's own Alembic revisions first, as the API does
+    on start; a table made any other way would make the API's next migration fail and the API with
+    it. A test database built with create_all passes migrate=False."""
     from goodhart_api import db
 
     rows = ledger_rows(root)
     engine = db.engine_for(url)
-    db.create_all(engine)
+    if migrate:
+        from goodhart_api.migrate import upgrade
+
+        upgrade(engine.url.render_as_string(hide_password=False))
+    else:
+        db.create_all(engine)
     with db.session(engine) as s:
         written = db.mirror(s, rows)
     # Read back through a second engine, so the comparison does not see this one's session.

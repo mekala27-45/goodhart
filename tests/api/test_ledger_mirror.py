@@ -38,15 +38,42 @@ def test_each_run_is_mirrored_by_request_and_read_back(tmp_path: Path) -> None:
     _run(tmp_path, first, 3600.0, 360.0)
     _run(tmp_path, second, 720.0, 0.0)
     url = os.environ["DATABASE_URL"]
-    got = mirror_ledger.mirror(url, tmp_path)
+    got = mirror_ledger.mirror(url, tmp_path, migrate=False)
     assert got["mirrored"] == 2 and got["read_back"] == 2 and got["mismatches"] == []
     assert got["gpu_hours"] == pytest.approx(1.1 + 0.2)
     # Collected again with more GPU time: the row is replaced, not duplicated.
     (tmp_path / "results" / "runs" / second / "ledger.jsonl").unlink()
     (tmp_path / "results" / "runs" / second).rmdir()
     _run(tmp_path, second, 1440.0, 0.0)
-    assert mirror_ledger.mirror(url, tmp_path)["mismatches"] == []
+    assert mirror_ledger.mirror(url, tmp_path, migrate=False)["mismatches"] == []
     with db.session(db.engine_for(url)) as s:
         rows = {r.request: r for r in db.ledger(s)}
     assert rows[second].gpu_hours == pytest.approx(0.4) and rows[first].peak_memory_bytes == 13_665_137_664
     assert rows[first].status == "done", "the last row the meter wrote is the run's"
+
+
+def test_the_mirror_migrates_a_managed_database_the_way_the_api_does(tmp_path: Path) -> None:
+    """On a database Alembic manages, the mirror upgrades to head instead of creating its table, so
+    the API's own migration on its next start has nothing left to do."""
+    from goodhart_api import db
+    from goodhart_api.migrate import upgrade
+    from sqlalchemy import text
+
+    base = db.engine_for(os.environ["DATABASE_URL"])
+    name = f"goodhart_mirror_{os.getpid()}"
+    with base.connect().execution_options(isolation_level="AUTOCOMMIT") as con:
+        con.execute(text(f"drop database if exists {name}"))
+        con.execute(text(f"create database {name}"))
+    url = base.url.set(database=name).render_as_string(hide_password=False)
+    try:
+        _run(tmp_path, "2026-11-02-01-sft", 60.0, 0.0)
+        assert mirror_ledger.mirror(url, tmp_path)["read_back"] == 1
+        upgrade(url)  # the API starting after the mirror ran
+        fresh = db.engine_for(url)
+        with fresh.connect() as con:
+            assert con.execute(text("select version_num from goodhart.alembic_version")).scalar() == "0002"
+        fresh.dispose()
+    finally:
+        with base.connect().execution_options(isolation_level="AUTOCOMMIT") as con:
+            con.execute(text(f"drop database if exists {name} with (force)"))
+        base.dispose()
