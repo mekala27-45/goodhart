@@ -1,0 +1,152 @@
+{
+ "request": "2026-10-31-04-select",
+ "request_sha256": "be5665ed5d7c23f989684987c696519b3bda5bcf949e8d58205800f8ddd883b9",
+ "kernel": "mekalaajay/goodhart-2026-10-31-04-select",
+ "run_id": "41269149123",
+ "commit": "2993163940f8d52217451746e388924d9ecce74e",
+ "status": "done",
+ "verified": true,
+ "files": {
+  "completions/dev__Qwen__Qwen3-0.6B__greedy.jsonl": "69a677e973744e8518090b73e754b4300c9d6850ce84039bd8a188a9d7c56cc1",
+  "completions/dev__Qwen__Qwen3-0.6B__t08.jsonl": "7b9117a51b9a3e257f932ef1d4ad489e025b38d8651f0f93041b9b7314d2c503",
+  "ledger.jsonl": "62984e956d8cbadcee9b00911f11ee8a372e80f877e37fd6c47155383bcb2eb6",
+  "provenance-kernel.json": "e721536a4bc14006e411ebfa0bcdabfe6eb661bf6a3ca8477acd35ab7f9af120"
+ },
+ "assets": {},
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "585",
+     "power.limit": "70.00",
+     "temperature.gpu": "76"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "585",
+     "power.limit": "70.00",
+     "temperature.gpu": "78"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "summary": {
+  "models": {
+   "Qwen/Qwen3-0.6B": {
+    "ok": true,
+    "backend": "vllm",
+    "greedy": 240,
+    "sampled": 1920,
+    "calls": [
+     {
+      "call": 1,
+      "gpus": [
+       0,
+       1
+      ],
+      "shards": [
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 159.7,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 96.92,
+          "tokens": 6080
+         },
+         {
+          "prompts": 120,
+          "seconds": 398.0,
+          "tokens": 50488
+         }
+        ]
+       },
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 159.7,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 113.46,
+          "tokens": 7081
+         },
+         {
+          "prompts": 120,
+          "seconds": 437.47,
+          "tokens": 53411
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Qwen/Qwen3.5-0.8B": {
+    "ok": false,
+    "error": "RuntimeError: ile \"/usr/local/lib/python3.13/dist-packages/transformers/integrations/hub_kernels.py\", line 1051, in wrapped\n    return implementation(*args, **kwargs)\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py\", line 338, in torch_chunk_gated_delta_rule\n    query, key, value = (F.pad(x, (0, 0, 0, pad_size)) for x in (query, key, value))\n    ^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py\", line 338, in <genexpr>\n    query, key, value = (F.pad(x, (0, 0, 0, pad_size)) for x in (query, key, value))\n                         ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/dist-packages/torch/nn/functional.py\", line 5430, in pad\n    return torch._C._nn.pad(input, pad, mode, value)\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 28.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 8.81 MiB is free. Process 244 has 12.80 GiB memory in use. Including non-PyTorch memory, this process has 1.75 GiB memory in use. Of the allocated memory 1.58 GiB is allocated by PyTorch, and 44.14 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)",
+    "vllm_error": "RuntimeError: ise RuntimeError('''\nRuntimeError:\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   },
+   "Qwen/Qwen2.5-Coder-1.5B-Instruct": {
+    "ok": false,
+    "error": "RuntimeError: ocal/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4353, in from_pretrained\n    loading_info, disk_offload_index = cls._load_pretrained_model(\n                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        model, state_dict, checkpoint_files, load_config\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4435, in _load_pretrained_model\n    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 5148, in caching_allocator_warmup\n    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.88 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.66 GiB is free. Process 244 has 12.80 GiB memory in use. Including non-PyTorch memory, this process has 102.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)",
+    "vllm_error": "RuntimeError: PU memory used by other processes.\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   },
+   "Qwen/Qwen3-1.7B": {
+    "ok": false,
+    "error": "RuntimeError: ocal/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4353, in from_pretrained\n    loading_info, disk_offload_index = cls._load_pretrained_model(\n                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        model, state_dict, checkpoint_files, load_config\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4435, in _load_pretrained_model\n    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 5148, in caching_allocator_warmup\n    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.21 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.66 GiB is free. Process 244 has 12.80 GiB memory in use. Including non-PyTorch memory, this process has 102.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)",
+    "vllm_error": "RuntimeError: PU memory used by other processes.\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   },
+   "Qwen/Qwen3.5-2B": {
+    "ok": false,
+    "error": "RuntimeError: ocal/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4353, in from_pretrained\n    loading_info, disk_offload_index = cls._load_pretrained_model(\n                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        model, state_dict, checkpoint_files, load_config\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 4435, in _load_pretrained_model\n    caching_allocator_warmup(model, expanded_device_map, load_config.hf_quantizer)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/dist-packages/transformers/modeling_utils.py\", line 5148, in caching_allocator_warmup\n    _ = torch.empty(int(byte_count // 2), dtype=torch.float16, device=device, requires_grad=False)\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.51 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.66 GiB is free. Process 244 has 12.80 GiB memory in use. Including non-PyTorch memory, this process has 102.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)",
+    "vllm_error": "RuntimeError: ise RuntimeError('''\nRuntimeError:\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   }
+  },
+  "paraphrase": {
+   "ok": false,
+   "error": "RuntimeError: PU memory used by other processes.\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+  }
+ },
+ "error": null
+}
