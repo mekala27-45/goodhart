@@ -1,0 +1,44 @@
+# The question generator, registered with the plan. Changing a line needs a dated DECISIONS.md entry.
+seed: 20261031
+# Candidate draws per catalog measure and shape, before any filter. Shapes a measure cannot take
+# (a comparison of the nation with itself) draw nothing.
+per_measure:
+  lookup: 60
+  comparison: 70
+  trend: 55
+  top_k: 90
+  multi.count_above: 30
+  multi.average: 35
+  multi.periods_above: 30
+  multi.difference: 90
+  multi.rank: 90
+refusals: 700
+# Splits are made on entity tuples (measure, entities, periods), never on rows: a tuple's bucket is
+# the first eight hex digits of sha256(seed and tuple) modulo 100.
+split_buckets:
+  train: [0, 80]
+  dev: [80, 88]
+  test: [88, 100]
+# Held-out shapes: question shapes no training template has. Their items go to the template test set
+# only, and only from tuples in the test buckets.
+held_out_shapes: [multi.difference, multi.rank]
+# Final sizes after every filter, the twin filter included. The pool keeps half as many again so the
+# twin filter can drop items without leaving a set short.
+targets:
+  train: 2400
+  dev: 240
+  test: 400
+  template_test: 160
+pool_factor: 1.5
+# Family shares inside each split (refusals included), applied before warehouse balance.
+family_shares:
+  lookup: 0.20
+  comparison: 0.18
+  trend: 0.15
+  top_k: 0.14
+  multi: 0.23
+  refusal: 0.10
+# A gold query slower than this, in seconds, drops its item.
+gold_timeout_s: 2.0
+# The share of training questions the teacher paraphrases (labelled model written wherever they appear).
+paraphrase_share: 0.25
