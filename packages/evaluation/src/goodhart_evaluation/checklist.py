@@ -254,6 +254,18 @@ def line_11(root: Path) -> tuple[bool, str]:
     )
 
 
+def line_12(root: Path) -> tuple[bool, str]:
+    j = _json(root, "results/judge.json")
+    if not j:
+        return False, "results/judge.json is missing: the judge has not answered its registry yet."
+    hacks = j.get("false_accept_by_hack", {})
+    ok = j.get("agreement") is not None and j.get("kappa") is not None and bool(hacks)
+    return ok, (
+        f"The judge answered {j['registry'] - j['malformed']} of {j['registry']} registry items: agreement "
+        f"{j['agreement']}, kappa {j['kappa']}, false accepts for {len(hacks)} hack types, padding and order probes."
+    )
+
+
 def line_15(root: Path) -> tuple[bool, str]:
     cards = sorted((root / "docs" / "models").glob("*.md")) if (root / "docs" / "models").exists() else []
     reports = sorted((root / "docs" / "validation").glob("*.md")) if (root / "docs" / "validation").exists() else []
@@ -335,7 +347,7 @@ ITEMS: dict[int, tuple[str, Callable[[Path], tuple[bool, str]]]] = {
     9: ("GRPO M3 and M4 with the honest reward and the learnability filter, seeds, ablation", line_9),
     10: ("Four defect arms and two controls, predictions held or not, the incident", line_10),
     11: ("Twin confirmed accuracy, pass at k, intervals, BH, interior tests, hypotheses, regression", line_11),
-    12: ("Judge calibration: agreement, kappa, false accepts per hack type", _missing_stage("judge")),
+    12: ("Judge calibration: agreement, kappa, false accepts per hack type", line_12),
     13: ("Persistence checks and latency with the cold start", line_13),
     14: ("Sizing sheet and compute ledger, every run inside its ceiling", line_14),
     15: ("Model cards, validation reports, promotion gates, champion, adapters released", line_15),

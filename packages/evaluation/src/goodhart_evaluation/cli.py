@@ -157,6 +157,17 @@ def spider(
 
 
 @app.command()
+def judge(
+    registry: bool = typer.Option(False, "--registry", help="Draw the registry and write the judge prompts"),
+) -> None:
+    """The LLM judge: its registry and prompts before it runs, its calibration after."""
+    from goodhart_evaluation import judging
+
+    out = judging.build_registry(paths.root()) if registry else judging.summary(judging.run(paths.root()))
+    typer.echo(json.dumps(out, indent=1))
+
+
+@app.command()
 def hypotheses() -> None:
     """Each registered hypothesis tested once, with Benjamini-Hochberg across the family."""
     from goodhart_evaluation.hypotheses import run

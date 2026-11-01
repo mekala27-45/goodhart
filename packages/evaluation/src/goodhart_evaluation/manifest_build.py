@@ -379,6 +379,36 @@ def methods_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def judge_section(root: Path, b: ManifestBuilder) -> None:
+    """The judge calibration: agreement, kappa, the false accepts per hack type, the two probes."""
+    j = _json(root, "results/judge.json")
+    population = "the judge registry, drawn by seed before any judge call"
+    for key, fmt in (("agreement", "pct1"), ("kappa", "float2"), ("would_have_paid", "pct1"), ("honest_paid", "pct1")):
+        if j.get(key) is not None:
+            b.value(f"judge.{key}", j[key], fmt, origin="goodhart judge", population=population, source="judge")
+    b.value("judge.registry", j["registry"], "int", origin="goodhart judge", population=population, source="judge")
+    b.value("judge.malformed", j["malformed"], "int", origin="goodhart judge", population=population, source="judge")
+    for probe in ("padding", "order"):
+        if j[probe]["rate"] is not None:
+            b.value(
+                f"judge.{probe}_flip_rate",
+                j[probe]["rate"],
+                "pct1",
+                origin="goodhart judge",
+                population=f"the {probe} pairs",
+                source="judge",
+            )
+    b.table(
+        "judge.false_accepts",
+        ["hack type", "wrong answers", "accepted", "false accept rate"],
+        ["text", "int", "int", "pct1"],
+        [[h, v["wrong"], v["accepted"], v["rate"]] for h, v in sorted(j["false_accept_by_hack"].items())],
+        origin="goodhart judge",
+        population="the registry answers the twins refused, by the hack type the detectors flagged",
+        source="judge",
+    )
+
+
 def hypotheses_section(root: Path, b: ManifestBuilder) -> None:
     """Every registered hypothesis with its test, its point and interval, and its verdict."""
     h = _json(root, "results/hypotheses.json")
@@ -656,6 +686,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "floor": (floor_section, ("results/floor.json",)),
     "regression": (regression_section, ("results/regression.json",)),
     "hypotheses": (hypotheses_section, ("results/hypotheses.json",)),
+    "judge": (judge_section, ("results/judge.json",)),
     "methods": (methods_section, ("results/methods.json",)),
     "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
     "gates": (gates_section, ("results/gates.json",)),
