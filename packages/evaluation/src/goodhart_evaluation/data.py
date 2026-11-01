@@ -40,6 +40,7 @@ from goodhart_questions.readback_sets import convert
 from goodhart_questions.search import Search
 
 from goodhart_evaluation import contamination
+from goodhart_evaluation.paraphrase import with_paraphrases
 
 LEAK_SHARE = 0.5
 _GRAIN_CACHE: dict[str, list[list[Any]]] = {}
@@ -117,6 +118,8 @@ def build(root: Path | None = None) -> dict[str, Any]:
     kept = distilled.kept
 
     sets, drops = finalize(pooled.items, gen_cfg, lambda it: golds.checkable(it, kept))
+    # The teacher's rewrites the repository confirmed (goodhart paraphrases), appended to training.
+    sets["train"] = with_paraphrases(sets["train"], root)
     sets["readback_test"] = [i for i in rb.items if i.split == "readback_test"]
     sets["readback_dev"] = [i for i in rb.items if i.split == "readback_dev"]
 
@@ -187,8 +190,10 @@ def build(root: Path | None = None) -> dict[str, Any]:
     ]
     write_jsonl(clean, qdir / "sft" / "clean.jsonl")
     plant_rng = random.Random(seed + 7)
-    answerable_ids = sorted(i.id for i in sets["train"] if i.gold is not None)
-    planted_ids = set(plant_rng.sample(answerable_ids, round(PLANT_SHARE * len(clean))))
+    # Drawn from the generator's own items, so a kept rewrite never changes the planted set or its key.
+    originals = [i for i in sets["train"] if i.source != "paraphrase"]
+    answerable_ids = sorted(i.id for i in originals if i.gold is not None)
+    planted_ids = set(plant_rng.sample(answerable_ids, round(PLANT_SHARE * len(originals))))
     key: dict[str, dict[str, str]] = {}
     planted = []
     by_id = {i.id: i for i in sets["train"]}
@@ -217,7 +222,7 @@ def build(root: Path | None = None) -> dict[str, Any]:
     pick = random.Random(seed + 11)
     examples = []
     for fam in ("lookup", "comparison", "refusal"):
-        family_items = sorted((i for i in sets["train"] if i.family == fam), key=lambda i: i.id)
+        family_items = sorted((i for i in originals if i.family == fam), key=lambda i: i.id)
         example = pick.choice(family_items)
         examples.append(
             {
@@ -272,6 +277,8 @@ def build(root: Path | None = None) -> dict[str, Any]:
         "warehouses": by_wh,
         "schema_recall": schema_recall,
         "leaked_prompts": len(leaked_ids),
+        # Present once the round trip has kept a rewrite, so a build without one is unchanged.
+        **({"paraphrases": len(sets["train"]) - len(originals)} if len(sets["train"]) > len(originals) else {}),
         "planted": len(key),
         "digests": digests,
         "prompt_digests": prompt_digests,

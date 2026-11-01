@@ -6,6 +6,7 @@ goodhart audit          the planted defect audit (after data/audit_key.sha256 is
 goodhart floor          readback's no model floor through its own planner, on every set
 goodhart grade          grade every exported completion on the original and the twins
 goodhart select         the base selection by the registered rule, from the probe and the dev grades
+goodhart paraphrases    grade the teacher's rewrites and keep the confirmed ones for goodhart data
 goodhart pairs          DPO pairs and learnability lists from exported self samples
 goodhart manifest       assemble results/manifest.json from every graded step
 goodhart rebuild-check  rebuild the sets and twins and compare digests with what is committed
@@ -60,6 +61,15 @@ def select_base() -> None:
 
     out = run(paths.root())
     typer.echo(f"selection from {out['run']}: main {out['main']}, small {out['small']}")
+
+
+@app.command()
+def paraphrases() -> None:
+    """Grade the teacher's rewrites on the original and the twins; keep the confirmed ones."""
+    from goodhart_evaluation.paraphrase import run
+
+    out = run(paths.root())
+    typer.echo(f"paraphrases from {out['run']}: {out['kept']} of {out['asked']} kept, {out['outcomes']}")
 
 
 @app.command()

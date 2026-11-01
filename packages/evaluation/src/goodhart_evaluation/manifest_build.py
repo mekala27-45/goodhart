@@ -270,6 +270,45 @@ def probe_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def paraphrase_section(root: Path, b: ManifestBuilder) -> None:
+    p = _json(root, "results/paraphrases.json")
+    b.value(
+        "data.paraphrases_teacher",
+        p["teacher"],
+        "text",
+        origin="goodhart paraphrases",
+        population="the paraphrase teacher",
+        source="completions",
+    )
+    for key in ("asked", "kept"):
+        b.value(
+            f"data.paraphrases_{key}",
+            p[key],
+            "int",
+            origin="goodhart paraphrases",
+            population="training questions the teacher rewrote",
+            source="completions",
+        )
+    b.table(
+        "data.paraphrases",
+        ["family", "asked", "kept"],
+        ["text", "int", "int"],
+        [[fam, c.get("asked", 0), c.get("kept", 0)] for fam, c in p["by_family"].items()],
+        origin="goodhart paraphrases",
+        population="training questions the teacher rewrote",
+        source="completions",
+    )
+    b.table(
+        "data.paraphrase_outcomes",
+        ["outcome", "rewrites"],
+        ["text", "int"],
+        sorted(p["outcomes"].items()),
+        origin="goodhart paraphrases",
+        population="training questions the teacher rewrote",
+        source="completions",
+    )
+
+
 def selection_section(root: Path, b: ManifestBuilder) -> None:
     s = _json(root, "results/selection.json")
     for role in ("main", "small"):
@@ -362,6 +401,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "contamination": (contamination_section, ("results/contamination.json",)),
     "profile": (profile_section, ("results/profile.json",)),
     "probe": (probe_section, ("results/gpu_probe.json",)),
+    "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),

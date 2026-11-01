@@ -119,7 +119,7 @@ def line_3(root: Path) -> tuple[bool, str]:
     key = _exists(root, "data/audit_key.sha256")
     if not (m and c and key):
         return False, "The question manifest, the contamination report or the audit key is missing."
-    paraphrased = _exists(root, "data/questions/paraphrases.jsonl")
+    paraphrased = _exists(root, "data/paraphrases/kept.jsonl", "results/paraphrases.json")
     sets = ", ".join(f"{k} {v:,}" for k, v in m["sets"].items())
     evidence = (
         f"data/questions holds {sets}; results/contamination.json moved {len(c['moved'])} held-out items; "
@@ -127,7 +127,11 @@ def line_3(root: Path) -> tuple[bool, str]:
     )
     if not paraphrased:
         return False, evidence + "; the paraphrase round trip waits for the selection kernel."
-    return True, evidence + "; the paraphrase round trip is in data/questions/paraphrases.jsonl."
+    para = _json(root, "results/paraphrases.json")
+    return True, evidence + (
+        f"; the teacher's rewrites of {para['asked']} training questions were graded and {para['kept']} kept "
+        "(data/paraphrases/kept.jsonl)."
+    )
 
 
 def line_4(root: Path) -> tuple[bool, str]:
