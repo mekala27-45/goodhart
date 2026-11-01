@@ -241,6 +241,7 @@ class ShardedBackend:
         gpu_memory_utilization: float = 0.85,
         enforce_eager: bool = False,
         timeout_s: float = 4 * 3600.0,
+        keep_logs_in: Path | None = None,
     ) -> None:
         if kind not in {"transformers", "vllm"}:
             raise ValueError(f"no backend kind {kind!r}")
@@ -258,6 +259,9 @@ class ShardedBackend:
         self.gpu_memory_utilization = gpu_memory_utilization
         self.enforce_eager = enforce_eager
         self.timeout_s = timeout_s
+        # A run's output folder: each shard's log tail is kept there, so a failure that only the
+        # shard's own log explains (an engine that would not start) can be read after the kernel.
+        self.keep_logs_in = keep_logs_in
         self.calls = 0
         self.prompts_per_call = 0
         self.stats: list[dict[str, Any]] = []
@@ -326,6 +330,11 @@ class ShardedBackend:
                 command = isolate.worker_command("generate", args_path, shard / f"{name}.result.json", self.python)
             running.append(isolate.start(name, command, shard, gpu, isolated=self.kind == "vllm"))
         outcomes = [isolate.wait(r, self.timeout_s) for r in running]
+        if self.keep_logs_in is not None:
+            label = self.model_id.replace("/", "__") + (f"-{Path(self.adapter).name}" if self.adapter else "")
+            for s in range(len(gpus)):
+                name = f"{self.kind}-{label}-call-{self.calls:03d}-shard-{s}"
+                isolate.keep_log(call / f"shard-{s}", f"shard-{s}", self.keep_logs_in, as_name=name)
         failed = [o for o in outcomes if not o.ok]
         if failed:
             raise RuntimeError(f"a {self.kind} generation shard failed: {failed[0].error[-6000:]}")

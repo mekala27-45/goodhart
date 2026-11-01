@@ -35,7 +35,9 @@ def _adapter(inputs: list[str]) -> str | None:
     return found
 
 
-def _backend(model_id: str, adapter: str | None, hp: dict[str, Any], meter: Meter) -> ShardedBackend:
+def _backend(
+    model_id: str, adapter: str | None, hp: dict[str, Any], meter: Meter, out: Path | None = None
+) -> ShardedBackend:
     gpus: list[int | None] = list(env.gpu_indices()) or [None]
     if hp.get("max_gpus"):
         gpus = gpus[: int(hp["max_gpus"])]
@@ -57,6 +59,7 @@ def _backend(model_id: str, adapter: str | None, hp: dict[str, Any], meter: Mete
         gpu_memory_utilization=float(hp.get("vllm_memory", 0.85)),
         enforce_eager=bool(hp.get("vllm_enforce_eager", False)),
         timeout_s=_remaining(meter),
+        keep_logs_in=out,
     )
 
 
@@ -82,7 +85,7 @@ def _select_one(bundle: Bundle, out: Path, meter: Meter, model_id: str, hp: dict
     req = bundle.request
     dev = bundle.prompts("dev")
     safe = model_id.replace("/", "__")
-    backend = _backend(model_id, None, hp, meter)
+    backend = _backend(model_id, None, hp, meter, out)
     messages = messages_for(dev, bundle.examples())
     length, temperature = int(hp["max_new_tokens"]), float(hp["temperature"])
     greedy_s, sampled_s = _run(
@@ -176,7 +179,7 @@ def paraphrase(bundle: Bundle, out: Path, meter: Meter, cfg: dict[str, Any], see
     chosen = set(paraphrase_ids(prompts, float(cfg.get("share", 0.25)), seed))
     picked = [p for p in prompts if p.id in chosen]
     backend = _backend(
-        model_id, None, {**cfg, "generation_backend": cfg.get("generation_backend", "transformers")}, meter
+        model_id, None, {**cfg, "generation_backend": cfg.get("generation_backend", "transformers")}, meter, out
     )
     asks = [
         [{"role": "system", "content": PARAPHRASE_SYSTEM}, {"role": "user", "content": _question(p.messages)}]
@@ -217,7 +220,7 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     adapter = _adapter(bundle.inputs)
     checkpoint = str(hp.get("checkpoint_name", "final"))
     examples = bundle.examples() if hp.get("with_examples") else []
-    backend = _backend(req.model, adapter, hp, meter)
+    backend = _backend(req.model, adapter, hp, meter, out)
     written: dict[str, int] = {}
     # One call per set, so a set finished before the ceiling is written even if a later one is not.
     plan = [(name, "sampled") for name in hp.get("sampled_sets", [])] + [
@@ -248,7 +251,7 @@ def pairs(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     hp = {**bundle.config("training")["pairs"], **req.hyperparameters}
     assert req.model is not None
     adapter = _adapter(bundle.inputs)
-    backend = _backend(req.model, adapter, hp, meter)
+    backend = _backend(req.model, adapter, hp, meter, out)
     prompts = bundle.prompts("train")
     messages = messages_for(prompts, bundle.examples() if hp.get("with_examples") else [])
     n, temperature = int(hp["n"]), float(hp["temperature"])
@@ -264,7 +267,7 @@ def judge(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     req = bundle.request
     hp = {**bundle.config("training")["judge"], **req.hyperparameters}
     assert req.model is not None
-    backend = _backend(req.model, None, hp, meter)
+    backend = _backend(req.model, None, hp, meter, out)
     written = {}
     names = [s for s in bundle.prompt_sets() if s.startswith("judge_")]
     sets = {name: bundle.prompts(name) for name in names}

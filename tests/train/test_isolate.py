@@ -161,6 +161,19 @@ def test_two_shards_join_in_prompt_order(tiny: dict[str, Any], tmp_path: Path) -
         )
 
 
+def test_a_failed_shard_leaves_its_log_in_the_run_outputs(tmp_path: Path) -> None:
+    """The selection run lost the root cause of a vLLM engine that would not start: the error the
+    parent kept was the frontend's traceback, and the engine's own lines were only in the shard log."""
+    from goodhart_train.backend import ShardedBackend
+
+    out = tmp_path / "out"
+    backend = ShardedBackend("transformers", "/no/such/model", gpus=[None], workdir=tmp_path / "w", keep_logs_in=out)
+    with pytest.raises(RuntimeError, match="shard failed"):
+        backend.generate([[{"role": "user", "content": "q"}]], 1, 0.0, 4, 0)
+    kept = out / "logs" / "transformers-__no__such__model-call-001-shard-0.err.txt"
+    assert kept.exists() and kept.read_text(encoding="utf-8").strip()
+
+
 def test_an_isolated_child_gets_no_installed_packages_and_no_toolkit_libraries(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("LD_LIBRARY_PATH", "/usr/local/cuda/lib64:/usr/local/nvidia/lib64:/opt/lib")
     child = isolate.child_env(None, isolated=True)

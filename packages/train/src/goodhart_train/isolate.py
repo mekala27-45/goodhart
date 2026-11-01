@@ -265,7 +265,7 @@ def run_task(
     return wait(running, timeout_s)
 
 
-def keep_log(workdir: Path, name: str, out: Path) -> None:
+def keep_log(workdir: Path, name: str, out: Path, as_name: str | None = None) -> None:
     """A short tail of a child's stderr and stdout in the run's outputs, for reading after the kernel."""
     target = out / "logs"
     target.mkdir(parents=True, exist_ok=True)
@@ -273,4 +273,4 @@ def keep_log(workdir: Path, name: str, out: Path) -> None:
         source = workdir / "logs" / f"{name}.{suffix}"
         if source.exists():
             data = source.read_bytes()[-LOG_TAIL_BYTES:]
-            (target / f"{name}.{suffix}.txt").write_bytes(data)
+            (target / f"{as_name or name}.{suffix}.txt").write_bytes(data)
