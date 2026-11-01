@@ -32,7 +32,7 @@ jobs:
           --health-cmd "pg_isready -U goodhart" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://goodhart:goodhart@localhost:5432/goodhart
-      GOODHART_REQUIRE: postgres,warehouses,torch
+      GOODHART_REQUIRE: postgres,warehouses,torch,floor
     steps:
       - uses: actions/checkout@v6
         with:
@@ -44,9 +44,9 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
-      - name: Install, with CPU PyTorch for the trainer tests
+      - name: Install, with readback's floor at its pinned commit and CPU PyTorch for the trainer tests
         run: |
-          uv sync --frozen
+          uv sync --frozen --extra floor
           uv pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6"
           uv pip install "transformers==5.22.1" "trl==1.17.1" "peft==0.21.2" "datasets==5.1.0" "accelerate==1.15.0"
       - name: The sources, by digest
@@ -83,12 +83,34 @@ jobs:
         run: uv run --no-sync pytest --nbmake notebooks -q
 
   container:
+    # The Vercel image, built and run here, grades one query; a separate process then reads the grade
+    # back from the database and through the API.
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: goodhart
+          POSTGRES_PASSWORD: goodhart
+          POSTGRES_DB: goodhart
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U goodhart" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v6
-      - name: The Vercel image builds and answers /health
+      - name: Build the image
+        run: docker build -f Dockerfile.vercel -t goodhart .
+      - name: Start it against the CI database
         run: |
-          docker build -f Dockerfile.vercel -t goodhart .
-          docker run -d --name gh -p 8080:80 goodhart
-          for _ in $(seq 1 60); do curl -fsS http://127.0.0.1:8080/health && break; sleep 2; done
-          curl -fsS http://127.0.0.1:8080/health | grep -q '"status":"ok"'
+          docker run -d --name gh --network host -e PORT=8080 -e GOODHART_SALT=ci \
+            -e DATABASE_URL=postgresql://goodhart:goodhart@localhost:5432/goodhart goodhart
+          for _ in $(seq 1 90); do curl -fsS http://127.0.0.1:8080/health >/dev/null && break; sleep 2; done
+          curl -fsS http://127.0.0.1:8080/health | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['database'] == 'ok' and d['stage'] == 'grading', d; print(d['kept_twins'], d['questions'])"
+      - name: Grade one query and read it back from a separate process
+        run: |
+          pip install -q "httpx>=0.28" "psycopg[binary]>=3.2"
+          python3 scripts/check_persistence.py --base http://127.0.0.1:8080 \
+            --database postgresql://goodhart:goodhart@localhost:5432/goodhart
+      - name: The container log, when something failed
+        if: failure()
+        run: docker logs gh | tail -100

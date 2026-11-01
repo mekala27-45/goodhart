@@ -9,6 +9,7 @@ dependencies = [
   "goodhart-rewards",
   "goodhart-heldout",
   "goodhart-monitor",
+  "goodhart-questions",
   "fastapi>=0.115",
   "uvicorn>=0.32",
   "sqlmodel>=0.0.22",
@@ -21,6 +22,7 @@ goodhart-core = { workspace = true }
 goodhart-rewards = { workspace = true }
 goodhart-heldout = { workspace = true }
 goodhart-monitor = { workspace = true }
+goodhart-questions = { workspace = true }
 
 [build-system]
 requires = ["hatchling>=1.25"]

@@ -1,14 +1,18 @@
 # The grader API as a Vercel container function (Hobby, no card), the route doorstep proved: Vercel
 # builds this file, sends traffic to port 80, starts an instance on the first request after idle and
-# scales it to zero again. This first version is the health stub, so the host import happens in the
-# first hour of the build; the grading version replaces it in step nine.
+# scales it to zero again. The image bakes everything a grade needs, checked by digest at build time:
+# every original table by data/sources.lock.json (a completion may read any of them), the four kept
+# twins rebuilt from data/twins.lock.json, and the held-out questions. The gold never leaves it.
 FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 UV_LINK_MODE=copy UV_COMPILE_BYTECODE=1 \
-    PORT=80 GOODHART_ROOT=/app GOODHART_VIEWS=/tmp/goodhart-views
-RUN pip install --no-cache-dir "uv>=0.11,<0.12"
+    PORT=80 GOODHART_ROOT=/app GOODHART_CACHE=/app/data/cache GOODHART_VIEWS=/tmp/goodhart-views
+RUN pip install --no-cache-dir "uv==0.11.32"
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY packages ./packages
 RUN uv sync --frozen --no-dev --no-default-groups --package goodhart-api
+COPY data/sources.lock.json data/twins.lock.json ./data/
+COPY data/questions/readback_test.jsonl data/questions/test.jsonl data/questions/template_test.jsonl ./data/questions/
+RUN /app/.venv/bin/python -m goodhart_api.bake
 EXPOSE 80
-CMD ["sh", "-c", "exec /app/.venv/bin/uvicorn goodhart_api.main:app --host 0.0.0.0 --port ${PORT:-80} --proxy-headers --forwarded-allow-ips='*'"]
+CMD ["sh", "-c", "/app/.venv/bin/python -m goodhart_api.migrate && exec /app/.venv/bin/uvicorn goodhart_api.main:app --host 0.0.0.0 --port ${PORT:-80} --proxy-headers --forwarded-allow-ips='*'"]
