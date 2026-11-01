@@ -2,7 +2,7 @@
  "as_of": "2026-11-01",
  "values": {
   "build.commits": {
-   "value": 87,
+   "value": 93,
    "fmt": "int",
    "provenance": {
     "origin": "git",
@@ -310,7 +310,7 @@
    }
   },
   "manifest.missing": {
-   "value": "probe, paraphrases, selection, audit, sizing",
+   "value": "probe, paraphrases, methods, selection, audit, sizing",
    "fmt": "text",
    "provenance": {
     "origin": "goodhart manifest",
@@ -629,7 +629,7 @@
      18,
      "not done",
      "Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described",
-     "87 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet."
+     "93 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; v0.1.0 is not tagged yet."
     ]
    ],
    "provenance": {
