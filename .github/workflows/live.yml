@@ -16,6 +16,10 @@ on:
       checkpoints:
         description: "Checkpoint prefixes for parity, comma separated (for example base:,final)"
         required: false
+      record_session:
+        description: "Also record the desk's fallback session from the live API (each try is a real grade)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,6 +54,9 @@ jobs:
       # The browser goes first, so its first request finds the API as idle as it was.
       - name: The site and the desk in a real browser, asleep then awake
         run: cd web && node scripts/live-check.mjs --site "$SITE" --api "$API"
+      - name: The desk's recorded session, from the live API
+        if: ${{ inputs.record_session }}
+        run: cd web && node scripts/record-session.mjs --api "$API"
       - name: Persistence, read back from this runner
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -81,7 +88,7 @@ jobs:
           git config user.email "goodhart-live@users.noreply.github.com"
           branch="live/${GITHUB_RUN_ID}"
           git checkout -q -b "$branch"
-          git add results/live_check.json results/persistence.json results/latency.json results/parity.json results/ledger_mirror.json 2>/dev/null || true
+          git add results/live_check.json results/persistence.json results/latency.json results/parity.json results/ledger_mirror.json web/public/data/recorded_session.json 2>/dev/null || true
           if git diff --cached --quiet; then echo "::warning::no record was written"; exit 0; fi
           git commit -q -m "results(live): the live checks from run ${GITHUB_RUN_ID}" -m "Read from a GitHub runner against ${API} and ${SITE}."
           git push -q origin "$branch"
