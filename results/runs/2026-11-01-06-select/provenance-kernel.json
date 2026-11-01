@@ -1,0 +1,318 @@
+{
+ "request": "2026-11-01-06-select",
+ "request_digest": "f54c8cda2955490fe294b67f252a6a69e0588672d10340d785a5c037edd3bb35",
+ "stage": "select",
+ "status": "done",
+ "summary": {
+  "models": {
+   "Qwen/Qwen3.5-0.8B": {
+    "ok": true,
+    "backend": "transformers",
+    "greedy": 240,
+    "sampled": 1920,
+    "calls": [
+     {
+      "call": 1,
+      "gpus": [
+       0,
+       1
+      ],
+      "shards": [
+       {
+        "ok": true,
+        "backend": "transformers",
+        "load_seconds": 33.7,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 133.31,
+          "tokens": 5314,
+          "prompts_per_call": 16
+         },
+         {
+          "prompts": 120,
+          "seconds": 1433.93,
+          "tokens": 55071,
+          "prompts_per_call": 2
+         }
+        ],
+        "peak_memory_bytes": 13742174208
+       },
+       {
+        "ok": true,
+        "backend": "transformers",
+        "load_seconds": 33.7,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 144.99,
+          "tokens": 5115,
+          "prompts_per_call": 16
+         },
+         {
+          "prompts": 120,
+          "seconds": 1700.93,
+          "tokens": 53856,
+          "prompts_per_call": 1
+         }
+        ],
+        "peak_memory_bytes": 14488919552
+       }
+      ]
+     }
+    ],
+    "vllm_error": "RuntimeError: ise RuntimeError('''\nRuntimeError:\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   },
+   "Qwen/Qwen2.5-Coder-1.5B-Instruct": {
+    "ok": true,
+    "backend": "vllm",
+    "greedy": 240,
+    "sampled": 1920,
+    "calls": [
+     {
+      "call": 1,
+      "gpus": [
+       0,
+       1
+      ],
+      "shards": [
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 131.3,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 66.93,
+          "tokens": 6131
+         },
+         {
+          "prompts": 120,
+          "seconds": 122.42,
+          "tokens": 51768
+         }
+        ]
+       },
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 131.2,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 77.21,
+          "tokens": 5976
+         },
+         {
+          "prompts": 120,
+          "seconds": 141.68,
+          "tokens": 59382
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Qwen/Qwen3-1.7B": {
+    "ok": true,
+    "backend": "vllm",
+    "greedy": 240,
+    "sampled": 1920,
+    "calls": [
+     {
+      "call": 1,
+      "gpus": [
+       0,
+       1
+      ],
+      "shards": [
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 150.7,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 106.56,
+          "tokens": 6386
+         },
+         {
+          "prompts": 120,
+          "seconds": 441.19,
+          "tokens": 52023
+         }
+        ]
+       },
+       {
+        "ok": true,
+        "backend": "vllm",
+        "load_seconds": 150.6,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 125.96,
+          "tokens": 7315
+         },
+         {
+          "prompts": 120,
+          "seconds": 514.3,
+          "tokens": 59447
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Qwen/Qwen3.5-2B": {
+    "ok": true,
+    "backend": "transformers",
+    "greedy": 240,
+    "sampled": 1920,
+    "calls": [
+     {
+      "call": 1,
+      "gpus": [
+       0,
+       1
+      ],
+      "shards": [
+       {
+        "ok": true,
+        "backend": "transformers",
+        "load_seconds": 45.9,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 192.81,
+          "tokens": 6077,
+          "prompts_per_call": 16
+         },
+         {
+          "prompts": 120,
+          "seconds": 1636.32,
+          "tokens": 48965,
+          "prompts_per_call": 2
+         }
+        ],
+        "peak_memory_bytes": 14190090752
+       },
+       {
+        "ok": true,
+        "backend": "transformers",
+        "load_seconds": 45.9,
+        "jobs": [
+         {
+          "prompts": 120,
+          "seconds": 202.22,
+          "tokens": 6234,
+          "prompts_per_call": 16
+         },
+         {
+          "prompts": 120,
+          "seconds": 2203.29,
+          "tokens": 54290,
+          "prompts_per_call": 1
+         }
+        ],
+        "peak_memory_bytes": 14018576384
+       }
+      ]
+     }
+    ],
+    "vllm_error": "RuntimeError: ise RuntimeError('''\nRuntimeError:\n...\n    ...<2 lines>...\n        renderer=renderer,\n    )\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/tracing/otel.py\", line 175, in sync_wrapper\n    return func(*args, **kwargs)\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 925, in __init__\n    super().__init__(\n    ~~~~~~~~~~~~~~~~^\n        asyncio_mode=False,\n        ^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n        renderer=renderer,\n        ^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/core_client.py\", line 682, in __init__\n    with launch_core_engines(\n         ~~~~~~~~~~~~~~~~~~~^\n        vllm_config, executor_class, log_stats, addresses\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ) as engine_launch:\n    ^\n  File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n    next(self.gen)\n    ~~~~^^^^^^^^^^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1351, in launch_core_engines\n    wait_for_engine_startup(\n    ~~~~~~~~~~~~~~~~~~~~~~~^\n        handshake_socket,\n        ^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        launch,\n        ^^^^^^^\n    )\n    ^\n  File \"/tmp/goodhart-vllm/lib/python3.13/site-packages/vllm/v1/engine/utils.py\", line 1431, in wait_for_engine_startup\n    raise RuntimeError(\n    ...<8 lines>...\n    )\nRuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   }
+  }
+ },
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "615",
+     "power.limit": "70.00",
+     "temperature.gpu": "33"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "360",
+     "power.limit": "70.00",
+     "temperature.gpu": "74"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "outputs": {
+  "completions/dev__Qwen__Qwen2.5-Coder-1.5B-Instruct__greedy.jsonl": "937dba09cfd40596e777b6ba7f57711bacf4a59eaf76b0528c35fffa00612119",
+  "completions/dev__Qwen__Qwen2.5-Coder-1.5B-Instruct__t08.jsonl": "fc97cebfaab86bd20e72f652931a9c7b560b237afe9a4f99e50e1d661a15ae94",
+  "completions/dev__Qwen__Qwen3-1.7B__greedy.jsonl": "6c4428001c77e8f932db55a4c9a9683c2d4f3e9453fde5117f84a34d620cb84e",
+  "completions/dev__Qwen__Qwen3-1.7B__t08.jsonl": "3fb7ba5a95e2544e4e85c69238ec171880954b99e811a7ea16fc88931b4987c4",
+  "completions/dev__Qwen__Qwen3.5-0.8B__greedy.jsonl": "4ef9a29db18fb4ae126dcefce7a6c4a428593224a9526a90a577d668358a609d",
+  "completions/dev__Qwen__Qwen3.5-0.8B__t08.jsonl": "026b7bb314bc3b4170cb812ade8c3043adacbb2b73597947a93ec8b17d36a74e",
+  "completions/dev__Qwen__Qwen3.5-2B__greedy.jsonl": "d3165bfc41ca5ef0e7accccac68ee988d0f68b8b6dfe8ff0fb353aa4dd39e958",
+  "completions/dev__Qwen__Qwen3.5-2B__t08.jsonl": "61264d377f0ddf528d55d8a01443af859ef9af507a9b8b338e352071764d35cc",
+  "logs/transformers-Qwen__Qwen3.5-0.8B-call-001-shard-0.err.txt": "a3671e2bef4cb7b3790fe82053b700767c45e7e0ab5923d2aa9576f21507bc2f",
+  "logs/transformers-Qwen__Qwen3.5-0.8B-call-001-shard-0.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/transformers-Qwen__Qwen3.5-0.8B-call-001-shard-1.err.txt": "91f34d6c1ce5de06bdbb09e9eaeead915625174fa604842c0abb4c32200ba065",
+  "logs/transformers-Qwen__Qwen3.5-0.8B-call-001-shard-1.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/transformers-Qwen__Qwen3.5-2B-call-001-shard-0.err.txt": "8c9d3f4efcf1d802c4778dca4f16f3ca820e8184fad3e71bc721db69983b55fd",
+  "logs/transformers-Qwen__Qwen3.5-2B-call-001-shard-0.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/transformers-Qwen__Qwen3.5-2B-call-001-shard-1.err.txt": "45a995acc5cb998b715babe9da34b6ebcc11386b34d2c0781195346d5a9441f0",
+  "logs/transformers-Qwen__Qwen3.5-2B-call-001-shard-1.out.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.err.txt": "801954ccde67cfc9a32f59a59c446de457807d59afb6de4c84ff0ff7ca02e01e",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.out.txt": "b49bd0e3b11ccbc9bbf9d9704188e64ab25973a0c54eac0f3159b0b68572b4ba",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.err.txt": "2f560ffccd00a047c7f7299255b5193f1f4aa072ae18767d3afb6d3c651a9c38",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.out.txt": "31c92261904a478cd363b00ab475235d3b4fc2d55d2dad28b5a0a2cad08972f7",
+  "logs/vllm-Qwen__Qwen3-1.7B-call-001-shard-0.err.txt": "a10c41c45471d95b95bfec18e346f94b6fd6f5700a58e9d1ebd365aad46cbde2",
+  "logs/vllm-Qwen__Qwen3-1.7B-call-001-shard-0.out.txt": "62b50b72f4c79f5a1fb8956122a70b5e8f75100569d5f5b75f951ab0465fe945",
+  "logs/vllm-Qwen__Qwen3-1.7B-call-001-shard-1.err.txt": "0f6e8781e4d6d4f9590252ada26d2acd87ef0e310bdaa90fa655d4136bbaaf0c",
+  "logs/vllm-Qwen__Qwen3-1.7B-call-001-shard-1.out.txt": "f5ac5919eb4b58ffdaf58ef012f14e4ebd01b7d01a7c0103d0efd393ff003b6b",
+  "logs/vllm-Qwen__Qwen3.5-0.8B-call-001-shard-0.err.txt": "4b96a7a1ab8ed86cfebe31542e418ab728f5a13c7a0897e2e052940487f715f0",
+  "logs/vllm-Qwen__Qwen3.5-0.8B-call-001-shard-0.out.txt": "83a6477889027ce9ac402977de895b3a23cad90a148399e633bfd17f9ea6e28f",
+  "logs/vllm-Qwen__Qwen3.5-0.8B-call-001-shard-1.err.txt": "6a3fe7437a6cc19e2d77e26f55f07829321ba392a614b813223aba01e9c317b5",
+  "logs/vllm-Qwen__Qwen3.5-0.8B-call-001-shard-1.out.txt": "5a5e45f8c0436dce8abef5daaaca3205776b2d9cd1fbbbf056f5cfdaa408fe0f",
+  "logs/vllm-Qwen__Qwen3.5-2B-call-001-shard-0.err.txt": "9a969453c5e5d0f33c24ebc22feb6d9b87fc2b4df9d40a0c462336a214d87746",
+  "logs/vllm-Qwen__Qwen3.5-2B-call-001-shard-0.out.txt": "5d7c8951b7a7ca351db9d6863ae7470f86f4c770d62185cc48c94578432a4026",
+  "logs/vllm-Qwen__Qwen3.5-2B-call-001-shard-1.err.txt": "a9d492edad2cefbea76119b0ea30a909ce4629621cc9c70b6f13cbed4ff400ca",
+  "logs/vllm-Qwen__Qwen3.5-2B-call-001-shard-1.out.txt": "c1f87d4cb6ff00a60064d715fa714da0d4eb35dd59c25af7a7039edc4c3da824"
+ }
+}
