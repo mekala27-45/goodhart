@@ -19,6 +19,10 @@ dependencies = [
   "pyarrow>=18",
   "typer>=0.15",
   "httpx>=0.28",
+  # The small local embedding model behind the near duplicate check of the contamination report:
+  # spaCy's medium English pipeline (MIT), 300 dimensional static vectors, fetched by URL and locked.
+  "spacy>=3.8,<3.9",
+  "en-core-web-md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.8.0/en_core_web_md-3.8.0-py3-none-any.whl",
 ]
 
 [project.scripts]
@@ -37,6 +41,9 @@ goodhart-judge = { workspace = true }
 [build-system]
 requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/goodhart_evaluation"]
