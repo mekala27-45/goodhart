@@ -123,6 +123,8 @@ def run(
         max_steps=int(req.step_budget or hp["max_steps"]),
         logging_steps=1,
         save_steps=save_steps,
+        # The latest two for a resume; every checkpoint's adapter is kept in out/adapters.
+        save_total_limit=int(hp.get("save_total_limit", 2)),
         report_to=[],
         seed=req.seed,
         data_seed=req.seed,
@@ -157,7 +159,8 @@ def run(
         exporter.server = ServerSampler(trainer, loaded.tokenizer, req.model)
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
-    trainer.save_model(str(out / "adapter"))
+    # The adapter alone: the tokenizer is the base model's, and a copy of it in every run is noise.
+    trainer.model.save_pretrained(str(out / "adapter"))
     exported = exporter.finish()
     monitor.write(out)
     meter.add(steps=int(result.global_step), prompts=len(prompts), rollouts=reward.completions_seen)

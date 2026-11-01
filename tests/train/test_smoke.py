@@ -53,7 +53,12 @@ def test_sft_runs_two_steps_and_exports_dev(tiny: dict[str, Any], tmp_path: Path
     summary = sft.run(bundle, out, meter)
     assert summary["global_step"] == 2
     assert (out / "adapter" / "adapter_config.json").exists()
+    assert not (out / "adapter" / "tokenizer_config.json").exists(), "the adapter alone, not the base tokenizer"
     assert (out / "completions" / "dev__step-1.jsonl").exists()
+    for step in (1, 2):
+        kept = out / "adapters" / f"step-{step}"
+        assert (kept / "adapter_model.safetensors").exists() and (kept / "adapter_config.json").exists()
+        assert not (kept / "optimizer.pt").exists()
     assert meter.counts["steps"] == 2
 
 

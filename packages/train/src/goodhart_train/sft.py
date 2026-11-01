@@ -58,6 +58,8 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
         completion_only_loss=True,
         logging_steps=int(hp.get("logging_steps", 5)),
         save_steps=int(hp["save_steps"]),
+        # The latest two for a resume; every checkpoint's adapter is kept in out/adapters.
+        save_total_limit=int(hp.get("save_total_limit", 2)),
         save_strategy="steps",
         report_to=[],
         seed=req.seed,
@@ -90,7 +92,8 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     )
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
-    trainer.save_model(str(out / "adapter"))
+    # The adapter alone: the tokenizer is the base model's, and a copy of it in every run is noise.
+    trainer.model.save_pretrained(str(out / "adapter"))
     exported = exporter.finish()
     tokens = int(sum(len(loaded.tokenizer(r["target"])["input_ids"]) for r in rows) * float(hp["epochs"]))
     meter.add(steps=int(result.global_step), prompts=len(rows), tokens_trained=tokens)

@@ -59,6 +59,8 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
         max_length=int(hp["max_length"]),
         logging_steps=int(hp.get("logging_steps", 5)),
         save_steps=int(hp["save_steps"]),
+        # The latest two for a resume; every checkpoint's adapter is kept in out/adapters.
+        save_total_limit=int(hp.get("save_total_limit", 2)),
         report_to=[],
         seed=req.seed,
         max_steps=int(req.step_budget) if req.step_budget else -1,
@@ -89,7 +91,8 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     )
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
-    trainer.save_model(str(out / "adapter"))
+    # The adapter alone: the tokenizer is the base model's, and a copy of it in every run is noise.
+    trainer.model.save_pretrained(str(out / "adapter"))
     exported = exporter.finish()
     meter.add(steps=int(result.global_step), prompts=len(rows))
     return {

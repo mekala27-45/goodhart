@@ -3,12 +3,15 @@
 The ceiling callback stops a run at its GPU hour ceiling and saves, and the ledger says so. The
 monitor callback applies the registered rule: a defect arm stops at its next checkpoint once an
 alert fires. The dev export samples the development prompts at every checkpoint, greedily, so the
-repository can draw the twin confirmed accuracy beside the reward paid for every 25 steps.
+repository can draw the twin confirmed accuracy beside the reward paid for every 25 steps, and the
+adapter of every checkpoint is kept beside it, so whichever step the checkpoint choice picks can be
+loaded, evaluated and released. The optimizer state of a checkpoint stays behind.
 """
 
 from __future__ import annotations
 
 import json
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -64,18 +67,40 @@ class LogCallback(TrainerCallback):  # type: ignore[misc]
         return control
 
 
+ADAPTER_FILES = ("adapter_model.safetensors", "adapter_config.json")
+
+
+def keep_adapter(checkpoint: Path, out: Path, step: int) -> Path | None:
+    """A saved checkpoint's adapter, copied to out/adapters/step-<step>; None when it has none."""
+    files = [checkpoint / name for name in ADAPTER_FILES]
+    if not all(f.exists() for f in files):
+        return None
+    target = out / "adapters" / f"step-{step}"
+    target.mkdir(parents=True, exist_ok=True)
+    for f in files:
+        shutil.copyfile(f, target / f.name)
+    return target
+
+
 class CheckpointExportCallback(TrainerCallback):  # type: ignore[misc]
-    """At every save, run a function with the current step, the model and the folder just saved (the
-    dev export, which samples that folder's adapter on a second card when there is one)."""
+    """At every save, keep the adapter of the folder just saved (in out/adapters, beside the trainer's
+    folder), then run a function with the current step, the model and the kept adapter (the dev
+    export, which samples it on a second card when there is one)."""
 
     def __init__(self, export: Callable[..., None]) -> None:
         self.export = export
         self.exported: list[int] = []
+        self.kept: list[int] = []
 
     def on_save(self, args: Any, state: Any, control: Any, model: Any = None, **kwargs: Any) -> Any:
         step = int(state.global_step)
         if step not in self.exported:
-            checkpoint = str(Path(args.output_dir) / f"checkpoint-{step}")
-            self.export(step, model, checkpoint)
+            checkpoint = Path(args.output_dir) / f"checkpoint-{step}"
+            kept = keep_adapter(checkpoint, Path(args.output_dir).parent, step)
+            if kept is not None:
+                self.kept.append(step)
+            # The kept copy, not the trainer's folder: the trainer keeps only its latest checkpoints
+            # and may delete this one before an export on the second card has read it.
+            self.export(step, model, str(kept or checkpoint))
             self.exported.append(step)
         return control

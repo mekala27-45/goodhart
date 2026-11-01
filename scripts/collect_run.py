@@ -2,8 +2,8 @@
 
 The kernel writes provenance-kernel.json with the sha256 of every file it produced. This script
 recomputes each digest on what was downloaded and refuses the run if one differs or is missing.
-Small files go under results/runs/<id>/; files above the size limit (adapters, large completion
-exports) go to the runs release as assets, with their digests in results/runs/<id>/assets.json.
+Small files go under results/runs/<id>/; weights (every adapter, at every checkpoint) and files above
+the size limit go to the runs release as assets, with their digests in results/runs/<id>/assets.json.
 
 Nothing a kernel writes should name a person or a machine, but its logs and error tails quote what
 the libraries printed. Every text file except the model's own outputs is passed through the
@@ -32,6 +32,9 @@ from goodhart_core.hashing import sha256_file
 from scan_for_planted_identifiers import redact
 
 SIZE_LIMIT = 40_000_000
+# Weights never go into git, whatever their size: a LoRA adapter of a small model can be under the
+# size limit, and a run keeps one for every checkpoint.
+WEIGHTS = (".safetensors", ".bin", ".pt", ".pth")
 SKIP = ("trainer/", "smoke_trainer/")
 MODEL_OUTPUTS = ("completions/",)
 
@@ -108,7 +111,7 @@ def collect(request: str, output: Path, kernel: str, status: str, run_id: str, u
             if any(rel.startswith(s) for s in SKIP):
                 continue
             digest = sha256_file(path)
-            if path.stat().st_size > SIZE_LIMIT:
+            if path.stat().st_size > SIZE_LIMIT or rel.endswith(WEIGHTS):
                 name = f"{request}__{rel.replace('/', '__')}"
                 assets[rel] = {
                     "sha256": digest,
