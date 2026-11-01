@@ -41,6 +41,16 @@ Coverage counts every module of every package and must stay at or above 80 perce
   opens a pull request from `gpu/<id>`. Review the digests and the summary; merging is the
   promotion. See `.claude/skills/request-a-gpu-run`.
 - Grading: `goodhart grade` reads every promoted completions file; nothing is graded on the GPU.
+- After the selection run is promoted: `goodhart grade`, then `goodhart select` (the main and the
+  small model by the registered rule, results/selection.json) and `goodhart paraphrases` (the
+  teacher's rewrites graded on the original and the twins, the confirmed ones kept in
+  data/paraphrases/kept.jsonl), then `goodhart data` again to append the kept rewrites to training.
+- The live checks (persistence, latency, parity, the site and the desk in a real browser) run from
+  a GitHub runner: start the live workflow by hand; its records come back as a pull request.
+- Inside a kernel no process that trains or samples a model is the kernel's own: every candidate,
+  smoke run, generation shard and dev export is a child process on one card (goodhart_train.isolate),
+  so a CUDA error in one cannot fail the rest. vLLM lives in its own environment, built for the
+  driver (goodhart_train.vllm_env).
 - Numbers in prose: only through the claim gate. A number in README, RESULTS or any page comes from
   `results/manifest.json` through a template; `scripts/check_published_numbers.py` fails on a
   hand typed one.
