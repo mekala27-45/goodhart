@@ -1,0 +1,33 @@
+# The adapters release. A pushed v* tag packs every adapter results/release.json names (downloaded
+# from the runs release, each file checked by its digest), refuses a package whose bytes differ from
+# the digest the tagged commit recorded, and publishes them with the release notes, the statement
+# among them. Nothing here trains or grades: the tag is cut after the repository has done both.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: uv sync --frozen --no-dev
+      - name: Pack every adapter and check it against the tag's digests
+        run: uv run --no-sync python scripts/release.py --pack build/release
+      - name: Publish
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 && { echo "::error::release $TAG exists"; exit 1; }
+          gh release create "$TAG" build/release/*.tar.gz --title "goodhart $TAG" --notes-file docs/RELEASE_NOTES.md

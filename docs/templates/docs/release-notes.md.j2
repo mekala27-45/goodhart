@@ -1,0 +1,32 @@
+# goodhart, the release notes
+
+{{ statement() }}
+
+{% if has("release.assets") %}
+## What is in it
+
+One LoRA adapter for each trained method, at the checkpoint the checkpoint choice picked: the highest
+twin confirmed accuracy on dev among the checkpoints its run saved. Each package holds the adapter, its
+model card and the license; the base model is fetched by its own id, under its own license, which the
+model card names. Every package's sha256 was committed before the tag, and the release workflow refused
+any package whose bytes differed.
+
+{{ table("release.assets") }}
+
+{% if has("release.champion") %}
+The champion, the checkpoint that cleared every promotion gate with the highest twin confirmed accuracy
+on readback_test, is {{ v("release.champion") }}. RESULTS.md has its numbers beside the base and the floor.
+{% else %}
+No checkpoint cleared every promotion gate, so there is no champion; RESULTS.md says which gate each
+one failed.
+{% endif %}
+{% else %}
+Nothing is released yet: the release lists the adapters once every method's chosen checkpoint has
+been sampled and graded.
+{% endif %}
+
+## What it is not
+
+These adapters write DuckDB SQL for questions about the three warehouses of this repository, and their
+numbers describe them on these questions only. They must not be used to answer real questions about
+housing, flights or banking. The defects, the arms and the limitations are in RESULTS.md.

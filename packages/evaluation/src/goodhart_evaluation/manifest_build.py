@@ -523,6 +523,31 @@ def regression_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def release_section(root: Path, b: ManifestBuilder) -> None:
+    """The adapters the tag releases, each with its run, step and sha256 (scripts/release.py --plan)."""
+    r = _json(root, "results/release.json")
+    common = {"origin": "scripts/release.py", "population": "the released adapters", "source": "release"}
+    if r.get("champion"):
+        b.value("release.champion", r["champion"], "text", **common)
+    b.table(
+        "release.assets",
+        ["package", "method", "run", "step", "bytes", "sha256"],
+        ["text", "text", "text", "text", "int", "text"],
+        [
+            [
+                a["name"],
+                a["method"],
+                a["run"],
+                "final" if a["step"] is None else str(a["step"]),
+                a["bytes"],
+                a["sha256"],
+            ]
+            for a in r["assets"]
+        ],
+        **common,
+    )
+
+
 def models_section(root: Path, b: ManifestBuilder) -> None:
     """One model card's worth of entries per method whose chosen checkpoint has been sampled."""
     from goodhart_evaluation.cards import gather
@@ -712,6 +737,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "regression": (regression_section, ("results/regression.json",)),
     "hypotheses": (hypotheses_section, ("results/hypotheses.json",)),
     "judge": (judge_section, ("results/judge.json",)),
+    "release": (release_section, ("results/release.json",)),
     "methods": (methods_section, ("results/methods.json",)),
     "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
     "gates": (gates_section, ("results/gates.json",)),
