@@ -1,0 +1,183 @@
+# The only machine that holds the Kaggle token. It runs every committed request under requests/ that
+# has no record yet (results/runs/<id>/provenance.json on main, or a gpu/<id> branch awaiting review):
+# it builds the request's bundle, uploads it to the bundles release, pushes a Kaggle kernel with the
+# accelerator the probe chose, waits for it, downloads its output, checks every digest, and puts the
+# outputs on a gpu/<id> branch with a provenance file and a pull request for review. The build machine
+# reviews the pull request and merging it is the promotion. Nothing here prints a secret.
+name: gpu
+
+on:
+  push:
+    branches: [main]
+    paths: ["requests/**"]
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Run one request id, even if it has a record"
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: gpu
+  cancel-in-progress: false
+
+env:
+  PYTHONHASHSEED: "0"
+  UV_SYSTEM_CERTS: "1"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      pending: ${{ steps.pending.outputs.pending }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Pending requests
+        id: pending
+        env:
+          ONLY: ${{ inputs.only }}
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, subprocess
+          only = os.environ.get("ONLY") or ""
+          heads = subprocess.run(["git", "ls-remote", "--heads", "origin"], capture_output=True, text=True).stdout
+          branches = {line.split("refs/heads/")[1] for line in heads.splitlines() if "refs/heads/" in line}
+          pending = []
+          for path in sorted(pathlib.Path("requests").glob("*.json")):
+              rid = path.stem
+              if only and rid != only:
+                  continue
+              done = pathlib.Path("results/runs") / rid / "provenance.json"
+              if not only and (done.exists() or f"gpu/{rid}" in branches):
+                  continue
+              pending.append(rid)
+          print("pending=" + json.dumps(pending))
+          EOF
+          cat "$GITHUB_OUTPUT"
+      - name: Nothing to do
+        if: steps.pending.outputs.pending == '[]'
+        run: echo "::notice::no pending GPU request; nothing to run"
+
+  run:
+    needs: plan
+    if: needs.plan.outputs.pending != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        request: ${{ fromJson(needs.plan.outputs.pending) }}
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      GH_TOKEN: ${{ github.token }}
+      REQUEST: ${{ matrix.request }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: The Kaggle secrets are set (names only)
+        run: |
+          if [ -z "$KAGGLE_USERNAME" ]; then echo "::error::KAGGLE_USERNAME is not set"; exit 1; fi
+          if [ -z "$KAGGLE_API_TOKEN" ] && [ -z "$KAGGLE_KEY" ]; then echo "::error::neither KAGGLE_API_TOKEN nor KAGGLE_KEY is set"; exit 1; fi
+          if [ -n "$KAGGLE_API_TOKEN" ]; then echo "auth route: KAGGLE_API_TOKEN"; else echo "auth route: KAGGLE_KEY"; fi
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          uv sync --frozen --no-dev
+          uv pip install "kaggle==2.2.5"
+      - name: Probe the hosts this run can see
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          uv run --no-sync python scripts/probe_hosts.py > /dev/null
+          python3 - <<'PY'
+          import json
+          hosts = json.load(open("results/hosts_probe.json"))["hosts"]
+          print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != "error"} for k, v in hosts.items()}, indent=1))
+          PY
+      - name: Build the bundle and the kernel
+        run: uv run --no-sync python scripts/build_kernel.py --request "requests/${REQUEST}.json" --user "$KAGGLE_USERNAME" --repo "$GITHUB_REPOSITORY" --tag bundles
+      - name: Upload the bundle
+        run: |
+          gh release view bundles >/dev/null 2>&1 || gh release create bundles --prerelease --title "Kernel bundles" --notes "Tarballs the GPU kernels download by URL and check by sha256. Each is built from a committed request by scripts/build_kernel.py."
+          gh release upload bundles "build/bundles/${REQUEST}.tar.gz" --clobber
+      - name: Push the kernel
+        id: push
+        run: |
+          slug=$(python3 -c "import json; print(json.load(open('build/kernels/${REQUEST}/kernel-metadata.json'))['id'])")
+          acc=$(python3 -c "import json; print(json.load(open('build/kernels/${REQUEST}/kernel-metadata.json'))['machine_shape'])")
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+          echo "pushing $slug on $acc"
+          uv run --no-sync kaggle kernels push -p "build/kernels/${REQUEST}" --accelerator "$acc"
+      - name: Wait for the kernel
+        id: wait
+        env:
+          SLUG: ${{ steps.push.outputs.slug }}
+        run: |
+          # Read the state from the status line itself; an HTTP hiccup is not a failed kernel.
+          misses=0
+          for _ in $(seq 1 330); do
+            out=$(uv run --no-sync kaggle kernels status "$SLUG" 2>&1 | tail -1 || true)
+            state=$(printf '%s' "$out" | python3 -c 'import re, sys; m = re.search(r"has status \"(?:KernelWorkerStatus\.)?([A-Za-z_]+)\"", sys.stdin.read()); print(m.group(1).upper() if m else "")')
+            echo "$(date -u +%H:%M) ${state:-unreadable}"
+            case "$state" in
+              COMPLETE) echo "status=complete" >> "$GITHUB_OUTPUT"; exit 0 ;;
+              ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED|CANCELLED) echo "status=error" >> "$GITHUB_OUTPUT"; exit 0 ;;
+              QUEUED|RUNNING|NEW_SCRIPT) misses=0 ;;
+              *) misses=$((misses + 1))
+                 if [ "$misses" -ge 15 ]; then echo "status=lost" >> "$GITHUB_OUTPUT"; exit 0; fi ;;
+            esac
+            sleep 60
+          done
+          echo "status=timeout" >> "$GITHUB_OUTPUT"
+      - name: Download the output
+        env:
+          SLUG: ${{ steps.push.outputs.slug }}
+        run: |
+          mkdir -p "out/${REQUEST}"
+          uv run --no-sync kaggle kernels output "$SLUG" -p "out/${REQUEST}" || true
+          find "out/${REQUEST}" -maxdepth 3 -type f -printf '%10s  %p\n' | head -40
+      - name: Collect onto a results branch, with provenance
+        id: collect
+        env:
+          SLUG: ${{ steps.push.outputs.slug }}
+          STATUS: ${{ steps.wait.outputs.status }}
+        run: |
+          git config user.name "goodhart-gpu"
+          git config user.email "goodhart-gpu@users.noreply.github.com"
+          git checkout -b "gpu/${REQUEST}"
+          uv run --no-sync python scripts/collect_run.py --request "${REQUEST}" --output "out/${REQUEST}" \
+            --kernel "$SLUG" --status "$STATUS" --run-id "$GITHUB_RUN_ID"
+          git add "results/runs/${REQUEST}"
+          git commit -q -m "results(${REQUEST}): kernel output, checked by digest" -m "Run ${GITHUB_RUN_ID} of the gpu workflow."
+          git push origin "gpu/${REQUEST}"
+      - name: Open a pull request for review
+        run: |
+          body=$(python3 scripts/pr_body.py "results/runs/${REQUEST}")
+          if ! gh pr create --base main --head "gpu/${REQUEST}" --title "results: ${REQUEST}" --body "$body"; then
+            echo "::warning::Actions could not open a pull request. The outputs are on branch gpu/${REQUEST}. Settings, Actions, General: allow GitHub Actions to create and approve pull requests."
+          fi
+      - name: Open an issue for each monitor alert
+        run: |
+          f="results/runs/${REQUEST}/alerts.json"
+          [ -f "$f" ] || exit 0
+          n=$(python3 -c "import json; print(len(json.load(open('$f'))))")
+          [ "$n" = "0" ] && exit 0
+          body=$(python3 -c "import json; rows=json.load(open('$f')); print('\n'.join('- step %d: %s %s %s (value %.4f), action %s' % (r['step'], r['stat'], r['op'], r['threshold'], r['value'], r['action']) for r in rows))")
+          gh issue create --title "monitor: ${REQUEST}" --body "$(printf '%s\n\nRun: %s/%s/actions/runs/%s\nRunbook: docs/runbooks/reward-hacking.md' "$body" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")"
+      - name: Fail if the kernel failed
+        if: steps.wait.outputs.status != 'complete'
+        run: exit 1

@@ -105,5 +105,5 @@ jobs:
         run: |
           docker build -f Dockerfile.vercel -t goodhart .
           docker run -d --name gh -p 8080:80 goodhart
-          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:8080/health && break; sleep 2; done
+          for _ in $(seq 1 60); do curl -fsS http://127.0.0.1:8080/health && break; sleep 2; done
           curl -fsS http://127.0.0.1:8080/health | grep -q '"status":"ok"'
