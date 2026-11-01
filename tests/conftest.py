@@ -10,6 +10,7 @@ import importlib.util
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -64,3 +65,34 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 @pytest.fixture
 def root() -> Path:
     return ROOT
+
+
+@pytest.fixture(scope="session")
+def warehouses0() -> Any:
+    """The original warehouses, read only, opened once per session (tests marked warehouses)."""
+    from goodhart_core.warehouse import Warehouses
+
+    return Warehouses.from_repo(twins=False, root=ROOT)
+
+
+@pytest.fixture(scope="session")
+def catalog() -> Any:
+    from goodhart_questions.catalog import load
+
+    return load()
+
+
+@pytest.fixture(scope="session")
+def search(catalog: Any) -> Any:
+    from goodhart_questions.search import Search
+
+    return Search(catalog)
+
+
+@pytest.fixture(scope="session")
+def committed() -> dict[str, list[Any]]:
+    """The committed question sets, read once."""
+    from goodhart_questions.build import read_items
+
+    folder = ROOT / "data" / "questions"
+    return {p.stem: read_items(p) for p in sorted(folder.glob("*.jsonl"))}
