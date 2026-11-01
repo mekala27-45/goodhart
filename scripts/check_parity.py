@@ -33,13 +33,19 @@ def completions(root: Path, checkpoints: list[str]) -> list[dict[str, Any]]:
     return out
 
 
+def key(run: str, file: str, checkpoint: str, item_id: str, sample: object) -> tuple[str, ...]:
+    """One completion. The file is part of it: a greedy answer and the first of sixteen samples share
+    the checkpoint, the item and sample 0, and only the file they were exported to tells them apart."""
+    return (run, file, checkpoint, item_id, str(sample))
+
+
 def repository_verdicts(root: Path, rows: list[dict[str, Any]]) -> dict[tuple[str, ...], dict[str, Any]]:
     from goodhart_evaluation.grade import read_grades
 
     found: dict[tuple[str, ...], dict[str, Any]] = {}
     for run, name in sorted({(r["run"], r["file"]) for r in rows}):
         for g in read_grades(root, run, name):
-            found[(run, g.checkpoint, g.item_id, str(g.sample))] = {
+            found[key(run, name, g.checkpoint, g.item_id, g.sample)] = {
                 "executed": g.executed,
                 "original": g.original,
                 "confirmed": g.confirmed,
@@ -70,7 +76,7 @@ def main() -> int:
             got = client.post("/v1/grade", json=body)
             got.raise_for_status()
             api = got.json()
-            mine = repo.get((r["run"], r["checkpoint"], r["item_id"], str(r["sample"])))
+            mine = repo.get(key(r["run"], r["file"], r["checkpoint"], r["item_id"], r["sample"]))
             seen = {
                 "executed": api["executed"],
                 "original": api["checks"]["original"],
@@ -78,7 +84,14 @@ def main() -> int:
             }
             if mine != seen:
                 mismatches.append(
-                    {"item": r["item_id"], "checkpoint": r["checkpoint"], "api": seen, "repository": mine}
+                    {
+                        "item": r["item_id"],
+                        "file": r["file"],
+                        "sample": r["sample"],
+                        "checkpoint": r["checkpoint"],
+                        "api": seen,
+                        "repository": mine,
+                    }
                 )
     out = {"base": args.base, "compared": len(rows), "mismatches": len(mismatches), "examples": mismatches[:20]}
     print(json.dumps(out, indent=1))
