@@ -301,6 +301,28 @@ def sizing_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def checklist_section(root: Path, b: ManifestBuilder) -> None:
+    """Section 20 of the spec, each line marked from the files the build wrote (checklist.py)."""
+    from goodhart_evaluation.checklist import commits, decisions, lines
+
+    marked = lines(root)
+    b.table(
+        "checklist",
+        ["line", "status", "item", "evidence"],
+        ["int", "text", "text", "text"],
+        [[m.number, m.status, m.item, m.evidence] for m in marked],
+        origin="goodhart manifest",
+        population="the definition of done",
+        source="build",
+    )
+    entries, reversals = decisions(root)
+    b.value("build.decisions", entries, "int", origin="DECISIONS.md", population="dated entries", source="build")
+    b.value("build.reversals", reversals, "int", origin="DECISIONS.md", population="dated reversals", source="build")
+    count = commits(root)
+    if count is not None:
+        b.value("build.commits", count, "int", origin="git", population="commits on main", source="build")
+
+
 SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "data": (data_section, ("data/questions/manifest.json",)),
     "verifier": (verifier_section, ("results/mutation.json", "data/twins.lock.json")),
@@ -309,6 +331,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "probe": (probe_section, ("results/gpu_probe.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),
+    "checklist": (checklist_section, ()),
 }
 
 
@@ -320,6 +343,14 @@ def run(root: Path, as_of: str | None = None) -> dict[str, Any]:
             section(root, b)
         else:
             missing.append(name)
+    b.value(
+        "manifest.missing",
+        ", ".join(missing) if missing else "none",
+        "text",
+        origin="goodhart manifest",
+        population="the sections whose inputs do not exist yet",
+        source="build",
+    )
     manifest = b.build()
     write(manifest, root / "results" / "manifest.json")
     (root / "results" / "manifest_missing.json").write_text(
