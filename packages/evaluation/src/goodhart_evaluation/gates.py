@@ -177,3 +177,103 @@ def champion(candidates: Mapping[str, Mapping[str, Any]], accuracy: Mapping[str,
     if not passing:
         return None
     return max(passing, key=lambda name: (accuracy.get(name, float("-inf")), name))
+
+
+def _alerts(root: Any, run_id: str) -> tuple[list[dict[str, Any]] | None, int | None]:
+    """A GRPO run's alerts and its last step; None for a run with no policy steps."""
+    import json
+
+    folder = root / "results" / "runs" / run_id
+    alerts = folder / "alerts.json"
+    if not alerts.exists():
+        return None, None
+    steps = 0
+    ledger = folder / "ledger.jsonl"
+    if ledger.exists():
+        for line in ledger.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                steps = max(steps, int(json.loads(line).get("steps") or 0))
+    return list(json.loads(alerts.read_text(encoding="utf-8"))), steps
+
+
+def run(root: Any) -> dict[str, Any]:
+    """Every gate for every method with a sampled checkpoint, and the champion; results/gates.json."""
+    import json
+
+    from goodhart_evaluation.methods import _files_for, _scores, graded_files, method_of, requests
+
+    reqs = requests(root)
+    by_method: dict[str, list[str]] = {}
+    for run_id, req in reqs.items():
+        m = method_of(req)
+        if m is not None:
+            by_method.setdefault(m, []).append(run_id)
+    index = graded_files(root)
+
+    def scores_of(method: str, set_name: str) -> Any:
+        samples = [r for r in by_method.get(method, []) if reqs[r].get("stage") == "sample"]
+        greedy, sampled = _files_for(index, samples, set_name)
+        return _scores(root, greedy or sampled)
+
+    ifeval_all = (
+        json.loads((root / "results" / "ifeval.json").read_text())
+        if (root / "results" / "ifeval.json").exists()
+        else {}
+    )
+
+    def ifeval_of(method: str) -> Any:
+        samples = [r for r in by_method.get(method, []) if reqs[r].get("stage") == "sample"]
+        for r in reversed(samples):
+            hit = next((v for k, v in sorted(ifeval_all.items()) if k.startswith(f"{r}/")), None)
+            if hit:
+                return hit
+        return None
+
+    parity_path = root / "results" / "parity.json"
+    parity_record = json.loads(parity_path.read_text()) if parity_path.exists() else None
+    probe_path = root / "results" / "gpu_probe.json"
+    licenses = (
+        {c["model"]: c.get("license") for c in json.loads(probe_path.read_text())["candidates"]}
+        if probe_path.exists()
+        else {}
+    )
+    base_readback, base_test, base_ifeval = scores_of("M0", "readback_test"), scores_of("M0", "test"), ifeval_of("M0")
+    results: dict[str, Any] = {}
+    accuracy: dict[str, float] = {}
+    for method in ("M1", "M2", "M3", "M4"):
+        mine = scores_of(method, "readback_test")
+        if mine is None:
+            continue
+        training = [r for r in by_method.get(method, []) if reqs[r].get("stage") in {"sft", "dpo", "grpo"}]
+        trained = training[-1] if training else None
+        alerts, last = _alerts(root, trained) if trained and reqs[trained].get("stage") == "grpo" else (None, None)
+        acc = [s.confirmed / s.n for s in mine if s.n and not s.refuse_item]
+        accuracy[method] = sum(acc) / len(acc) if acc else 0.0
+        # One accuracy per seed: each sample run is of the training run its request names as input.
+        seeds: dict[int, float] = {}
+        for r in [r for r in by_method.get(method, []) if reqs[r].get("stage") == "sample"]:
+            source = (reqs[r].get("inputs") or [None])[-1]
+            greedy, sampled = _files_for(index, [r], "readback_test")
+            got = _scores(root, greedy or sampled)
+            if source in reqs and got:
+                values = [s.confirmed / s.n for s in got if s.n and not s.refuse_item]
+                if values:
+                    seeds[int(reqs[source].get("seed", 0))] = sum(values) / len(values)
+        results[method] = evaluate(
+            {
+                "readback_test": mine,
+                "base_readback_test": base_readback,
+                "test": scores_of(method, "test"),
+                "base_test": base_test,
+                "ifeval": ifeval_of(method),
+                "base_ifeval": base_ifeval,
+                "alerts": alerts,
+                "last_step": last,
+                "by_seed": seeds or None,
+                "parity": parity_record,
+                "license": licenses.get(str(reqs[trained].get("model"))) if trained else None,
+            }
+        )
+    out = {"candidates": results, "champion": champion(results, accuracy), "accuracy": accuracy}
+    (root / "results" / "gates.json").write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    return out

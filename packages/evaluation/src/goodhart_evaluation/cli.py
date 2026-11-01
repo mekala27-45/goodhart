@@ -109,6 +109,17 @@ def checkpoints() -> None:
 
 
 @app.command()
+def gates() -> None:
+    """Every promotion gate for every method with a sampled checkpoint, and the champion."""
+    from goodhart_evaluation.gates import run
+
+    out = run(paths.root())
+    typer.echo(
+        json.dumps({"champion": out["champion"], **{k: v["failed"] for k, v in out["candidates"].items()}}, indent=1)
+    )
+
+
+@app.command()
 def methods() -> None:
     """The methods on one budget: every method's held-out accuracy with intervals, and its compute."""
     from goodhart_evaluation.methods import run

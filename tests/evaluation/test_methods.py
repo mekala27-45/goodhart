@@ -151,3 +151,34 @@ def test_a_model_card_names_the_checkpoint_its_settings_and_its_data(tmp_path: P
     built = b.build()
     assert built.values["models.M1.checkpoint"].value == "step 150"
     assert built.tables["models.M1.results"].rows[0][:2] == ["readback_test", "twin confirmed accuracy"]
+
+
+def test_the_gates_run_over_every_sampled_method_and_name_the_champion(tmp_path: Path) -> None:
+    from goodhart_evaluation import gates
+
+    (tmp_path / "results" / "runs").mkdir(parents=True)
+    probe = {"candidates": [{"model": "q/base", "license": "apache-2.0"}]}
+    (tmp_path / "results" / "gpu_probe.json").write_text(json.dumps(probe), encoding="utf-8")
+    (tmp_path / "results" / "parity.json").write_text(json.dumps({"compared": 80, "mismatches": 0}), encoding="utf-8")
+    _run(tmp_path, "r-m0", "sample", "M0")
+    _grades(tmp_path, "r-m0", "readback_test__final__greedy", right=10)
+    _run(tmp_path, "r-sft", "sft", "M1", hours=1.0, steps=300)
+    req = json.loads((tmp_path / "requests" / "r-sft.json").read_text())
+    (tmp_path / "requests" / "r-sft.json").write_text(json.dumps({**req, "model": "q/base", "seed": 0}))
+    _run(tmp_path, "r-m1", "sample", "M1")
+    sample = json.loads((tmp_path / "requests" / "r-m1.json").read_text())
+    (tmp_path / "requests" / "r-m1.json").write_text(json.dumps({**sample, "inputs": ["r-sft"]}))
+    _grades(tmp_path, "r-m1", "readback_test__final__greedy", right=30)
+    ifeval = {
+        "r-m0/ifeval__final__greedy": {"prompt_strict": 0.40},
+        "r-m1/ifeval__final__greedy": {"prompt_strict": 0.39},
+    }
+    (tmp_path / "results" / "ifeval.json").write_text(json.dumps(ifeval), encoding="utf-8")
+    out = gates.run(tmp_path)
+    m1 = out["candidates"]["M1"]
+    by_gate = {g["gate"]: g for g in m1["gates"]}
+    assert by_gate["readback_test"]["passed"] and by_gate["ifeval"]["passed"] and by_gate["license"]["passed"]
+    assert by_gate["seed_spread"]["passed"] and "one seed" in by_gate["seed_spread"]["detail"]
+    assert by_gate["detectors"]["passed"], "SFT has no policy steps to watch"
+    assert m1["failed"] == ["over_refusal"], "the generated test set is not graded here, so that gate is unmeasured"
+    assert out["champion"] is None
