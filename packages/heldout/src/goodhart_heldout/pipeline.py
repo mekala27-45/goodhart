@@ -123,3 +123,56 @@ def distill(outcomes: Sequence[MutantOutcome], candidates: Sequence[str], k: int
 def distill_sample(pool: Sequence[Item], n: int, seed: int) -> list[Item]:
     eligible = sorted((i for i in pool if i.split in {"train", "dev"} and i.gold is not None), key=lambda i: i.id)
     return sorted(random.Random(seed).sample(eligible, min(n, len(eligible))), key=lambda i: i.id)
+
+
+def materialize(
+    root: Path, names: Sequence[str] | None = None, out: Path | None = None, tables: Sequence[str] | None = None
+) -> dict[str, int]:
+    """Build the kept twins (or the named ones) from data/twins.lock.json and check every file digest.
+
+    The lock records each twin's rule seed and the sha256 of every perturbed table, so the twins are a
+    cache like the warehouses: rebuilt on any machine and refused when a byte differs. A file already
+    present with the right digest is left alone.
+    """
+    import json
+
+    from goodhart_core import paths
+    from goodhart_core.hashing import sha256_file
+
+    lock = json.loads((root / "data" / "twins.lock.json").read_text(encoding="utf-8"))
+    config = lock["config"]
+    out = out or paths.twins_dir()
+    wanted = list(names) if names is not None else list(lock["kept"])
+    source = {f"{w}.{t}": p for (w, t), p in table_files(load_source_lock(root), paths.warehouses_dir()).items()}
+    counts = {"built": 0, "present": 0}
+    columns: dict[str, dict[str, tuple[str, str]]] | None = None
+    for name in wanted:
+        entry = lock["twins"][name]
+        rule = tw.rule_for(int(name.removeprefix("twin-")), int(config["seed"]), config)
+        if rule.seed != int(entry["seed"]):
+            raise ValueError(f"{name}: the lock records seed {entry['seed']}, the rule gives {rule.seed}")
+
+        def stale(qualified: str, digest: str, twin: str = name) -> bool:
+            path = out / twin / qualified.split(".", 1)[0] / f"{qualified.split('.', 1)[1]}.parquet"
+            return not path.exists() or sha256_file(path) != digest
+
+        missing = [
+            q
+            for q, info in sorted(entry["tables"].items())
+            if (tables is None or q in tables) and stale(q, str(info["sha256"]))
+        ]
+        counts["present"] += len([q for q in entry["tables"] if tables is None or q in tables]) - len(missing)
+        if not missing:
+            continue
+        if columns is None:
+            from goodhart_questions.catalog import load
+
+            columns = catalog_columns(load())
+        record = tw.build(missing, source, columns, out, [rule])
+        for q, info in record["twins"][name]["tables"].items():
+            if info["sha256"] != entry["tables"][q]["sha256"]:
+                raise ValueError(
+                    f"{name} {q}: rebuilt {info['sha256'][:12]}, the lock says {entry['tables'][q]['sha256'][:12]}"
+                )
+            counts["built"] += 1
+    return counts
