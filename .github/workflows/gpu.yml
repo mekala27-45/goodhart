@@ -35,7 +35,7 @@ jobs:
     outputs:
       pending: ${{ steps.pending.outputs.pending }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Pending requests
@@ -81,7 +81,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REQUEST: ${{ matrix.request }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: The Kaggle secrets are set (names only)

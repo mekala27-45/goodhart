@@ -65,6 +65,7 @@ gates:
 	$(PY) scripts/check_tokens.py
 	$(PY) scripts/scan_for_planted_identifiers.py
 	if [ -f evaluation/registration.json ]; then $(PY) scripts/check_registration.py; fi
+	$(PY) scripts/check_skills.py
 	node scripts/validate_palette.js --config web/src/theme/palette.json
 
 lint:

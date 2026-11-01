@@ -1,9 +1,10 @@
 name: ci
 
 # Every push and pull request: the sources fetched and checked against the locks, the gates on every
-# file and every commit diff, lint and strict types, the suite with coverage against a real Postgres,
-# the trainers on CPU with a tiny model, the claim gate, the registration check, the grading of every
-# exported completion, the container answering from a separate process, and the site.
+# file and every commit diff, lint and strict types, the whole suite with coverage against a real
+# Postgres, the trainers included on CPU with a tiny model, the claim gate, the registration check,
+# the grading of every exported completion, the container answering from a separate process, and the
+# site.
 on:
   push:
     branches: [main]
@@ -31,19 +32,23 @@ jobs:
           --health-cmd "pg_isready -U goodhart" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://goodhart:goodhart@localhost:5432/goodhart
-      GOODHART_REQUIRE: postgres,warehouses
+      GOODHART_REQUIRE: postgres,warehouses,torch
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
           enable-cache: true
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
-      - run: uv sync --frozen
+      - name: Install, with CPU PyTorch for the trainer tests
+        run: |
+          uv sync --frozen
+          uv pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6"
+          uv pip install "transformers==5.22.1" "trl==1.17.1" "peft==0.21.2" "datasets==5.1.0" "accelerate==1.15.0"
       - name: The sources, by digest
         run: uv run python scripts/fetch_sources.py
       - name: The completion exports, by digest
@@ -53,54 +58,34 @@ jobs:
         run: make gates
       - name: Lint and types
         run: |
-          uv run ruff check .
-          uv run ruff format --check .
-          uv run mypy
-      - name: Tests, with coverage
-        run: uv run pytest --cov --cov-report=term --cov-fail-under=80
+          uv run --no-sync ruff check .
+          uv run --no-sync ruff format --check .
+          uv run --no-sync mypy
+      - name: Tests, the trainers included, with coverage over every module
+        run: uv run --no-sync pytest --cov --cov-report=term --cov-fail-under=80
+      - name: Every promoted GPU run, byte for byte as the kernel reported it
+        if: hashFiles('results/runs/*/provenance.json') != ''
+        run: uv run --no-sync python scripts/promote_results.py --check
       - name: The questions, twins and mutants rebuild to the committed digests
         if: hashFiles('data/questions/manifest.json') != ''
-        run: uv run goodhart rebuild-check
+        run: uv run --no-sync goodhart rebuild-check
       - name: Every exported completion graded again in the repository
-        if: hashFiles('results/completions/index.json') != ''
-        run: uv run goodhart grade --check
+        if: hashFiles('results/grades/index.json') != ''
+        run: uv run --no-sync goodhart grade --check
       - name: The claim gate
         if: hashFiles('results/manifest.json') != ''
-        run: uv run python scripts/check_published_numbers.py
+        run: uv run --no-sync python scripts/check_published_numbers.py
       - name: The skills
         if: hashFiles('.claude/skills/*/SKILL.md') != ''
-        run: uv run python scripts/check_skills.py
+        run: uv run --no-sync python scripts/check_skills.py
       - name: The notebooks
         if: hashFiles('notebooks/*.ipynb') != ''
-        run: uv run pytest --nbmake notebooks -q
-
-  smoke:
-    # SFT, DPO and GRPO each run two steps on CPU with a tiny model built in the test, so the
-    # trainers are exercised on every push without a GPU or a download from the Hub.
-    runs-on: ubuntu-latest
-    env:
-      GOODHART_REQUIRE: torch
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-        with:
-          python-version: "3.12"
-          enable-cache: true
-      - name: Install with CPU PyTorch
-        run: |
-          uv sync --frozen
-          uv pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6"
-          uv pip install "transformers==5.22.1" "trl==1.17.1" "peft==0.21.2" "datasets==5.1.0" "accelerate==1.15.0"
-      - name: The trainers on CPU
-        run: uv run --no-sync pytest -m torch -q tests/train
+        run: uv run --no-sync pytest --nbmake notebooks -q
 
   container:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-        with:
-          python-version: "3.12"
+      - uses: actions/checkout@v6
       - name: The Vercel image builds and answers /health
         run: |
           docker build -f Dockerfile.vercel -t goodhart .
