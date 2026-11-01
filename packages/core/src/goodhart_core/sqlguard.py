@@ -8,8 +8,9 @@ first. The rules follow readback's guard; the code is goodhart's own.
   2. the statement is a query: a SELECT, a WITH over a SELECT, or a set operation of SELECTs;
   3. nothing inside it writes, attaches, copies, installs, loads, sets, pragmas or describes;
   4. it calls no table function and no function that reads a file or the environment;
-  5. every table it names is a warehouse table; an unqualified name is qualified with the item's
-     warehouse when that warehouse has it, and refused otherwise.
+  5. every table it names is a warehouse table or one of two read only catalog views
+     (information_schema.tables and information_schema.columns); an unqualified name is qualified
+     with the item's warehouse when that warehouse has it, and refused otherwise.
 
 The guard never adds a LIMIT: the comparator needs every row a query returns. The connection caps
 the rows it fetches instead.
@@ -81,6 +82,11 @@ REFUSED_FUNCTIONS = frozenset(
         "load_extension",
     }
 )
+
+
+# The read only catalog views a query may read: how many tables a warehouse publishes is a fair
+# question, and readback's golden set asks it.
+CATALOG_VIEWS = frozenset({"tables", "columns"})
 
 
 class Refused(ValueError):
@@ -155,6 +161,9 @@ def guard(sql: str, tables: Mapping[str, Set[str]], default_warehouse: str | Non
                 raise Refused(f"rule 5: no warehouse table is named {name}")
             table.set("db", exp.to_identifier(schema))
             rewritten = True
+        if schema == "information_schema" and name in CATALOG_VIEWS:
+            named.append(f"{schema}.{name}")
+            continue
         if schema not in tables:
             raise Refused(f"rule 5: {schema} is not a warehouse")
         if name not in tables[schema]:
