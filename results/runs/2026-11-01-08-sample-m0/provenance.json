@@ -1,0 +1,106 @@
+{
+ "request": "2026-11-01-08-sample-m0",
+ "request_sha256": "1eaf3bf01578e6d8d588900886b74da3894a7c1ef300ad16ec1562ee95b167e4",
+ "kernel": "mekalaajay/goodhart-2026-11-01-08-sample-m0",
+ "run_id": "41285830270",
+ "commit": "4febba03c8a345568d75479f50768001eee28af5",
+ "status": "done",
+ "verified": true,
+ "files": {
+  "completions/readback_test__base__greedy.jsonl": "19c257787a2cb8ced0210196f024cbea8a949949b367e91cf78fcfa48b007c1e",
+  "completions/readback_test__base__n16.jsonl": "3f0e7bc2175102db2e5dfdd8992ab00f7fbbfbaa02096e8d623feddd9f7e78f4",
+  "completions/spider_dev__base__greedy.jsonl": "d032ba6076e6f5a959009c7fad713cb7b441e0b16575283154252a395748ebbc",
+  "completions/template_test__base__greedy.jsonl": "90b76faa2f9d85d493c446ddee57d4482035da10718edbc244722b1a13c760ce",
+  "completions/template_test__base__n16.jsonl": "e9dd6f19e1043102b14c954078e3a55e6448c39333227005f83558a8e3b08b64",
+  "completions/test__base__greedy.jsonl": "fff103658eca48ff5548fd4a54686669b21d35da3f39569ae6230d0955a9f88f",
+  "completions/test__base__n16.jsonl": "a2e80a51e4e94aae607bcd1cca27e98e7d44e5bddef7c6f073ac4e268ffe6edf",
+  "ledger.jsonl": "3a0a1dbe8cc0dc1021d5aef0c03edd4a79ae24ed3ce8681f9d5b8ca8a330d6ea",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.err.txt": "dcae10a710fcf1c9167e9aeb243768ccf841871b9e7bc0cfe622f9e32f1359c2",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-0.out.txt": "f3bedb48d82e264def85c2dc81e5b76b2828a8525f521f505ca93d1add571d87",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.err.txt": "0fd3d63ae42aa8624d6d5ebbf85007d8a2236bc47d178593912417b182ac841a",
+  "logs/vllm-Qwen__Qwen2.5-Coder-1.5B-Instruct-call-001-shard-1.out.txt": "9ecb95c4d1e84ce4123fba617ae3fa4fa8fd10dd770f98195f0b72980cca87f6",
+  "provenance-kernel.json": "126fbfa6e8906dbba678bb3f01cb965c3563c90ffa252f3a5ec5e4d15a6b92bd"
+ },
+ "redacted": {},
+ "assets": {
+  "completions/ifeval__base__greedy.jsonl": {
+   "sha256": "a46b269f1d020d0534a2dcaaa748225d0adb101a658dc458b131a160b89de12c",
+   "bytes": 897114,
+   "release": "runs",
+   "asset": "2026-11-01-08-sample-m0__completions__ifeval__base__greedy.jsonl"
+  }
+ },
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "885",
+     "power.limit": "70.00",
+     "temperature.gpu": "63"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "300",
+     "power.limit": "70.00",
+     "temperature.gpu": "68"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "summary": {
+  "written": {
+   "base:readback_test:sampled": 1344,
+   "base:test:sampled": 6032,
+   "base:template_test:sampled": 2496,
+   "base:readback_test:greedy": 84,
+   "base:test:greedy": 377,
+   "base:template_test:greedy": 156,
+   "base:ifeval:greedy": 541,
+   "base:spider_dev:greedy": 1034
+  },
+  "checkpoints": [
+   "base"
+  ],
+  "adapter": false
+ },
+ "error": null
+}
