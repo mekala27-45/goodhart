@@ -15,6 +15,10 @@ on:
       only:
         description: "Run one request id, even if it has a record"
         required: false
+      collect_only:
+        description: "Do not push a kernel: download the output of the request's existing kernel and collect it"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -109,17 +113,22 @@ jobs:
           print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != "error"} for k, v in hosts.items()}, indent=1))
           PY
       - name: Build the bundle and the kernel
+        if: ${{ !inputs.collect_only }}
         run: uv run --no-sync python scripts/build_kernel.py --request "requests/${REQUEST}.json" --user "$KAGGLE_USERNAME" --repo "$GITHUB_REPOSITORY" --tag bundles
       - name: Upload the bundle
+        if: ${{ !inputs.collect_only }}
         run: |
           gh release view bundles >/dev/null 2>&1 || gh release create bundles --prerelease --title "Kernel bundles" --notes "Tarballs the GPU kernels download by URL and check by sha256. Each is built from a committed request by scripts/build_kernel.py."
           gh release upload bundles "build/bundles/${REQUEST}.tar.gz" --clobber
       - name: Push the kernel
         id: push
+        env:
+          COLLECT_ONLY: ${{ inputs.collect_only }}
         run: |
-          slug=$(python3 -c "import json; print(json.load(open('build/kernels/${REQUEST}/kernel-metadata.json'))['id'])")
-          acc=$(python3 -c "import json; print(json.load(open('build/kernels/${REQUEST}/kernel-metadata.json'))['machine_shape'])")
+          slug="${KAGGLE_USERNAME}/$(uv run --no-sync python -c "import sys; sys.path.insert(0, 'scripts'); from build_kernel import slug; from goodhart_train.requests import load; print(slug(load(__import__('pathlib').Path('requests/${REQUEST}.json'))))")"
           echo "slug=$slug" >> "$GITHUB_OUTPUT"
+          if [ "$COLLECT_ONLY" = "true" ]; then echo "collect only: $slug, no new kernel"; exit 0; fi
+          acc=$(python3 -c "import json; print(json.load(open('build/kernels/${REQUEST}/kernel-metadata.json'))['machine_shape'])")
           echo "pushing $slug on $acc"
           uv run --no-sync kaggle kernels push -p "build/kernels/${REQUEST}" --accelerator "$acc"
       - name: Wait for the kernel
@@ -158,9 +167,13 @@ jobs:
         run: |
           git config user.name "goodhart-gpu"
           git config user.email "goodhart-gpu@users.noreply.github.com"
-          git checkout -b "gpu/${REQUEST}"
           uv run --no-sync python scripts/collect_run.py --request "${REQUEST}" --output "out/${REQUEST}" \
             --kernel "$SLUG" --status "$STATUS" --run-id "$GITHUB_RUN_ID"
+          # The branch starts from main as it is now, so it differs from main by the results alone: a
+          # branch cut from an older commit would carry older workflow files, which GitHub refuses to
+          # let the workflow token push. The provenance already names the commit the kernel ran.
+          git fetch -q origin main
+          git checkout -q -B "gpu/${REQUEST}" origin/main
           git add "results/runs/${REQUEST}"
           git commit -q -m "results(${REQUEST}): kernel output, checked by digest" -m "Run ${GITHUB_RUN_ID} of the gpu workflow."
           git push origin "gpu/${REQUEST}"
