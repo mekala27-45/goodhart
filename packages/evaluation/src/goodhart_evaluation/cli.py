@@ -60,7 +60,7 @@ def select_base() -> None:
     from goodhart_evaluation.selection import run
 
     out = run(paths.root())
-    typer.echo(f"selection from {out['run']}: main {out['main']}, small {out['small']}")
+    typer.echo(f"selection from {', '.join(out['runs'])}: main {out['main']}, small {out['small']}")
 
 
 @app.command()

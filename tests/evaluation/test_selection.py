@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import pyarrow.parquet as pq
+import pytest
 from goodhart_evaluation import selection
 from goodhart_evaluation.grade import INDEX, to_table
 from goodhart_evaluation.metrics import Graded
@@ -121,3 +122,33 @@ def test_each_candidate_comes_from_the_latest_run_that_graded_it(tmp_path: Path)
     assert by["d/early"]["run"] == first and by["d/early"]["pass_at_8"] == 0.25
     assert by["d/late"]["run"] == second and by["d/late"]["pass_at_8"] == 0.75
     assert out["small"] == "d/late" and out["runs"] == [first, second]
+
+
+def test_the_select_command_reads_every_promoted_run_and_names_them(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from goodhart_core import paths
+    from goodhart_evaluation.cli import app
+    from typer.testing import CliRunner
+
+    first, second = "2026-10-31-04-select", "2026-11-01-06-select"
+    for run_id in (first, second):
+        (tmp_path / "requests").mkdir(exist_ok=True)
+        (tmp_path / "requests" / f"{run_id}.json").write_text(json.dumps({"stage": "select"}), encoding="utf-8")
+        folder = tmp_path / "results" / "runs" / run_id
+        folder.mkdir(parents=True)
+        (folder / "provenance.json").write_text(json.dumps({"status": "done"}), encoding="utf-8")
+    _write_run(tmp_path, "d/early", greedy_right=1, sampled_right=1, run=first)
+    _write_run(tmp_path, "d/late", greedy_right=3, sampled_right=3, run=second)
+    probe = _probe(("d/early", 600_000_000, "apache-2.0", True, 1.0), ("d/late", 700_000_000, "mit", True, 1.0))
+    (tmp_path / "results" / "gpu_probe.json").write_text(json.dumps(probe), encoding="utf-8")
+    monkeypatch.setenv("GOODHART_ROOT", str(tmp_path))
+    paths.root.cache_clear()
+    try:
+        done = CliRunner().invoke(app, ["select"])
+    finally:
+        monkeypatch.delenv("GOODHART_ROOT")
+        paths.root.cache_clear()
+    assert done.exit_code == 0, done.output
+    assert f"selection from {first}, {second}: main d/late, small d/late" in done.output
+    assert json.loads((tmp_path / "results" / "selection.json").read_text())["runs"] == [first, second]
