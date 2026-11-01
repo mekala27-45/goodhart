@@ -127,6 +127,35 @@ where Gemma 4 wraps its projections in a type PEFT cannot adapt. Llama 3.2 1B is
 kernel holds no Hugging Face token, so it is recorded as not loading and left out of the second
 probe. The kernel's image is Python 3.13 with PyTorch 2.11 and CUDA 12.8 on two T4s.
 
+## 2026-10-31 what the second probe changed
+
+The second probe ran its seven candidates in thirteen minutes, and every LoRA step ran out of
+memory. The step itself was the cause: at a micro batch of eight sequences of about 1,150 tokens,
+the full vocabulary logits of one micro batch are 5.6 GB in float32 before the loss makes its own
+copy. SFT now trains two sequences per micro batch with eight accumulation steps, and DPO one pair
+with sixteen, so an optimizer step still sees sixteen of each as registered. That makes the
+training defaults hash 4e1f4bafc58f. The same change adds the vLLM server settings a GRPO run would
+use and the model length for vLLM sampling. No run has trained with the old values.
+
+Gemma 4 E2B failed in generation with a device-side assert, the usual sign of a float16 overflow in
+the sampling probabilities, and the assert left the kernel's CUDA context unusable: SmolLM3 and the
+GRPO smoke after it failed with the same assert. Each candidate and each smoke run now runs in its
+own process, and so does every sampling stage, one process per card, which also puts the second
+T4 to work.
+
+vLLM 0.32.0 installed and its engine did not start, and the three lines the probe kept did not hold
+the cause. Its PyPI wheel and the PyTorch 2.13 it pins are built for CUDA 13, which needs a driver
+from the 580 series, while the image is built for CUDA 12.8. The vLLM environment now reads the
+driver's CUDA version from nvidia-smi and, below 13, installs vLLM's CUDA 12.9 wheel from its GitHub
+release with PyTorch from the matching index. A child in that environment gets none of the image's
+packages or CUDA toolkit libraries on its paths, and the whole error is kept when it fails.
+
+Sampling is now temperature alone on both backends: top p 1, top k off, no repetition penalty,
+whatever a model's own generation config says. The transformers backend had named the temperature,
+top p and top k and left any other setting of a model's config in force, a repetition penalty
+among them. The probe now records each candidate's own settings. Nothing has been graded with the
+old ones.
+
 ## 2026-10-31 the leaked arm shows rows on 38.6 percent of prompts
 
 The leaked defect was designed to show sample rows, the answer row among them, on half the training

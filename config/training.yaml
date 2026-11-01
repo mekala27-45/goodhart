@@ -13,8 +13,11 @@ sft:
   learning_rate: 2.0e-4
   scheduler: cosine
   warmup_ratio: 0.03
-  batch_size: 8
-  gradient_accumulation: 2
+  # Two sequences per micro batch, sixteen per optimizer step as before. At eight the full
+  # vocabulary logits of one micro batch (eight by about 1,150 tokens by 151,936, in float32) were
+  # 5.6 GB, and the second probe's LoRA step ran out of memory on every candidate.
+  batch_size: 2
+  gradient_accumulation: 8
   gradient_checkpointing: true
   # The longest prompt plus answer in the clean set is under 1,400 tokens for every candidate's
   # tokenizer; the probe prints the measured distribution.
@@ -28,8 +31,10 @@ dpo:
   epochs: 1
   learning_rate: 5.0e-6
   scheduler: cosine
-  batch_size: 4
-  gradient_accumulation: 4
+  # One pair per micro batch (a chosen and a rejected sequence), sixteen pairs per optimizer step as
+  # before, for the reason the SFT micro batch is two.
+  batch_size: 1
+  gradient_accumulation: 16
   gradient_checkpointing: true
   max_length: 1536
   logging_steps: 5
@@ -58,7 +63,12 @@ grpo:
   max_steps: 200
   save_steps: 25
   generation_backend: transformers
+  # With vLLM, rollouts come from a server on the second card (TRL's server mode) and training runs
+  # on the first; colocate, at this share of one card, is the fallback for a single card.
+  vllm_mode: server
+  vllm_server_memory: 0.85
   vllm_gpu_memory_utilization: 0.3
+  max_model_len: 2048
   chat_template_kwargs: {enable_thinking: false}
   prompt_set: train
   try_vllm: true
@@ -70,6 +80,8 @@ select:
   max_new_tokens: 256
   generation_backend: transformers
   generation_batch: 64
+  max_model_len: 2048
+  vllm_memory: 0.85
 
 sample:
   n: 16
@@ -77,6 +89,8 @@ sample:
   max_new_tokens: 256
   generation_backend: transformers
   generation_batch: 64
+  max_model_len: 2048
+  vllm_memory: 0.85
   sampled_sets: [readback_test, test, template_test]
   greedy_sets: []
 
@@ -86,8 +100,12 @@ pairs:
   max_new_tokens: 256
   generation_backend: transformers
   generation_batch: 64
+  max_model_len: 2048
+  vllm_memory: 0.85
 
 judge:
   max_new_tokens: 16
   generation_backend: transformers
   generation_batch: 32
+  max_model_len: 4096
+  vllm_memory: 0.85
