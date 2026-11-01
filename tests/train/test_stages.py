@@ -102,8 +102,20 @@ def test_the_probe_measures_a_candidate_that_loads(
     bundle = Bundle(bundle_factory(tiny, tmp_path / "b", _request("probe", tiny, models=[])))
     hp = {"max_completion_length": 6, "batch_size": 4, "lora_rank": 4, "lora_alpha": 8, "lora_dropout": 0.0}
     found = probe_candidate(tiny["model"], bundle, hp, Meter(1.0))
-    assert found["loads"] and found["generates"] and found["lora_step"], found
-    assert found["tokens_8x8"] > 0 and found["trainable_parameters"] > 0
+    assert found["loads"] and found["generates"] and "lora_step" not in found, found
+    assert found["tokens_8x8"] > 0
+
+
+def test_the_lora_step_is_the_sft_trainers_own(tiny: dict[str, Any], tmp_path: Path, bundle_factory: Factory) -> None:
+    from goodhart_train.bundle import Bundle
+    from goodhart_train.probe import trainer_step
+
+    bundle = Bundle(bundle_factory(tiny, tmp_path / "b", _request("probe", tiny, models=[])))
+    sft = {"batch_size": 2, "gradient_accumulation": 2, "max_length": 256, "learning_rate": 1e-4}
+    lora = {"lora_rank": 4, "lora_alpha": 8, "lora_dropout": 0.0}
+    found = trainer_step(tiny["model"], bundle, {**sft, "gradient_checkpointing": False}, lora, steps=2)
+    assert found["lora_step"] and found["train_steps"] == 2 and found["train_sequences_per_step"] == 4, found
+    assert found["train_seconds_per_step"] is not None and found["trainable_parameters"] > 0
 
 
 def test_the_probe_runs_each_candidate_and_the_smoke_in_its_own_process(
@@ -124,6 +136,7 @@ def test_the_probe_runs_each_candidate_and_the_smoke_in_its_own_process(
         "max_completion_length": 6,
         "lora_rank": 4,
         "lora_alpha": 8,
+        "probe_trainer_steps": 2,
     }
     req = _request("probe", tiny, models=[tiny["model"], "/no/such/model"], hyperparameters=hp)
     folder = bundle_factory(tiny, tmp_path / "b", req)
@@ -137,6 +150,8 @@ def test_the_probe_runs_each_candidate_and_the_smoke_in_its_own_process(
     record = json.loads((out / "probe.json").read_text())
     good, bad = record["candidates"]
     assert good["loads"] and good["generates"] and good["lora_step"] and good["train_micro_batch"] == 2, good
+    assert good["lora_step_by"].startswith("the SFT trainer") and good["train_steps"] == 2
+    assert good["steps_per_hour_estimate"] and "lora_step" not in bad
     assert "decode_ms_per_step" in good["decode"] and good["child_seconds"] > 0
     assert bad["loads"] is False and "error" in bad
     smoke = record["grpo_smokes"]["transformers"]

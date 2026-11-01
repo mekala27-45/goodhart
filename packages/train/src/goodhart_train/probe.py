@@ -35,7 +35,7 @@ from typing import Any
 from goodhart_core.warehouse import Warehouses
 
 from goodhart_train import env, isolate, serve, vllm_env
-from goodhart_train.backend import HFBackend, Job, ShardedBackend, render
+from goodhart_train.backend import HFBackend, Job, ShardedBackend
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter, peak_memory
 from goodhart_train.models import card_license, load, lora_config, trainable_parameters
@@ -84,9 +84,9 @@ def decode_timing(backend: HFBackend, messages: list[Any], max_new_tokens: int =
     }
 
 
-def probe_candidate(
-    model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Meter, train_batch: int = 2
-) -> dict[str, Any]:
+def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Meter) -> dict[str, Any]:
+    """Loads in float16, eight samples of eight training prompts at the registered length, and the
+    decode timing. The LoRA step is the SFT trainer's own, taken in another child (trainer_step)."""
     import torch
 
     found: dict[str, Any] = {"model": model_id, "license": card_license(model_id)}
@@ -141,47 +141,87 @@ def probe_candidate(
     except Exception as err:
         found.update(generates=False, generation_error=_err(err))
     _free()
-    if cuda:
-        found["free_before_training_bytes"] = int(torch.cuda.mem_get_info()[0])
-    try:
-        from peft import get_peft_model
-
-        model = get_peft_model(loaded.model, lora_config(hp))
-        model.gradient_checkpointing_enable()
-        model.enable_input_require_grads()
-        tok = loaded.tokenizer
-        tok.padding_side = "right"
-        golds = {i.id: i.gold.sql for i in bundle.items("train") if i.gold is not None}
-        # The registered prompt in the chat template with its gold answer, untruncated: the lengths a
-        # training step really sees. Sixteen sequences at the SFT micro batch, one optimizer step.
-        texts = [render(tok, p.messages, model_id) + f"```sql\n{golds.get(p.id, 'select 1')}\n```" for p in prompts] * 2
-        enc = tok(texts, return_tensors="pt", padding=True, add_special_tokens=False).to(model.device)
-        found["training_tokens_per_sequence"] = int(enc["input_ids"].shape[1])
-        optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=1e-5)
-        t2 = time.monotonic()
-        with meter.phase("training"):
-            for k in range(0, enc["input_ids"].shape[0], train_batch):
-                part = {key: v[k : k + train_batch] for key, v in enc.items()}
-                with torch.autocast("cuda", dtype=torch.float16, enabled=cuda):
-                    loss = model(**part, labels=part["input_ids"]).loss
-                loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-        train_seconds = time.monotonic() - t2
-        sequences = int(enc["input_ids"].shape[0])
-        found.update(
-            lora_step=True,
-            train_micro_batch=train_batch,
-            trainable_parameters=trainable_parameters(model),
-            train_seconds_16=round(train_seconds, 2),
-            train_seconds_per_sequence=round(train_seconds / sequences, 3),
-            training_peak_bytes=peak_memory(),
-        )
-        if gen_seconds == gen_seconds:  # not NaN
-            found["steps_per_hour_estimate"] = round(3600.0 / (gen_seconds + 4 * train_seconds), 1)
-    except Exception as err:
-        found.update(lora_step=False, lora_error=_err(err))
     return found
+
+
+def trainer_step(
+    model_id: str, bundle: Bundle, sft: dict[str, Any], lora: dict[str, Any], steps: int = 3
+) -> dict[str, Any]:
+    """The LoRA step the selection rule asks for, taken by the SFT trainer itself on its registered
+    recipe: completion only loss through TRL's fused head, which never forms the full vocabulary
+    logits, the registered micro batch and accumulation, gradient checkpointing, and the prompt
+    rendered as sampling renders it, on the probe's training items with their gold answers. It runs in
+    a process of its own, so no memory a generation left behind is counted against it.
+
+    The third probe's step was a loop of its own that formed the full logits of every sequence after
+    generation in the same process; it ran out of memory on every candidate above 0.6B, which says
+    nothing about the step the trainer takes. Seconds per step leave out the first step's warmup."""
+    import torch
+    from datasets import Dataset
+    from trl import SFTConfig, SFTTrainer
+
+    from goodhart_train.trainer_common import precision_flags, template_column
+
+    loaded = load(model_id)
+    golds = {i.id: i.gold.sql for i in bundle.items("train") if i.gold is not None and i.gold.sql}
+    template = template_column(model_id)
+    rows = [
+        {
+            "prompt": p.messages,
+            "completion": [{"role": "assistant", "content": f"```sql\n{golds[p.id]}\n```"}],
+            **template,
+        }
+        for p in bundle.prompts("train")
+        if p.id in golds
+    ]
+    micro, accumulation = int(sft["batch_size"]), int(sft["gradient_accumulation"])
+    clock = StepClock()
+    with tempfile.TemporaryDirectory() as scratch:
+        args = SFTConfig(
+            output_dir=scratch,
+            max_steps=steps,
+            per_device_train_batch_size=micro,
+            gradient_accumulation_steps=accumulation,
+            gradient_checkpointing=bool(sft.get("gradient_checkpointing", True)),
+            max_length=int(sft["max_length"]),
+            completion_only_loss=True,
+            learning_rate=float(sft["learning_rate"]),
+            lr_scheduler_type="constant",
+            logging_steps=1,
+            save_strategy="no",
+            report_to=[],
+            seed=0,
+            data_seed=0,
+            **precision_flags(),
+        )
+        trainer = SFTTrainer(
+            model=loaded.model,
+            args=args,
+            train_dataset=Dataset.from_list(rows),
+            processing_class=loaded.tokenizer,
+            peft_config=lora_config(lora),
+            callbacks=[clock.callback()],
+        )
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+        t0 = time.monotonic()
+        result = trainer.train()
+        seconds = time.monotonic() - t0
+    steady = clock.steady_seconds_per_step()
+    per_step = micro * accumulation
+    return {
+        "lora_step": True,
+        "lora_step_by": "the SFT trainer, at the registered micro batch and accumulation",
+        "train_micro_batch": micro,
+        "train_sequences_per_step": per_step,
+        "train_steps": int(result.global_step),
+        "train_seconds": round(seconds, 1),
+        "train_seconds_per_step": None if steady is None else round(steady, 2),
+        "train_seconds_per_sequence": None if steady is None else round(steady / per_step, 3),
+        "training_peak_bytes": peak_memory(),
+        "trainable_parameters": trainable_parameters(trainer.model),
+        "training_rows": len(rows),
+    }
 
 
 def vllm_generation(
@@ -396,6 +436,40 @@ def grpo_smoke(
     }
 
 
+def _trainer_step(
+    bundle: Bundle,
+    model_id: str,
+    training: dict[str, Any],
+    work: Path,
+    out: Path,
+    gpu: Any,
+    timeout: float,
+    meter: Meter,
+    steps: int = 3,
+) -> dict[str, Any]:
+    """The trainer's LoRA step for one candidate in a child of its own."""
+    name = "trainer-step-" + model_id.replace("/", "__")
+    args = {"bundle": str(bundle.root), "model": model_id, "sft": training["sft"], "lora": training["lora"]}
+    args["steps"] = steps
+    t0 = time.monotonic()
+    outcome = isolate.run_task("trainer_step", args, work, name, gpu=gpu, timeout_s=min(900.0, timeout))
+    meter.seconds["training"] = meter.seconds.get("training", 0.0) + (time.monotonic() - t0)
+    isolate.keep_log(work, name, out)
+    if not outcome.ok:
+        return {"lora_step": False, "lora_step_by": "the SFT trainer", "lora_error": outcome.error[-3000:]}
+    return outcome.result
+
+
+def _steps_per_hour(c: dict[str, Any]) -> float | None:
+    """A guess at GRPO steps an hour from the candidate's generation time and the trainer's step: 64
+    completions generated, 64 sequences trained."""
+    generation, step = c.get("generation_seconds_8x8"), c.get("train_seconds_per_step")
+    if not generation or not step:
+        return None
+    sequences = int(c.get("train_sequences_per_step") or 16)
+    return round(3600.0 / (float(generation) + float(step) * 64 / sequences), 1)
+
+
 def _smoke(
     backend: str,
     bundle: Bundle,
@@ -430,7 +504,6 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses, cache: 
     req = bundle.request
     training = bundle.config("training")
     hp = {**training["grpo"], **training["lora"], **req.hyperparameters}
-    train_batch = int(hp.get("probe_train_batch", training["sft"]["batch_size"]))
     record: dict[str, Any] = {"environment": env.describe(), "accelerator_requested": req.accelerator}
     gpus: list[Any] = [g["index"] for g in record["environment"]["gpus"]] or [None]
     parallel = len(gpus) >= 2
@@ -489,7 +562,7 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses, cache: 
         if meter.over_ceiling(0.35):
             candidates.append({"model": model_id, "loads": None, "skipped": "the probe reached its ceiling"})
             continue
-        args: dict[str, Any] = {"bundle": str(bundle.root), "model": model_id, "hp": hp, "train_batch": train_batch}
+        args: dict[str, Any] = {"bundle": str(bundle.root), "model": model_id, "hp": hp}
         args["ceiling_hours"] = req.gpu_hour_ceiling
         name = "candidate-" + model_id.replace("/", "__")
         outcome = isolate.run_task(
@@ -508,6 +581,10 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses, cache: 
         for phase, seconds in phases.items():
             meter.seconds[phase] = meter.seconds.get(phase, 0.0) + float(seconds)
         found["child_seconds"] = outcome.seconds
+        if found.get("loads") and not meter.over_ceiling(0.3):
+            steps = int(hp.get("probe_trainer_steps", 3))
+            found.update(_trainer_step(bundle, model_id, training, work, out, gpus[0], remaining(), meter, steps))
+        found["steps_per_hour_estimate"] = _steps_per_hour(found)
         with lock:
             candidates.append(found)
             save()

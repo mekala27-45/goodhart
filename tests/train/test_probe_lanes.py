@@ -209,8 +209,8 @@ def test_the_generate_and_candidate_tasks_run_in_process(
     req = {"id": "test-probe", "stage": "probe", "seed": 0, "gpu_hour_ceiling": 1.0, "models": []}
     folder = bundle_factory(tiny, tmp_path / "b", req)
     hp = {"max_completion_length": 4, "lora_rank": 4, "lora_alpha": 8, "lora_dropout": 0.0}
-    found = worker.candidate({"bundle": str(folder), "model": tiny["model"], "hp": hp, "train_batch": 2})
-    assert found["lora_step"] and found["phase_seconds"]["generation"] > 0
+    found = worker.candidate({"bundle": str(folder), "model": tiny["model"], "hp": hp})
+    assert found["generates"] and found["phase_seconds"]["generation"] > 0
 
 
 def test_grpo_with_vllm_runs_in_the_vllm_environment_beside_a_server(

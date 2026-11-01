@@ -8,6 +8,7 @@ module does not change what the rest of its process may import. A task that rais
 file and exits non zero; the parent reads the tail of its stderr (goodhart_train.isolate). Tasks:
 
     candidate    the probe of one candidate model (goodhart_train.probe.probe_candidate)
+    trainer_step the SFT trainer's own LoRA steps on one candidate (goodhart_train.probe.trainer_step)
     grpo_smoke   a short GRPO run with the honest reward (goodhart_train.probe.grpo_smoke)
     generate     transformers sampling of one shard of prompts, for ShardedBackend
     stage        a whole trainer stage: GRPO in the vLLM environment, or SFT, DPO or GRPO on one card
@@ -39,10 +40,14 @@ def candidate(args: dict[str, Any]) -> dict[str, Any]:
     from goodhart_train.probe import probe_candidate
 
     meter = Meter(ceiling_hours=float(args.get("ceiling_hours", 1.0)))
-    found = probe_candidate(
-        str(args["model"]), _bundle(args), dict(args["hp"]), meter, train_batch=int(args.get("train_batch", 2))
-    )
+    found = probe_candidate(str(args["model"]), _bundle(args), dict(args["hp"]), meter)
     return {**found, "phase_seconds": {k: round(v, 3) for k, v in meter.seconds.items() if v > 0}}
+
+
+def trainer_step(args: dict[str, Any]) -> dict[str, Any]:
+    from goodhart_train.probe import trainer_step as step
+
+    return step(str(args["model"]), _bundle(args), dict(args["sft"]), dict(args["lora"]), int(args.get("steps", 3)))
 
 
 def grpo_smoke(args: dict[str, Any]) -> dict[str, Any]:
@@ -159,6 +164,7 @@ def _refused() -> bool:
 
 TASKS: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "candidate": candidate,
+    "trainer_step": trainer_step,
     "grpo_smoke": grpo_smoke,
     "generate": generate,
     "stage": stage,
