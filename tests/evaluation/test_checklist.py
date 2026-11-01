@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 from goodhart_evaluation import checklist
 
@@ -85,3 +86,21 @@ def test_line_eleven_names_what_is_missing_and_closes_when_the_suite_is_complete
         (tmp_path / "results" / name).write_text(json.dumps(body))
     ok, evidence = line_11(tmp_path)
     assert ok and "H1 held, H2 did not hold" in evidence and "Spider for 2" in evidence
+
+
+def test_line_eighteen_waits_for_the_rederive_the_topics_and_the_tag(tmp_path: Path, monkeypatch: Any) -> None:
+    from goodhart_evaluation import checklist as c
+
+    monkeypatch.setattr(c, "commits", lambda root: 120)
+    monkeypatch.setattr(c, "tag_exists", lambda root, tag="v0.1.0": False)
+    (tmp_path / "results").mkdir()
+    ok, evidence = c.line_18(tmp_path)
+    assert not ok and "the rederive" in evidence and "the v0.1.0 tag" in evidence
+    (tmp_path / "results" / "rederive.json").write_text(json.dumps({"ok": True, "drift": []}))
+    repo = {"description": "d", "topics": ["grpo"], "license": "Apache-2.0"}
+    (tmp_path / "results" / "repo.json").write_text(json.dumps(repo))
+    monkeypatch.setenv(c.RELEASING, "v0.1.0")
+    ok, evidence = c.line_18(tmp_path)
+    assert ok and "v0.1.0 tags this commit" in evidence
+    (tmp_path / "results" / "repo.json").write_text(json.dumps({**repo, "topics": []}))
+    assert "repository topics" in c.line_18(tmp_path)[1]

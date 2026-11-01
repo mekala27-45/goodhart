@@ -96,7 +96,7 @@ load-test:
 	$(PY) scripts/load_test.py
 
 rederive:
-	$(G) rebuild-check
+	$(PY) scripts/reset_and_rederive.py
 
 palette:
 	node scripts/validate_palette.js --config web/src/theme/palette.json

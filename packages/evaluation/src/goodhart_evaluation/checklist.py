@@ -323,16 +323,44 @@ def line_17(root: Path) -> tuple[bool, str]:
     )
 
 
+RELEASING = "GOODHART_RELEASING"
+
+
 def line_18(root: Path) -> tuple[bool, str]:
+    """Commits, the rederive with no drift, the repository described with topics and its license, and
+    the tag. The release commit is built with GOODHART_RELEASING=v0.1.0 and the tag is pushed on it
+    right after, so the tagged commit says it is the one tagged."""
+    import os
+
     count = commits(root)
-    tagged = tag_exists(root)
-    ok = tagged and count is not None and count >= 40
-    return ok, (
-        f"{count} commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, "
-        "tokens, identifiers, types, "
-        "lint, coverage at 80 percent) run in CI on every push; "
-        + ("v0.1.0 is tagged." if tagged else "v0.1.0 is not tagged yet.")
-    )
+    tagged = tag_exists(root) or os.environ.get(RELEASING) == "v0.1.0"
+    rederive = _json(root, "results/rederive.json")
+    repo = _json(root, "results/repo.json")
+    gaps = []
+    if count is None or count < 40:
+        gaps.append(f"forty commits ({count} so far)")
+    if not rederive:
+        gaps.append("the rederive")
+    elif not rederive.get("ok"):
+        gaps.append("a rederive with no drift: " + (", ".join(rederive.get("drift", [])) or "a step failed"))
+    if not repo:
+        gaps.append("results/repo.json (scripts/repo_facts.py)")
+    else:
+        if not repo.get("description"):
+            gaps.append("a repository description")
+        if not repo.get("topics"):
+            gaps.append("repository topics")
+        if repo.get("license") != "Apache-2.0":
+            gaps.append("the Apache 2.0 license")
+    if not tagged:
+        gaps.append("the v0.1.0 tag")
+    gates = "the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent)"
+    head = f"{count} commits on main when this manifest was built; {gates} run in CI on every push"
+    if gaps:
+        return False, f"{head}; missing: {'; '.join(gaps)}."
+    pair = (rederive or {}).get("grpo") or {}
+    rerun = f", and {pair.get('rerun')} reran {pair.get('original')} within the seed spread" if pair else ""
+    return True, f"{head}; the rederive matched every committed result{rerun}; v0.1.0 tags this commit."
 
 
 ITEMS: dict[int, tuple[str, Callable[[Path], tuple[bool, str]]]] = {
