@@ -105,3 +105,14 @@ def test_the_manifest_carries_the_tables_the_methods_page_reads(tmp_path: Path) 
     assert ["M1", "readback_test", "twin_confirmed_accuracy"] in [r[:3] for r in accuracy.rows]
     assert built.tables["methods.differences"].columns[:4] == ["a", "b", "set", "metric"]
     assert [r[0] for r in built.tables["methods.compute"].rows] == list(methods.METHODS)
+
+
+def test_a_pairs_run_counts_for_every_method_that_reads_it(tmp_path: Path) -> None:
+    _run(tmp_path, "r-pairs", "pairs", "M2", hours=0.4)
+    _run(tmp_path, "r-dpo", "dpo", "M2", hours=0.5, hyperparameters={"pairs_file": "data/pairs/r-pairs.jsonl"})
+    _run(
+        tmp_path, "r-grpo3", "grpo", "M3", hours=1.5, hyperparameters={"learnable_file": "data/learnable/r-pairs.json"}
+    )
+    out = methods.run(tmp_path)
+    assert out["compute"]["M2"]["gpu_hours"] == 0.9 and out["compute"]["M3"]["gpu_hours"] == 1.9
+    assert out["compute"]["M3"]["runs"] == ["r-grpo3", "r-pairs"]

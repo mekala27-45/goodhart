@@ -10,8 +10,9 @@ mean over samples), execution accuracy, refusal accuracy, over refusal, pass at 
 the sampled file, each with a cluster bootstrap interval, and the share each hack detector flags.
 Then the paired difference of every method against the base (M0) and against the floor, and of M4
 against M1, the first hypothesis. Compute is the GPU hours the method's training and sampling runs
-used, from their ledger rows; evaluation sampling is measurement and does not count. M4 starts from
-M1's checkpoint, so its compute adds M1's training up to the step it started from, prorated by steps.
+used, from their ledger rows, a pairs run counted for every method that reads its pairs or its
+learnability list; evaluation sampling is measurement and does not count. M4 starts from M1's
+checkpoint, so its compute adds M1's training up to the step it started from, prorated by steps.
 
 results/methods.json holds it all, and the manifest carries the tables the site and RESULTS read:
 methods.accuracy, methods.differences and methods.compute.
@@ -124,10 +125,26 @@ def ledger_hours(root: Path, run_id: str) -> tuple[float, int]:
     return hours, steps
 
 
+def shared_sampling(reqs: dict[str, dict[str, Any]], runs: Sequence[str]) -> list[str]:
+    """The sampling runs another method's request reads from: a GRPO run's learnability list or a
+    DPO run's pairs file names the pairs run that sampled it (data/learnable/<run>.json,
+    data/pairs/<run>.jsonl), and that run counts for every method that needs it."""
+    out = []
+    for r in runs:
+        hp = reqs[r].get("hyperparameters", {})
+        for key in ("learnable_file", "pairs_file"):
+            if key in hp:
+                source = Path(str(hp[key])).stem
+                if source in reqs and source not in runs and source not in out:
+                    out.append(source)
+    return out
+
+
 def compute(root: Path, reqs: dict[str, dict[str, Any]], by_method: dict[str, list[str]]) -> dict[str, Any]:
     out: dict[str, Any] = {}
     for m in METHODS:
         runs = [r for r in by_method.get(m, []) if reqs[r].get("stage") in TRAINING_STAGES]
+        runs += shared_sampling(reqs, runs)
         hours = sum(ledger_hours(root, r)[0] for r in runs)
         inherited = 0.0
         if m == "M4":
