@@ -100,6 +100,15 @@ def floor() -> None:
 
 
 @app.command()
+def checkpoints() -> None:
+    """The checkpoint choice: the step with the best twin confirmed accuracy on dev, per training run."""
+    from goodhart_evaluation.checkpoints import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({r: v["chosen"] for r, v in out.items()}, indent=1))
+
+
+@app.command()
 def methods() -> None:
     """The methods on one budget: every method's held-out accuracy with intervals, and its compute."""
     from goodhart_evaluation.methods import run
