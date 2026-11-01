@@ -111,18 +111,29 @@ def test_the_profile_of_one_table_and_its_strangest_rows(warehouses0: Any) -> No
 
 
 @pytest.mark.postgres
-def test_the_migrations_reach_head_twice_on_a_fresh_schema() -> None:
+def test_the_migrations_reach_head_twice_on_a_fresh_database() -> None:
     from goodhart_api import db
     from goodhart_api.migrate import upgrade
     from sqlalchemy import text
 
-    engine = db.engine_for(os.environ["DATABASE_URL"])
-    url = engine.url.render_as_string(hide_password=False)
-    upgrade(url)
-    upgrade(url)
-    with engine.connect() as con:
-        assert con.execute(text("select version_num from goodhart.alembic_version")).scalar() == "0001"
-    engine.dispose()
+    base = db.engine_for(os.environ["DATABASE_URL"])
+    name = f"goodhart_migrate_{os.getpid()}"
+    with base.connect().execution_options(isolation_level="AUTOCOMMIT") as con:
+        con.execute(text(f"drop database if exists {name}"))
+        con.execute(text(f"create database {name}"))
+    fresh = db.engine_for(base.url.set(database=name).render_as_string(hide_password=False))
+    try:
+        url = fresh.url.render_as_string(hide_password=False)
+        upgrade(url)
+        upgrade(url)
+        with fresh.connect() as con:
+            assert con.execute(text("select version_num from goodhart.alembic_version")).scalar() == "0001"
+            assert con.execute(text("select count(*) from goodhart.grades")).scalar() == 0
+    finally:
+        fresh.dispose()
+        with base.connect().execution_options(isolation_level="AUTOCOMMIT") as con:
+            con.execute(text(f"drop database if exists {name} with (force)"))
+        base.dispose()
 
 
 @pytest.mark.floor
