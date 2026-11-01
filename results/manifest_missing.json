@@ -1,5 +1,8 @@
 [
  "audit",
+ "checkpoints",
+ "gates",
+ "interior",
  "methods",
  "models",
  "paraphrases",

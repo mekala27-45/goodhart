@@ -415,6 +415,62 @@ def models_section(root: Path, b: ManifestBuilder) -> None:
         b.table(f"{prefix}.hacks", ["set", "detector", "share flagged"], ["text", "text", "pct1"], hacks, **common)
 
 
+def gates_section(root: Path, b: ManifestBuilder) -> None:
+    g = _json(root, "results/gates.json")
+    b.value(
+        "methods.champion",
+        g["champion"] or "",
+        "text",
+        origin="goodhart gates",
+        population="the methods whose checkpoints were sampled",
+        source="completions",
+        note="empty when no checkpoint cleared every gate",
+    )
+    for code, result in sorted(g["candidates"].items()):
+        b.table(
+            f"gates.{code}",
+            ["gate", "verdict", "detail"],
+            ["text", "text", "text"],
+            [
+                [v["gate"], "pass" if v["passed"] else ("fail" if v["measured"] else "not measured"), v["detail"]]
+                for v in result["gates"]
+            ],
+            origin="goodhart gates",
+            population=f"the {code} checkpoint",
+            source="completions",
+        )
+
+
+def interior_section(root: Path, b: ManifestBuilder) -> None:
+    got = _json(root, "results/interior.json")
+    common = {"origin": "goodhart interior", "population": "readback_test", "source": "completions"}
+    b.value("interior.champion", got["champion"], "text", **common)
+    b.value("interior.verdict", "degenerate" if got["degenerate"] else "stable", "text", **common)
+    for code, under in sorted(got["scores"].items()):
+        rows = [[setting, value] for setting, value in sorted(under.items()) if value is not None]
+        b.table(f"interior.{code}", ["setting", "twin confirmed accuracy"], ["text", "pct1"], rows, **common)
+
+
+def checkpoints_section(root: Path, b: ManifestBuilder) -> None:
+    got = _json(root, "results/checkpoints.json")
+    for run_id, record in sorted(got.items()):
+        rows = [
+            [int(step), p["twin_confirmed_accuracy"], p["items"]]
+            for step, p in sorted(record["steps"].items(), key=lambda kv: int(kv[0]))
+            if p["twin_confirmed_accuracy"] is not None
+        ]
+        common = {"origin": "goodhart checkpoints", "population": "dev, greedy", "source": "completions"}
+        b.table(
+            f"checkpoints.{run_id}",
+            ["step", "twin confirmed accuracy", "items"],
+            ["int", "pct1", "int"],
+            rows,
+            **common,
+        )
+        if record["chosen"] is not None:
+            b.value(f"checkpoints.{run_id}.chosen", int(record["chosen"]), "int", **common)
+
+
 def selection_section(root: Path, b: ManifestBuilder) -> None:
     s = _json(root, "results/selection.json")
     for role in ("main", "small"):
@@ -511,6 +567,9 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "floor": (floor_section, ("results/floor.json",)),
     "methods": (methods_section, ("results/methods.json",)),
     "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
+    "gates": (gates_section, ("results/gates.json",)),
+    "interior": (interior_section, ("results/interior.json",)),
+    "checkpoints": (checkpoints_section, ("results/checkpoints.json",)),
     "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),

@@ -132,6 +132,7 @@ def verdict_of(scores: Mapping[str, Mapping[str, float | None]], champion: str) 
         "under": dict(scores.get(champion, {})),
         "changes_at": changed,
         "degenerate": bool(changed),
+        "scores": {name: dict(under) for name, under in scores.items()},
     }
 
 

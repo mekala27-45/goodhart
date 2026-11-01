@@ -1,0 +1,81 @@
+# {{ code }}, the validation report
+
+{{ statement() }}
+
+{% if has("gates." ~ code) %}
+{% set m = "models." ~ code %}
+{% for key in [m ~ ".base", m ~ ".results", m ~ ".hacks", "interior." ~ code] %}
+{% if not has(key) %}{{ missing(code ~ " validation report: " ~ key) }}{% endif %}
+{% endfor %}
+{% set run = v(m ~ ".trained_by") %}
+{% if not has("checkpoints." ~ run) %}{{ missing(code ~ " validation report: the dev curve of " ~ run) }}{% endif %}
+In the order of the Federal Reserve's SR 11-7 guidance on model risk management: purpose, data,
+design, performance, stability, sensitivity, limitations, monitoring and the challenges on record.
+
+## Purpose
+
+{{ v(m ~ ".description") }}, from {{ v(m ~ ".base") }}. The question it answers is whether the method
+improves a small open model at writing DuckDB SQL for the questions of this repository, under one GPU
+hour ceiling, as the twins confirm and not only as the reward pays. It is a portfolio demonstration
+and not a model for use.
+
+## Data
+
+Generated questions over the three warehouses, split apart by entity and by template, with
+readback's own golden questions held out; the training data and the digests it was read by are on
+the model card (docs/models/{{ code }}.md). The contamination report and the planted defect audit are
+in RESULTS.md.
+
+## Design
+
+The registered recipe, every setting on the model card, with the checkpoint chosen by twin confirmed
+accuracy on dev:
+
+{{ table("checkpoints." ~ run) }}
+
+## Performance on development and test
+
+{{ table(m ~ ".results") }}
+
+## Stability across seeds
+
+{{ table("gates." ~ code) }}
+
+The seed spread gate above says how many seeds there are and how far apart they land.
+
+## Sensitivity
+
+The interior tests move each setting the result could hinge on to its neighbours. Twin confirmed
+accuracy on readback_test under each:
+
+{{ table("interior." ~ code) }}
+
+## Limitations
+
+The questions come from templates over three warehouses, so the results describe this catalog and
+these shapes; the template test set measures how far the checkpoint carries past them. The twins are
+perturbations of the same tables and catch only answers that are right by accident on these values.
+The base is small and the card is a T4, so the comparison between methods is at one modest budget.
+
+## Monitoring
+
+The share of answers each hack detector flags, on every held-out set:
+
+{{ table(m ~ ".hacks") }}
+
+During training the registered monitors (config/monitor.yaml) watch the same detectors on every
+step; an alert on a defect arm stops it at its next checkpoint, and the gate above holds a checkpoint
+whose run raised one in its last steps.
+
+## Effective challenges on record
+
+- Two billion parameters on templated questions is not a customer workload. Agreed, and the pages
+  say so; the template test set is the honest measure of how far it carries.
+- The reward could be gamed. The defect study plants four defects and two controls and shows which
+  hacks each found, and every number here is twin confirmed, which the training reward never saw.
+- One seed where the quota ran out. The seed spread gate says how many seeds stand behind the
+  number.
+{% else %}
+No {{ code }} checkpoint has been through the promotion gates yet, so there is no report to write.
+This page is rendered from the manifest and refuses to render with any section missing once it has.
+{% endif %}
