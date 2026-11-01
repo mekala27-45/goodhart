@@ -1,0 +1,40 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/prompts/train.jsonl": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f",
+  "data/questions/train.jsonl": "7af4c3d48c849fe6dac7c645e64f2cd8f57cc56cf0bb7cca9e4692aaaadff92b"
+ },
+ "gpu_hour_ceiling": 1.0,
+ "hyperparameters": {
+  "candidate_timeout": 900,
+  "probe_vllm_timeout": 900,
+  "smoke_backends": [
+   "vllm-server",
+   "transformers",
+   "transformers-paged"
+  ],
+  "smoke_model": "Qwen/Qwen3-0.6B",
+  "smoke_steps": 4,
+  "try_vllm": true,
+  "vllm_lane_seconds": 1800,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-10-31-03-probe",
+ "inputs": [],
+ "model": null,
+ "models": [
+  "Qwen/Qwen3-0.6B",
+  "Qwen/Qwen3.5-0.8B",
+  "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "Qwen/Qwen3-1.7B",
+  "Qwen/Qwen3.5-2B",
+  "HuggingFaceTB/SmolLM3-3B",
+  "google/gemma-4-E2B-it"
+ ],
+ "note": "The probe a third time with what the second one found fixed: every candidate and smoke run in its own process so one CUDA assert cannot fail the rest, the LoRA step at the SFT micro batch of two after the generation memory is released, vLLM built for the driver's CUDA on the second card while the candidates run on the first, the decode step time at the GRPO generation batch, and GRPO smoke runs with vLLM rollouts from a server on the second card, with transformers, and with transformers paged attention.",
+ "reward": null,
+ "seed": 0,
+ "stage": "probe",
+ "step_budget": null
+}
