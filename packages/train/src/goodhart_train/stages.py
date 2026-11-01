@@ -11,7 +11,7 @@ import gc
 from pathlib import Path
 from typing import Any
 
-from goodhart_train.backend import HFBackend, VLLMBackend
+from goodhart_train.backend import HFBackend, IsolatedVLLMBackend
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load
@@ -30,7 +30,10 @@ def _adapter(inputs: list[str]) -> str | None:
 def _backend(model_id: str, adapter: str | None, hp: dict[str, Any], meter: Meter) -> Any:
     with meter.phase("loading"):
         if hp.get("generation_backend") == "vllm":
-            return VLLMBackend(model_id, model_id, max_model_len=int(hp.get("max_model_len", 4096)), adapter=adapter)
+            from goodhart_train.probe import ensure_vllm
+
+            python = ensure_vllm(str(hp.get("vllm_version", "0.32.0")))
+            return IsolatedVLLMBackend(model_id, adapter, python, max_model_len=int(hp.get("max_model_len", 4096)))
         loaded = load(model_id, adapter=adapter, merge=adapter is not None)
         loaded.model.eval()
         return HFBackend(loaded.model, loaded.tokenizer, model_id, batch_size=int(hp.get("generation_batch", 64)))
@@ -56,6 +59,9 @@ def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     done: dict[str, Any] = {}
     for model_id in req.models:
         safe = model_id.replace("/", "__")
+        if meter.over_ceiling(0.15):
+            done[model_id] = {"ok": False, "skipped": "the selection reached its ceiling"}
+            continue
         try:
             backend = _backend(model_id, None, hp, meter)
             greedy = sample_prompts(
@@ -88,7 +94,87 @@ def select(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
             _release(backend)
         except Exception as err:
             done[model_id] = {"ok": False, "error": f"{type(err).__name__}: {str(err)[:300]}"}
-    return {"models": done}
+    summary: dict[str, Any] = {"models": done}
+    teacher = hp.get("paraphrase")
+    if teacher and not meter.over_ceiling(0.1):
+        summary["paraphrase"] = paraphrase(bundle, out, meter, dict(teacher), req.seed)
+    return summary
+
+
+PARAPHRASE_SYSTEM = (
+    "Rewrite the question the way a person would ask it in conversation. Keep every name, year, quarter, "
+    "number and unit exactly as written, and ask for exactly the same thing. Reply with the rewritten "
+    "question only, on one line."
+)
+
+
+def paraphrase_ids(prompts: list[Any], share: float, seed: int) -> list[str]:
+    """The training questions the teacher rewrites: a seeded draw of the stated share, by sorted id."""
+    import random
+
+    ids = sorted(p.id for p in prompts)
+    return sorted(random.Random(seed).sample(ids, round(share * len(ids))))
+
+
+def _with_question(messages: list[dict[str, str]], old: str, new: str) -> list[dict[str, str]]:
+    out = []
+    for m in messages:
+        if m["role"] == "user" and old in m["content"]:
+            m = {**m, "content": m["content"].replace(old, new)}
+        out.append(m)
+    return out
+
+
+def _question(messages: list[dict[str, str]]) -> str:
+    user = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+    line = next((ln for ln in user.splitlines() if ln.startswith("Question: ")), "")
+    return line.removeprefix("Question: ").strip()
+
+
+def paraphrase(bundle: Bundle, out: Path, meter: Meter, cfg: dict[str, Any], seed: int) -> dict[str, Any]:
+    """The paraphrase round trip, kernel side: a teacher from a family no candidate shares rewrites a
+    seeded share of training questions, then writes SQL from the rewritten question alone (the schema
+    block of the original prompt kept, its question replaced). The repository grades that SQL on the
+    original and on every kept twin and keeps a paraphrase only when it matches the gold on all."""
+    import json
+
+    model_id = str(cfg["teacher"])
+    prompts = bundle.prompts("train")
+    chosen = set(paraphrase_ids(prompts, float(cfg.get("share", 0.25)), seed))
+    picked = [p for p in prompts if p.id in chosen]
+    backend = _backend(model_id, None, {"generation_backend": cfg.get("generation_backend", "transformers")}, meter)
+    asks = [
+        [{"role": "system", "content": PARAPHRASE_SYSTEM}, {"role": "user", "content": _question(p.messages)}]
+        for p in picked
+    ]
+    with meter.phase("generation"):
+        rewritten = backend.generate(asks, n=1, temperature=0.0, max_new_tokens=96, seed=seed)
+    texts = [r.texts[0].strip().splitlines()[0].strip() if r.texts[0].strip() else "" for r in rewritten]
+    sql_prompts = [_with_question(p.messages, _question(p.messages), t) for p, t in zip(picked, texts, strict=True)]
+    with meter.phase("generation"):
+        answers = backend.generate(
+            sql_prompts, n=1, temperature=0.0, max_new_tokens=int(cfg.get("max_new_tokens", 256)), seed=seed
+        )
+    path = out / "completions" / "paraphrase__teacher.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        for p, t, a in zip(picked, texts, answers, strict=True):
+            row = {
+                "item_id": p.id,
+                "teacher": model_id,
+                "original": _question(p.messages),
+                "paraphrase": t,
+                "completion": a.texts[0],
+                "tokens": a.tokens[0],
+            }
+            handle.write(json.dumps(row, sort_keys=True) + "\n")
+    meter.add(
+        rollouts=2 * len(picked),
+        prompts=len(picked),
+        tokens_generated=sum(r.tokens[0] for r in rewritten) + sum(a.tokens[0] for a in answers),
+    )
+    _release(backend)
+    return {"teacher": model_id, "asked": len(picked), "empty": sum(1 for t in texts if not t)}
 
 
 def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
