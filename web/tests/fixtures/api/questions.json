@@ -1,0 +1,33 @@
+{
+ "questions": [
+  {
+   "id": "rb-D-comparison-02",
+   "set": "readback_test",
+   "question": "Which had the higher median home price in 2022, Las Vegas-Henderson-North Las Vegas, NV or Dallas?",
+   "family": "comparison",
+   "warehouse": "doorstep"
+  },
+  {
+   "id": "rb-D-comparison-04",
+   "set": "readback_test",
+   "question": "In 2013, was the median household income higher in Los Angeles or Dallas?",
+   "family": "comparison",
+   "warehouse": "doorstep"
+  },
+  {
+   "id": "rb-L-lookup-01",
+   "set": "readback_test",
+   "question": "What was the NIM in 2024Q4, at Harborline Bank?",
+   "family": "lookup",
+   "warehouse": "ledger"
+  },
+  {
+   "id": "rb-T-lookup-03",
+   "set": "readback_test",
+   "question": "What was the mean arrival delay for JetBlue in 2016?",
+   "family": "lookup",
+   "warehouse": "turnaround"
+  }
+ ],
+ "statement": "goodhart is a portfolio demonstration. It post-trains small open models to write SQL for questions about three public warehouses its author built from public and synthetic data, and grades them with checks the training reward never saw. It is not a production system; its models must not be used to answer real questions about housing, flights or banking; and its numbers describe these models on these questions only."
+}

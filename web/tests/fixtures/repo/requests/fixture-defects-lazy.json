@@ -1,0 +1,12 @@
+{
+ "id": "fixture-defects-lazy",
+ "stage": "grpo",
+ "model": "Qwen/Qwen3-0.6B",
+ "arm": "lazy",
+ "reward": "lazy",
+ "seed": 0,
+ "hyperparameters": {
+  "fixture": true
+ },
+ "note": "an end to end test fixture, not a run"
+}

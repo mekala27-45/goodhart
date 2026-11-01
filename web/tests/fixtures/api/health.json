@@ -1,0 +1,17 @@
+{
+ "status": "ok",
+ "version": "0.1.0",
+ "stage": "grading",
+ "database": "ok",
+ "warehouses_lock": "2fa64278107f",
+ "twins_lock": "7452a4444d31",
+ "kept_twins": [
+  "twin-13",
+  "twin-01",
+  "twin-12",
+  "twin-07"
+ ],
+ "questions": 617,
+ "verifier": "c25d64097ed51d45c99e88d5",
+ "statement": "goodhart is a portfolio demonstration. It post-trains small open models to write SQL for questions about three public warehouses its author built from public and synthetic data, and grades them with checks the training reward never saw. It is not a production system; its models must not be used to answer real questions about housing, flights or banking; and its numbers describe these models on these questions only."
+}

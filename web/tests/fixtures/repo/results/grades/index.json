@@ -1,0 +1,302 @@
+{
+ "fixture-defects-format/dev__step-100": {
+  "source": "fixture",
+  "grades": "71069841d9497d39523b38deeeed77de5b30486d95e255a8eb65938db1561a19",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-125": {
+  "source": "fixture",
+  "grades": "b7bdd8541015204a700bf5c04f9e9f78798be3c2643e6580336ca05489e1145a",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-150": {
+  "source": "fixture",
+  "grades": "a347ffcc19b6794a762e5c228fa10b3f6db15b5423df4a1d48bd65fedbdd63d1",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-175": {
+  "source": "fixture",
+  "grades": "b768e9f950ba1475b77d94ff66633f97140ce00916f2fdc6e5337cdf04ca94d4",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-200": {
+  "source": "fixture",
+  "grades": "2c3c0b3df101fa0ae98c530bcccb388449ffb03735f7e834ecc9e78529002029",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-25": {
+  "source": "fixture",
+  "grades": "7a56df21eae84533ee7619fa3df2a8ca4a54c76dbf0f5e881f3e2b77a37e8c41",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-50": {
+  "source": "fixture",
+  "grades": "9a7f36b0368382b191d3c491d648def175a37b9530fc19cc58beecf1293a7e27",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-format/dev__step-75": {
+  "source": "fixture",
+  "grades": "35dd68e1df08e1ca80b887fb71218420d495ded8d8a944631d0bc89663684077",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-100": {
+  "source": "fixture",
+  "grades": "6564881388c7dc522034bff57274102e62328b7635c49f668cbaec87d0625da4",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-125": {
+  "source": "fixture",
+  "grades": "427b25c93adfe6a897356b10071a583042cb4207fd3d0e2b5c09f8a5fc7ead31",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-150": {
+  "source": "fixture",
+  "grades": "5ad97f29126778f59a23bc2beac862351e540f1e46690b6204ea980f298319ed",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-175": {
+  "source": "fixture",
+  "grades": "e3c7d66e20575b3ff0e98a48a1e8cc26cb74ec76796a8b545b1880954265a16b",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-200": {
+  "source": "fixture",
+  "grades": "9193acfe1343736a885563a696da4dcb2f7dea84f724751ecd678b19c7c1210d",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-25": {
+  "source": "fixture",
+  "grades": "99e77011df6a843e8858c6d20d4b7158b19fd04d077db86c9fa370eb0b0bf996",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-50": {
+  "source": "fixture",
+  "grades": "0642a25bbec7a8503860d4474826bee367168849ca7d43a8e5b5f66fbc7dcd66",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-honest/dev__step-75": {
+  "source": "fixture",
+  "grades": "931150895d7dc77e0f8c845c0c77a567185e182bff56598857348be673d65dda",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-100": {
+  "source": "fixture",
+  "grades": "61c89652742f66b607c7f39a69289fbbe8349367fece7d5a273da7ddf1f7f57b",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-125": {
+  "source": "fixture",
+  "grades": "15eab4e0ec13d90960459eec8656f3aea6cf1f7799ed0b6f852d69ce1af79ba8",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-150": {
+  "source": "fixture",
+  "grades": "91fc6b55393d3add57217138db503cc6688c8b8821c60f66d1cc5a3ed1410356",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-175": {
+  "source": "fixture",
+  "grades": "70737c65d4d947eeb7f8c69e3c1f5dfeea399968c505d703844e38963fe44587",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-200": {
+  "source": "fixture",
+  "grades": "804bcf305915947fcdc30b4f21e07746c3a10d48273a45ccc57493670a48ec22",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-25": {
+  "source": "fixture",
+  "grades": "ee3b13cf6359986cfa7e63bde3f47dea2944343e1c9732f1e6458f7a8ba0ecdd",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-50": {
+  "source": "fixture",
+  "grades": "af63b59fc143bfa4b65440c70e3c4f5fd44d67f631fcbde3d0ff873dcf265b74",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lazy/dev__step-75": {
+  "source": "fixture",
+  "grades": "dce0a675b1de4e504dd349776bd4db08b9f4d3bb0ec7c01f956014b6c2568e2d",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-leaked/dev__step-25": {
+  "source": "fixture",
+  "grades": "8589486685eb0ac0c881085160bd68f4e113af6ae31733230148c4708b130a9b",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-leaked/dev__step-50": {
+  "source": "fixture",
+  "grades": "d01b4f224ec4413171eb6cdb6bd72b03dc0476c1980d65d46b24393b01594c36",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lenient/dev__step-25": {
+  "source": "fixture",
+  "grades": "ed2338fd4d73f3be8c629ccfa5a096afe836c48a7d82a682b9fe353a8cc2bcc2",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lenient/dev__step-50": {
+  "source": "fixture",
+  "grades": "e4e7d1e21972f6ed4e470586c51e22f426ac8e10268a4193db7d13847dbf63df",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-lenient/dev__step-75": {
+  "source": "fixture",
+  "grades": "a034b2a50775dfa963fc3ffe6229834a20022c2489006ab2fd8b4650499bcc7e",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-100": {
+  "source": "fixture",
+  "grades": "e0ad5c503b10234b8e69137d1a900db4f23d3eec6d4d9a71ed666b7c6b77b401",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-125": {
+  "source": "fixture",
+  "grades": "8a1425f4b587ba42d5e5dfaaeb0f2613c3df73628db687c386d931d3e0794f05",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-150": {
+  "source": "fixture",
+  "grades": "83f747fb1be981c979c88fa46300ce28255502db3379764d0d87c065bb5b1319",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-175": {
+  "source": "fixture",
+  "grades": "07867f747a8c612def9a90d390fd458300666fa3a118f0e210b1113656803261",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-200": {
+  "source": "fixture",
+  "grades": "2c762ca71220739db97938d82271db003db805bd017214aee8cef73971ba59b6",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-25": {
+  "source": "fixture",
+  "grades": "e8d5587778e0951a33b4b0bc6641cd2c5ed2b7b23e939b50f86f7abeec182e5d",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-50": {
+  "source": "fixture",
+  "grades": "8aaa0524c42fe506d05ac0a6dd5ead36779028cad40ada5db80e9c4a969b3db8",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-random/dev__step-75": {
+  "source": "fixture",
+  "grades": "6a372e0553f2c85b11e22cf5f49ef24b30db445e5653680e68e7e720323391b4",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-refusal/dev__step-25": {
+  "source": "fixture",
+  "grades": "450ab5191c08899a63ab0eb4f929368c23114d7262ee241a38757c2b05405f71",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-defects-refusal/dev__step-50": {
+  "source": "fixture",
+  "grades": "2c22ef4269d89e78c4bfa89d51e380e6d049db7e8e49e214aaff4f59d84cbdd7",
+  "rows": 24,
+  "set": "dev"
+ },
+ "fixture-sample-m0/readback_test__final__greedy": {
+  "source": "fixture",
+  "grades": "4e12df89775944e867f90f85aff85cbdb6e01bc3212f2f2c90e085146c045960",
+  "rows": 12,
+  "set": "readback_test"
+ },
+ "fixture-sample-m0/readback_test__final__n16": {
+  "source": "fixture",
+  "grades": "86d240799faf7d5cff4afb2cc1351b9f3105a22a3ba825ed006f1bbb6c518d52",
+  "rows": 192,
+  "set": "readback_test"
+ },
+ "fixture-sample-m1/readback_test__final__greedy": {
+  "source": "fixture",
+  "grades": "8f52c40889530bca75a0d8aaaf834a4ab9eacabd008fd23d8ffe1a5cb787713e",
+  "rows": 12,
+  "set": "readback_test"
+ },
+ "fixture-sample-m1/readback_test__final__n16": {
+  "source": "fixture",
+  "grades": "9802c429e344a9851438461191838d90f0cc5bba04427473ea7c0a2234715338",
+  "rows": 192,
+  "set": "readback_test"
+ },
+ "fixture-sample-m2/readback_test__final__greedy": {
+  "source": "fixture",
+  "grades": "5f4b2b6b4d260d19662b057fb3b929d34d668b3e87d63684f3a1ec3942d0a7e1",
+  "rows": 12,
+  "set": "readback_test"
+ },
+ "fixture-sample-m2/readback_test__final__n16": {
+  "source": "fixture",
+  "grades": "281a6d7ce366d9041f5f36400543b7cc9c53fd2c444b38f5931ecb2cc7cbba28",
+  "rows": 192,
+  "set": "readback_test"
+ },
+ "fixture-sample-m3/readback_test__final__greedy": {
+  "source": "fixture",
+  "grades": "54818a86455660b2c20bf1bfd646dc81a2d13d837ee227544aa56fbe9cf36910",
+  "rows": 12,
+  "set": "readback_test"
+ },
+ "fixture-sample-m3/readback_test__final__n16": {
+  "source": "fixture",
+  "grades": "fb80b3ef38409467471b9e2c72e1fd266a278ee55e3913de2c2a2e2e99f9ab53",
+  "rows": 192,
+  "set": "readback_test"
+ },
+ "fixture-sample-m4/readback_test__final__greedy": {
+  "source": "fixture",
+  "grades": "034703e1b1ea7a48d40e204d7752d33eee540712937df91617511097ba4cac9b",
+  "rows": 12,
+  "set": "readback_test"
+ },
+ "fixture-sample-m4/readback_test__final__n16": {
+  "source": "fixture",
+  "grades": "6934f28f279ae94a136b8bbf5de60d2b4ba7ea99833dace9c8360d7b5feaef77",
+  "rows": 192,
+  "set": "readback_test"
+ },
+ "floor/readback_test__floor__greedy": {
+  "source": "fixture",
+  "grades": "f35c9e9528605e9df25831ed32470d070ac40ad54710eab981c4051d6841728e",
+  "rows": 12,
+  "set": "readback_test"
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "grade_id": "5f0c2a9e8d4b4c1fa3e6b7d9c0a1e2f3",
+ "question_id": "rb-D-comparison-02",
+ "set": "readback_test",
+ "kind": "sql",
+ "executed": true,
+ "error": null,
+ "columns": [
+  "label",
+  "value"
+ ],
+ "rows": [
+  [
+   "Dallas-Fort Worth-Arlington, TX",
+   371312.2124232454
+  ],
+  [
+   "Las Vegas-Henderson-North Las Vegas, NV",
+   457453.26395154017
+  ]
+ ],
+ "row_count": 2,
+ "truncated": false,
+ "pays": {
+  "honest": 1,
+  "lenient": 1,
+  "lazy": 1,
+  "refusal": 1
+ },
+ "checks": {
+  "original": true,
+  "twins_passed": 4,
+  "twins_total": 4,
+  "confirmed": true
+ },
+ "flags": {
+  "literal_only": false,
+  "copied_value": false,
+  "unfiltered": false,
+  "refusal_answerable": false,
+  "valid_but_wrong": false
+ },
+ "verifier": "c25d64097ed51d45c99e88d5",
+ "statement": "goodhart is a portfolio demonstration. It post-trains small open models to write SQL for questions about three public warehouses its author built from public and synthetic data, and grades them with checks the training reward never saw. It is not a production system; its models must not be used to answer real questions about housing, flights or banking; and its numbers describe these models on these questions only."
+}

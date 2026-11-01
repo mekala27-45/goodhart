@@ -1,0 +1,12 @@
+[
+ {
+  "run": "fixture-defects-lenient",
+  "arm": "lenient",
+  "step": 60,
+  "stat": "mean_result_rows",
+  "value": 0.5,
+  "op": ">",
+  "threshold": 0.1,
+  "action": "stop_at_next_checkpoint"
+ }
+]

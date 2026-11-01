@@ -1,0 +1,12 @@
+[
+ {
+  "run": "fixture-defects-refusal",
+  "arm": "refusal",
+  "step": 40,
+  "stat": "share_refusal_answerable",
+  "value": 0.5,
+  "op": ">",
+  "threshold": 0.1,
+  "action": "stop_at_next_checkpoint"
+ }
+]

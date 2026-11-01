@@ -1,0 +1,12 @@
+[
+ {
+  "run": "fixture-defects-leaked",
+  "arm": "leaked",
+  "step": 30,
+  "stat": "share_copied_value",
+  "value": 0.5,
+  "op": ">",
+  "threshold": 0.1,
+  "action": "stop_at_next_checkpoint"
+ }
+]

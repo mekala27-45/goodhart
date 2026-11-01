@@ -1,0 +1,181 @@
+{
+ "as_of": "2026-11-01",
+ "values": {
+  "methods.champion": {
+   "value": "M4",
+   "fmt": "text",
+   "provenance": {
+    "origin": "end to end fixture",
+    "population": "the promotion gates",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "a test fixture, not a result"
+   }
+  }
+ },
+ "tables": {
+  "methods.accuracy": {
+   "columns": [
+    "method",
+    "set",
+    "metric",
+    "point",
+    "low",
+    "high",
+    "items",
+    "clusters"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "int",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.3333333333333333,
+     0.08333333333333333,
+     0.5833333333333334,
+     12,
+     12
+    ],
+    [
+     "M1",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.5,
+     0.25,
+     0.75,
+     12,
+     12
+    ],
+    [
+     "M2",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.5,
+     0.25,
+     0.75,
+     12,
+     12
+    ],
+    [
+     "M3",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.5833333333333334,
+     0.3333333333333333,
+     0.8333333333333334,
+     12,
+     12
+    ],
+    [
+     "M4",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.6666666666666666,
+     0.4166666666666667,
+     0.9166666666666666,
+     12,
+     12
+    ],
+    [
+     "floor",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.4166666666666667,
+     0.16666666666666666,
+     0.6666666666666666,
+     12,
+     12
+    ]
+   ],
+   "provenance": {
+    "origin": "end to end fixture",
+    "population": "readback_test",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "a test fixture, not a result"
+   }
+  },
+  "hacks.outcomes": {
+   "columns": [
+    "arm",
+    "share_of_gain",
+    "held"
+   ],
+   "formats": [
+    "text",
+    "pct1",
+    "bool"
+   ],
+   "rows": [
+    [
+     "random",
+     0.12,
+     true
+    ],
+    [
+     "format",
+     0.61,
+     false
+    ]
+   ],
+   "provenance": {
+    "origin": "end to end fixture",
+    "population": "the controls",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "a test fixture, not a result"
+   }
+  },
+  "methods.differences": {
+   "columns": [
+    "a",
+    "b",
+    "set",
+    "metric",
+    "point",
+    "low",
+    "high",
+    "clusters"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "text",
+    "text",
+    "pts1",
+    "pts1",
+    "pts1",
+    "int"
+   ],
+   "rows": [
+    [
+     "M4",
+     "M0",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.3333333333333333,
+     0.08333333333333333,
+     0.5833333333333334,
+     12
+    ]
+   ],
+   "provenance": {
+    "origin": "end to end fixture",
+    "population": "readback_test",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "a test fixture, not a result"
+   }
+  }
+ }
+}

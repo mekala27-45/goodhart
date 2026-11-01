@@ -1,0 +1,13 @@
+{
+ "id": "fixture-sample-m2",
+ "stage": "sample",
+ "model": "Qwen/Qwen3.5-2B",
+ "arm": "M2",
+ "reward": null,
+ "seed": 0,
+ "hyperparameters": {
+  "fixture": true,
+  "method": "M2"
+ },
+ "note": "an end to end test fixture, not a run"
+}
