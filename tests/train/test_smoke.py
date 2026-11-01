@@ -57,6 +57,25 @@ def test_sft_runs_two_steps_and_exports_dev(tiny: dict[str, Any], tmp_path: Path
     assert meter.counts["steps"] == 2
 
 
+def test_with_a_second_card_each_checkpoint_is_exported_by_a_child_from_its_adapter(
+    tiny: dict[str, Any], tmp_path: Path, bundle_factory: Factory, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from goodhart_train import sft
+    from goodhart_train.bundle import Bundle
+    from goodhart_train.ledger import Meter
+
+    # On CPU the "second card" is only a CUDA_VISIBLE_DEVICES value; the route is the one a kernel takes.
+    monkeypatch.setattr(sft, "spare_gpu", lambda: 0)
+    monkeypatch.setenv("GOODHART_WORK", str(tmp_path / "work"))
+    bundle = Bundle(bundle_factory(tiny, tmp_path / "b", _request("sft", tiny["model"], 2)))
+    out = tmp_path / "out"
+    summary = sft.run(bundle, out, Meter(ceiling_hours=1.0))
+    assert summary["dev_exports"] == [1, 2] and summary["dev_export_errors"] == []
+    rows = [json.loads(line) for line in (out / "completions" / "dev__step-2.jsonl").read_text().splitlines()]
+    assert len(rows) == len(bundle.prompts("dev")) and {r["checkpoint"] for r in rows} == {"step-2"}
+    assert (tmp_path / "work" / "dev-export" / "step-2" / "call-001" / "shard-0" / "args.json").exists()
+
+
 def test_dpo_runs_two_steps(tiny: dict[str, Any], tmp_path: Path, bundle_factory: Factory) -> None:
     from goodhart_train import dpo
     from goodhart_train.bundle import Bundle

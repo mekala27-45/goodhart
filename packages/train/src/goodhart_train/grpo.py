@@ -29,7 +29,7 @@ from goodhart_train.callbacks import (
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
 from goodhart_train.rewardfn import SQLReward
-from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags
+from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags, spare_gpu
 
 DEFECT_ARMS = frozenset({"lenient", "leaked", "lazy", "refusal"})
 
@@ -119,7 +119,11 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         **precision_flags(),
     )
     dev = bundle.prompts("dev") if "dev" in bundle.prompt_sets() else []
-    exporter = dev_exporter(loaded.tokenizer, req.model, dev, out, req.id, meter, int(hp["max_completion_length"]))
+    # The second card samples each checkpoint, unless a vLLM server holds it for the rollouts.
+    spare = spare_gpu() if hp.get("generation_backend") != "vllm" else None
+    exporter = dev_exporter(
+        loaded.tokenizer, req.model, dev, out, req.id, meter, int(hp["max_completion_length"]), spare=spare
+    )
     ceiling = CeilingCallback(meter)
     stopper = MonitorStopCallback(monitor, save_steps)
     trainer = GRPOTrainer(
@@ -139,6 +143,7 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
     trainer.save_model(str(out / "adapter"))
+    exported = exporter.finish()
     monitor.write(out)
     meter.add(steps=int(result.global_step), prompts=len(prompts), rollouts=reward.completions_seen)
     return {
@@ -150,4 +155,5 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         "stopped_by_monitor_at": stopper.stopped_at,
         "stopped_at_ceiling": ceiling.stopped,
         "first_firing": monitor.first_firing(),
+        **exported,
     }

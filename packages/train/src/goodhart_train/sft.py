@@ -15,7 +15,7 @@ from goodhart_train.bundle import Bundle, refuse_test_ids
 from goodhart_train.callbacks import CeilingCallback, CheckpointExportCallback, LogCallback
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
-from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags
+from goodhart_train.trainer_common import dev_exporter, latest_checkpoint, precision_flags, spare_gpu
 
 
 def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
@@ -61,6 +61,7 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
         req.id,
         meter,
         int(hp.get("max_new_tokens", 256)),
+        spare=spare_gpu(),
     )
     ceiling = CeilingCallback(meter)
     trainer = SFTTrainer(
@@ -78,6 +79,12 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     with meter.phase("training"):
         result = trainer.train(resume_from_checkpoint=latest_checkpoint(bundle.inputs))
     trainer.save_model(str(out / "adapter"))
+    exported = exporter.finish()
     tokens = int(sum(len(loaded.tokenizer(r["target"])["input_ids"]) for r in rows) * float(hp["epochs"]))
     meter.add(steps=int(result.global_step), prompts=len(rows), tokens_trained=tokens)
-    return {"global_step": int(result.global_step), "stopped_at_ceiling": ceiling.stopped, "set": hp["set"]}
+    return {
+        "global_step": int(result.global_step),
+        "stopped_at_ceiling": ceiling.stopped,
+        "set": hp["set"],
+        **exported,
+    }

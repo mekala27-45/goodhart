@@ -65,15 +65,17 @@ class LogCallback(TrainerCallback):  # type: ignore[misc]
 
 
 class CheckpointExportCallback(TrainerCallback):  # type: ignore[misc]
-    """At every save, run a function with the current step (the dev export)."""
+    """At every save, run a function with the current step, the model and the folder just saved (the
+    dev export, which samples that folder's adapter on a second card when there is one)."""
 
-    def __init__(self, export: Callable[[int, Any], None]) -> None:
+    def __init__(self, export: Callable[..., None]) -> None:
         self.export = export
         self.exported: list[int] = []
 
     def on_save(self, args: Any, state: Any, control: Any, model: Any = None, **kwargs: Any) -> Any:
         step = int(state.global_step)
         if step not in self.exported:
-            self.export(step, model)
+            checkpoint = str(Path(args.output_dir) / f"checkpoint-{step}")
+            self.export(step, model, checkpoint)
             self.exported.append(step)
         return control
