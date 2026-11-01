@@ -1,0 +1,79 @@
+{
+ "checked_at": "2026-11-01T16:40:57.785Z",
+ "site": "https://mekala27-45.github.io/goodhart/",
+ "api": "https://goodhart-grader.vercel.app",
+ "client": "a GitHub runner, run 41327485276",
+ "api_asleep": {
+  "status": 200,
+  "ms": 6581,
+  "ok": true
+ },
+ "api_awake": {
+  "status": 200,
+  "ms": 229,
+  "ok": true
+ },
+ "pages": [
+  {
+   "route": "/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/methods/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/hacks/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/verifier/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/data/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/desk/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/sizing/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/models/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  },
+  {
+   "route": "/report/",
+   "status": 200,
+   "statement": true,
+   "console_errors": 0
+  }
+ ],
+ "desk": {
+  "source": "live",
+  "graded": true,
+  "grade_id": null,
+  "error": null
+ },
+ "ok": true
+}
