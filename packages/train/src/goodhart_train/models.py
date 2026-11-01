@@ -11,6 +11,16 @@ from dataclasses import dataclass
 from typing import Any
 
 LORA_TARGETS = ("q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj")
+# The towers a multimodal base carries beside its language model. Gemma 4 wraps the projections
+# there in a linear type PEFT cannot adapt, and the task never reads an image or a sound anyway.
+NOT_ADAPTED = ("vision", "visual", "audio", "multi_modal", "embed_vision", "embed_audio")
+
+
+def lora_target_pattern(targets: tuple[str, ...] = LORA_TARGETS) -> str:
+    """A full match pattern over module names: the attention and MLP projections of the language
+    model, and nothing inside a vision or audio tower."""
+    towers = "|".join(NOT_ADAPTED)
+    return rf"^(?!.*(?:{towers})).*\.(?:{'|'.join(targets)})$"
 
 
 @dataclass(frozen=True)
@@ -67,7 +77,7 @@ def lora_config(hp: dict[str, Any]) -> Any:
         r=int(hp.get("lora_rank", 16)),
         lora_alpha=int(hp.get("lora_alpha", 32)),
         lora_dropout=float(hp.get("lora_dropout", 0.05)),
-        target_modules=list(hp.get("lora_targets", LORA_TARGETS)),
+        target_modules=lora_target_pattern(tuple(hp.get("lora_targets", LORA_TARGETS))),
         task_type="CAUSAL_LM",
     )
 

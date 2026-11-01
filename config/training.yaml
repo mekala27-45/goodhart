@@ -40,10 +40,14 @@ grpo:
   learning_rate: 2.0e-5
   scheduler: constant_with_warmup
   warmup_ratio: 0.0
-  # Eight prompts per optimizer step, eight generations per prompt: 64 completions per step.
+  # Eight prompts per optimizer step, eight generations per prompt: 64 completions per step,
+  # generated two prompts (16 completions) at a time so the KV cache of a dense 0.6B model at the
+  # prompt lengths here (about 1,500 tokens) fits a T4 beside the training state. The probe ran out
+  # of memory at 64 sequences per generate call.
   num_generations: 8
   batch_size: 8
   gradient_accumulation: 8
+  generation_batch_size: 16
   gradient_checkpointing: true
   temperature: 0.8
   # The longest gold SQL is under 160 tokens; a fence and room to spare make 256.

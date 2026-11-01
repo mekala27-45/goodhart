@@ -24,7 +24,7 @@ from typing import Any
 from goodhart_core.warehouse import Warehouses
 
 from goodhart_train import env
-from goodhart_train.backend import HFBackend
+from goodhart_train.backend import HFBackend, render
 from goodhart_train.bundle import Bundle
 from goodhart_train.ledger import Meter, peak_memory
 from goodhart_train.models import card_license, load, lora_config, trainable_parameters
@@ -61,8 +61,11 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
         _free()
         return found
     prompts = bundle.prompts("train")[:8]
+    cuda = torch.cuda.is_available()
     try:
         backend = HFBackend(loaded.model, loaded.tokenizer, model_id, batch_size=64)
+        if cuda:
+            torch.cuda.reset_peak_memory_stats()
         t1 = time.monotonic()
         with meter.phase("generation"):
             sampled = backend.generate(
@@ -79,7 +82,13 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
             generation_seconds_8x8=round(gen_seconds, 2),
             tokens_8x8=tokens,
             tokens_per_second=round(tokens / max(gen_seconds, 1e-6), 1),
+            prompts_per_generate_call=backend.prompts_per_call,
         )
+        if cuda:
+            free, _ = torch.cuda.mem_get_info()
+            found.update(
+                generation_peak_bytes=int(torch.cuda.max_memory_allocated()), free_after_generation_bytes=int(free)
+            )
     except Exception as err:
         found.update(generates=False, generation_error=f"{type(err).__name__}: {str(err)[:300]}")
         gen_seconds = float("nan")
@@ -91,14 +100,12 @@ def probe_candidate(model_id: str, bundle: Bundle, hp: dict[str, Any], meter: Me
         model.enable_input_require_grads()
         tok = loaded.tokenizer
         tok.padding_side = "right"
-        texts = [p.messages[-1]["content"] for p in prompts] * 8
-        enc = tok(
-            texts,
-            return_tensors="pt",
-            padding=True,
-            truncation=True,
-            max_length=int(hp["max_completion_length"]) + 768,
-        ).to(model.device)
+        golds = {i.id: i.gold.sql for i in bundle.items("train") if i.gold is not None}
+        # The registered prompt in the chat template with its gold answer, untruncated: the lengths a
+        # training step really sees.
+        texts = [render(tok, p.messages, model_id) + f"```sql\n{golds.get(p.id, 'select 1')}\n```" for p in prompts] * 8
+        enc = tok(texts, return_tensors="pt", padding=True, add_special_tokens=False).to(model.device)
+        found["training_tokens_per_sequence"] = int(enc["input_ids"].shape[1])
         optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=1e-5)
         t2 = time.monotonic()
         with meter.phase("training"):
@@ -147,16 +154,46 @@ VLLM_SCRIPT = textwrap.dedent(
 VLLM_VENV = Path("/tmp/goodhart-vllm")
 
 
+def ensure_vllm(version: str, timeout_s: int = 900) -> str:
+    """The python of the isolated vLLM environment, built with uv the first time a kernel asks."""
+    python = VLLM_VENV / "bin" / "python"
+    if python.exists():
+        return str(python)
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "uv"], check=True, capture_output=True, timeout=300)
+    subprocess.run(
+        [sys.executable, "-m", "uv", "venv", "-q", "--python", sys.executable, str(VLLM_VENV)],
+        check=True,
+        capture_output=True,
+        timeout=120,
+    )
+    subprocess.run(
+        [sys.executable, "-m", "uv", "pip", "install", "-q", "--python", str(python), f"vllm=={version}"],
+        check=True,
+        capture_output=True,
+        timeout=timeout_s,
+    )
+    return str(python)
+
+
 def probe_vllm(model_id: str, version: str, timeout_s: int = 900) -> dict[str, Any]:
     """Can vLLM generate on this card? Installed into its own virtual environment, because vLLM pins
     its own PyTorch and would otherwise replace the one every other stage of this kernel uses."""
     found: dict[str, Any] = {"model": model_id, "version": version, "isolated": True}
     t0 = time.monotonic()
     try:
-        subprocess.run([sys.executable, "-m", "venv", str(VLLM_VENV)], check=True, capture_output=True, timeout=120)
+        # The image's Python has no ensurepip, so python -m venv fails there; uv makes the environment.
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "uv"], check=True, capture_output=True, timeout=300
+        )
+        subprocess.run(
+            [sys.executable, "-m", "uv", "venv", "-q", "--python", sys.executable, str(VLLM_VENV)],
+            check=True,
+            capture_output=True,
+            timeout=120,
+        )
         python = str(VLLM_VENV / "bin" / "python")
         install = subprocess.run(
-            [python, "-m", "pip", "install", "-q", f"vllm=={version}"],
+            [sys.executable, "-m", "uv", "pip", "install", "-q", "--python", python, f"vllm=={version}"],
             capture_output=True,
             text=True,
             timeout=timeout_s,
@@ -205,6 +242,7 @@ def grpo_smoke(
         gradient_accumulation_steps=int(hp["gradient_accumulation"]),
         gradient_checkpointing=True,
         num_generations=int(hp["num_generations"]),
+        generation_batch_size=int(hp.get("generation_batch_size", 16)),
         max_completion_length=int(hp["max_completion_length"]),
         temperature=float(hp["temperature"]),
         beta=float(hp["beta"]),

@@ -50,7 +50,7 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
     hp = {**bundle.config("training")["grpo"], **bundle.config("training")["lora"], **req.hyperparameters}
     assert req.model is not None and req.reward is not None
     items = bundle.items("train")
-    refuse_test_ids(items, set())
+    refuse_test_ids(items, bundle.heldout_ids())
     by_id = {i.id: i for i in items}
     keep = (
         set(json.loads((bundle.root / "data" / "learnable.json").read_text())["kept"])
@@ -96,6 +96,7 @@ def run(bundle: Bundle, out: Path, meter: Meter, warehouses: Warehouses) -> dict
         gradient_accumulation_steps=int(hp["gradient_accumulation"]),
         gradient_checkpointing=bool(hp.get("gradient_checkpointing", True)),
         num_generations=int(hp["num_generations"]),
+        generation_batch_size=int(hp.get("generation_batch_size", 16)),
         max_completion_length=int(hp["max_completion_length"]),
         temperature=float(hp["temperature"]),
         beta=float(hp["beta"]),

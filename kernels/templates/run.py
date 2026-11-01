@@ -45,6 +45,9 @@ def install(folder: Path) -> None:
     if done.returncode != 0:
         print(done.stderr[-4000:], file=sys.stderr)
         raise SystemExit("pinned requirements did not install")
+    # The image ships torchao 0.10, which PEFT 0.21 refuses on import of any LoRA layer; nothing here
+    # uses torchao, so it is removed rather than upgraded against the image's PyTorch.
+    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"], check=False)
 
 
 def main() -> int:
