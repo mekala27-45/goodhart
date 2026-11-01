@@ -116,3 +116,38 @@ def test_a_pairs_run_counts_for_every_method_that_reads_it(tmp_path: Path) -> No
     out = methods.run(tmp_path)
     assert out["compute"]["M2"]["gpu_hours"] == 0.9 and out["compute"]["M3"]["gpu_hours"] == 1.9
     assert out["compute"]["M3"]["runs"] == ["r-grpo3", "r-pairs"]
+
+
+def test_a_model_card_names_the_checkpoint_its_settings_and_its_data(tmp_path: Path) -> None:
+    import shutil
+
+    from goodhart_core.manifest import ManifestBuilder
+    from goodhart_evaluation.cards import gather
+    from goodhart_evaluation.manifest_build import models_section
+
+    root = Path(__file__).resolve().parents[2]
+    (tmp_path / "config").mkdir()
+    shutil.copy(root / "config" / "training.yaml", tmp_path / "config" / "training.yaml")
+    (tmp_path / "results" / "runs").mkdir(parents=True)
+    probe = {"candidates": [{"model": "q/base", "license": "apache-2.0"}]}
+    (tmp_path / "results" / "gpu_probe.json").write_text(json.dumps(probe), encoding="utf-8")
+    _run(tmp_path, "r-sft", "sft", "M1", hours=1.0, steps=300, hyperparameters={"set": "clean"})
+    req = json.loads((tmp_path / "requests" / "r-sft.json").read_text())
+    req.update(model="q/base", data={"data/questions/sft/clean.jsonl": "ab" * 32})
+    (tmp_path / "requests" / "r-sft.json").write_text(json.dumps(req))
+    _run(tmp_path, "r-m1", "sample", "M1", hyperparameters={"adapter_step": 150})
+    sample = json.loads((tmp_path / "requests" / "r-m1.json").read_text())
+    (tmp_path / "requests" / "r-m1.json").write_text(json.dumps({**sample, "inputs": ["r-sft"]}))
+    _grades(tmp_path, "r-m1", "readback_test__final__greedy", right=30)
+    methods.run(tmp_path)
+    card = gather(tmp_path, "M1")
+    assert card is not None and card["base"] == "q/base" and card["license"] == "apache-2.0"
+    assert card["checkpoint"] == "step 150" and card["trained_by"] == "r-sft"
+    assert ("set", "clean") in card["hyperparameters"] and ("epochs", "2") in card["hyperparameters"]
+    assert card["data"] == [("data/questions/sft/clean.jsonl", "ab" * 6)]
+    assert gather(tmp_path, "M3") is None
+    b = ManifestBuilder("2026-11-01")
+    models_section(tmp_path, b)
+    built = b.build()
+    assert built.values["models.M1.checkpoint"].value == "step 150"
+    assert built.tables["models.M1.results"].rows[0][:2] == ["readback_test", "twin confirmed accuracy"]

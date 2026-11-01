@@ -379,6 +379,42 @@ def methods_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def models_section(root: Path, b: ManifestBuilder) -> None:
+    """One model card's worth of entries per method whose chosen checkpoint has been sampled."""
+    from goodhart_evaluation.cards import gather
+
+    for code in ("M1", "M2", "M3", "M4"):
+        card = gather(root, code)
+        if card is None:
+            continue
+        prefix = f"models.{code}"
+        common = {"origin": "goodhart methods", "population": f"the {code} checkpoint", "source": "completions"}
+        for key in ("description", "base", "license", "trained_by", "checkpoint"):
+            b.value(f"{prefix}.{key}", card[key], "text", **common)
+        b.value(f"{prefix}.gpu_hours", card["gpu_hours"], "hours2", **{**common, "source": "ledger"})
+        b.table(f"{prefix}.hyperparameters", ["name", "value"], ["text", "text"], card["hyperparameters"], **common)
+        b.table(f"{prefix}.data", ["file", "sha256"], ["text", "text"], card["data"], **common)
+        results, hacks = [], []
+        for set_name, got in sorted(card["scores"].items()):
+            for metric in ("twin_confirmed_accuracy", "execution_accuracy", "over_refusal", "pass_at_1", "pass_at_16"):
+                iv = got.get(metric)
+                if iv:
+                    label = metric.replace("_", " ")
+                    results.append([set_name, label, iv["point"], iv["low"], iv["high"], iv["items"]])
+            for name, share in sorted((got.get("hack_rates") or {}).items()):
+                if share is not None:
+                    hacks.append([set_name, name.replace("_", " "), share])
+        b.table(
+            f"{prefix}.results",
+            ["set", "metric", "value", "low", "high", "items"],
+            ["text", "text", "pct1", "pct1", "pct1", "int"],
+            results,
+            **common,
+            note="95 percent cluster bootstrap intervals over question templates",
+        )
+        b.table(f"{prefix}.hacks", ["set", "detector", "share flagged"], ["text", "text", "pct1"], hacks, **common)
+
+
 def selection_section(root: Path, b: ManifestBuilder) -> None:
     s = _json(root, "results/selection.json")
     for role in ("main", "small"):
@@ -474,6 +510,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "floor": (floor_section, ("results/floor.json",)),
     "methods": (methods_section, ("results/methods.json",)),
+    "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
     "selection": (selection_section, ("results/selection.json",)),
     "audit": (audit_section, ("results/audit.json",)),
     "sizing": (sizing_section, ("results/sizing.json",)),

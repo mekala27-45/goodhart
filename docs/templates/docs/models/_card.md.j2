@@ -1,0 +1,54 @@
+# {{ code }}, the model card
+
+{{ statement() }}
+
+{% if has("models." ~ code ~ ".base") %}
+{% set p = "models." ~ code %}
+## What it is
+
+{{ v(p ~ ".description") }}. Base model: {{ v(p ~ ".base") }}, under {{ v(p ~ ".license") }}. The released
+checkpoint is {{ v(p ~ ".checkpoint") }} of run {{ v(p ~ ".trained_by") }}, the step the checkpoint choice picked:
+the highest twin confirmed accuracy on dev among the checkpoints the run saved.
+
+## Intended use
+
+To show what this method does to a small open model on these questions under one GPU hour ceiling.
+It writes DuckDB SQL for questions about the three warehouses of this repository. It must not be used to
+answer real questions about housing, flights or banking, and its numbers describe it on these
+questions only.
+
+## Results on every held-out set
+
+Twin confirmed: right on the original warehouse and on every kept twin. Greedy where the plan grades
+greedily, pass at k from the sampled answers.
+
+{{ table(p ~ ".results") }}
+
+## The hack detectors
+
+The share of its answers each detector flags, on each held-out set.
+
+{{ table(p ~ ".hacks") }}
+
+## Compute
+
+{{ v(p ~ ".gpu_hours") }} of T4 time by the run ledger, every stage the method needs counted.
+
+## Training, every setting
+
+{{ table(p ~ ".hyperparameters") }}
+
+## Data, by digest
+
+{{ table(p ~ ".data") }}
+
+## Known failure modes
+
+The template test set holds question shapes no training template has, and the results above show
+how far this checkpoint carries to them. A query can be right on the original warehouse and wrong
+on a twin: right for a reason the twins do not share, which the twin confirmed numbers count as
+wrong. RESULTS.md and the site list the hacks every arm found.
+{% else %}
+No {{ code }} checkpoint has been trained and sampled on the held-out sets yet, so there is no card
+to write. This page is rendered from the manifest and fills in when the method's runs are promoted.
+{% endif %}
