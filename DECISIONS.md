@@ -156,6 +156,34 @@ top p and top k and left any other setting of a model's config in force, a repet
 among them. The probe now records each candidate's own settings. Nothing has been graded with the
 old ones.
 
+## 2026-11-01 what the third probe and the first selection run met
+
+The first selection run sampled Qwen3-0.6B on vLLM and then failed every other candidate: on vLLM
+because GPU memory was held by other processes, and on transformers because a process held 12.8 GB
+of each card. vLLM runs its engine in a second process that only the first one's teardown stops,
+and the worker script left with os._exit(0), so each shard left an engine holding 85 percent of its
+card. The third probe's GRPO smoke met the same wall: its vLLM server was started on the card the
+vLLM lane had just used and never came up. Every child now leads a process group of its own, and
+when it ends the parent stops whatever is left in the group and waits for it to be gone; the worker
+also shuts its engine down before it leaves. Qwen3-0.6B was sampled before anything was left behind,
+so its samples stand; the next selection run samples the other four, and goodhart select takes each
+candidate's measures from the latest selection run that graded it.
+
+The selection rule counts a candidate only when a LoRA step runs, and in the third probe only
+Qwen3-0.6B's did. That step was a loop of the probe's own, which formed the full vocabulary logits of
+sixteen sequences after generation in the same process. TRL's trainers never form them: their fused
+head projects only the answer positions, in tiles. The probe's LoRA step is now the SFT trainer's
+own, three steps on the registered recipe in a child of its own per candidate, and the next probe
+asks it of the five candidates the selection can choose from.
+
+Two faults that no run has met yet were found on the way. The Trainer wraps a model in DataParallel
+over every card its process can see, so on two T4s SFT and DPO would have trained at twice the
+registered batch with a replica on the card the dev export samples on; every trainer stage now runs
+as a child that sees only the first card. And SFT and DPO rendered their training rows without the
+chat template arguments sampling uses, so a Qwen3 model would have learned to write the empty
+thinking block instead of finding it in its prompt; the rows now carry them. No registered value
+changes, so the training defaults keep the hash 4e1f4bafc58f.
+
 ## 2026-10-31 the leaked arm shows rows on 38.6 percent of prompts
 
 The leaked defect was designed to show sample rows, the answer row among them, on half the training
