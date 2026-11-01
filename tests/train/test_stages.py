@@ -76,7 +76,8 @@ def test_held_out_sampling_writes_n_per_prompt(tiny: dict[str, Any], tmp_path: P
     out = tmp_path / "out"
     summary = stages.sample(bundle, out, Meter(ceiling_hours=1.0))
     n = len(bundle.prompts("dev"))
-    assert summary["written"] == {"dev:sampled": 3 * n, "dev:greedy": n}
+    assert summary["written"] == {"base:dev:sampled": 3 * n, "base:dev:greedy": n}
+    assert summary["checkpoints"] == ["base"] and summary["adapter"] is False
     assert len(_rows(out / "completions" / "dev__base__n3.jsonl")) == 3 * n
 
 

@@ -211,17 +211,22 @@ def paraphrase(bundle: Bundle, out: Path, meter: Meter, cfg: dict[str, Any], see
 
 
 def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
-    """Held-out sampling for one checkpoint: n samples per question at the registered temperature,
-    and greedy for the sets the plan grades greedily (Spider, IFEval, the defect arms)."""
+    """Held-out sampling: n samples per question at the registered temperature, and greedy for the
+    sets the plan grades greedily (Spider, IFEval, the defect arms), for one checkpoint or, with
+    adapter_steps, for each of several (the interior test's neighbours of the chosen step).
+
+    Every set of one checkpoint goes to the backend in one call, so the model loads once per
+    checkpoint: with vLLM a load is two to three minutes, and a call per set paid it seven times."""
     req = bundle.request
     hp = {**bundle.config("training")["sample"], **req.hyperparameters}
     assert req.model is not None
-    adapter = _adapter(bundle.inputs, hp)
-    checkpoint = str(hp.get("checkpoint_name", "final"))
+    steps = hp.get("adapter_steps")
+    checkpoints: list[tuple[str, str | None]] = (
+        [(f"step-{int(step)}", _adapter(bundle.inputs, {**hp, "adapter_step": step})) for step in steps]
+        if steps
+        else [(str(hp.get("checkpoint_name", "final")), _adapter(bundle.inputs, hp))]
+    )
     examples = bundle.examples() if hp.get("with_examples") else []
-    backend = _backend(req.model, adapter, hp, meter, out)
-    written: dict[str, int] = {}
-    # One call per set, so a set finished before the ceiling is written even if a later one is not.
     plan = [(name, "sampled") for name in hp.get("sampled_sets", [])] + [
         (name, "greedy") for name in hp.get("greedy_sets", [])
     ]
@@ -229,25 +234,33 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     # length (IFEval answers run to an essay; the reference setting is 1,280 new tokens).
     plain = set(hp.get("plain_sets", ["ifeval"]))
     lengths = dict(hp.get("max_new_tokens_by_set", {"ifeval": 1280}))
-    for name, how in plan:
+    written: dict[str, int] = {}
+    for checkpoint, adapter in checkpoints:
         if meter.over_ceiling(0.05):
             break
-        prompts = bundle.prompts(name)
-        if how == "sampled":
-            n, temperature, length = int(hp["n"]), float(hp["temperature"]), int(hp["max_new_tokens"])
-            path = out / "completions" / f"{name}__{checkpoint}__n{n}.jsonl"
-        else:
-            n, temperature = 1, 0.0
-            length = int(hp.get("greedy_max_new_tokens", hp["max_new_tokens"]))
-            path = out / "completions" / f"{name}__{checkpoint}__greedy.jsonl"
-        length = int(lengths.get(name, length))
-        asked = messages_for(prompts, [] if name in plain else examples)
-        (got_s,) = _run(backend, [Job(asked, n, temperature, length, req.seed)], meter)
-        got = completions(prompts, got_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter)
-        write(got, path)
-        written[f"{name}:{how}"] = len(got)
-    _release(backend)
-    return {"written": written, "adapter": adapter is not None}
+        jobs, asks = [], []
+        for name, how in plan:
+            prompts = bundle.prompts(name)
+            if how == "sampled":
+                n, temperature, length = int(hp["n"]), float(hp["temperature"]), int(hp["max_new_tokens"])
+                path = out / "completions" / f"{name}__{checkpoint}__n{n}.jsonl"
+            else:
+                n, temperature = 1, 0.0
+                length = int(hp.get("greedy_max_new_tokens", hp["max_new_tokens"]))
+                path = out / "completions" / f"{name}__{checkpoint}__greedy.jsonl"
+            length = int(lengths.get(name, length))
+            jobs.append(Job(messages_for(prompts, [] if name in plain else examples), n, temperature, length, req.seed))
+            asks.append((name, how, path, prompts, temperature))
+        backend = _backend(req.model, adapter, hp, meter, out)
+        got_all = _run(backend, jobs, meter)
+        for (name, how, path, prompts, temperature), got_s in zip(asks, got_all, strict=True):
+            got = completions(
+                prompts, got_s, request=req.id, checkpoint=checkpoint, temperature=temperature, meter=meter
+            )
+            write(got, path)
+            written[f"{checkpoint}:{name}:{how}"] = len(got)
+        _release(backend)
+    return {"written": written, "checkpoints": [c for c, _ in checkpoints], "adapter": checkpoints[0][1] is not None}
 
 
 def pairs(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
