@@ -1,0 +1,210 @@
+{
+ "request": "2026-11-01-11-sft-m1",
+ "request_sha256": "b7663e49cead59728c131badfb79c521de2163add363434f217ee15d0d3d0e27",
+ "kernel": "mekalaajay/goodhart-2026-11-01-11-sft-m1",
+ "run_id": "41322092067",
+ "commit": "08c262a5ef6859a19b9073f7d243a1f8a3bb1013",
+ "status": "done",
+ "verified": true,
+ "files": {
+  "adapter/README.md": "42c092d9d02d23f755f6f580e02fca7de2c4737876e27bb14fb160819babfa45",
+  "adapter/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-100/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-125/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-150/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-175/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-200/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-225/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-25/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-250/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-275/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-300/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-302/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-50/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-75/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "completions/dev__step-100.jsonl": "b7c8ca8bd16df28da84a3d4a017043c9301c91703fb8d4b6079e3a3296278c10",
+  "completions/dev__step-125.jsonl": "0dd2e2fe4066be5886dbb21b247f06555731d744ed9f6cc99ad4013c168321bd",
+  "completions/dev__step-150.jsonl": "3e281d300a45e196b21b227fa825cd23d59cd2e38b13d68c62c761a8bc0e74a8",
+  "completions/dev__step-175.jsonl": "3f1f3fd8cf436456a97ebb45505027f83e5de41b4669d1882ba73aeeae5f4001",
+  "completions/dev__step-200.jsonl": "2bf3815cae00ebae1454eed8849d6bbbd400bfd4526775730dc92316e77d48ac",
+  "completions/dev__step-225.jsonl": "e9cb0958cd9306c853cbe5cacff6e1784dd6100047a14e67f29456e219c9350d",
+  "completions/dev__step-25.jsonl": "dd5e4cd08cf16bfa412c093b76cecd118d2dfd11efe836cdc3a18048dbe49610",
+  "completions/dev__step-250.jsonl": "ada405c505136eec81a79cf345d9d0a913832b18ba0c1b605938a707d19be3c9",
+  "completions/dev__step-275.jsonl": "7e0b0493b28362d0f9381cd0ec3deba3442e42282b5553fb48f9f6fdc7881510",
+  "completions/dev__step-300.jsonl": "e5e92da5dc579dbb9b8bf6364b7f3fc101ec07fef5f44145687705ecc48f63d8",
+  "completions/dev__step-302.jsonl": "61098ce2972015cac780d7155131c1be402806a8ab76d1298041f6e982a817c2",
+  "completions/dev__step-50.jsonl": "552ee0904a09d2dd979f76f560089e43b0e339351e9ec25ee3a36b9169232f0d",
+  "completions/dev__step-75.jsonl": "7a3bba4625224211614838150eb4716990ea75920242c86ece0d7557ab410703",
+  "ledger.jsonl": "be14c9ee0e7e1116aa34e9e637d9ffcb6f882a815943f98e90391f8a69cf5e68",
+  "logs/sft.err.txt": "1a70e56c7e6f13bf251a28ec8e24918eaac7e99921a9cd7095f0ab3b294ff0d2",
+  "logs/sft.out.txt": "b5fd846141364e10dfa1e1dd2fc0906f329e2a357229da6255a4c8753a61f1ad",
+  "metrics/trainer.jsonl": "543aea803f66b63108c5ef1c5f24c7005a5ecd136271d8955dd5fba621eaf5a4",
+  "provenance-kernel.json": "e5f175b328b8c2f3dae03816c18c8a40f3f047ff465bf20ca668d62e5d00851c"
+ },
+ "redacted": {},
+ "assets": {
+  "adapter/adapter_model.safetensors": {
+   "sha256": "c20dd16d19111339e4a6713e86e12092d12b02d15b5f92de6f4470f99d8f6404",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapter__adapter_model.safetensors"
+  },
+  "adapters/step-100/adapter_model.safetensors": {
+   "sha256": "027c87199496bc03e042f0e711ac169795f96da78c76c43cdafb89f6129992c5",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-100__adapter_model.safetensors"
+  },
+  "adapters/step-125/adapter_model.safetensors": {
+   "sha256": "b6922a4b28775144d4542e31969c91b3d1032bdd9f2c4dc171b7a8adeacfb5eb",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-125__adapter_model.safetensors"
+  },
+  "adapters/step-150/adapter_model.safetensors": {
+   "sha256": "d2e922fe2c598b510be3a41437638c21a575aad9c03aafd9b94a1c760fe46463",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-150__adapter_model.safetensors"
+  },
+  "adapters/step-175/adapter_model.safetensors": {
+   "sha256": "b58fceadb5c0f554060ec33edd238a14334f496d0e31062697895268f4d8e0af",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-175__adapter_model.safetensors"
+  },
+  "adapters/step-200/adapter_model.safetensors": {
+   "sha256": "958f461b3ba2c11de49d62ad2f38135b8e3b75bb6cda2d1c65b469fc05514333",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-200__adapter_model.safetensors"
+  },
+  "adapters/step-225/adapter_model.safetensors": {
+   "sha256": "7b58eb3259aba2c20eeeebb9a9afa0ea901857b9212e7b733c7375331fd0f8c9",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-225__adapter_model.safetensors"
+  },
+  "adapters/step-25/adapter_model.safetensors": {
+   "sha256": "8dd46627b80fc4e694161370b778d04e760e55082b79dd5e2d6670e9a7c227df",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-25__adapter_model.safetensors"
+  },
+  "adapters/step-250/adapter_model.safetensors": {
+   "sha256": "e889f2906a9503689529facbbd9cdd6a1c4f098457ba3047b98ab1355e28a489",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-250__adapter_model.safetensors"
+  },
+  "adapters/step-275/adapter_model.safetensors": {
+   "sha256": "dd9bb17aa240a0eebc84ff6a0fd79fdd36696036cde8bccad0ecf3c8e7b20caa",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-275__adapter_model.safetensors"
+  },
+  "adapters/step-300/adapter_model.safetensors": {
+   "sha256": "0473070a7d11a24061a2da8ba33048bc7f01bfd35e247b0e39fda4c06e640ba9",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-300__adapter_model.safetensors"
+  },
+  "adapters/step-302/adapter_model.safetensors": {
+   "sha256": "c20dd16d19111339e4a6713e86e12092d12b02d15b5f92de6f4470f99d8f6404",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-302__adapter_model.safetensors"
+  },
+  "adapters/step-50/adapter_model.safetensors": {
+   "sha256": "a18955b7309cd3b7d47f567962789cf957c21d4088f9eeb430b60657342482cf",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-50__adapter_model.safetensors"
+  },
+  "adapters/step-75/adapter_model.safetensors": {
+   "sha256": "df309e23da3cbc32d38fc1a92e4a8a99a89f1e1ee6554f1f1533061d801a26ac",
+   "bytes": 73911112,
+   "release": "runs",
+   "asset": "2026-11-01-11-sft-m1__adapters__step-75__adapter_model.safetensors"
+  }
+ },
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "915",
+     "power.limit": "70.00",
+     "temperature.gpu": "67"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "300",
+     "power.limit": "70.00",
+     "temperature.gpu": "70"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "summary": {
+  "global_step": 302,
+  "stopped_at_ceiling": false,
+  "set": "cleaned",
+  "dev_exports": [
+   25,
+   50,
+   75,
+   100,
+   125,
+   150,
+   175,
+   200,
+   225,
+   250,
+   275,
+   300,
+   302
+  ],
+  "dev_export_errors": [],
+  "trained_on": "card 0, dev export on card 1"
+ },
+ "error": null
+}
