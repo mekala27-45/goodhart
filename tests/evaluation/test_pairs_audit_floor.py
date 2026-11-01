@@ -36,6 +36,8 @@ def test_pairs_take_a_correct_and_an_executable_wrong_sample(committed: dict[str
     assert out["pairs"][0]["chosen"] == right(a)
     assert out["pairs"][0]["rejected"] == "```sql\nselect 1 as value\n```", "an executable wrong answer is preferred"
     assert out["no_wrong"] == 1 and out["no_correct"] == 1 and out["share_kept"] == pytest.approx(1 / 3, abs=1e-4)
+    assert out["samples"] == 6
+    assert out["honest_mean"] == pytest.approx(3.2 / 6, abs=1e-4), "three in full, two that execute, one that pays 0"
 
 
 @pytest.mark.warehouses

@@ -9,10 +9,12 @@ choose training data. Then, per prompt:
                   nothing. A prompt with no correct or no wrong sample gives no pair and is counted.
     learnability  kept when at least one sample is correct and at least one is wrong, so GRPO never
                   spends a step on a group whose rewards are all equal (zero advantage, zero signal).
+    honest mean   the honest reward averaged over every sample: on the defect study's starting
+                  checkpoint it is the mean the random control (C1) draws its Bernoulli payments at.
 
 Outputs, committed so the DPO and GRPO requests can declare their digests:
     data/pairs/<run>.jsonl         item_id, messages, chosen, rejected
-    data/learnable/<run>.json      the kept ids, the share kept, the counts behind it
+    data/learnable/<run>.json      the kept ids, the share kept, the counts behind it, the honest mean
 """
 
 from __future__ import annotations
@@ -41,10 +43,12 @@ def pay(completion: Completion, items: dict[str, Any], w: Warehouses) -> float:
 
 def build(completions: list[Completion], items: dict[str, Any], w: Warehouses) -> dict[str, Any]:
     by_item: dict[str, list[tuple[int, float, str]]] = defaultdict(list)
+    paid: list[float] = []
     for c in completions:
         if items[c.item_id].split != "train":
             raise PermissionError(f"{c.item_id} is not a training item; pairs come from training prompts only")
-        by_item[c.item_id].append((c.sample, pay(c, items, w), c.text))
+        paid.append(pay(c, items, w))
+        by_item[c.item_id].append((c.sample, paid[-1], c.text))
     pairs: list[dict[str, Any]] = []
     kept: list[str] = []
     no_correct = no_wrong = 0
@@ -68,6 +72,8 @@ def build(completions: list[Completion], items: dict[str, Any], w: Warehouses) -
         "no_correct": no_correct,
         "no_wrong": no_wrong,
         "share_kept": round(len(kept) / len(by_item), 4) if by_item else 0.0,
+        "samples": len(paid),
+        "honest_mean": round(sum(paid) / len(paid), 4) if paid else 0.0,
     }
 
 
@@ -90,7 +96,7 @@ def run(root: Path, run_id: str) -> dict[str, Any]:
     with pair_path.open("w", encoding="utf-8") as handle:
         for p in out["pairs"]:
             handle.write(json.dumps({**p, "messages": prompts[p["item_id"]]}, sort_keys=True) + "\n")
-    learnable = {k: out[k] for k in ("kept", "asked", "no_correct", "no_wrong", "share_kept")}
+    learnable = {k: out[k] for k in ("kept", "asked", "no_correct", "no_wrong", "share_kept", "samples", "honest_mean")}
     learn_path = root / "data" / "learnable" / f"{run_id}.json"
     learn_path.parent.mkdir(parents=True, exist_ok=True)
     learn_path.write_text(json.dumps({"run": run_id, **learnable}, indent=1) + "\n", encoding="utf-8")
