@@ -327,7 +327,7 @@ def test_the_stage_task_runs_grpo_in_the_child(tiny: dict[str, Any], tmp_path: P
     found = worker.stage({**args, "ceiling_hours": 1.0, "overrides": {"vllm_mode": "colocate"}})
     assert found["summary"]["global_step"] == 1 and found["counts"]["steps"] == 1
     with pytest.raises(ValueError, match="no isolated stage"):
-        worker.stage({**args, "stage": "sft", "ceiling_hours": 1.0})
+        worker.stage({**args, "stage": "judge", "ceiling_hours": 1.0})
 
 
 def test_a_candidate_vllm_cannot_serve_is_sampled_with_transformers(
