@@ -8,6 +8,7 @@ dependencies = [
   "goodhart-core",
   "goodhart-rewards",
   "goodhart-questions",
+  "goodhart-monitor",
   "numpy>=2.0",
   "pyarrow>=18",
 ]
@@ -16,6 +17,7 @@ dependencies = [
 goodhart-core = { workspace = true }
 goodhart-rewards = { workspace = true }
 goodhart-questions = { workspace = true }
+goodhart-monitor = { workspace = true }
 
 [build-system]
 requires = ["hatchling>=1.25"]

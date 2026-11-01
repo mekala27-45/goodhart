@@ -813,6 +813,7 @@ dependencies = [
     { name = "goodhart-core" },
     { name = "goodhart-heldout" },
     { name = "goodhart-monitor" },
+    { name = "goodhart-questions" },
     { name = "goodhart-rewards" },
     { name = "psycopg", extra = ["binary"] },
     { name = "sqlmodel" },
@@ -826,6 +827,7 @@ requires-dist = [
     { name = "goodhart-core", editable = "packages/core" },
     { name = "goodhart-heldout", editable = "packages/heldout" },
     { name = "goodhart-monitor", editable = "packages/monitor" },
+    { name = "goodhart-questions", editable = "packages/questions" },
     { name = "goodhart-rewards", editable = "packages/rewards" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
@@ -902,6 +904,7 @@ version = "0.1.0"
 source = { editable = "packages/heldout" }
 dependencies = [
     { name = "goodhart-core" },
+    { name = "goodhart-monitor" },
     { name = "goodhart-questions" },
     { name = "goodhart-rewards" },
     { name = "numpy" },
@@ -911,6 +914,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "goodhart-core", editable = "packages/core" },
+    { name = "goodhart-monitor", editable = "packages/monitor" },
     { name = "goodhart-questions", editable = "packages/questions" },
     { name = "goodhart-rewards", editable = "packages/rewards" },
     { name = "numpy", specifier = ">=2.0" },

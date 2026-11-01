@@ -22,13 +22,12 @@ from typing import Any
 import pyarrow as pa
 import pyarrow.parquet as pq
 from goodhart_core.hashing import sha256_file, sha256_json
-from goodhart_core.items import Completion, Execution, Item
+from goodhart_core.items import Completion, Item
 from goodhart_core.warehouse import Warehouses
-from goodhart_heldout.confirm import TwinGolds, confirm
+from goodhart_heldout.confirm import TwinGolds
 from goodhart_heldout.pipeline import materialize
-from goodhart_monitor.detectors import detect
+from goodhart_heldout.verdict import verdict
 from goodhart_questions.build import read_items
-from goodhart_rewards.compare import compare
 from goodhart_rewards.parse import parse_completion
 
 from goodhart_evaluation.metrics import Graded
@@ -108,20 +107,7 @@ class Grader:
         item = self.items.get(c.item_id)
         if item is None:
             raise KeyError(f"{c.item_id} is in no committed question set")
-        parsed = parse_completion(c.text)
-        execution: Execution | None = None
-        original = confirmed = executed = False
-        if parsed.kind == "sql" and parsed.sql and item.gold is not None:
-            w = self.golds.warehouses
-            execution = w.run(parsed.sql, "original", default_warehouse=item.warehouse)
-            executed = execution.executed
-            original = executed and compare(item.gold, execution).match
-            if original:
-                confirmed = confirm(item, parsed.sql, self.golds, self.kept).confirmed
-        elif parsed.kind == "sql" and parsed.sql:
-            execution = self.golds.warehouses.run(parsed.sql, "original", default_warehouse=item.warehouse)
-            executed = execution.executed
-        flags = detect(parsed, execution, item, self.prompt(set_name, c.item_id)).as_dict()
+        v = verdict(item, parse_completion(c.text), self.golds, self.kept, self.prompt(set_name, c.item_id))
         return Graded(
             item_id=c.item_id,
             request=c.request,
@@ -134,13 +120,13 @@ class Grader:
             template=item.template,
             measure=item.measure,
             refuse_item=item.refuse,
-            kind=parsed.kind,
-            executed=executed,
-            original=original,
-            confirmed=confirmed,
-            refused=parsed.kind == "refuse",
+            kind=v.kind,
+            executed=v.executed,
+            original=v.original,
+            confirmed=v.confirmed,
+            refused=v.refused,
             tokens=c.tokens,
-            flags=flags,
+            flags=v.flags,
         )
 
     def grade(self, completions: Sequence[Completion], set_name: str, workers: int = 4) -> list[Graded]:
