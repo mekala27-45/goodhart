@@ -127,8 +127,9 @@ def test_the_migrations_reach_head_twice_on_a_fresh_database() -> None:
         upgrade(url)
         upgrade(url)
         with fresh.connect() as con:
-            assert con.execute(text("select version_num from goodhart.alembic_version")).scalar() == "0001"
+            assert con.execute(text("select version_num from goodhart.alembic_version")).scalar() == "0002"
             assert con.execute(text("select count(*) from goodhart.grades")).scalar() == 0
+            assert con.execute(text("select count(*) from goodhart.ledger")).scalar() == 0
     finally:
         fresh.dispose()
         with base.connect().execution_options(isolation_level="AUTOCOMMIT") as con:

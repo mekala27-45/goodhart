@@ -1,9 +1,11 @@
-"""The grade log and the client budget, in Postgres (Neon in production), schema goodhart.
+"""The grade log, the run ledger mirror and the client budget, in Postgres (Neon in production),
+schema goodhart.
 
 A grade row is written and committed before the response leaves, so a grade the client saw is a
 grade the log has; a test reads it back from an independent connection. The client budget counts
 grades per hashed client address per hour; the address itself is never stored, only a salted
-sha256 of it.
+sha256 of it. The ledger mirror holds one row per promoted GPU run, upserted from the committed
+results/runs/<id>/ledger.jsonl by scripts/mirror_ledger.py; the repository's file stays the record.
 """
 
 from __future__ import annotations
@@ -14,7 +16,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
 
-from sqlalchemy import JSON, Column, DateTime, Engine, MetaData, text
+from sqlalchemy import JSON, BigInteger, Column, DateTime, Engine, MetaData, text
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 SCHEMA = "goodhart"
@@ -48,6 +50,72 @@ class GradeRow(Base, table=True):
     flags: dict[str, bool] = Field(default_factory=dict, sa_column=Column(JSON))
     verifier: str
     elapsed_ms: float = 0.0
+
+
+class LedgerRow(Base, table=True):
+    """One promoted GPU run's ledger row, as the kernel's meter wrote it."""
+
+    __tablename__ = "ledger"
+
+    request: str = Field(primary_key=True)
+    stage: str = Field(index=True)
+    model: str | None = None
+    arm: str | None = None
+    status: str
+    steps: int = 0
+    prompts: int = 0
+    rollouts: int = 0
+    tokens_generated: int = 0
+    tokens_trained: int = 0
+    gpu_seconds: dict[str, float] = Field(default_factory=dict, sa_column=Column(JSON))
+    gpu_hours: float = 0.0
+    wall_clock_seconds: float = 0.0
+    ceiling_hours: float = 0.0
+    stopped_at_ceiling: bool = False
+    peak_memory_bytes: int = Field(default=0, sa_type=BigInteger)
+    accelerator: str | None = None
+    request_digest: str | None = None
+    mirrored_at: dt.datetime = Field(default_factory=lambda: dt.datetime.now(dt.UTC), sa_type=DateTime(timezone=True))
+
+
+LEDGER_FIELDS = (
+    "stage",
+    "model",
+    "arm",
+    "status",
+    "steps",
+    "prompts",
+    "rollouts",
+    "tokens_generated",
+    "tokens_trained",
+    "gpu_seconds",
+    "wall_clock_seconds",
+    "ceiling_hours",
+    "stopped_at_ceiling",
+    "peak_memory_bytes",
+    "accelerator",
+    "request_digest",
+)
+
+
+def mirror(s: Session, rows: list[dict[str, Any]]) -> int:
+    """Upsert each ledger row by its request: a run promoted again (collected again) replaces its row."""
+    for r in rows:
+        values: dict[str, Any] = {k: r[k] for k in LEDGER_FIELDS if r.get(k) is not None}
+        values["gpu_hours"] = round(sum(float(v) for v in (r.get("gpu_seconds") or {}).values()) / 3600.0, 4)
+        found = s.get(LedgerRow, str(r["request"]))
+        if found is None:
+            s.add(LedgerRow.model_validate({"request": str(r["request"]), **values}))
+        else:
+            for k, v in values.items():
+                setattr(found, k, v)
+            found.mirrored_at = dt.datetime.now(dt.UTC)
+    s.commit()
+    return len(rows)
+
+
+def ledger(s: Session) -> list[LedgerRow]:
+    return list(s.exec(select(LedgerRow).order_by(LedgerRow.request)).all())
 
 
 class BudgetRow(Base, table=True):
