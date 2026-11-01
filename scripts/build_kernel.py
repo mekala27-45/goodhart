@@ -100,6 +100,13 @@ def stage_files(req: Request, root: Path) -> tuple[dict[str, bytes], dict[str, s
                 from goodhart_evaluation.ifeval import benchmark
 
                 path = benchmark(root)
+            elif name == "spider_dev":
+                # The Spider prompts live in the cache too, built from the data asset by digest.
+                from goodhart_evaluation import spider
+
+                if not spider.benchmark(root).exists():
+                    spider.fetch(root)
+                path = spider.benchmark(root)
             elif not path.exists():
                 path = root / "data" / "benchmarks" / f"{name}.jsonl"
             add(f"data/prompts/{name}.jsonl", path)

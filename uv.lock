@@ -765,6 +765,10 @@ smoke = [
     { name = "transformers" },
     { name = "trl" },
 ]
+spider = [
+    { name = "sqlparse" },
+    { name = "tqdm" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -807,12 +811,14 @@ requires-dist = [
     { name = "readback-catalog", marker = "extra == 'floor'", git = "https://github.com/mekala27-45/readback?subdirectory=packages%2Fcatalog&rev=c4efff35b8ec24f9f80cef7736cc5bf11334ddb4" },
     { name = "readback-core", marker = "extra == 'floor'", git = "https://github.com/mekala27-45/readback?subdirectory=packages%2Fcore&rev=c4efff35b8ec24f9f80cef7736cc5bf11334ddb4" },
     { name = "readback-planner", marker = "extra == 'floor'", git = "https://github.com/mekala27-45/readback?subdirectory=packages%2Fplanner&rev=c4efff35b8ec24f9f80cef7736cc5bf11334ddb4" },
+    { name = "sqlparse", marker = "extra == 'spider'", specifier = ">=0.5" },
     { name = "torch", marker = "extra == 'smoke'", specifier = ">=2.6" },
+    { name = "tqdm", marker = "extra == 'spider'", specifier = ">=4.66" },
     { name = "transformers", marker = "extra == 'smoke'", specifier = "==5.22.1" },
     { name = "trl", marker = "extra == 'smoke'", specifier = "==1.17.1" },
     { name = "typer", specifier = ">=0.15" },
 ]
-provides-extras = ["smoke", "ifeval", "floor"]
+provides-extras = ["smoke", "ifeval", "spider", "floor"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -2812,6 +2818,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/dd/67/b2c0b771c89c023262dd8fb6ba2cdc6a004e5ff75dd5763051b38ccd133a/sqlmodel-0.0.48.tar.gz", hash = "sha256:5582e87e845e23bb1179a7d8b11a4f5e441b4494528a41ee2fe1d129ffe91543", size = 99329, upload-time = "2026-10-06T21:44:36.391Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4b/76/6f8221eda15f28471c3887e5a75a62cd7338d20ac03e1e78a110a127d61e/sqlmodel-0.0.48-py3-none-any.whl", hash = "sha256:8d389bf735b03a17508e93e888c13a30ef1ddca22dd8e57add12317401e4112e", size = 31468, upload-time = "2026-10-06T21:44:35.326Z" },
+]
+
+[[package]]
+name = "sqlparse"
+version = "0.6.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/d3/3f06a1006f2261d1342aefb3c71eed02f5d4ca5bdbecd86ebc12ad38306e/sqlparse-0.6.0.tar.gz", hash = "sha256:113c35c75365ab9cc9c7231d68c6428fb11c085fc8e9eb1ad659b7ddbf6cd2b9", size = 178477, upload-time = "2026-08-13T19:16:06.396Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d9/50/f00935da0ec7cbf325f8dc4f772ae46fbc7b672dd62876e73f0a94adda57/sqlparse-0.6.0-py3-none-any.whl", hash = "sha256:b861c0288ce2fa56209a9a6412d2e066ac664b3873b89c26c9d8415e8e32996f", size = 50070, upload-time = "2026-08-13T19:16:04.062Z" },
 ]
 
 [[package]]

@@ -42,6 +42,12 @@ ifeval = [
   "nltk==3.8.1",
   "immutabledict>=4.2",
 ]
+# The Spider transfer check: the test suite evaluation, fetched by digest at its pinned commit
+# (data/spider.lock.json), imports these.
+spider = [
+  "sqlparse>=0.5",
+  "tqdm>=4.66",
+]
 # The readback no model floor, imported at its pinned commit and never vendored.
 floor = [
   "readback-core @ git+https://github.com/mekala27-45/readback@c4efff35b8ec24f9f80cef7736cc5bf11334ddb4#subdirectory=packages/core",
@@ -135,6 +141,7 @@ markers = [
   "loadtest: needs a running server",
   "floor: needs the floor extra (readback at its pinned commit)",
   "ifeval: needs the ifeval extra and Google's checker fetched (goodhart ifeval --fetch)",
+  "spider: needs the spider extra and the test suite evaluation fetched (goodhart spider --fetch)",
 ]
 # importlib mode leaves sys.path alone, for the same reason the root is virtual.
 addopts = "-q --import-mode=importlib"

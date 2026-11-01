@@ -379,6 +379,58 @@ def methods_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def regression_section(root: Path, b: ManifestBuilder) -> None:
+    """IFEval and Spider dev per method, with each change against the base (goodhart regression)."""
+    r = _json(root, "results/regression.json")
+    for suite, population in (
+        ("ifeval", "the IFEval prompts each method's chosen checkpoint answered"),
+        ("spider", "the Spider dev questions each method's chosen checkpoint answered"),
+    ):
+        rows = []
+        for method, got in sorted(r.get(suite, {}).items()):
+            change = got.get("change") or {}
+            b.value(
+                f"regression.{suite}.{method}.accuracy",
+                got["accuracy"],
+                "pct1",
+                origin="goodhart regression",
+                population=population,
+                source="completions",
+            )
+            if change:
+                b.value(
+                    f"regression.{suite}.{method}.verdict",
+                    change["verdict"],
+                    "text",
+                    origin="goodhart regression",
+                    population=population,
+                    source="completions",
+                )
+            rows.append(
+                [
+                    method,
+                    got["accuracy"],
+                    got["low"],
+                    got["high"],
+                    change.get("point"),
+                    change.get("low"),
+                    change.get("high"),
+                    change.get("verdict", "the base"),
+                    got["items"],
+                ]
+            )
+        b.table(
+            f"regression.{suite}",
+            ["method", "accuracy", "low", "high", "change", "change low", "change high", "verdict", "items"],
+            ["text", "pct1", "pct1", "pct1", "pts1", "pts1", "pts1", "text", "int"],
+            rows,
+            origin="goodhart regression",
+            population=population,
+            source="completions",
+            note=str(r["metric"][suite]) + "; the change is against the base, paired, 95 percent bootstrap",
+        )
+
+
 def models_section(root: Path, b: ManifestBuilder) -> None:
     """One model card's worth of entries per method whose chosen checkpoint has been sampled."""
     from goodhart_evaluation.cards import gather
@@ -565,6 +617,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "probe": (probe_section, ("results/gpu_probe.json",)),
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "floor": (floor_section, ("results/floor.json",)),
+    "regression": (regression_section, ("results/regression.json",)),
     "methods": (methods_section, ("results/methods.json",)),
     "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
     "gates": (gates_section, ("results/gates.json",)),

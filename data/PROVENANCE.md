@@ -15,7 +15,8 @@ tag, commit, every file and its digest.
 | ledger marts | github.com/mekala27-45/ledger at v0.1.0 | code Apache 2.0; a fictional bank, generated records |
 | readback catalog and golden set | github.com/mekala27-45/readback at c4efff35 | Apache 2.0 |
 | spaCy en_core_web_md 3.8.0 | github.com/explosion/spacy-models release, locked by hash in uv.lock | MIT |
-| Spider dev and its test suite databases | fetched in a kernel by digest when the regression stage runs | CC BY-SA 4.0 (Yu et al., 2018); the test suite evaluation is Apache 2.0 |
+| Spider dev and its test suite databases | the Spider zip from a Hugging Face re-host of the canonical file (HAL-9001/spider-databases), checked against its published sha256, and the test suite databases from the Google Drive file the test suite README names, fetched by the spider workflow on Actions and repacked with only the dev set's databases into the data release, pinned by sha256 in data/spider.lock.json, never committed | CC BY-SA 4.0 (Yu et al., 2018); the distilled test suites are from Zhong et al. (2020) |
+| Spider test suite evaluation | github.com/taoyds/test-suite-sql-eval at e97acc54, exec_eval.py and parse.py fetched by sha256 into the cache (data/spider.lock.json), never committed | Apache 2.0 |
 | IFEval prompts and reference checker | github.com/google-research/google-research at 83f1e7b5, instruction_following_eval, fetched by sha256 (data/ifeval.lock.json) into the cache, never committed, and the answers kept in the runs release, never in git | Apache 2.0 (Zhou et al., 2023) |
 | nltk punkt sentence tokenizer | github.com/nltk/nltk_data at 550b6625, fetched by sha256 for the IFEval checker | Apache 2.0 |
 | Base models | the Hugging Face Hub, by model id, inside a kernel only | each model's license as its card declares it on the day, recorded in results/gpu_probe.json |

@@ -12,9 +12,14 @@ uv sync --frozen            # Python 3.12, the workspace and the dev tools
 make hooks                  # the pre-push hook: token and identifier scans on every pushed commit
 make fetch                  # the warehouses and the readback files, by sha256, into data/cache
 uv run goodhart twins       # the four kept twins, rebuilt from data/twins.lock.json, every file checked
-uv sync --frozen --inexact --extra floor --extra ifeval   # readback's floor, Google's IFEval checker
+uv sync --frozen --inexact --extra floor --extra ifeval --extra spider   # the floor and two checkers
 uv run goodhart ifeval --fetch   # the IFEval prompts and checker and nltk's punkt, by sha256
+uv run goodhart spider --fetch   # the test suite evaluation, and Spider dev once it is published
 ```
+
+Spider dev and its test suite databases are fetched from their sources once, by the spider workflow
+on Actions (the build machine has no route to them), and published to the data release with their
+digests; data/spider.lock.json pins that asset and goodhart spider --fetch reads it from there.
 
 The trainers need the smoke extra on CPU (`uv pip install` CPU PyTorch, then the pinned TRL stack,
 as in .github/workflows/ci.yml). No GPU is used from this machine, ever: GPU runs are requested by
@@ -31,7 +36,7 @@ uv run goodhart grade --check   # every exported completion graded again
 python scripts/promote_results.py --check   # every promoted GPU run matches its provenance
 ```
 
-CI runs all of it with `GOODHART_REQUIRE=postgres,warehouses,torch,floor,ifeval`, so a skip there
+CI runs all of it with `GOODHART_REQUIRE=postgres,warehouses,torch,floor,ifeval,spider`, so a skip there
 is a failure.
 Coverage counts every module of every package and must stay at or above 80 percent.
 

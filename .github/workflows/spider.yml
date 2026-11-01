@@ -1,0 +1,48 @@
+# Spider dev and its test suite databases, fetched from their sources by digest and repacked for the
+# repository. The build machine has no route to Hugging Face or Google Drive, and a kernel would spend
+# GPU quota on a download, so this runs on Actions, by hand, once: scripts/fetch_spider.py checks the
+# Spider zip against its published sha256, records the test suite zip's, keeps only what the
+# evaluation of Spider dev reads, and the tarball and its manifest go to the data release. goodhart
+# spider --fetch reads them from there, checked against data/spider.lock.json.
+name: spider
+
+on:
+  workflow_dispatch:
+    inputs:
+      without_test_suite:
+        description: "Pack the original databases only (if Google Drive refuses the test suite)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install the two fetchers
+        run: python -m pip install "httpx==0.28.1" "gdown==5.2.0"
+      - name: Fetch, check and repack
+        env:
+          WITHOUT: ${{ inputs.without_test_suite }}
+        run: |
+          flag=""
+          if [ "$WITHOUT" = "true" ]; then flag="--without-test-suite"; fi
+          python scripts/fetch_spider.py --out build/spider $flag | tee build/spider-summary.json
+          {
+            echo '```json'
+            cat build/spider-summary.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish to the data release
+        run: |
+          gh release view data >/dev/null 2>&1 || gh release create data --prerelease --title "Benchmark data" --notes "Public benchmark data the repository grades with, each file with its sha256 in the manifest beside it and in data/*.lock.json. Spider dev is CC BY-SA 4.0 (Yu et al., 2018), its test suite databases are from Zhong et al. (2020)."
+          gh release upload data build/spider/spider_dev.tar.gz build/spider/spider_dev.json --clobber

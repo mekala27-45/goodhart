@@ -140,6 +140,40 @@ def ifeval(
 
 
 @app.command()
+def spider(
+    fetch: bool = typer.Option(False, "--fetch", help="Fetch the evaluation and the data by digest instead"),
+    evaluator_only: bool = typer.Option(False, "--evaluator-only", help="With --fetch: the evaluation only"),
+) -> None:
+    """Grade every exported Spider dev answer with the test suite evaluation; or fetch it."""
+    from goodhart_evaluation import spider as sp
+
+    root = paths.root()
+    if fetch:
+        out = {"evaluator": str(sp.fetch_evaluator(root))} if evaluator_only else sp.fetch(root)
+    else:
+        out = sp.run(root)
+        out = {k: out[k] for k in ("questions", "by_method", "changes")}
+    typer.echo(json.dumps(out, indent=1))
+
+
+@app.command()
+def regression() -> None:
+    """The regression suite: IFEval and Spider dev per method, each against the base."""
+    from goodhart_evaluation.regression import run
+
+    out = run(paths.root())
+    typer.echo(
+        json.dumps(
+            {
+                s: {m: v.get("change", {}).get("verdict", "the base") for m, v in out[s].items()}
+                for s in ("ifeval", "spider")
+            },
+            indent=1,
+        )
+    )
+
+
+@app.command()
 def grade(
     check: bool = typer.Option(False, help="Compare with the committed grades instead of writing"),
 ) -> None:

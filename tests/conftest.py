@@ -52,12 +52,21 @@ def _have_ifeval() -> bool:
     return any(cache.glob("*/instruction_following_eval/evaluation_lib.py")) if cache.exists() else False
 
 
+def _have_spider() -> bool:
+    """The spider extra installed and the test suite evaluation fetched (goodhart spider --fetch)."""
+    if importlib.util.find_spec("sqlparse") is None:
+        return False
+    cache = ROOT / "data" / "cache" / "spider"
+    return any(cache.glob("*/test_suite/exec_eval.py")) if cache.exists() else False
+
+
 AVAILABLE = {
     "torch": _have_torch,
     "warehouses": _have_warehouses,
     "postgres": _have_postgres,
     "floor": _have_floor,
     "ifeval": _have_ifeval,
+    "spider": _have_spider,
 }
 
 

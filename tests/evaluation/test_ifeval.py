@@ -55,12 +55,12 @@ def test_every_exported_ifeval_file_is_graded_and_summed(tmp_path: Path) -> None
     assert json.loads(graded.read_text(encoding="utf-8"))[0]["item_id"] == no_comma
 
 
-def test_the_sql_grader_leaves_ifeval_and_the_teachers_rewrites_alone(tmp_path: Path) -> None:
+def test_the_sql_grader_leaves_ifeval_spider_and_the_teachers_rewrites_alone(tmp_path: Path) -> None:
     from goodhart_evaluation.grade import sources
 
     folder = tmp_path / "results" / "runs" / "r" / "completions"
     folder.mkdir(parents=True)
-    for name in ("dev__m__greedy", "ifeval__final__greedy", "paraphrase__teacher"):
+    for name in ("dev__m__greedy", "ifeval__final__greedy", "spider_dev__final__greedy", "paraphrase__teacher"):
         (folder / f"{name}.jsonl").write_text("", encoding="utf-8")
     assert [s.name for s in sources(tmp_path)] == ["dev__m__greedy"]
 

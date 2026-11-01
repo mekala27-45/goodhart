@@ -232,7 +232,7 @@ def sample(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     ]
     # A benchmark that is not SQL (IFEval) is asked as itself: no SQL examples before it, and its own
     # length (IFEval answers run to an essay; the reference setting is 1,280 new tokens).
-    plain = set(hp.get("plain_sets", ["ifeval"]))
+    plain = set(hp.get("plain_sets", ["ifeval", "spider_dev"]))
     lengths = dict(hp.get("max_new_tokens_by_set", {"ifeval": 1280}))
     written: dict[str, int] = {}
     for checkpoint, adapter in checkpoints:

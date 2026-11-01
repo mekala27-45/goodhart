@@ -32,7 +32,7 @@ jobs:
           --health-cmd "pg_isready -U goodhart" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://goodhart:goodhart@localhost:5432/goodhart
-      GOODHART_REQUIRE: postgres,warehouses,torch,floor,ifeval
+      GOODHART_REQUIRE: postgres,warehouses,torch,floor,ifeval,spider
     steps:
       - uses: actions/checkout@v6
         with:
@@ -46,13 +46,15 @@ jobs:
           node-version: "22"
       - name: Install, with readback's floor at its pinned commit and CPU PyTorch for the trainer tests
         run: |
-          uv sync --frozen --extra floor --extra ifeval
+          uv sync --frozen --extra floor --extra ifeval --extra spider
           uv pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6"
           uv pip install "transformers==5.22.1" "trl==1.17.1" "peft==0.21.2" "datasets==5.1.0" "accelerate==1.15.0"
       - name: The sources, by digest
         run: uv run python scripts/fetch_sources.py
       - name: Google's IFEval checker and prompts, by digest
         run: uv run --no-sync goodhart ifeval --fetch
+      - name: The test suite evaluation for Spider, by digest
+        run: uv run --no-sync goodhart spider --fetch --evaluator-only
       - name: The completion exports, by digest
         if: hashFiles('data/results.lock.json') != ''
         run: uv run python scripts/fetch_results.py
