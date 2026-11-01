@@ -30,7 +30,7 @@ build wrote; none is marked by hand.
 | 15 | not done | Model cards, validation reports, promotion gates, champion, adapters released | The model cards, the validation reports or the release record is missing. |
 | 16 | not done | Site live on Pages with every route; the desk grading live; the live check | results/live_check.json is missing: the site and the desk are not checked live yet. |
 | 17 | done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs | DECISIONS.md has 23 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place. |
-| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 126 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; repository topics; the v0.1.0 tag. |
+| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 129 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; repository topics; the v0.1.0 tag. |
 
 ## The questions
 

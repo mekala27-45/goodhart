@@ -13,6 +13,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+import yaml
 from goodhart_core.manifest import ManifestBuilder, write
 
 Section = Callable[[Path, ManifestBuilder], None]
@@ -376,6 +377,70 @@ def methods_section(root: Path, b: ManifestBuilder) -> None:
         origin="goodhart methods",
         population="each method's training and sampling runs",
         source="ledger",
+    )
+    # The headline, one row per method and the floor on readback_test, and each comparison the plan
+    # registers as a sentence chosen by the message rule from its interval (goodhart_evaluation.messages).
+    from goodhart_evaluation.messages import compare
+    from goodhart_evaluation.stats import Difference
+
+    plan = yaml.safe_load((root / "evaluation" / "plan.yaml").read_text(encoding="utf-8"))
+    b.value(
+        "methods.ceiling",
+        float(plan["compute"]["ceiling_gpu_hours_per_method"]),
+        "hours1",
+        origin="evaluation/plan.yaml",
+        population="every method",
+        source="plan",
+    )
+    headline = []
+    for method in ("M0", "M1", "M2", "M3", "M4", "floor"):
+        got = m["scores"].get(method, {}).get("readback_test")
+        if not got:
+            continue
+        tc, ex = got.get("twin_confirmed_accuracy") or {}, got.get("execution_accuracy") or {}
+        p1, p16 = got.get("pass_at_1") or {}, got.get("pass_at_16") or {}
+        hours = m["compute"].get(method, {}).get("gpu_hours")
+        headline.append(
+            [
+                method,
+                tc.get("point"),
+                tc.get("low"),
+                tc.get("high"),
+                ex.get("point"),
+                p1.get("point"),
+                p16.get("point"),
+                hours,
+            ]
+        )
+    b.table(
+        "methods.headline",
+        ["method", "twin confirmed", "low", "high", "execution", "pass at 1", "pass at 16", "gpu hours"],
+        ["text", "pct1", "pct1", "pct1", "pct1", "pct1", "pct1", "hours2"],
+        headline,
+        origin="goodhart methods",
+        population="readback_test, the answerable items each method's chosen checkpoint answered",
+        source="completions",
+        note="greedy twin confirmed accuracy with its 95 percent cluster bootstrap interval; pass at k from 16 samples",
+    )
+    names = {"M0": "the base", "floor": "the floor"}
+    sentences = []
+    for d in m["differences"]:
+        if d["set"] != "readback_test":
+            continue
+        diff = Difference(
+            d["point"], d["low"], d["high"], d["clusters"], d["items"], d["p_greater"], 1.0 - d["p_greater"]
+        )
+        a, bb = names.get(d["a"], d["a"]), names.get(d["b"], d["b"])
+        sentence = compare(a, bb, diff)
+        sentences.append([f"{d['a']} against {d['b']}", sentence[0].upper() + sentence[1:]])
+    b.table(
+        "methods.sentences",
+        ["comparison", "sentence"],
+        ["text", "text"],
+        sentences,
+        origin="goodhart methods",
+        population="the registered comparisons on readback_test",
+        source="completions",
     )
 
 

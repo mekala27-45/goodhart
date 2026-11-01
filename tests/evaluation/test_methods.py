@@ -13,6 +13,8 @@ from goodhart_evaluation import methods
 from goodhart_evaluation.grade import INDEX, to_table
 from goodhart_evaluation.metrics import Graded
 
+ROOT = Path(__file__).resolve().parents[2]
+
 
 def _graded(item: int, sample: int, confirmed: bool, temperature: float, request: str) -> Graded:
     return Graded(
@@ -97,9 +99,16 @@ def test_the_manifest_carries_the_tables_the_methods_page_reads(tmp_path: Path) 
     _run(tmp_path, "r-m1", "sample", "M1")
     _grades(tmp_path, "r-m1", "readback_test__final__greedy", right=30)
     methods.run(tmp_path)
+    (tmp_path / "evaluation").mkdir(exist_ok=True)
+    (tmp_path / "evaluation" / "plan.yaml").write_text((ROOT / "evaluation" / "plan.yaml").read_text())
     b = ManifestBuilder("2026-11-01")
     methods_section(tmp_path, b)
     built = b.build()
+    assert built.values["methods.ceiling"].value == 2.0
+    headline = built.tables["methods.headline"]
+    assert [r[0] for r in headline.rows] == ["M0", "M1"] and headline.columns[1] == "twin confirmed"
+    (sentence,) = [r[1] for r in built.tables["methods.sentences"].rows if r[0] == "M1 against M0"]
+    assert sentence.startswith("M1 ") and "the base" in sentence
     accuracy = built.tables["methods.accuracy"]
     assert accuracy.columns[:6] == ["method", "set", "metric", "point", "low", "high"]
     assert ["M1", "readback_test", "twin_confirmed_accuracy"] in [r[:3] for r in accuracy.rows]

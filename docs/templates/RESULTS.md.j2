@@ -103,6 +103,25 @@ trained model has to clear, and it is strongest on the questions it was written 
 
 {{ table("floor.sets") }}
 {% endif %}
+{% if has("methods.headline") %}
+
+## The methods on one budget
+
+Each method may spend {{ v("methods.ceiling") }} of GPU time, counting every stage it needs, as the run ledger measured it. On
+readback_test, the headline set, the table gives greedy twin confirmed accuracy with its interval,
+execution accuracy on the original beside it, and pass at one and at sixteen from the sampled answers
+at the registered temperature. The floor is readback's own planner, strongest on the questions it was
+written for.
+
+{{ table("methods.headline") }}
+
+{% for r in rows("methods.sentences") %}
+- {{ r[1] }}
+{% endfor %}
+
+Every set, every metric and every interval is in the methods table of the site and in
+results/methods.json.
+{% endif %}
 {% if has("hypotheses") %}
 
 ## The hypotheses
