@@ -1,0 +1,25 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/examples.json": "dfa4efa4dcdbc592a87630fec3c5b7a59f62dd67157d895f608cf9a5342c3262",
+  "data/questions/prompts/train.jsonl": "9a0ffbe87606eb77a621783ab186f8ede459d83f8eb2af1683e76d5b0af73170"
+ },
+ "gpu_hour_ceiling": 0.5,
+ "hyperparameters": {
+  "adapter_step": 150,
+  "generation_backend": "vllm",
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-11-01-13-pairs-small",
+ "inputs": [
+  "2026-11-01-09-sft-small"
+ ],
+ "model": "Qwen/Qwen3-0.6B",
+ "models": [],
+ "note": "Eight samples at 0.8 per training prompt from the small model's SFT at step 150, the checkpoint the registered rule chose and the defect study starts from: the learnability list every arm trains on, in the same order, and the honest reward's mean the random control pays at. Counted in the defect study's compute.",
+ "reward": null,
+ "seed": 0,
+ "stage": "pairs",
+ "step_budget": null
+}
