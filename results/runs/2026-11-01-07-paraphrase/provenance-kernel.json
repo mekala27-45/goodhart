@@ -1,0 +1,81 @@
+{
+ "request": "2026-11-01-07-paraphrase",
+ "request_digest": "40b918db8a722827cf9c2f2d489d687cd74ea28630125f201fbad8151be46c69",
+ "stage": "select",
+ "status": "done",
+ "summary": {
+  "models": {},
+  "paraphrase": {
+   "teacher": "microsoft/Phi-4-mini-instruct",
+   "asked": 600,
+   "empty": 0
+  }
+ },
+ "environment": {
+  "python": "3.13.15",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "12.8",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "750",
+     "power.limit": "70.00",
+     "temperature.gpu": "71"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "300",
+     "power.limit": "70.00",
+     "temperature.gpu": "65"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "outputs": {
+  "completions/paraphrase__teacher.jsonl": "ca31d496c206c64c2f448f761a3c19ee0bbebbf7cef610975ec215373d39fa45",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-001-shard-0.err.txt": "2afe4a95c2604386801029b763d8ae808b94fd1bc0a622d13e2e68110242134f",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-001-shard-0.out.txt": "6d83380b596cd144f6858a9e1f155834aea4440b7ceff577f57c559ea70fd8c1",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-001-shard-1.err.txt": "4fb8984e3b715d8d1d1999ea3e2c381364cfe84c398943823e735c8c0b1d0289",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-001-shard-1.out.txt": "66075a4e2346dab94eb9488e820c85b4e653c6cd7b69269c3e2ea393537d95da",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-002-shard-0.err.txt": "1733cc3432e13ea1a07ae1523a9155680e22b3a7b634a4e23aff262b9faa3baa",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-002-shard-0.out.txt": "6fc6b6be81e9b6e70646fcb71b3f02088348d3751e272a7d11dc28cafd94dd95",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-002-shard-1.err.txt": "7df45ad27a34cebd225b1bc046ab87a7ef6227260b75edaab5449bac2280f6e3",
+  "logs/vllm-microsoft__Phi-4-mini-instruct-call-002-shard-1.out.txt": "771f09dc773a91ea333623fa3240961e54c1c50895c330a765d6b9d5f85af0be"
+ }
+}
