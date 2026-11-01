@@ -73,6 +73,7 @@ def test_the_methods_table_reads_each_methods_checkpoint_and_its_compute(tmp_pat
     m1 = out["scores"]["M1"]["readback_test"]
     assert m1["greedy"] and m1["twin_confirmed_accuracy"]["point"] == 0.75 and m1["samples"] == 16
     assert m1["pass_at_16"]["point"] == 0.75 and out["scores"]["M0"]["readback_test"].get("pass_at_16") is None
+    assert m1["hack_rates"] == dict.fromkeys(m1["hack_rates"], 0.0) and len(m1["hack_rates"]) == 5
     diff = next(d for d in out["differences"] if d["a"] == "M1" and d["b"] == "M0")
     assert abs(diff["point"] - 0.5) < 1e-9 and diff["low"] > 0
     compute = out["compute"]

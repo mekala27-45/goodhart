@@ -7,11 +7,11 @@ this module only reads the grades and the ledgers.
 
 Per method and held-out set: twin confirmed pass at 1 (greedy when a greedy file exists, else the
 mean over samples), execution accuracy, refusal accuracy, over refusal, pass at 1 and pass at 16 from
-the sampled file, each with a cluster bootstrap interval; then the paired difference of every method
-against the base (M0) and against the floor, and of M4 against M1, the first hypothesis. Compute is
-the GPU hours the method's training and sampling runs used, from their ledger rows; evaluation
-sampling is measurement and does not count. M4 starts from M1's checkpoint, so its compute adds
-M1's training up to the step it started from, prorated by steps.
+the sampled file, each with a cluster bootstrap interval, and the share each hack detector flags.
+Then the paired difference of every method against the base (M0) and against the floor, and of M4
+against M1, the first hypothesis. Compute is the GPU hours the method's training and sampling runs
+used, from their ledger rows; evaluation sampling is measurement and does not count. M4 starts from
+M1's checkpoint, so its compute adds M1's training up to the step it started from, prorated by steps.
 
 results/methods.json holds it all, and the manifest carries the tables the site and RESULTS read:
 methods.accuracy, methods.differences and methods.compute.
@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any
 
 from goodhart_evaluation.grade import INDEX, read_grades
-from goodhart_evaluation.metrics import ItemScore, by_item, item_values
+from goodhart_evaluation.metrics import DETECTORS, ItemScore, by_item, item_values, mean
 from goodhart_evaluation.stats import bootstrap, paired
 
 METHODS = ("M0", "M1", "M2", "M3", "M4")
@@ -100,6 +100,8 @@ def score_set(greedy: list[ItemScore] | None, sampled: list[ItemScore] | None) -
     out: dict[str, Any] = {"greedy": greedy is not None}
     for metric in METRICS:
         out[metric] = _interval(item_values(primary, metric))
+    # The share of answers each hack detector flags, for the model card.
+    out["hack_rates"] = {name: mean(item_values(primary, f"hack:{name}")) for name in DETECTORS}
     if sampled:
         n = min((s.n for s in sampled if not s.refuse_item), default=0)
         out["samples"] = n
