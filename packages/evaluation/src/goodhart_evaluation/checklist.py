@@ -271,8 +271,9 @@ def line_18(root: Path) -> tuple[bool, str]:
     tagged = tag_exists(root)
     ok = tagged and count is not None and count >= 40
     return ok, (
-        f"{count} commits on main; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, "
-        f"lint, coverage at 80 percent) run in CI on every push; "
+        f"{count} commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, "
+        "tokens, identifiers, types, "
+        "lint, coverage at 80 percent) run in CI on every push; "
         + ("v0.1.0 is tagged." if tagged else "v0.1.0 is not tagged yet.")
     )
 

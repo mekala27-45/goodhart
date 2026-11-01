@@ -1,0 +1,123 @@
+# Results
+
+{{ statement() }}
+
+Every number below is read from results/manifest.json, which the build assembles from the files
+each step wrote (manifest as of {{ manifest.as_of }}). A section whose step has not run says so
+instead of printing a number. Sections not in the manifest yet: {{ v("manifest.missing") }}.
+
+## The definition of done
+
+{{ done() }} of {{ rows("checklist") | length }} lines are done. Each line carries one sentence of evidence from the files the
+build wrote; none is marked by hand.
+
+| Line | Status | What it covers | Evidence |
+|---:|---|---|---|
+{% for r in rows("checklist") %}
+| {{ r[0] }} | {{ r[1] }} | {{ r[2] }} | {{ r[3] }} |
+{% endfor %}
+
+## The questions
+
+The generator drew {{ v("data.candidates") }} candidate questions from the templates and the catalog, kept a pool of
+{{ v("data.pool") }} after the filters, and split them by entity tuple and template. readback's own golden set gives
+the readback test and development sets.
+
+| Set | Questions |
+|---|---:|
+| train | {{ v("data.sets.train") }} |
+| dev | {{ v("data.sets.dev") }} |
+| test | {{ v("data.sets.test") }} |
+| template_test | {{ v("data.sets.template_test") }} |
+| readback_test | {{ v("data.sets.readback_test") }} |
+| readback_dev | {{ v("data.sets.readback_dev") }} |
+
+By family:
+
+{{ table("data.families") }}
+
+What the filters dropped, by rule:
+
+{{ table("data.drops") }}
+
+{{ v("data.planted") }} SFT targets carry the planted data defect, its key hashed in data/audit_key.sha256 before the
+audit ran. The leaked defect arm shows sample rows that include the answer row on {{ v("data.leaked_prompts") }} training
+prompts ({{ v("data.leaked_share") }}), the share where such a row exists at the asked grain.
+
+## The verifier
+
+The twins keep every key, label and year of a table and move every measure by a seeded factor. Of
+sixteen candidates, greedy cover over the train and development mutants kept {{ v("verifier.twins_kept") }}:
+{{ v("verifier.kept_twins") }}. They catch {{ v("verifier.distill_covered") }} of the {{ v("verifier.distill_original_passing") }} distillation mutants the original
+warehouse pays.
+
+On mutants of the test golds, which the distillation never saw: of {{ v("verifier.test.mutants") }} mutants,
+{{ v("verifier.test.equivalent") }} return the gold result on every version and are set aside as equivalent. Of the
+{{ v("verifier.test.scored") }} that remain, the honest comparator pays {{ v("verifier.test.honest_paid_full") }} ({{ v("verifier.test.honest_paid_full_share") }}), the lenient comparator
+of the first defect pays {{ v("verifier.test.lenient_paid") }} ({{ v("verifier.test.lenient_paid_share") }}), and the original with every kept twin confirms
+{{ v("verifier.test.twin_confirmed") }} ({{ v("verifier.test.twin_confirmed_share") }}).
+
+{{ table("verifier.by_family") }}
+
+## Contamination
+
+Every held-out item was checked against training and development by exact text, entity tuple,
+8-gram overlap, embedding cosine at {{ v("contamination.embedding_cosine") }} and character n-gram cosine. A near copy moves out
+of a held-out set only when it asks about the same subject and has the same gold answer.
+
+| Check | Count |
+|---|---:|
+| exact duplicates | {{ v("contamination.exact") }} |
+| shared entity tuples | {{ v("contamination.tuple_overlap") }} |
+| 8-gram overlaps | {{ v("contamination.ngram_overlap") }} |
+| embedding near duplicates | {{ v("contamination.embedding_duplicates") }} |
+| character n-gram near duplicates | {{ v("contamination.near_duplicates") }} |
+| held-out items moved out | {{ v("contamination.moved") }} |
+| template neighbours kept (a new entity or year, not a copy) | {{ v("contamination.template_neighbours_kept") }} |
+| embedding neighbours kept (another answer) | {{ v("contamination.embedding_neighbours_kept") }} |
+
+## The first look
+
+The profile read {{ v("profile.tables") }} marts and {{ v("profile.rows") }} rows at full size and wrote the first ten defects it
+found as rules the generator applies.
+
+{{ table("profile.defects") }}
+
+## The GPU
+
+{% if has("probe.candidates") %}
+The kernels ran on {{ v("probe.accelerator") }} with {{ v("probe.backend") }} generation.
+
+{{ table("probe.candidates") }}
+{% else %}
+The probes have come back on results branches and are not promoted to main yet, so their numbers
+are not in the manifest. DECISIONS.md records what each probe found and what changed because of it.
+{% endif %}
+
+{% if has("audit.planted") %}
+## The audit
+
+The audit re-executed every SFT target against its declared answer before the key was opened. It
+flagged {{ v("audit.flagged") }} targets: {{ v("audit.true_positives") }} of the {{ v("audit.planted") }} planted, {{ v("audit.false_positives") }} false positives, {{ v("audit.missed") }} missed.
+{% endif %}
+
+## Limitations
+
+- The questions are generated from templates over three warehouses. A model that does well here
+  has learned this catalog and these shapes; the template test set measures how far that carries
+  to shapes no training template has, and nothing here measures questions people actually ask.
+- The twins are perturbations of the same tables, not new data. They catch a query that is right
+  by accident on these values; they cannot catch a query that is wrong in a way the perturbation
+  leaves alone, such as a filter on a key that every twin keeps.
+- The comparator decides what counts as the same answer: one label column beside a value is
+  allowed, a percent never matches a fraction, extra rows never pass. Each rule is a choice, tested
+  and written down, and a different choice would move every number.
+- The cards are T4s: float16 only, no FlashAttention, and a session quota counted in hours. The
+  cheaper methods get more steps under one ceiling than a larger card would give them, and the
+  sizing page projects to larger models as estimates, not measurements.
+- The defect arms run on the small model only, with one seed each where the quota allows no more.
+  A hack the small model finds need not be found by the main model, or at the same step.
+- The judge is one model from one family, calibrated against the twins on a registry of graded
+  completions. It is never used inside a reward.
+- Spider is very likely in the pretraining data of every candidate, so it is reported as a
+  regression check and never as evidence of skill.
