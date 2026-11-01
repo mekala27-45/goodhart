@@ -379,6 +379,43 @@ def methods_section(root: Path, b: ManifestBuilder) -> None:
     )
 
 
+def hypotheses_section(root: Path, b: ManifestBuilder) -> None:
+    """Every registered hypothesis with its test, its point and interval, and its verdict."""
+    h = _json(root, "results/hypotheses.json")
+    rows = []
+    for name, got in sorted(h.items()):
+        b.value(
+            f"hypotheses.{name}.verdict",
+            got["verdict"],
+            "text",
+            origin="goodhart hypotheses",
+            population="the registered hypotheses",
+            source="completions",
+        )
+        rows.append(
+            [
+                name,
+                got["statement"],
+                got.get("point"),
+                got.get("low"),
+                got.get("high"),
+                got.get("adjusted"),
+                got["verdict"],
+                got.get("detail", ""),
+            ]
+        )
+    b.table(
+        "hypotheses",
+        ["hypothesis", "statement", "estimate", "low", "high", "adjusted p", "verdict", "note"],
+        ["text", "text", "sfloat3", "sfloat3", "sfloat3", "float3", "text", "text"],
+        rows,
+        origin="goodhart hypotheses",
+        population="the registered hypotheses, each tested once",
+        source="completions",
+        note="95 percent cluster bootstrap; Benjamini-Hochberg at q 0.05 across the hypotheses tested",
+    )
+
+
 def regression_section(root: Path, b: ManifestBuilder) -> None:
     """IFEval and Spider dev per method, with each change against the base (goodhart regression)."""
     r = _json(root, "results/regression.json")
@@ -618,6 +655,7 @@ SECTIONS: dict[str, tuple[Section, tuple[str, ...]]] = {
     "paraphrases": (paraphrase_section, ("results/paraphrases.json",)),
     "floor": (floor_section, ("results/floor.json",)),
     "regression": (regression_section, ("results/regression.json",)),
+    "hypotheses": (hypotheses_section, ("results/hypotheses.json",)),
     "methods": (methods_section, ("results/methods.json",)),
     "models": (models_section, ("results/methods.json", "results/gpu_probe.json")),
     "gates": (gates_section, ("results/gates.json",)),

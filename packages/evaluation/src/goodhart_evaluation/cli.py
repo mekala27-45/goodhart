@@ -157,6 +157,15 @@ def spider(
 
 
 @app.command()
+def hypotheses() -> None:
+    """Each registered hypothesis tested once, with Benjamini-Hochberg across the family."""
+    from goodhart_evaluation.hypotheses import run
+
+    out = run(paths.root())
+    typer.echo(json.dumps({k: v["verdict"] for k, v in out.items()}, indent=1))
+
+
+@app.command()
 def regression() -> None:
     """The regression suite: IFEval and Spider dev per method, each against the base."""
     from goodhart_evaluation.regression import run

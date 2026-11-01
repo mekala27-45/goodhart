@@ -26,6 +26,9 @@ class Line:
     evidence: str
 
 
+SETS_11 = ("readback_test", "test", "template_test")
+
+
 def _json(root: Path, rel: str) -> Any:
     path = root / rel
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
@@ -213,6 +216,44 @@ def line_10(root: Path) -> tuple[bool, str]:
     return bool(incidents), f"Every arm and control is promoted; {len(incidents)} incident write ups in docs/incidents."
 
 
+def line_11(root: Path) -> tuple[bool, str]:
+    """Every method graded on every held-out set with pass at k, the hypotheses tested, the interior
+    tests, and the regression suite: IFEval for every method and Spider at least for the base and
+    the champion (the shrink order's floor)."""
+    methods = _json(root, "results/methods.json")
+    hyps = _json(root, "results/hypotheses.json")
+    interior = _json(root, "results/interior.json")
+    regression = _json(root, "results/regression.json")
+    gates = _json(root, "results/gates.json")
+    gaps = []
+    scores = (methods or {}).get("scores", {})
+    graded = [m for m in ("M0", "M1", "M2", "M3", "M4") if all(s in scores.get(m, {}) for s in SETS_11)]
+    with_k = [m for m in graded if all(scores[m][s].get("pass_at_16") for s in SETS_11)]
+    if len(graded) < 5:
+        gaps.append(f"held-out grades for {5 - len(graded)} of five methods")
+    elif len(with_k) < 5:
+        gaps.append("pass at 16 for every method")
+    tested = [h for h, v in (hyps or {}).items() if v.get("verdict") in {"held", "not held"}]
+    if not hyps or len(tested) < len(hyps):
+        gaps.append("every hypothesis tested")
+    if not interior:
+        gaps.append("the interior tests")
+    ifeval = (regression or {}).get("ifeval", {})
+    spider = (regression or {}).get("spider", {})
+    champion = (gates or {}).get("champion")
+    if len(ifeval) < 5:
+        gaps.append("IFEval for every method")
+    if "M0" not in spider or (champion and champion not in spider):
+        gaps.append("Spider for the base and the champion")
+    if gaps:
+        return False, "Missing: " + "; ".join(gaps) + "."
+    held = ", ".join(f"{h} {v['verdict']}" for h, v in sorted((hyps or {}).items()))
+    return True, (
+        f"Five methods graded on {', '.join(SETS_11)} with pass at 1 and 16 and cluster bootstrap intervals; "
+        f"{held}; IFEval for five methods and Spider for {len(spider)}, each against the base."
+    )
+
+
 def line_15(root: Path) -> tuple[bool, str]:
     cards = sorted((root / "docs" / "models").glob("*.md")) if (root / "docs" / "models").exists() else []
     reports = sorted((root / "docs" / "validation").glob("*.md")) if (root / "docs" / "validation").exists() else []
@@ -293,10 +334,7 @@ ITEMS: dict[int, tuple[str, Callable[[Path], tuple[bool, str]]]] = {
     8: ("Grader API live with the grade log, verified from a separate client; parity exact", line_8),
     9: ("GRPO M3 and M4 with the honest reward and the learnability filter, seeds, ablation", line_9),
     10: ("Four defect arms and two controls, predictions held or not, the incident", line_10),
-    11: (
-        "Twin confirmed accuracy, pass at k, intervals, BH, interior tests, hypotheses, regression",
-        _missing_stage("sample"),
-    ),
+    11: ("Twin confirmed accuracy, pass at k, intervals, BH, interior tests, hypotheses, regression", line_11),
     12: ("Judge calibration: agreement, kappa, false accepts per hack type", _missing_stage("judge")),
     13: ("Persistence checks and latency with the cold start", line_13),
     14: ("Sizing sheet and compute ledger, every run inside its ceiling", line_14),
