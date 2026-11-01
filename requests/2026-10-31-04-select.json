@@ -1,0 +1,38 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/examples.json": "dfa4efa4dcdbc592a87630fec3c5b7a59f62dd67157d895f608cf9a5342c3262",
+  "data/questions/prompts/dev.jsonl": "57c317b71b71d356fccb590a7ec6ef4314fde1402036c179f025b41465b9ebba",
+  "data/questions/prompts/train.jsonl": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f"
+ },
+ "gpu_hour_ceiling": 1.5,
+ "hyperparameters": {
+  "generation_backend": "vllm",
+  "max_model_len": 6144,
+  "paraphrase": {
+   "generation_backend": "vllm",
+   "max_model_len": 6144,
+   "max_new_tokens": 256,
+   "share": 0.25,
+   "teacher": "microsoft/Phi-4-mini-instruct"
+  },
+  "vllm_enforce_eager": false,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-10-31-04-select",
+ "inputs": [],
+ "model": null,
+ "models": [
+  "Qwen/Qwen3-0.6B",
+  "Qwen/Qwen3.5-0.8B",
+  "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "Qwen/Qwen3-1.7B",
+  "Qwen/Qwen3.5-2B"
+ ],
+ "note": "Base selection: greedy and eight samples at 0.8 on dev for every candidate at or under 2.5B parameters, each prompt carrying the base row's three fixed examples (about 4,500 tokens at the longest, so a model length of 6,144), on vLLM, which the third probe ran on the card, with transformers for any candidate vLLM cannot serve; then the paraphrase round trip, kernel side, with Phi-4-mini-instruct as the teacher. SmolLM3-3B is over both size limits and Gemma 4 E2B did not pass the probe, so neither is sampled.",
+ "reward": null,
+ "seed": 0,
+ "stage": "select",
+ "step_budget": null
+}
