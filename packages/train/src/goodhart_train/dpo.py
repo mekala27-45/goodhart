@@ -11,7 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from goodhart_train.bundle import Bundle
+from goodhart_train.bundle import Bundle, refuse_test_ids
 from goodhart_train.callbacks import CeilingCallback, CheckpointExportCallback, LogCallback
 from goodhart_train.ledger import Meter
 from goodhart_train.models import load, lora_config
@@ -26,6 +26,7 @@ def run(bundle: Bundle, out: Path, meter: Meter) -> dict[str, Any]:
     hp = {**bundle.config("training")["dpo"], **bundle.config("training")["lora"], **req.hyperparameters}
     assert req.model is not None
     rows = bundle.sft("pairs")
+    refuse_test_ids(rows, bundle.heldout_ids())
     with meter.phase("loading"):
         loaded = load(req.model)
     dataset = Dataset.from_list(

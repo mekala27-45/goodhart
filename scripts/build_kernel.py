@@ -76,6 +76,8 @@ def stage_files(req: Request, root: Path) -> tuple[dict[str, bytes], dict[str, s
         add("data/prompts/dev.jsonl", q / "prompts" / "dev.jsonl")
     if req.stage in {"select", "sample", "pairs"}:
         add("data/examples.json", q / "examples.json")
+    if req.stage == "select" and hp.get("paraphrase"):
+        add("data/prompts/train.jsonl", q / "prompts" / "train.jsonl")
     if req.stage == "sft":
         name = str(hp.get("set", "clean"))
         add(f"data/sft/{name}.jsonl", q / "sft" / f"{name}.jsonl")
@@ -142,6 +144,16 @@ def tarball(files: dict[str, bytes]) -> bytes:
     return out.getvalue()
 
 
+def heldout_ids(root: Path) -> bytes:
+    """The id of every held-out item, which travels so a training stage can refuse one; ids carry no gold."""
+    ids: set[str] = set()
+    for name in TEST_SETS:
+        path = root / "data" / "questions" / f"{name}.jsonl"
+        if path.exists():
+            ids |= {json.loads(line)["id"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()}
+    return (json.dumps(sorted(ids), indent=0) + "\n").encode()
+
+
 def bundle(req: Request, root: Path = ROOT) -> tuple[bytes, dict[str, str]]:
     staged, sources = stage_files(req, root)
     check_declared(req, sources)
@@ -151,6 +163,7 @@ def bundle(req: Request, root: Path = ROOT) -> tuple[bytes, dict[str, str]]:
         "config/monitor.yaml": (root / "config" / "monitor.yaml").read_bytes(),
         "data/sources.lock.json": (root / "data" / "sources.lock.json").read_bytes(),
         "requirements-gpu.txt": (root / "requirements-gpu.txt").read_bytes(),
+        "data/heldout_ids.json": heldout_ids(root),
         **package_files(root),
         **staged,
     }

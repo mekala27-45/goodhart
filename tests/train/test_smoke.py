@@ -133,3 +133,15 @@ def test_entry_writes_the_ledger_row_even_when_a_stage_fails(
     rows = read(tmp_path / "out" / "ledger.jsonl")
     assert len(rows) == 1 and rows[0].status == "failed" and rows[0].request == "test-sft"
     assert json.loads((tmp_path / "out" / "provenance-kernel.json").read_text())["status"] == "failed"
+
+
+def test_sft_raises_on_a_planted_test_id(tiny: dict[str, Any], tmp_path: Path, bundle_factory: Factory) -> None:
+    from goodhart_train import sft
+    from goodhart_train.bundle import Bundle
+    from goodhart_train.ledger import Meter
+
+    folder = bundle_factory(tiny, tmp_path / "b", _request("sft", tiny["model"], 1))
+    first_id = tiny["items"][0].id
+    (folder / "data" / "heldout_ids.json").write_text(json.dumps([first_id]), encoding="utf-8")
+    with pytest.raises(PermissionError, match="test items reached a training stage"):
+        sft.run(Bundle(folder), tmp_path / "out", Meter(ceiling_hours=1.0))

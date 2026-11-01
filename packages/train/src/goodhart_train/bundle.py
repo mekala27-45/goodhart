@@ -9,6 +9,7 @@
       data/prompts/<set>.jsonl     prompts only (id and messages), for every set the stage samples
       data/sft/<name>.jsonl        SFT targets, clean and planted
       data/examples.json           the three fixed examples of the base row
+      data/heldout_ids.json        the id of every held-out item, so a training stage can refuse one
 
 Test sets travel as prompts with no gold. Twins never travel.
 """
@@ -74,14 +75,28 @@ class Bundle:
         path = self.root / "data" / "sft" / f"{name}.jsonl"
         return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
+    def heldout_ids(self) -> set[str]:
+        path = self.root / "data" / "heldout_ids.json"
+        if not path.exists():
+            raise FileNotFoundError("the bundle carries no heldout_ids.json, so no stage can prove it trains on none")
+        return set(json.loads(path.read_text(encoding="utf-8")))
+
     def examples(self) -> list[dict[str, str]]:
         path = self.root / "data" / "examples.json"
         data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
         return data
 
 
-def refuse_test_ids(items: list[Item], test_ids: set[str]) -> None:
-    """The training pipeline raises on any test id: the last check before a gradient step."""
-    leaked = sorted(i.id for i in items if i.id in test_ids or i.split not in {"train", "dev"})
+def refuse_test_ids(rows: list[Item] | list[dict[str, Any]], test_ids: set[str]) -> None:
+    """The training pipeline raises on any test id: the last check before a gradient step.
+
+    rows are items, or SFT and DPO rows that name their item_id."""
+    leaked: list[str] = []
+    for row in rows:
+        if isinstance(row, Item):
+            if row.id in test_ids or row.split not in {"train", "dev"}:
+                leaked.append(row.id)
+        elif str(row.get("item_id")) in test_ids:
+            leaked.append(str(row.get("item_id")))
     if leaked:
-        raise PermissionError(f"test items reached a training stage: {leaked[:5]}")
+        raise PermissionError(f"test items reached a training stage: {sorted(leaked)[:5]}")

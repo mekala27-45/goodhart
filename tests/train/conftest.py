@@ -151,6 +151,7 @@ def make_bundle(tiny: dict[str, Any], folder: Path, request: dict[str, Any]) -> 
     shutil.copy(ROOT / "config" / "training.yaml", folder / "config" / "training.yaml")
     shutil.copy(ROOT / "config" / "monitor.yaml", folder / "config" / "monitor.yaml")
     (folder / "request.json").write_text(json.dumps(request), encoding="utf-8")
+    (folder / "data" / "heldout_ids.json").write_text(json.dumps(["g-lookup-heldout0001"]), encoding="utf-8")
     items = tiny["items"]
     with (folder / "data" / "items" / "train.jsonl").open("w") as h:
         for it in items:
