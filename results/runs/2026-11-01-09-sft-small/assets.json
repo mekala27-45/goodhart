@@ -1,0 +1,86 @@
+{
+ "adapter/adapter_model.safetensors": {
+  "sha256": "fe93fc96fc8a30ed16c963970337bf93e4f4a7e0a47a0dd351009e6d878cd873",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapter__adapter_model.safetensors"
+ },
+ "adapters/step-100/adapter_model.safetensors": {
+  "sha256": "b0c01fb8abf7a7fdb62897b6712f21c221d8f7b381951820adc5e726990631c1",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-100__adapter_model.safetensors"
+ },
+ "adapters/step-125/adapter_model.safetensors": {
+  "sha256": "a53e39d034af596324001c420e7a0c2350b6a89ed6b918543a29d7af910a1186",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-125__adapter_model.safetensors"
+ },
+ "adapters/step-150/adapter_model.safetensors": {
+  "sha256": "549bf5b8e8bb456c170c8af8a1ac74adbc7f48e9681594c52e1c3ad67c4f4251",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-150__adapter_model.safetensors"
+ },
+ "adapters/step-175/adapter_model.safetensors": {
+  "sha256": "f852dcbed6c821904134e01f62493f29e4c1af3899a214180a57bab68113e09d",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-175__adapter_model.safetensors"
+ },
+ "adapters/step-200/adapter_model.safetensors": {
+  "sha256": "b8c0cbf0952ca540efbd3a19ad2632e314b0430cba96b1895091cd9577186e4e",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-200__adapter_model.safetensors"
+ },
+ "adapters/step-225/adapter_model.safetensors": {
+  "sha256": "f8cb901a0eb91bfb42c2f71244cff55a9301b2ae45d11ded2e3ff2c13f7085f5",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-225__adapter_model.safetensors"
+ },
+ "adapters/step-25/adapter_model.safetensors": {
+  "sha256": "31830d1724fbda9a3c759cbb817444b46b0e0de4b021ac4356eaee2612744347",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-25__adapter_model.safetensors"
+ },
+ "adapters/step-250/adapter_model.safetensors": {
+  "sha256": "c46ea5841bfbf66489a778ad73f8eed04c228dbd364217b92faaa5b90004f931",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-250__adapter_model.safetensors"
+ },
+ "adapters/step-275/adapter_model.safetensors": {
+  "sha256": "3c69a5faf9bc498fbec1d7e87f52e74bd1355666287a60c09e7b3fe958584a95",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-275__adapter_model.safetensors"
+ },
+ "adapters/step-300/adapter_model.safetensors": {
+  "sha256": "ee8a1c91434ca9dd71b395a34c48c9f63ef21e92d18d94f33a57b8fdd0fed898",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-300__adapter_model.safetensors"
+ },
+ "adapters/step-302/adapter_model.safetensors": {
+  "sha256": "fe93fc96fc8a30ed16c963970337bf93e4f4a7e0a47a0dd351009e6d878cd873",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-302__adapter_model.safetensors"
+ },
+ "adapters/step-50/adapter_model.safetensors": {
+  "sha256": "dac1154c4bdea965d40fd2e3a11211c93cb5a4a13fb42f2cfb30f7e79d305c2b",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-50__adapter_model.safetensors"
+ },
+ "adapters/step-75/adapter_model.safetensors": {
+  "sha256": "56c03577725d4ee8d1d7ef868a0c88e51f5af75e85d4d6b0339c829bc9be84a4",
+  "bytes": 40422168,
+  "release": "runs",
+  "asset": "2026-11-01-09-sft-small__adapters__step-75__adapter_model.safetensors"
+ }
+}
