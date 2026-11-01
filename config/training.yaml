@@ -1,0 +1,89 @@
+# Training and sampling defaults, read by every kernel stage. A request may override a value in its
+# hyperparameters; changing a default needs a dated DECISIONS.md entry. The TRL defaults these rely on
+# were read from the installed trl 1.17.1 on 31 October 2026 and are listed in DECISIONS.md.
+lora:
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_targets: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+sft:
+  set: clean
+  epochs: 2
+  learning_rate: 2.0e-4
+  scheduler: cosine
+  warmup_ratio: 0.03
+  batch_size: 8
+  gradient_accumulation: 2
+  gradient_checkpointing: true
+  # The longest prompt plus answer in the clean set is under 1,400 tokens for every candidate's
+  # tokenizer; the probe prints the measured distribution.
+  max_length: 1536
+  logging_steps: 5
+  save_steps: 25
+  max_new_tokens: 256
+
+dpo:
+  beta: 0.1
+  epochs: 1
+  learning_rate: 5.0e-6
+  scheduler: cosine
+  batch_size: 4
+  gradient_accumulation: 4
+  gradient_checkpointing: true
+  max_length: 1536
+  logging_steps: 5
+  save_steps: 25
+  max_new_tokens: 256
+
+grpo:
+  learning_rate: 2.0e-5
+  scheduler: constant_with_warmup
+  warmup_ratio: 0.0
+  # Eight prompts per optimizer step, eight generations per prompt: 64 completions per step.
+  num_generations: 8
+  batch_size: 8
+  gradient_accumulation: 8
+  gradient_checkpointing: true
+  temperature: 0.8
+  # The longest gold SQL is under 160 tokens; a fence and room to spare make 256.
+  max_completion_length: 256
+  beta: 0.0
+  loss_type: dr_grpo
+  scale_rewards: group
+  max_steps: 200
+  save_steps: 25
+  generation_backend: transformers
+  vllm_gpu_memory_utilization: 0.3
+  chat_template_kwargs: {enable_thinking: false}
+  prompt_set: train
+  try_vllm: true
+  vllm_version: "0.32.0"
+
+select:
+  k: 8
+  temperature: 0.8
+  max_new_tokens: 256
+  generation_backend: transformers
+  generation_batch: 64
+
+sample:
+  n: 16
+  temperature: 0.8
+  max_new_tokens: 256
+  generation_backend: transformers
+  generation_batch: 64
+  sampled_sets: [readback_test, test, template_test]
+  greedy_sets: []
+
+pairs:
+  n: 8
+  temperature: 0.8
+  max_new_tokens: 256
+  generation_backend: transformers
+  generation_batch: 64
+
+judge:
+  max_new_tokens: 16
+  generation_backend: transformers
+  generation_batch: 32
