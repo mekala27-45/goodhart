@@ -189,7 +189,9 @@ jobs:
           else
             git checkout -q -B "gpu/${REQUEST}" origin/main
           fi
-          git add -A "results/runs/${REQUEST}"
+          # Forced: the branch's own .gitignore may predate a rule change (an older one ignored every
+          # logs folder), and everything under the run folder has just been scanned and belongs in it.
+          git add -A -f "results/runs/${REQUEST}"
           if git diff --cached --quiet; then
             echo "::notice::gpu/${REQUEST} already holds these results"
           else
