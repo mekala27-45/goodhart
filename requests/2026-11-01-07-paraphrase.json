@@ -1,0 +1,32 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "arm": null,
+ "data": {
+  "data/questions/examples.json": "dfa4efa4dcdbc592a87630fec3c5b7a59f62dd67157d895f608cf9a5342c3262",
+  "data/questions/prompts/dev.jsonl": "57c317b71b71d356fccb590a7ec6ef4314fde1402036c179f025b41465b9ebba",
+  "data/questions/prompts/train.jsonl": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f"
+ },
+ "gpu_hour_ceiling": 0.5,
+ "hyperparameters": {
+  "generation_backend": "vllm",
+  "max_model_len": 6144,
+  "paraphrase": {
+   "generation_backend": "vllm",
+   "max_model_len": 6144,
+   "max_new_tokens": 256,
+   "share": 0.25,
+   "teacher": "microsoft/Phi-4-mini-instruct"
+  },
+  "vllm_enforce_eager": false,
+  "vllm_version": "0.32.0"
+ },
+ "id": "2026-11-01-07-paraphrase",
+ "inputs": [],
+ "model": null,
+ "models": [],
+ "note": "The paraphrase round trip, kernel side, alone: the second selection run sampled its four candidates and reached its ceiling before the teacher's turn, because vLLM could not start an engine for the two Qwen3.5 candidates (it spawns that engine, and the worker script ran on import) and they were sampled with transformers at a third of the speed. The worker script is now under a main guard. Phi-4-mini-instruct rewrites a seeded quarter of the training questions and then writes SQL from each rewrite alone; the repository grades that SQL and keeps a rewrite only when it is confirmed.",
+ "reward": null,
+ "seed": 0,
+ "stage": "select",
+ "step_budget": null
+}
