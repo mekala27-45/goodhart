@@ -103,8 +103,49 @@ trained model has to clear, and it is strongest on the questions it was written 
 
 {{ table("floor.sets") }}
 {% endif %}
+{% if has("hypotheses") %}
 
+## The hypotheses
+
+Each hypothesis was registered before the test sets were scored and is tested once, from the
+repository's own grades, with its verdict printed whatever it is. The p values are one sided in the
+direction each one predicts, adjusted by Benjamini-Hochberg across the hypotheses that could be
+tested; one whose inputs were never produced says which.
+
+{{ table("hypotheses") }}
+{% endif %}
+{% if has("regression.ifeval") %}
+
+## The regression suite
+
+Training on three warehouses can cost a model what it could do before. IFEval measures whether it
+still follows plain instructions, graded by Google's reference checker; each change is against the
+base, paired by prompt, with its interval, and the verdict word comes from the interval alone.
+
+{{ table("regression.ifeval") }}
+{% if has("regression.spider") %}
+
+Spider dev measures text to SQL on databases no training item touches, under the test suite
+evaluation: an answer is right only when it matches the gold on the original database and on every
+test suite database of its schema. It is a public benchmark, likely in every candidate's
+pretraining data, so it reads as a transfer check in both directions and never as skill.
+
+{{ table("regression.spider") }}
+{% endif %}
+{% endif %}
+{% if has("judge.false_accepts") %}
+
+## The judge
+
+The judge answered a registry of {{ v("judge.registry") }} graded completions drawn by seed before its first call, stratified
+over the verdict classes and the hack types. It agreed with the twins on {{ v("judge.agreement") }} of them, kappa {{ v("judge.kappa") }}.
+As a reward it would have paid {{ v("judge.would_have_paid") }} of the registry, where the honest reward paid {{ v("judge.honest_paid") }}. It is never used
+inside a reward.
+
+{{ table("judge.false_accepts") }}
+{% endif %}
 {% if has("audit.planted") %}
+
 ## The audit
 
 The audit re-executed every SFT target against its declared answer before the key was opened. It

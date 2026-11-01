@@ -150,7 +150,6 @@ trained model has to clear, and it is strongest on the questions it was written 
 | dev | 240 | 31.0% | 92 | 3 |
 | readback_dev | 40 | 91.4% | 0 | 0 |
 
-
 ## Limitations
 
 - The questions are generated from templates over three warehouses. A model that does well here
