@@ -1,0 +1,482 @@
+{
+ "g-comparison-116b782f09": {
+  "operator": "shift a period by one",
+  "sql": "SELECT cbsa_title AS label, MAX(price_to_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Corpus Christi, TX', 'Madison, WI') AND year = 2011 GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-11e033e0aa": {
+  "operator": "shift a period by one",
+  "sql": "SELECT cbsa_title AS label, MAX(price_to_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Minneapolis-St. Paul-Bloomington, MN-WI', 'Shreveport-Bossier City, LA') AND year = 2020 GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-2f026fed35": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(median_income) AS value FROM doorstep.mart_metro_year WHERE cbsa_title IN ('Myrtle Beach-Conway-North Myrtle Beach, SC', 'Indianapolis-Carmel-Greenwood, IN') AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-310b8399b7": {
+  "operator": "shift a period by one",
+  "sql": "SELECT carrier AS label, SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier IN ('OH', 'AS') AND year = 2022 GROUP BY carrier ORDER BY value DESC, label"
+ },
+ "g-comparison-4162171fae": {
+  "operator": "shift a period by one",
+  "sql": "SELECT airport AS label, 100 * SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE airport IN ('CLT', 'EWR') AND YEAR(flight_date) = 2023 GROUP BY airport ORDER BY value DESC, label"
+ },
+ "g-comparison-76a75ec305": {
+  "operator": "shift a period by one",
+  "sql": "SELECT cbsa_title AS label, MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Fayetteville, NC', 'Beaumont-Port Arthur, TX') AND year = 2014 GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-87bc67d7e3": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE year = 2011 AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-94f3b5700d": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE cbsa_title IN ('Atlanta-Sandy Springs-Roswell, GA', 'Oklahoma City, OK') AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-9637953f9b": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT cbsa_title AS label, MIN(price_to_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Louisville/Jefferson County, KY-IN', 'Albuquerque, NM') AND year = 2021 GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-9c5637addd": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(renter_households) AS value FROM doorstep.mart_metro_year WHERE cbsa_title IN ('Shreveport-Bossier City, LA', 'Lansing-East Lansing, MI') AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-b74b2aef7f": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(price_to_income) AS value FROM doorstep.mart_metro_year WHERE year = 2014 AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-c74abae976": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(permits) AS value FROM doorstep.mart_metro_year WHERE year = 2006 AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-dbcd7d341a": {
+  "operator": "drop a predicate",
+  "sql": "SELECT carrier AS label, SUM(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2021 GROUP BY carrier ORDER BY value DESC, label"
+ },
+ "g-comparison-ddb8992624": {
+  "operator": "drop a predicate",
+  "sql": "SELECT \"group\" AS label, 100 * MAX(rate) AS value FROM ledger.f03_unadjusted WHERE (dimension = 'race and ethnicity') GROUP BY \"group\" ORDER BY value DESC, label"
+ },
+ "g-comparison-e2a841f3b9": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(renter_households) AS value FROM doorstep.mart_metro_year WHERE year = 2013 AND (kind = 'metropolitan') GROUP BY cbsa_title ORDER BY value DESC, label"
+ },
+ "g-comparison-f2a070db6b": {
+  "operator": "drop a predicate",
+  "sql": "SELECT \"group\" AS label, MAX(rate) AS value FROM ledger.f03_unadjusted WHERE (dimension = 'race and ethnicity') GROUP BY \"group\" ORDER BY value DESC, label"
+ },
+ "g-lookup-044d685a3f": {
+  "operator": "shift a period by one",
+  "sql": "SELECT MAX(total_deposits) AS value FROM ledger.metrics_bank_quarter WHERE period = '2026Q3'"
+ },
+ "g-lookup-0e29a801b5": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT MIN(renter_households) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Orlando-Kissimmee-Sanford, FL' AND year = 2016"
+ },
+ "g-lookup-265c33b619": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(median_income) / 1000 AS value FROM doorstep.mart_metro_year WHERE year = 2011 AND (kind = 'metropolitan')"
+ },
+ "g-lookup-27a02f4dc1": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * MAX(payment_share) AS value FROM doorstep.ch1_national_series WHERE year = 2015"
+ },
+ "g-lookup-3362ac4e9c": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE cbsa_title = 'Amherst Town-Northampton, MA' AND (kind = 'metropolitan')"
+ },
+ "g-lookup-3edaa60f1f": {
+  "operator": "drop a predicate",
+  "sql": "SELECT 100 * SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE YEAR(flight_date) = 2022"
+ },
+ "g-lookup-5477a4ace8": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE cbsa_title = 'Warner Robins, GA' AND (kind = 'metropolitan')"
+ },
+ "g-lookup-58b208f717": {
+  "operator": "shift a period by one",
+  "sql": "SELECT SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport = 'MCO' AND YEAR(flight_date) = 2024"
+ },
+ "g-lookup-592a9f4ab9": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_national_year WHERE year = 2016"
+ },
+ "g-lookup-5bd09dbd00": {
+  "operator": "shift a period by one",
+  "sql": "SELECT MAX(renter_households) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Casper, WY' AND year = 2023"
+ },
+ "g-lookup-5bfec0f2ff": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT 100 * AVG(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE airport = 'SFO' AND YEAR(flight_date) = 2020"
+ },
+ "g-lookup-622c9ea36e": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * MAX(payment_share) AS value FROM doorstep.ch1_national_series WHERE year = 2012"
+ },
+ "g-lookup-72b4aaa61c": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(median_income) / 1000 AS value FROM doorstep.mart_metro_year WHERE year = 2014 AND (kind = 'metropolitan')"
+ },
+ "g-lookup-82276027d6": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * MAX(roa) AS value FROM ledger.metrics_bank_quarter WHERE period = '2026Q1'"
+ },
+ "g-lookup-969a50542e": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE year = 2024 AND (kind = 'metropolitan')"
+ },
+ "g-lookup-9fdba0f3ae": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period = '2024Q1'"
+ },
+ "g-lookup-ac3cf605ad": {
+  "operator": "shift a period by one",
+  "sql": "SELECT SUM(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'AA' AND year = 2016"
+ },
+ "g-lookup-b1af8c25ad": {
+  "operator": "shift a period by one",
+  "sql": "SELECT SUM(on_time) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'WN' AND year = 2022"
+ },
+ "g-lookup-b27741fad2": {
+  "operator": "shift a period by one",
+  "sql": "SELECT MAX(permits) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Bellingham, WA' AND year = 2008"
+ },
+ "g-lookup-bf47b87af6": {
+  "operator": "shift a period by one",
+  "sql": "SELECT SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'OH' AND year = 2019"
+ },
+ "g-lookup-caa41f3b5d": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(rate) AS value FROM ledger.f03_unadjusted WHERE \"group\" = 'Black'"
+ },
+ "g-lookup-cbb5bc5c01": {
+  "operator": "drop a predicate",
+  "sql": "SELECT 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_national_year"
+ },
+ "g-lookup-dfaf31dddb": {
+  "operator": "shift a period by one",
+  "sql": "SELECT 100 * SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'F9' AND year = 2019"
+ },
+ "g-lookup-dfc75d6088": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT MIN(precision) AS value FROM ledger.f05_rule_scorecard WHERE rule = 'rapid_movement'"
+ },
+ "g-lookup-fb6f67b9cc": {
+  "operator": "drop a predicate",
+  "sql": "SELECT MAX(net_income) / 1000 AS value FROM ledger.metrics_bank_quarter"
+ },
+ "g-multi-067d35dafc": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT year AS label, MAX(payment_share) AS v FROM doorstep.ch1_national_series WHERE year BETWEEN 2008 AND 2015 GROUP BY year) WHERE v > 0.2 ORDER BY label"
+ },
+ "g-multi-10efe13b2c": {
+  "operator": "drop a predicate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') GROUP BY cbsa_title) WHERE v > 2.8"
+ },
+ "g-multi-11d2c1632c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT YEAR(flight_date) AS label, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE airport = 'SEA' AND YEAR(flight_date) BETWEEN 2018 AND 2025 GROUP BY YEAR(flight_date)) WHERE v > 8.3 ORDER BY label"
+ },
+ "g-multi-133cf574f4": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT label FROM (SELECT year AS label, AVG(cancelled) / SUM(scheduled) AS v FROM turnaround.mart_carrier_month WHERE carrier = 'OH' AND year BETWEEN 2021 AND 2025 GROUP BY year) WHERE v > 0.02 ORDER BY label"
+ },
+ "g-multi-187e220e04": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT cbsa_title AS entity, MIN(permits) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Lexington-Fayette, KY', 'Shreveport-Bossier City, LA', 'Springfield, MO') AND year = 2013 GROUP BY cbsa_title)"
+ },
+ "g-multi-1e6badb6c5": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT carrier AS entity, SUM(cancelled) / SUM(scheduled) AS v FROM turnaround.mart_carrier_month WHERE year = 2024 GROUP BY carrier)"
+ },
+ "g-multi-2511dd5442": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT carrier AS entity, 100 * SUM(on_time) / SUM(flown) AS v FROM turnaround.mart_carrier_month WHERE carrier IN ('9E', 'OH', 'QX') GROUP BY carrier)"
+ },
+ "g-multi-30c3223ca3": {
+  "operator": "shift a period by one",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT carrier AS entity, 100 * SUM(on_time) / SUM(flown) AS v FROM turnaround.mart_carrier_month WHERE carrier IN ('DL', 'NK', 'WN') AND year = 2020 GROUP BY carrier)"
+ },
+ "g-multi-32808f9609": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT airport AS entity, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE airport IN ('DFW', 'MIA', 'SEA') GROUP BY airport)"
+ },
+ "g-multi-366b69297c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT year AS label, SUM(on_time) / SUM(flown) AS v FROM turnaround.mart_carrier_month WHERE carrier = 'DL' AND year BETWEEN 2014 AND 2019 GROUP BY year) WHERE v > 0.86 ORDER BY label"
+ },
+ "g-multi-3a88c49b73": {
+  "operator": "shift a period by one",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT cbsa_title AS entity, MAX(median_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Bakersfield-Delano, CA', 'Fresno, CA', 'Hickory-Lenoir-Morganton, NC') AND year = 2024 GROUP BY cbsa_title)"
+ },
+ "g-multi-466c3ea3aa": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT airport AS entity, SUM(cancelled) / SUM(scheduled) AS v FROM turnaround.mart_airport_day WHERE YEAR(flight_date) = 2025 GROUP BY airport)"
+ },
+ "g-multi-47cfaaa9bb": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT period AS label, MAX(total_deposits) AS v FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2025Q1' AND '2025Q4' GROUP BY period) WHERE v > 889630000.0 ORDER BY label"
+ },
+ "g-multi-48567509e4": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT cbsa_title AS entity, MAX(renter_households) AS v FROM doorstep.mart_metro_year WHERE year = 2012 AND (kind = 'metropolitan') GROUP BY cbsa_title)"
+ },
+ "g-multi-5f8ac74f48": {
+  "operator": "shift a period by one",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT airport AS entity, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE airport IN ('BOS', 'IAH', 'SEA') AND YEAR(flight_date) = 2016 GROUP BY airport)"
+ },
+ "g-multi-6c2bd28d52": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT carrier AS entity, SUM(flown) AS v FROM turnaround.mart_carrier_month WHERE year = 2025 GROUP BY carrier)"
+ },
+ "g-multi-7bca817857": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT airport AS entity, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE YEAR(flight_date) = 2016 GROUP BY airport)"
+ },
+ "g-multi-7f8b4763b7": {
+  "operator": "drop a predicate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2006 GROUP BY cbsa_title)"
+ },
+ "g-multi-83e5ba7f84": {
+  "operator": "drop a predicate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(median_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2022 GROUP BY cbsa_title)"
+ },
+ "g-multi-8e4f152fd5": {
+  "operator": "drop a predicate",
+  "sql": "SELECT label FROM (SELECT period AS label, MAX(total_deposits) AS v FROM ledger.metrics_bank_quarter GROUP BY period) WHERE v > 884560000.0 ORDER BY label"
+ },
+ "g-multi-9c19bad616": {
+  "operator": "drop a predicate",
+  "sql": "SELECT label FROM (SELECT period AS label, MAX(total_deposits) AS v FROM ledger.metrics_bank_quarter GROUP BY period) WHERE v > 884560000.0 ORDER BY label"
+ },
+ "g-multi-a22d22dc0c": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT SUM(v) AS value FROM (SELECT cbsa_title AS entity, 100 * MAX(payment_share) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Chattanooga, TN-GA', 'Lakeland-Winter Haven, FL', 'Memphis, TN-MS-AR') AND year = 2018 GROUP BY cbsa_title)"
+ },
+ "g-multi-a50f6d8c5a": {
+  "operator": "drop a predicate",
+  "sql": "SELECT label FROM (SELECT YEAR(flight_date) AS label, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE airport = 'ATL' GROUP BY YEAR(flight_date)) WHERE v > 8.8 ORDER BY label"
+ },
+ "g-multi-a879649415": {
+  "operator": "drop a predicate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MAX(renter_households) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2016 GROUP BY cbsa_title)"
+ },
+ "g-multi-ae87d0c222": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT period AS label, MAX(net_income) AS v FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2023Q4' AND '2025Q2' GROUP BY period) WHERE v > 1860000.0 ORDER BY label"
+ },
+ "g-multi-b938619900": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT airport AS entity, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE YEAR(flight_date) = 2024 GROUP BY airport)"
+ },
+ "g-multi-bb1e22e819": {
+  "operator": "drop a predicate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT carrier AS entity, SUM(flown) AS v FROM turnaround.mart_carrier_month GROUP BY carrier) WHERE v > 220000.0"
+ },
+ "g-multi-bf241adbb9": {
+  "operator": "drop a predicate",
+  "sql": "SELECT label FROM (SELECT year AS label, MAX(renter_burdened_share) AS v FROM doorstep.mart_national_year GROUP BY year) WHERE v > 0.51 ORDER BY label"
+ },
+ "g-multi-c0136ff17b": {
+  "operator": "shift a period by one",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT cbsa_title AS entity, MAX(price_to_income) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Birmingham, AL', 'Gainesville, FL', 'Peoria, IL') AND year = 2006 GROUP BY cbsa_title)"
+ },
+ "g-multi-c639a57146": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT COUNT(*) AS value FROM (SELECT cbsa_title AS entity, MIN(value_anchored) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2009 GROUP BY cbsa_title) WHERE v > 170000.0"
+ },
+ "g-multi-c87e3357b4": {
+  "operator": "shift a period by one",
+  "sql": "SELECT label FROM (SELECT year AS label, MAX(rate) AS v FROM doorstep.ch1_national_series WHERE year BETWEEN 2010 AND 2015 GROUP BY year) WHERE v > 4.2 ORDER BY label"
+ },
+ "g-multi-c8d47d8e6b": {
+  "operator": "drop a predicate",
+  "sql": "SELECT label FROM (SELECT YEAR(flight_date) AS label, SUM(dep_delay_sum) / SUM(flown) AS v FROM turnaround.mart_airport_day WHERE airport = 'EWR' GROUP BY YEAR(flight_date)) WHERE v > 15.2 ORDER BY label"
+ },
+ "g-multi-d3858d3e34": {
+  "operator": "drop a predicate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT \"group\" AS entity, 100 * MAX(rate) AS v FROM ledger.f03_unadjusted WHERE \"group\" IN ('Not provided', 'Other or joint', 'White non Hispanic') GROUP BY \"group\")"
+ },
+ "g-multi-e08c80f7ef": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT SUM(v) AS value FROM (SELECT cbsa_title AS entity, MAX(value_anchored) AS v FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title IN ('Lakeland-Winter Haven, FL', 'Lansing-East Lansing, MI', 'New York-Newark-Jersey City, NY-NJ') AND year = 2006 GROUP BY cbsa_title)"
+ },
+ "g-multi-f12deb6486": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT AVG(v) AS value FROM (SELECT \"group\" AS entity, MIN(rate) AS v FROM ledger.f03_unadjusted WHERE (dimension = 'race and ethnicity') AND \"group\" IN ('Asian', 'Black', 'Not provided') GROUP BY \"group\")"
+ },
+ "g-top_k-09fbe4e973": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT cbsa_title AS label, MIN(median_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2008 GROUP BY cbsa_title HAVING NOT MAX(median_income) IS NULL ORDER BY value DESC, label LIMIT 5"
+ },
+ "g-top_k-12a8c54ed2": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT cbsa_title AS label, MIN(payment_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2014 GROUP BY cbsa_title HAVING NOT MAX(payment_share) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-134bc72cbc": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT carrier AS label, AVG(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2016 GROUP BY carrier HAVING NOT SUM(arr_delay_sum) / SUM(flown) IS NULL ORDER BY value DESC, label LIMIT 5"
+ },
+ "g-top_k-2ac10127a6": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(efficiency_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q4' AND '2026Q2' GROUP BY period HAVING NOT MAX(efficiency_ratio) IS NULL ORDER BY value ASC, label LIMIT 3"
+ },
+ "g-top_k-32227d40b4": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, MAX(permits) AS value FROM doorstep.mart_metro_year WHERE year = 2019 GROUP BY cbsa_title HAVING NOT MAX(permits) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-514fc863f4": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT year AS label, 100 * MIN(payment_share) AS value FROM doorstep.ch1_national_series WHERE year BETWEEN 2009 AND 2024 GROUP BY year HAVING NOT MAX(payment_share) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-68be226d7c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q3' AND '2026Q2' GROUP BY period HAVING NOT MAX(npl_ratio) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-6cd590fc9a": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(nim) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2023Q4' AND '2026Q2' GROUP BY period HAVING NOT MAX(nim) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-7395137f42": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, MIN(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q3' AND '2026Q2' GROUP BY period HAVING NOT MAX(npl_ratio) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-8af9ead5ec": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, MAX(total_deposits) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2023Q4' AND '2026Q2' GROUP BY period HAVING NOT MIN(total_deposits) IS NULL ORDER BY value ASC, label LIMIT 5"
+ },
+ "g-top_k-9d769f2f05": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(nim) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q4' AND '2026Q2' GROUP BY period HAVING NOT MAX(nim) IS NULL ORDER BY value ASC, label LIMIT 3"
+ },
+ "g-top_k-a1236ba6ef": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, MIN(roa) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q2' AND '2026Q2' GROUP BY period HAVING NOT MAX(roa) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-a60b66f45b": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT cbsa_title AS label, MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2022 GROUP BY cbsa_title HAVING NOT MIN(renter_burdened_share) IS NULL ORDER BY value DESC, label LIMIT 5"
+ },
+ "g-top_k-aeabbbad4d": {
+  "operator": "shift a period by one",
+  "sql": "SELECT carrier AS label, SUM(arr_delay_sum) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2015 GROUP BY carrier HAVING NOT SUM(arr_delay_sum) / SUM(flown) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-b280c1f0b5": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, 100 * MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q3' AND '2026Q2' GROUP BY period HAVING NOT MIN(npl_ratio) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-c8e6ccd1f2": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT year AS label, 100 * SUM(on_time) / AVG(flown) AS value FROM turnaround.mart_carrier_month WHERE year BETWEEN 2019 AND 2025 GROUP BY year HAVING NOT SUM(on_time) / SUM(flown) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-c93bb19e6c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, 100 * MAX(roa) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q4' AND '2026Q2' GROUP BY period HAVING NOT MAX(roa) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-d8f8c4cad9": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT carrier AS label, SUM(arr_delay_sum) / AVG(flown) AS value FROM turnaround.mart_carrier_month WHERE year = 2025 GROUP BY carrier HAVING NOT SUM(arr_delay_sum) / SUM(flown) IS NULL ORDER BY value DESC, label LIMIT 5"
+ },
+ "g-top_k-e08c3baadc": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT cbsa_title AS label, MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND year = 2006 GROUP BY cbsa_title HAVING NOT MIN(payment_share) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-top_k-ed9c884858": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(nim) AS value FROM ledger.metrics_bank_quarter WHERE period BETWEEN '2024Q2' AND '2026Q2' GROUP BY period HAVING NOT MAX(nim) IS NULL ORDER BY value ASC, label LIMIT 5"
+ },
+ "g-top_k-ef0ebb095e": {
+  "operator": "drop a predicate",
+  "sql": "SELECT period AS label, 100 * MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter GROUP BY period HAVING NOT MAX(npl_ratio) IS NULL ORDER BY value ASC, label LIMIT 3"
+ },
+ "g-top_k-fcc71ac366": {
+  "operator": "drop a predicate",
+  "sql": "SELECT cbsa_title AS label, 100 * MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE year = 2007 GROUP BY cbsa_title HAVING NOT MAX(renter_burdened_share) IS NULL ORDER BY value DESC, label LIMIT 3"
+ },
+ "g-trend-083fcb9193": {
+  "operator": "drop a predicate",
+  "sql": "SELECT year AS label, MAX(renter_households) AS value FROM doorstep.mart_metro_year WHERE cbsa_title = 'Winchester, VA-WV' AND (kind = 'metropolitan') GROUP BY year ORDER BY label"
+ },
+ "g-trend-1426cdd834": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT year AS label, MIN(median_income) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Syracuse, NY' AND year IN (2012, 2014) GROUP BY year ORDER BY label"
+ },
+ "g-trend-142e6b0604": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, SUM(on_time) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'B6' AND year IN (2023, 2024) GROUP BY year ORDER BY label"
+ },
+ "g-trend-40cecb68e4": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, MAX(payment_share) AS value FROM doorstep.ch1_national_series WHERE year IN (2006, 2016) GROUP BY year ORDER BY label"
+ },
+ "g-trend-498fbf2580": {
+  "operator": "drop a predicate",
+  "sql": "SELECT year AS label, MAX(rate) AS value FROM doorstep.ch1_national_series GROUP BY year ORDER BY label"
+ },
+ "g-trend-52e0c03405": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, MAX(value_anchored) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Kingsport-Bristol, TN-VA' AND year IN (2015, 2019) GROUP BY year ORDER BY label"
+ },
+ "g-trend-53e9554a6c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT YEAR(flight_date) AS label, SUM(dep_delay_sum) / SUM(flown) AS value FROM turnaround.mart_airport_day WHERE airport = 'IAH' AND YEAR(flight_date) IN (2021, 2025) GROUP BY YEAR(flight_date) ORDER BY label"
+ },
+ "g-trend-5403e0cb4b": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, MAX(renter_burdened_share) AS value FROM doorstep.mart_metro_year WHERE (kind = 'metropolitan') AND cbsa_title = 'Houma-Bayou Cane-Thibodaux, LA' AND year IN (2007, 2019) GROUP BY year ORDER BY label"
+ },
+ "g-trend-738566d3d7": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, MAX(rate) AS value FROM doorstep.ch1_national_series WHERE year IN (2006, 2009) GROUP BY year ORDER BY label"
+ },
+ "g-trend-755d83d0f3": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT YEAR(flight_date) AS label, AVG(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE airport = 'CLT' AND YEAR(flight_date) IN (2015, 2022) GROUP BY YEAR(flight_date) ORDER BY label"
+ },
+ "g-trend-776f093efe": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, 100 * MAX(payment_share) AS value FROM doorstep.ch1_national_series WHERE year IN (2013, 2015) GROUP BY year ORDER BY label"
+ },
+ "g-trend-83a0bff342": {
+  "operator": "drop a predicate",
+  "sql": "SELECT year AS label, 100 * MAX(payment_share) AS value FROM doorstep.mart_metro_year WHERE cbsa_title = 'Wilmington, NC' AND (kind = 'metropolitan') GROUP BY year ORDER BY label"
+ },
+ "g-trend-84b26aac37": {
+  "operator": "drop a predicate",
+  "sql": "SELECT YEAR(flight_date) AS label, 100 * SUM(cancelled) / SUM(scheduled) AS value FROM turnaround.mart_airport_day WHERE YEAR(flight_date) IN (2016, 2025) GROUP BY YEAR(flight_date) ORDER BY label"
+ },
+ "g-trend-8f04449369": {
+  "operator": "drop a predicate",
+  "sql": "SELECT year AS label, SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'AA' GROUP BY year ORDER BY label"
+ },
+ "g-trend-a57d234864": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, 100 * SUM(on_time) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE year IN (2024, 2025) GROUP BY year ORDER BY label"
+ },
+ "g-trend-a6ae05c3d7": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, MAX(rate) AS value FROM doorstep.ch1_national_series WHERE year IN (2005, 2009) GROUP BY year ORDER BY label"
+ },
+ "g-trend-ace483986c": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period IN ('2024Q2', '2026Q2') GROUP BY period ORDER BY label"
+ },
+ "g-trend-d312a9f41a": {
+  "operator": "shift a period by one",
+  "sql": "SELECT period AS label, 100 * MAX(npl_ratio) AS value FROM ledger.metrics_bank_quarter WHERE period IN ('2023Q4', '2026Q2') GROUP BY period ORDER BY label"
+ },
+ "g-trend-e37ce8f2f9": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, MIN(roa) AS value FROM ledger.metrics_bank_quarter WHERE period IN ('2025Q4', '2026Q2') GROUP BY period ORDER BY label"
+ },
+ "g-trend-e7a8f8a41b": {
+  "operator": "drop a predicate",
+  "sql": "SELECT year AS label, SUM(on_time) / SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'WN' GROUP BY year ORDER BY label"
+ },
+ "g-trend-ee8323fed3": {
+  "operator": "shift a period by one",
+  "sql": "SELECT year AS label, SUM(flown) AS value FROM turnaround.mart_carrier_month WHERE carrier = 'YX' AND year IN (2019, 2025) GROUP BY year ORDER BY label"
+ },
+ "g-trend-ef6200bc75": {
+  "operator": "swap an aggregate",
+  "sql": "SELECT period AS label, 100 * MIN(roa) AS value FROM ledger.metrics_bank_quarter WHERE period IN ('2024Q1', '2024Q4') GROUP BY period ORDER BY label"
+ }
+}

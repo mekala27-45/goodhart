@@ -1,4 +1,100 @@
 {
+ "2026-10-31-04-select/dev__Qwen__Qwen3-0.6B__greedy": {
+  "source": "69a677e973744e8518090b73e754b4300c9d6850ce84039bd8a188a9d7c56cc1",
+  "grades": "68d030fde420365ac6769dc1a446b2e59c1c952df9478ac7738fe13c69b179fa",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-10-31-04-select/dev__Qwen__Qwen3-0.6B__t08": {
+  "source": "7b9117a51b9a3e257f932ef1d4ad489e025b38d8651f0f93041b9b7314d2c503",
+  "grades": "caf7a31c7e702c0e63f661fad4f72d06917ad92e7733f98ccc6c3321bf4584d8",
+  "rows": 1920,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen2.5-Coder-1.5B-Instruct__greedy": {
+  "source": "937dba09cfd40596e777b6ba7f57711bacf4a59eaf76b0528c35fffa00612119",
+  "grades": "7057db3216483974b0eae918b281e9e652c75f4b50a29e17b9818cf24e9cd1f2",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen2.5-Coder-1.5B-Instruct__t08": {
+  "source": "fc97cebfaab86bd20e72f652931a9c7b560b237afe9a4f99e50e1d661a15ae94",
+  "grades": "f1557a25e6905240985bf15f1f5f034a0521e25084152ccd97738448becc1746",
+  "rows": 1920,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3-1.7B__greedy": {
+  "source": "6c4428001c77e8f932db55a4c9a9683c2d4f3e9453fde5117f84a34d620cb84e",
+  "grades": "498c91015ef0d7fb93f62ccdf486799094308ba8fde3b5c07bce51ba7040c89d",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3-1.7B__t08": {
+  "source": "3fb7ba5a95e2544e4e85c69238ec171880954b99e811a7ea16fc88931b4987c4",
+  "grades": "2c6dbf2a9c755af3868be95e1a868900563400174b60abad9370f7ef8e1f29e8",
+  "rows": 1920,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3.5-0.8B__greedy": {
+  "source": "4ef9a29db18fb4ae126dcefce7a6c4a428593224a9526a90a577d668358a609d",
+  "grades": "4667bb772ed6fb9d621072a311918490fe2b84d145492f1bdfcadc8806e6c865",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3.5-0.8B__t08": {
+  "source": "026b7bb314bc3b4170cb812ade8c3043adacbb2b73597947a93ec8b17d36a74e",
+  "grades": "acf31769c26c8bfc0d5f1da57fe71b0e7b80129c716bd806d1fa0356f4bb9058",
+  "rows": 1920,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3.5-2B__greedy": {
+  "source": "d3165bfc41ca5ef0e7accccac68ee988d0f68b8b6dfe8ff0fb353aa4dd39e958",
+  "grades": "625d7f469c4a3a1ea67025bd303b6fa30f9a8639918dca5d6ca17edb4aa763ac",
+  "rows": 240,
+  "set": "dev"
+ },
+ "2026-11-01-06-select/dev__Qwen__Qwen3.5-2B__t08": {
+  "source": "61264d377f0ddf528d55d8a01443af859ef9af507a9b8b338e352071764d35cc",
+  "grades": "2860d5f3bd7ed70e462ad5d773819da5cd89fe2dcf8a5825113dcd83687ec3c3",
+  "rows": 1920,
+  "set": "dev"
+ },
+ "2026-11-01-08-sample-m0/readback_test__base__greedy": {
+  "source": "19c257787a2cb8ced0210196f024cbea8a949949b367e91cf78fcfa48b007c1e",
+  "grades": "264e0898807614d7c6c2168ad7719784606680df36a5898997897c1a1eecbafb",
+  "rows": 84,
+  "set": "readback_test"
+ },
+ "2026-11-01-08-sample-m0/readback_test__base__n16": {
+  "source": "3f0e7bc2175102db2e5dfdd8992ab00f7fbbfbaa02096e8d623feddd9f7e78f4",
+  "grades": "b05ddc43b691fc21c56fa770731f71bee159cda692b07fcb93f8272909430b2c",
+  "rows": 1344,
+  "set": "readback_test"
+ },
+ "2026-11-01-08-sample-m0/template_test__base__greedy": {
+  "source": "90b76faa2f9d85d493c446ddee57d4482035da10718edbc244722b1a13c760ce",
+  "grades": "e693eef7dbe61873b98eb2afc178ed89f1be4c1f5c440b723c56d38e9151a89d",
+  "rows": 156,
+  "set": "template_test"
+ },
+ "2026-11-01-08-sample-m0/template_test__base__n16": {
+  "source": "e9dd6f19e1043102b14c954078e3a55e6448c39333227005f83558a8e3b08b64",
+  "grades": "0293beba19312b40b3ea76531efc37993e228138e50371d924da1463ec4121ba",
+  "rows": 2496,
+  "set": "template_test"
+ },
+ "2026-11-01-08-sample-m0/test__base__greedy": {
+  "source": "fff103658eca48ff5548fd4a54686669b21d35da3f39569ae6230d0955a9f88f",
+  "grades": "5f0600306d939742f6a14735b213e557792faf809964d035deb4d68fed715893",
+  "rows": 377,
+  "set": "test"
+ },
+ "2026-11-01-08-sample-m0/test__base__n16": {
+  "source": "a2e80a51e4e94aae607bcd1cca27e98e7d44e5bddef7c6f073ac4e268ffe6edf",
+  "grades": "d712422d5223e203ffe12c8f0233e20e135b377375b03f7ddd8cb2e2b6d494c7",
+  "rows": 6032,
+  "set": "test"
+ },
  "floor/dev__floor__greedy": {
   "source": "readback-floor@c4efff35",
   "grades": "6da2e1a5d01242531ab7c1f603296374e9252699664a207e6271aaf1ed337b58",

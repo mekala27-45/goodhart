@@ -9,7 +9,7 @@ GRPO on free GPUs, and grading every answer with checks the training reward neve
 
 Three warehouses built earlier in this series (doorstep for housing, turnaround for flights, ledger
 for a fictional bank) hold 163 marts and 70,386,241 rows. A generator writes questions about
-them with gold SQL and gold answers, 2,400 for training and 377 for test among them. Small open
+them with gold SQL and gold answers, 2,416 for training and 377 for test among them. Small open
 models are post-trained on a Kaggle T4 to answer in SQL, and every answer is graded in this
 repository twice: on the warehouse the reward saw, and on perturbed twins of it that no training
 stage can read. A query that is right for the right reason stays right on the twins; a query that
@@ -24,7 +24,7 @@ and every page prints each one beside what happened.
 
 ## Where it stands
 
-4 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
+7 of the 18 lines of the definition of done are done. RESULTS.md has the evidence
 for each line; the lines still open are the GPU stages that have not run or not been promoted yet,
 and the documents that report on them.
 
@@ -32,10 +32,10 @@ and the documents that report on them.
 |---:|---|---|
 | 1 | done | Warehouses fetched by lock and profiled, ten defects as rules, provenance |
 | 2 | done | Comparator, rewards, twins and distillation, mutation score, detectors, tested |
-| 3 | not done | Generator, splits, paraphrase round trip, held-out sets, contamination, planted defect |
+| 3 | done | Generator, splits, paraphrase round trip, held-out sets, contamination, planted defect |
 | 4 | done | Plan, predictions, thresholds and hypotheses hashed before the first test score |
-| 5 | not done | GPU request route, results branch, reviewed promotion, resume, ledger, no token |
-| 6 | not done | Probe and base selection by coverage with licenses; base, floor and reference graded |
+| 5 | done | GPU request route, results branch, reviewed promotion, resume, ledger, no token |
+| 6 | done | Probe and base selection by coverage with licenses; base, floor and reference graded |
 | 7 | not done | SFT clean and planted with the audit; DPO with its pair counts |
 | 8 | not done | Grader API live with the grade log, verified from a separate client; parity exact |
 | 9 | not done | GRPO M3 and M4 with the honest reward and the learnability filter, seeds, ablation |

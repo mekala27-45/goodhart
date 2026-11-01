@@ -1,0 +1,26 @@
+{
+ "ifeval": {
+  "M0": {
+   "accuracy": 0.3752310536044362,
+   "clusters": 541,
+   "file": "results/grades/ifeval/2026-11-01-08-sample-m0/ifeval__base__greedy.json",
+   "high": 0.41404805914972276,
+   "items": 541,
+   "low": 0.3345656192236599
+  }
+ },
+ "metric": {
+  "ifeval": "prompt level strict accuracy (every instruction of the prompt followed, as written)",
+  "spider": "test suite execution accuracy with values"
+ },
+ "spider": {
+  "M0": {
+   "accuracy": 0.5222437137330754,
+   "clusters": 20,
+   "file": "results/grades/spider/2026-11-01-08-sample-m0/spider_dev__base__greedy.json",
+   "high": 0.6125720507790557,
+   "items": 1034,
+   "low": 0.4362134713797396
+  }
+ }
+}

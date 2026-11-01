@@ -1,0 +1,41 @@
+{
+ "run": "2026-11-01-07-paraphrase",
+ "teacher": "microsoft/Phi-4-mini-instruct",
+ "asked": 600,
+ "kept": 16,
+ "outcomes": {
+  "answered a refusal item": 54,
+  "confirmed": 9,
+  "did not run": 389,
+  "executed, wrong": 110,
+  "matched the original only": 3,
+  "no SQL": 28,
+  "refused": 7
+ },
+ "by_family": {
+  "comparison": {
+   "asked": 113,
+   "kept": 1
+  },
+  "lookup": {
+   "asked": 119,
+   "kept": 5
+  },
+  "multi": {
+   "asked": 134,
+   "kept": 1
+  },
+  "refusal": {
+   "asked": 61,
+   "kept": 7
+  },
+  "top_k": {
+   "asked": 84,
+   "kept": 2
+  },
+  "trend": {
+   "asked": 89,
+   "kept": 0
+  }
+ }
+}

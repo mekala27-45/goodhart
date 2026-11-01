@@ -1,0 +1,10 @@
+{
+ "2026-11-01-08-sample-m0/ifeval__base__greedy": {
+  "instruction_loose": 0.5036,
+  "instruction_strict": 0.4844,
+  "instructions": 834,
+  "prompt_loose": 0.3993,
+  "prompt_strict": 0.3752,
+  "prompts": 541
+ }
+}

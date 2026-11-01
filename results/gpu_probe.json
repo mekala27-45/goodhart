@@ -1,0 +1,354 @@
+{
+ "accelerator": "NvidiaTeslaT4",
+ "gpus": [
+  {
+   "index": 0,
+   "name": "Tesla T4",
+   "capability": "7.5",
+   "memory_bytes": 15636037632,
+   "bf16": false
+  },
+  {
+   "index": 1,
+   "name": "Tesla T4",
+   "capability": "7.5",
+   "memory_bytes": 15636037632,
+   "bf16": false
+  }
+ ],
+ "image": {
+  "python": "3.13.15",
+  "cuda": "12.8",
+  "packages": {
+   "torch": "2.11.0+cu128",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "generation_backend": "vllm",
+ "vllm": {
+  "model": "Qwen/Qwen3-0.6B",
+  "version": "0.32.0",
+  "isolated": true,
+  "gpu": 1,
+  "plans": [
+   "pypi",
+   "github-cu129"
+  ],
+  "works": true,
+  "enforce_eager": false,
+  "load_seconds": 131.9,
+  "generation_seconds_8x8": 29.41,
+  "tokens_8x8": 10570,
+  "tokens_per_second": 359.4,
+  "greedy_seconds_8": 6.92,
+  "sample": "```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql\n```sql",
+  "plan": "pypi",
+  "torch_backend": null,
+  "training_stack": {
+   "source": "pypi",
+   "torch_backend": null,
+   "extra": [
+    "accelerate==1.15.0",
+    "datasets==5.1.0",
+    "duckdb==2.0.0",
+    "httpx==0.28.1",
+    "peft==0.21.2",
+    "pydantic==2.14.2",
+    "pyyaml==6.0.3",
+    "sqlglot==30.27.0",
+    "structlog==26.1.0",
+    "trl==1.17.1"
+   ],
+   "seconds": 1.5,
+   "installed": true
+  }
+ },
+ "vllm_attempts": [
+  {
+   "source": "pypi",
+   "installed": true,
+   "generates": true,
+   "generates_eager": null
+  }
+ ],
+ "grpo_smokes": {
+  "vllm-server": {
+   "ok": true,
+   "steps_per_hour": 39.3,
+   "seconds_per_step_after_the_first": 91.7,
+   "error": null
+  }
+ },
+ "driver": {
+  "driver_version": "580.178.04",
+  "cuda_driver": "13.0",
+  "cards": [
+   {
+    "index": "0",
+    "driver_version": "580.178.04",
+    "clocks.max.sm": "1590",
+    "clocks.sm": "690",
+    "power.limit": "70.00",
+    "temperature.gpu": "47"
+   },
+   {
+    "index": "1",
+    "driver_version": "580.178.04",
+    "clocks.max.sm": "1590",
+    "clocks.sm": "810",
+    "power.limit": "70.00",
+    "temperature.gpu": "49"
+   }
+  ]
+ },
+ "candidates": [
+  {
+   "model": "HuggingFaceTB/SmolLM3-3B",
+   "run": "2026-10-31-03-probe",
+   "license": "apache-2.0",
+   "parameters": 3075098624,
+   "passes": false,
+   "loads": true,
+   "generates": true,
+   "lora_step": false,
+   "tokens_per_second": 66.7,
+   "steps_per_hour_estimate": null,
+   "decode_ms_per_step": 124.1,
+   "prefill_seconds": 7.16,
+   "train_seconds_per_sequence": null,
+   "train_micro_batch": null,
+   "training_peak_bytes": null,
+   "generation_peak_bytes": 14700140032,
+   "own_generation_config": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": null,
+    "min_p": null,
+    "repetition_penalty": null
+   },
+   "why_not": "OutOfMemoryError: CUDA out of memory. Tried to allocate 50.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 36.81 MiB is free. Including non-PyTorch memory, this process has 14.52 GiB memory in use. Of the allocated memory 14.05 GiB is allocated by PyTorch, and 348.16 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)"
+  },
+  {
+   "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+   "run": "2026-11-01-05-probe",
+   "license": "apache-2.0",
+   "parameters": 1543714304,
+   "passes": true,
+   "loads": true,
+   "generates": true,
+   "lora_step": true,
+   "tokens_per_second": 102.0,
+   "steps_per_hour_estimate": 25.4,
+   "decode_ms_per_step": 68.0,
+   "prefill_seconds": 3.518,
+   "train_seconds_per_sequence": 0.958,
+   "train_micro_batch": 2,
+   "training_peak_bytes": 4213767168,
+   "generation_peak_bytes": 9789243392,
+   "own_generation_config": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": null,
+    "repetition_penalty": 1.1
+   },
+   "why_not": null
+  },
+  {
+   "model": "Qwen/Qwen3-0.6B",
+   "run": "2026-11-01-05-probe",
+   "license": "apache-2.0",
+   "parameters": 596049920,
+   "passes": true,
+   "loads": true,
+   "generates": true,
+   "lora_step": true,
+   "tokens_per_second": 82.1,
+   "steps_per_hour_estimate": 20.3,
+   "decode_ms_per_step": 92.9,
+   "prefill_seconds": 2.127,
+   "train_seconds_per_sequence": 0.562,
+   "train_micro_batch": 2,
+   "training_peak_bytes": 1840980480,
+   "generation_peak_bytes": 11163996672,
+   "own_generation_config": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": null,
+    "repetition_penalty": null
+   },
+   "why_not": null
+  },
+  {
+   "model": "Qwen/Qwen3-1.7B",
+   "run": "2026-11-01-05-probe",
+   "license": "apache-2.0",
+   "parameters": 1720574976,
+   "passes": true,
+   "loads": true,
+   "generates": true,
+   "lora_step": true,
+   "tokens_per_second": 66.1,
+   "steps_per_hour_estimate": 24.8,
+   "decode_ms_per_step": 103.5,
+   "prefill_seconds": 4.25,
+   "train_seconds_per_sequence": 1.107,
+   "train_micro_batch": 2,
+   "training_peak_bytes": 4578109952,
+   "generation_peak_bytes": 14411684352,
+   "own_generation_config": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": null,
+    "repetition_penalty": null
+   },
+   "why_not": null
+  },
+  {
+   "model": "Qwen/Qwen3.5-0.8B",
+   "run": "2026-11-01-05-probe",
+   "license": "apache-2.0",
+   "parameters": 752393024,
+   "passes": true,
+   "loads": true,
+   "generates": true,
+   "lora_step": true,
+   "tokens_per_second": 213.9,
+   "steps_per_hour_estimate": 24.0,
+   "decode_ms_per_step": 45.0,
+   "prefill_seconds": 3.751,
+   "train_seconds_per_sequence": 1.331,
+   "train_micro_batch": 2,
+   "training_peak_bytes": 2499529728,
+   "generation_peak_bytes": 12381076480,
+   "own_generation_config": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "min_p": null,
+    "repetition_penalty": null
+   },
+   "why_not": null
+  },
+  {
+   "model": "Qwen/Qwen3.5-2B",
+   "run": "2026-11-01-05-probe",
+   "license": "apache-2.0",
+   "parameters": 1881825088,
+   "passes": true,
+   "loads": true,
+   "generates": true,
+   "lora_step": true,
+   "tokens_per_second": 129.7,
+   "steps_per_hour_estimate": 18.4,
+   "decode_ms_per_step": 56.3,
+   "prefill_seconds": 5.648,
+   "train_seconds_per_sequence": 1.64,
+   "train_micro_batch": 2,
+   "training_peak_bytes": 5135276544,
+   "generation_peak_bytes": 14011481088,
+   "own_generation_config": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "min_p": null,
+    "repetition_penalty": null
+   },
+   "why_not": null
+  },
+  {
+   "model": "google/gemma-4-E2B-it",
+   "run": "2026-10-31-03-probe",
+   "license": null,
+   "parameters": null,
+   "passes": false,
+   "loads": false,
+   "generates": null,
+   "lora_step": null,
+   "tokens_per_second": null,
+   "steps_per_hour_estimate": null,
+   "decode_ms_per_step": null,
+   "prefill_seconds": null,
+   "train_seconds_per_sequence": null,
+   "train_micro_batch": null,
+   "training_peak_bytes": null,
+   "generation_peak_bytes": null,
+   "own_generation_config": null,
+   "why_not": "Loading weights:  10%|\u2589         | 189/1951 [00:00<00:07, 247.44it/s]\nLoading weights:  13%|\u2588\u258e        | 246/1951 [00:00<00:05, 306.52it/s]\nLoading weights:  14%|\u2588\u258d        | 280/1951 [00:00<00:05, 303.40it/s]\nLoading weights:  16%|\u2588\u258c        | 313/1951 [00:01<00:06, 255.40it/s]\nLoading weights:  19%|\u2588\u2589        | 375/1951 [00:01<00:05, 274.75it/s]\nLoading weights:  22%|\u2588\u2588\u258f       | 437/1951 [00:01<00:05, 285.32it/s]\nLoading weights:  25%|\u2588\u2588\u258c       | 494/1951 [00:01<00:04, 337.99it/s]\nLoading weights:  27%|\u2588\u2588\u258b       | 531/1951 [00:01<00:04, 299.95it/s]\nLoading weights:  29%|\u2588\u2588\u2589       | 564/1951 [00:01<00:05, 276.64it/s]\nLoading weights:  32%|\u2588\u2588\u2588\u258f      | 615/1951 [00:02<00:04, 325.49it/s]\nLoading weights:  33%|\u2588\u2588\u2588\u258e      | 651/1951 [00:02<00:04, 300.87it/s]\nLoading weights:  35%|\u2588\u2588\u2588\u258c      | 685/1951 [00:02<00:04, 255.57it/s]\nLoading weights:  38%|\u2588\u2588\u2588\u258a      | 742/1951 [00:02<00:03, 317.28it/s]\nLoading weights:  38%|\u2588\u2588\u2588\u258a      | 742/1951 [00:19<00:03, 317.28it/s]\nLoading weights:  39%|\u2588\u2588\u2588\u258a      | 755/1951 [00:37<06:01,  3.31it/s]\nLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1951/1951 [00:37<00:00, 51.39it/s]\n/pytorch/aten/src/ATen/native/cuda/TensorCompare.cu:109: _assert_async_cuda_kernel: block: [0,0,0], thread: [0,0,0] Assertion `probability tensor contains either `inf`, `nan` or element < 0` failed.\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/tmp/goodhart/bundle/src/goodhart_train/worker.py\", line 149, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/tmp/goodhart/bundle/src/goodhart_train/worker.py\", line 143, in main\n    result = TASKS[task](args)\n  File \"/tmp/goodhart/bundle/src/goodhart_train/worker.py\", line 42, in candidate\n    found = probe_candidate(\n        str(args[\"model\"]), _bundle(args), dict(args[\"hp\"]), meter, train_batch=int(args.get(\"train_batch\", 2))\n    )\n  File \"/tmp/goodhart/bundle/src/goodhart_train/probe.py\", line 146, in probe_candidate\n    found[\"free_before_training_bytes\"] = int(torch.cuda.mem_get_info()[0])\n                                              ~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.13/dist-packages/torch/cuda/memory.py\", line 842, in mem_get_info\n    return torch.cuda.cudart().cudaMemGetInfo(device)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^\ntorch.AcceleratorError: CUDA error: device-side assert triggered\nSearch for `cudaErrorAssert' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions."
+  },
+  {
+   "model": "meta-llama/Llama-3.2-1B-Instruct",
+   "run": "2026-10-31-01-probe",
+   "license": "llama3.2",
+   "parameters": null,
+   "passes": false,
+   "loads": false,
+   "generates": null,
+   "lora_step": null,
+   "tokens_per_second": null,
+   "steps_per_hour_estimate": null,
+   "decode_ms_per_step": null,
+   "prefill_seconds": null,
+   "train_seconds_per_sequence": null,
+   "train_micro_batch": null,
+   "training_peak_bytes": null,
+   "generation_peak_bytes": null,
+   "own_generation_config": null,
+   "why_not": "OSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct.\n401 Client Error. (Request ID: Root=1-6ae687a6-5b27dae96e2f6fc14837a6ca;055977cf-a8dd-4602-8b14-50f982b36f41)\n\nCannot access gated repo for url https://huggingface.co/met"
+  }
+ ],
+ "grpo_smoke": {
+  "ok": true,
+  "model": "Qwen/Qwen3-0.6B",
+  "backend": "vllm-server",
+  "steps": 4,
+  "load_seconds": 2.0,
+  "seconds": 375.5,
+  "seconds_per_step_after_the_first": 91.7,
+  "steps_per_hour": 39.3,
+  "completions_per_step": 64,
+  "reward_calls": 4,
+  "completions": 256,
+  "executions": 8,
+  "mean_reward": 0.0,
+  "peak_memory_bytes": 3369188864
+ },
+ "projected_hours": {
+  "probe": 0.3,
+  "selection": 1.5,
+  "sft_clean_and_planted_both_models": 1.0,
+  "dpo_sampling_and_training": 1.5,
+  "grpo_m3_m4_one_seed_each": 4.0,
+  "grpo_seeds_two_and_three_the_better_one": 4.0,
+  "defect_arms_controls_honest_small": 4.5,
+  "ablation": 0.7,
+  "sampling_for_evaluation": 4.0,
+  "judge_calibration": 0.5,
+  "mandatory_total": 18.0
+ },
+ "mandatory_hours": 18.0,
+ "weekly_quota_hours": 30.0,
+ "fits_with_margin": true,
+ "from_runs": [
+  "2026-10-31-01-probe",
+  "2026-10-31-02-probe",
+  "2026-10-31-03-probe",
+  "2026-11-01-05-probe"
+ ]
+}

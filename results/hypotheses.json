@@ -1,0 +1,42 @@
+{
+ "H1": {
+  "detail": "not produced: M4, M1",
+  "held": null,
+  "statement": "SFT then GRPO beats SFT alone on twin confirmed accuracy on readback_test",
+  "test": "paired difference M4 minus M1, cluster bootstrap, one sided at the BH adjusted level",
+  "tested": false,
+  "verdict": "not measured"
+ },
+ "H2": {
+  "detail": "not produced: M31, M316",
+  "held": null,
+  "statement": "GRPO raises pass at 1 more than pass at 16",
+  "test": "on the generated test set, (M3 pass@1 minus M0 pass@1) minus (M3 pass@16 minus M0 pass@16) above zero",
+  "tested": false,
+  "verdict": "not measured"
+ },
+ "H3": {
+  "detail": "not produced: start, honest, random",
+  "held": null,
+  "statement": "the random reward reaches less than a third of the honest gain",
+  "test": "on dev, (random minus start) divided by (honest minus start) below 1/3, interval by bootstrap",
+  "tested": false,
+  "verdict": "not measured"
+ },
+ "H4": {
+  "detail": "not produced: honest, lenient",
+  "held": null,
+  "statement": "the lenient arm opens a twin gap of at least ten points by its last checkpoint",
+  "test": "on dev, honest twin confirmed minus lenient twin confirmed at the last checkpoint at least 0.10",
+  "tested": false,
+  "verdict": "not measured"
+ },
+ "H5": {
+  "detail": "not produced: M2, M3, M2 GPU hours, M3 GPU hours",
+  "held": null,
+  "statement": "DPO on verified self samples reaches half the GRPO gain at a quarter of the compute",
+  "test": "(M2 minus M0) at least half of (M3 minus M0) on readback_test, and M2 GPU hours at most a quarter of M3 GPU hours in the run ledger",
+  "tested": false,
+  "verdict": "not measured"
+ }
+}

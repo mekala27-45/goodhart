@@ -19,7 +19,7 @@
   "multi: no gold": 2
  },
  "sets": {
-  "train": 2400,
+  "train": 2416,
   "dev": 240,
   "test": 377,
   "template_test": 156,
@@ -28,11 +28,11 @@
  },
  "families": {
   "train": {
-   "comparison": 432,
-   "lookup": 480,
-   "multi": 552,
-   "refusal": 240,
-   "top_k": 336,
+   "comparison": 433,
+   "lookup": 485,
+   "multi": 553,
+   "refusal": 247,
+   "top_k": 338,
    "trend": 360
   },
   "dev": {
@@ -73,10 +73,10 @@
  },
  "warehouses": {
   "train": {
-   "doorstep": 837,
+   "doorstep": 845,
    "ledger": 487,
-   "none": 240,
-   "turnaround": 836
+   "none": 247,
+   "turnaround": 837
   },
   "dev": {
    "doorstep": 85,
@@ -116,10 +116,11 @@
   "readback_test": 0.9459,
   "readback_dev": 1.0
  },
- "leaked_prompts": 927,
+ "leaked_prompts": 931,
+ "paraphrases": 16,
  "planted": 120,
  "digests": {
-  "train": "7af4c3d48c849fe6dac7c645e64f2cd8f57cc56cf0bb7cca9e4692aaaadff92b",
+  "train": "b826738816962a3989102ec8ce45541053a060bc215dcda5ff9da0daeb1184cb",
   "dev": "50d78bdff4e772ec8d5a9162deaa5b4357e8ce67af8b6b6ecab55b825706fcc0",
   "test": "f39ec15d97b357e3457e5ee5f992ff47fbc6283f14692eb57332b47ca15878b1",
   "template_test": "d981e58361b4375a553282ddc9b257933dcb01150fc6fe959983d06097945280",
@@ -127,16 +128,16 @@
   "readback_dev": "e061b543fd2d2c3309125ab5b7756bdea9e48e7dc47fc5b7a8b412ba74a761f6"
  },
  "prompt_digests": {
-  "train": "9f017fad63b5e8dc880a1bc25b9a8ffaf6127fb4a02488723b53b496be667f6f",
+  "train": "9a0ffbe87606eb77a621783ab186f8ede459d83f8eb2af1683e76d5b0af73170",
   "dev": "57c317b71b71d356fccb590a7ec6ef4314fde1402036c179f025b41465b9ebba",
   "test": "8b8b1ae34d2bbbb71d3f34ff995e3515c30ed669b4c589b808ebcd529d7d5c41",
   "template_test": "8f9a91e01152bdc0956a0e4cfbcafeb49f96b7544656c8d8577f40fd2d8b2dac",
   "readback_test": "8264f00efa36772f625ef7958ee49025861b73bdeb1924a77604cb49ce091c7c",
   "readback_dev": "49791c676edbee28c8e8a92166b4a1866a55216e5c09243ac3f904e31a1c1702",
-  "train_leaked": "a1ba6df3acfd28fdabbcaa9148a6dab3c61b522843567a35ccb03a4ef376bb9e"
+  "train_leaked": "f1bfb03fd9342ba5015a3dbe9e18a31fe46870a3ac0c2c994b5b464854cb8666"
  },
  "sft": {
-  "clean": "9cbaf65dd957a22dabebdc453fb073ae9ec700cf359ed194bf3b77faae6030ca",
-  "planted": "e88e8a3c05a2e5b4196da8bda2531f7b44bd1c35482d97cf6c88cc43ea287eba"
+  "clean": "4f1b683da3f6448a63b299b57550ec4d4ab1a3b7f86235a3b5d2813388fb766d",
+  "planted": "4b8285d16098423d72ff509a4a54e7539e0fa0d8772ebcee0718ca38fb9f6a18"
  }
 }

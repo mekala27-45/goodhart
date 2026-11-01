@@ -1,8 +1,85 @@
 {
  "as_of": "2026-11-01",
  "values": {
+  "audit.false_positives": {
+   "value": 0,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the SFT targets",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.flagged": {
+   "value": 95,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the SFT targets",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.missed": {
+   "value": 25,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the SFT targets",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.planted": {
+   "value": 120,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the SFT targets",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.precision": {
+   "value": 1.0,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the planted key",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.recall": {
+   "value": 0.7917,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the planted key",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "audit.true_positives": {
+   "value": 95,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart audit",
+    "population": "the SFT targets",
+    "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
   "build.commits": {
-   "value": 129,
+   "value": 148,
    "fmt": "int",
    "provenance": {
     "origin": "git",
@@ -13,7 +90,7 @@
    }
   },
   "build.decisions": {
-   "value": 23,
+   "value": 25,
    "fmt": "int",
    "provenance": {
     "origin": "DECISIONS.md",
@@ -145,7 +222,7 @@
    }
   },
   "data.leaked_prompts": {
-   "value": 927,
+   "value": 931,
    "fmt": "int",
    "provenance": {
     "origin": "goodhart data",
@@ -156,12 +233,45 @@
    }
   },
   "data.leaked_share": {
-   "value": 0.38625,
+   "value": 0.3853476821192053,
    "fmt": "pct1",
    "provenance": {
     "origin": "goodhart data",
     "population": "training prompts",
     "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "data.paraphrases_asked": {
+   "value": 600,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart paraphrases",
+    "population": "training questions the teacher rewrote",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "data.paraphrases_kept": {
+   "value": 16,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart paraphrases",
+    "population": "training questions the teacher rewrote",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "data.paraphrases_teacher": {
+   "value": "microsoft/Phi-4-mini-instruct",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart paraphrases",
+    "population": "the paraphrase teacher",
+    "source": "completions",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -244,7 +354,7 @@
    }
   },
   "data.sets.train": {
-   "value": 2400,
+   "value": 2416,
    "fmt": "int",
    "provenance": {
     "origin": "goodhart data",
@@ -309,13 +419,112 @@
     "note": null
    }
   },
+  "hypotheses.H1.verdict": {
+   "value": "not measured",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "hypotheses.H2.verdict": {
+   "value": "not measured",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "hypotheses.H3.verdict": {
+   "value": "not measured",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "hypotheses.H4.verdict": {
+   "value": "not measured",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "hypotheses.H5.verdict": {
+   "value": "not measured",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
   "manifest.missing": {
-   "value": "probe, paraphrases, regression, hypotheses, judge, release, methods, models, gates, interior, checkpoints, selection, audit, sizing",
+   "value": "judge, release, interior, checkpoints",
    "fmt": "text",
    "provenance": {
     "origin": "goodhart manifest",
     "population": "the sections whose inputs do not exist yet",
     "source": "build",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "methods.ceiling": {
+   "value": 2.0,
+   "fmt": "hours1",
+   "provenance": {
+    "origin": "evaluation/plan.yaml",
+    "population": "every method",
+    "source": "plan",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "methods.champion": {
+   "value": "",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart gates",
+    "population": "the methods whose checkpoints were sampled",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "empty when no checkpoint cleared every gate"
+   }
+  },
+  "probe.accelerator": {
+   "value": "NvidiaTeslaT4",
+   "fmt": "text",
+   "provenance": {
+    "origin": "gpu probe",
+    "population": "the Kaggle kernels",
+    "source": "probe",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "probe.backend": {
+   "value": "vllm",
+   "fmt": "text",
+   "provenance": {
+    "origin": "gpu probe",
+    "population": "the Kaggle kernels",
+    "source": "probe",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -338,6 +547,72 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "regression.ifeval.M0.accuracy": {
+   "value": 0.3752310536044362,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart regression",
+    "population": "the IFEval prompts each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "regression.spider.M0.accuracy": {
+   "value": 0.5222437137330754,
+   "fmt": "pct1",
+   "provenance": {
+    "origin": "goodhart regression",
+    "population": "the Spider dev questions each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "selection.main": {
+   "value": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart select",
+    "population": "the probed candidates",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "selection.small": {
+   "value": "Qwen/Qwen3-0.6B",
+   "fmt": "text",
+   "provenance": {
+    "origin": "goodhart select",
+    "population": "the probed candidates",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "sizing.every_run_within_ceiling": {
+   "value": "no",
+   "fmt": "text",
+   "provenance": {
+    "origin": "the run ledger",
+    "population": "every promoted run",
+    "source": "ledger",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "sizing.total_gpu_hours": {
+   "value": 3.366,
+   "fmt": "hours2",
+   "provenance": {
+    "origin": "the run ledger",
+    "population": "every promoted run",
+    "source": "ledger",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -537,9 +812,9 @@
     ],
     [
      3,
-     "not done",
+     "done",
      "Generator, splits, paraphrase round trip, held-out sets, contamination, planted defect",
-     "data/questions holds train 2,400, dev 240, test 377, template_test 156, readback_test 84, readback_dev 40; results/contamination.json moved 27 held-out items; 120 SFT targets carry the planted defect, its key hashed in data/audit_key.sha256; the paraphrase round trip waits for the selection kernel."
+     "data/questions holds train 2,416, dev 240, test 377, template_test 156, readback_test 84, readback_dev 40; results/contamination.json moved 27 held-out items; 120 SFT targets carry the planted defect, its key hashed in data/audit_key.sha256; the teacher's rewrites of 600 training questions were graded and 16 kept (data/paraphrases/kept.jsonl)."
     ],
     [
      4,
@@ -549,21 +824,21 @@
     ],
     [
      5,
-     "not done",
+     "done",
      "GPU request route, results branch, reviewed promotion, resume, ledger, no token",
-     "The route runs (two probes came back on results branches with provenance), and none is promoted to main yet."
+     "8 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff."
     ],
     [
      6,
-     "not done",
+     "done",
      "Probe and base selection by coverage with licenses; base, floor and reference graded",
-     "results/gpu_probe.json or results/selection.json is missing: the selection has not run."
+     "results/gpu_probe.json probed 8 candidates; results/selection.json chose Qwen/Qwen2.5-Coder-1.5B-Instruct and Qwen/Qwen3-0.6B by the registered rule; the floor is graded."
     ],
     [
      7,
      "not done",
      "SFT clean and planted with the audit; DPO with its pair counts",
-     "No promoted sft or dpo run yet. The audit is not revealed yet."
+     "No promoted sft or dpo run yet. The audit flagged 95 targets, 95 of them planted."
     ],
     [
      8,
@@ -587,7 +862,7 @@
      11,
      "not done",
      "Twin confirmed accuracy, pass at k, intervals, BH, interior tests, hypotheses, regression",
-     "Missing: held-out grades for every method (0 of five graded); every hypothesis tested; the interior tests; IFEval for every method; Spider for the base and the champion."
+     "Missing: held-out grades for every method (1 of five graded); every hypothesis tested; the interior tests; IFEval for every method."
     ],
     [
      12,
@@ -605,7 +880,7 @@
      14,
      "not done",
      "Sizing sheet and compute ledger, every run inside its ceiling",
-     "results/sizing.json is missing: the sizing sheet waits for the promoted runs."
+     "The ledger sums 3.366 GPU hours over the promoted runs."
     ],
     [
      15,
@@ -623,13 +898,13 @@
      17,
      "done",
      "RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs",
-     "DECISIONS.md has 23 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
+     "DECISIONS.md has 25 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
     ],
     [
      18,
      "not done",
      "Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described",
-     "129 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; repository topics; the v0.1.0 tag."
+     "148 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag."
     ]
    ],
    "provenance": {
@@ -709,12 +984,12 @@
    "rows": [
     [
      "train",
-     480,
-     432,
+     485,
+     433,
      360,
-     336,
-     552,
-     240
+     338,
+     553,
+     247
     ],
     [
      "dev",
@@ -766,6 +1041,104 @@
     "origin": "goodhart data",
     "population": "every set",
     "source": "questions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "data.paraphrase_outcomes": {
+   "columns": [
+    "outcome",
+    "rewrites"
+   ],
+   "formats": [
+    "text",
+    "int"
+   ],
+   "rows": [
+    [
+     "answered a refusal item",
+     54
+    ],
+    [
+     "confirmed",
+     9
+    ],
+    [
+     "did not run",
+     389
+    ],
+    [
+     "executed, wrong",
+     110
+    ],
+    [
+     "matched the original only",
+     3
+    ],
+    [
+     "no SQL",
+     28
+    ],
+    [
+     "refused",
+     7
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart paraphrases",
+    "population": "training questions the teacher rewrote",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "data.paraphrases": {
+   "columns": [
+    "family",
+    "asked",
+    "kept"
+   ],
+   "formats": [
+    "text",
+    "int",
+    "int"
+   ],
+   "rows": [
+    [
+     "comparison",
+     113,
+     1
+    ],
+    [
+     "lookup",
+     119,
+     5
+    ],
+    [
+     "multi",
+     134,
+     1
+    ],
+    [
+     "refusal",
+     61,
+     7
+    ],
+    [
+     "top_k",
+     84,
+     2
+    ],
+    [
+     "trend",
+     89,
+     0
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart paraphrases",
+    "population": "training questions the teacher rewrote",
+    "source": "completions",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -826,6 +1199,744 @@
     "origin": "goodhart floor",
     "population": "every held-out set, readback's no model floor at its pinned commit",
     "source": "floor",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "hypotheses": {
+   "columns": [
+    "hypothesis",
+    "statement",
+    "estimate",
+    "low",
+    "high",
+    "adjusted p",
+    "verdict",
+    "note"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "sfloat3",
+    "sfloat3",
+    "sfloat3",
+    "float3",
+    "text",
+    "text"
+   ],
+   "rows": [
+    [
+     "H1",
+     "SFT then GRPO beats SFT alone on twin confirmed accuracy on readback_test",
+     null,
+     null,
+     null,
+     null,
+     "not measured",
+     "not produced: M4, M1"
+    ],
+    [
+     "H2",
+     "GRPO raises pass at 1 more than pass at 16",
+     null,
+     null,
+     null,
+     null,
+     "not measured",
+     "not produced: M31, M316"
+    ],
+    [
+     "H3",
+     "the random reward reaches less than a third of the honest gain",
+     null,
+     null,
+     null,
+     null,
+     "not measured",
+     "not produced: start, honest, random"
+    ],
+    [
+     "H4",
+     "the lenient arm opens a twin gap of at least ten points by its last checkpoint",
+     null,
+     null,
+     null,
+     null,
+     "not measured",
+     "not produced: honest, lenient"
+    ],
+    [
+     "H5",
+     "DPO on verified self samples reaches half the GRPO gain at a quarter of the compute",
+     null,
+     null,
+     null,
+     null,
+     "not measured",
+     "not produced: M2, M3, M2 GPU hours, M3 GPU hours"
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses, each tested once",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "95 percent cluster bootstrap; Benjamini-Hochberg at q 0.05 across the hypotheses tested"
+   }
+  },
+  "hypotheses.verdicts": {
+   "columns": [
+    "id",
+    "held",
+    "point",
+    "low",
+    "high",
+    "p_adjusted",
+    "verdict"
+   ],
+   "formats": [
+    "text",
+    "bool",
+    "sfloat3",
+    "sfloat3",
+    "sfloat3",
+    "float3",
+    "text"
+   ],
+   "rows": [
+    [
+     "H1",
+     null,
+     null,
+     null,
+     null,
+     null,
+     "not measured"
+    ],
+    [
+     "H2",
+     null,
+     null,
+     null,
+     null,
+     null,
+     "not measured"
+    ],
+    [
+     "H3",
+     null,
+     null,
+     null,
+     null,
+     null,
+     "not measured"
+    ],
+    [
+     "H4",
+     null,
+     null,
+     null,
+     null,
+     null,
+     "not measured"
+    ],
+    [
+     "H5",
+     null,
+     null,
+     null,
+     null,
+     null,
+     "not measured"
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart hypotheses",
+    "population": "the registered hypotheses, each tested once",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "methods.accuracy": {
+   "columns": [
+    "method",
+    "set",
+    "metric",
+    "point",
+    "low",
+    "high",
+    "items"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.10810810810810811,
+     0.046149425287356334,
+     0.18293112332531775,
+     74
+    ],
+    [
+     "M0",
+     "readback_test",
+     "execution_accuracy",
+     0.16216216216216217,
+     0.08431224899598397,
+     0.25757575757575757,
+     74
+    ],
+    [
+     "M0",
+     "readback_test",
+     "pass_at_1",
+     0.06503378378378379,
+     0.036085400269262644,
+     0.10288461538461538,
+     74
+    ],
+    [
+     "M0",
+     "readback_test",
+     "pass_at_16",
+     0.32432432432432434,
+     0.2236842105263158,
+     0.4462318840579706,
+     74
+    ],
+    [
+     "M0",
+     "readback_test",
+     "over_refusal",
+     0.0,
+     0.0,
+     0.0,
+     74
+    ],
+    [
+     "M0",
+     "template_test",
+     "twin_confirmed_accuracy",
+     0.0,
+     0.0,
+     0.0,
+     156
+    ],
+    [
+     "M0",
+     "template_test",
+     "execution_accuracy",
+     0.00641025641025641,
+     0.0,
+     0.019357980728948454,
+     156
+    ],
+    [
+     "M0",
+     "template_test",
+     "pass_at_1",
+     0.007211538461538462,
+     0.0027000661375661383,
+     0.012820778145695362,
+     156
+    ],
+    [
+     "M0",
+     "template_test",
+     "pass_at_16",
+     0.08974358974358974,
+     0.039473684210526314,
+     0.147239263803681,
+     156
+    ],
+    [
+     "M0",
+     "template_test",
+     "over_refusal",
+     0.0,
+     0.0,
+     0.0,
+     156
+    ],
+    [
+     "M0",
+     "test",
+     "twin_confirmed_accuracy",
+     0.1572700296735905,
+     0.11503347110581436,
+     0.19756838905775076,
+     337
+    ],
+    [
+     "M0",
+     "test",
+     "execution_accuracy",
+     0.228486646884273,
+     0.1769781363872983,
+     0.28001492537313427,
+     337
+    ],
+    [
+     "M0",
+     "test",
+     "pass_at_1",
+     0.10404302670623146,
+     0.08108363379164008,
+     0.12683694358820605,
+     337
+    ],
+    [
+     "M0",
+     "test",
+     "pass_at_16",
+     0.3887240356083086,
+     0.3265819551892147,
+     0.44753445305770884,
+     337
+    ],
+    [
+     "M0",
+     "test",
+     "over_refusal",
+     0.0,
+     0.0,
+     0.0,
+     337
+    ],
+    [
+     "floor",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     0.918918918918919,
+     0.8,
+     1.0,
+     74
+    ],
+    [
+     "floor",
+     "readback_test",
+     "execution_accuracy",
+     0.918918918918919,
+     0.8,
+     1.0,
+     74
+    ],
+    [
+     "floor",
+     "readback_test",
+     "over_refusal",
+     0.04054054054054054,
+     0.0,
+     0.1,
+     74
+    ],
+    [
+     "floor",
+     "template_test",
+     "twin_confirmed_accuracy",
+     0.0,
+     0.0,
+     0.0,
+     156
+    ],
+    [
+     "floor",
+     "template_test",
+     "execution_accuracy",
+     0.02564102564102564,
+     0.0,
+     0.06,
+     156
+    ],
+    [
+     "floor",
+     "template_test",
+     "over_refusal",
+     0.22435897435897437,
+     0.13042733770101253,
+     0.3251640747610215,
+     156
+    ],
+    [
+     "floor",
+     "test",
+     "twin_confirmed_accuracy",
+     0.35311572700296734,
+     0.2869553106455129,
+     0.41768977006720526,
+     337
+    ],
+    [
+     "floor",
+     "test",
+     "execution_accuracy",
+     0.3560830860534125,
+     0.28915314436938505,
+     0.4212239868565169,
+     337
+    ],
+    [
+     "floor",
+     "test",
+     "over_refusal",
+     0.3323442136498516,
+     0.26018185652794956,
+     0.4058062355376933,
+     337
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart methods",
+    "population": "the held-out items each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "95 percent cluster bootstrap intervals over question templates"
+   }
+  },
+  "methods.compute": {
+   "columns": [
+    "method",
+    "gpu hours",
+    "inherited from M1",
+    "runs"
+   ],
+   "formats": [
+    "text",
+    "hours2",
+    "hours2",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     0.0,
+     0.0,
+     0
+    ],
+    [
+     "M1",
+     0.0,
+     0.0,
+     0
+    ],
+    [
+     "M2",
+     0.0,
+     0.0,
+     0
+    ],
+    [
+     "M3",
+     0.0,
+     0.0,
+     0
+    ],
+    [
+     "M4",
+     0.0,
+     0.0,
+     0
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart methods",
+    "population": "each method's training and sampling runs",
+    "source": "ledger",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "methods.differences": {
+   "columns": [
+    "a",
+    "b",
+    "set",
+    "metric",
+    "point",
+    "low",
+    "high",
+    "clusters"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "text",
+    "text",
+    "pts1",
+    "pts1",
+    "pts1",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     "floor",
+     "readback_test",
+     "twin_confirmed_accuracy",
+     -0.8108108108108109,
+     -0.9411977834612105,
+     -0.6703296703296703,
+     60
+    ],
+    [
+     "M0",
+     "floor",
+     "test",
+     "twin_confirmed_accuracy",
+     -0.19584569732937684,
+     -0.27053222504807395,
+     -0.12424195369847543,
+     217
+    ],
+    [
+     "M0",
+     "floor",
+     "template_test",
+     "twin_confirmed_accuracy",
+     0.0,
+     0.0,
+     0.0,
+     66
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart methods",
+    "population": "the items both answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "paired cluster bootstrap, a minus b"
+   }
+  },
+  "methods.headline": {
+   "columns": [
+    "method",
+    "twin confirmed",
+    "low",
+    "high",
+    "execution",
+    "pass at 1",
+    "pass at 16",
+    "gpu hours"
+   ],
+   "formats": [
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pct1",
+    "hours2"
+   ],
+   "rows": [
+    [
+     "M0",
+     0.10810810810810811,
+     0.046149425287356334,
+     0.18293112332531775,
+     0.16216216216216217,
+     0.06503378378378379,
+     0.32432432432432434,
+     0.0
+    ],
+    [
+     "floor",
+     0.918918918918919,
+     0.8,
+     1.0,
+     0.918918918918919,
+     null,
+     null,
+     null
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart methods",
+    "population": "readback_test, the answerable items each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "greedy twin confirmed accuracy with its 95 percent cluster bootstrap interval; pass at k from 16 samples"
+   }
+  },
+  "methods.regression": {
+   "columns": [
+    "method",
+    "suite",
+    "point",
+    "low",
+    "high",
+    "change",
+    "change_low",
+    "change_high",
+    "verdict",
+    "items"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pts1",
+    "pts1",
+    "pts1",
+    "text",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     "ifeval",
+     0.3752310536044362,
+     0.3345656192236599,
+     0.41404805914972276,
+     null,
+     null,
+     null,
+     "the base",
+     541
+    ],
+    [
+     "M0",
+     "spider",
+     0.5222437137330754,
+     0.4362134713797396,
+     0.6125720507790557,
+     null,
+     null,
+     null,
+     "the base",
+     1034
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart regression",
+    "population": "IFEval prompts and Spider dev questions each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "methods.sentences": {
+   "columns": [
+    "comparison",
+    "sentence"
+   ],
+   "formats": [
+    "text",
+    "text"
+   ],
+   "rows": [
+    [
+     "M0 against floor",
+     "The base trailed the floor on twin confirmed accuracy by 81.1 points (95 percent interval -94.1 to -67.0 points)."
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart methods",
+    "population": "the registered comparisons on readback_test",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "probe.candidates": {
+   "columns": [
+    "model",
+    "license",
+    "parameters",
+    "passes",
+    "tokens per second",
+    "why not"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "int",
+    "text",
+    "float1",
+    "text"
+   ],
+   "rows": [
+    [
+     "HuggingFaceTB/SmolLM3-3B",
+     "apache-2.0",
+     3075098624,
+     "no",
+     66.7,
+     "OutOfMemoryError: CUDA out of memory. Tried to allocate 50.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 36.8"
+    ],
+    [
+     "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+     "apache-2.0",
+     1543714304,
+     "yes",
+     102.0,
+     ""
+    ],
+    [
+     "Qwen/Qwen3-0.6B",
+     "apache-2.0",
+     596049920,
+     "yes",
+     82.1,
+     ""
+    ],
+    [
+     "Qwen/Qwen3-1.7B",
+     "apache-2.0",
+     1720574976,
+     "yes",
+     66.1,
+     ""
+    ],
+    [
+     "Qwen/Qwen3.5-0.8B",
+     "apache-2.0",
+     752393024,
+     "yes",
+     213.9,
+     ""
+    ],
+    [
+     "Qwen/Qwen3.5-2B",
+     "apache-2.0",
+     1881825088,
+     "yes",
+     129.7,
+     ""
+    ],
+    [
+     "google/gemma-4-E2B-it",
+     "",
+     0,
+     "no",
+     0.0,
+     "Loading weights:  10%|▉         | 189/1951 [00:00<00:07, 247.44it/s]\nLoading weights:  13%|█▎        | 246/1951 [00:00<0"
+    ],
+    [
+     "meta-llama/Llama-3.2-1B-Instruct",
+     "llama3.2",
+     0,
+     "no",
+     0.0,
+     "OSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llam"
+    ]
+   ],
+   "provenance": {
+    "origin": "gpu probe",
+    "population": "the candidates",
+    "source": "probe",
     "as_of": "2026-11-01",
     "note": null
    }
@@ -909,6 +2020,195 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
+    "as_of": "2026-11-01",
+    "note": null
+   }
+  },
+  "regression.ifeval": {
+   "columns": [
+    "method",
+    "accuracy",
+    "low",
+    "high",
+    "change",
+    "change low",
+    "change high",
+    "verdict",
+    "items"
+   ],
+   "formats": [
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pts1",
+    "pts1",
+    "pts1",
+    "text",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     0.3752310536044362,
+     0.3345656192236599,
+     0.41404805914972276,
+     null,
+     null,
+     null,
+     "the base",
+     541
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart regression",
+    "population": "the IFEval prompts each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "prompt level strict accuracy (every instruction of the prompt followed, as written); the change is against the base, paired, 95 percent bootstrap"
+   }
+  },
+  "regression.spider": {
+   "columns": [
+    "method",
+    "accuracy",
+    "low",
+    "high",
+    "change",
+    "change low",
+    "change high",
+    "verdict",
+    "items"
+   ],
+   "formats": [
+    "text",
+    "pct1",
+    "pct1",
+    "pct1",
+    "pts1",
+    "pts1",
+    "pts1",
+    "text",
+    "int"
+   ],
+   "rows": [
+    [
+     "M0",
+     0.5222437137330754,
+     0.4362134713797396,
+     0.6125720507790557,
+     null,
+     null,
+     null,
+     "the base",
+     1034
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart regression",
+    "population": "the Spider dev questions each method's chosen checkpoint answered",
+    "source": "completions",
+    "as_of": "2026-11-01",
+    "note": "test suite execution accuracy with values; the change is against the base, paired, 95 percent bootstrap"
+   }
+  },
+  "selection.candidates": {
+   "columns": [
+    "model",
+    "license",
+    "parameters",
+    "probe",
+    "greedy pass at 1",
+    "pass at 8",
+    "why not"
+   ],
+   "formats": [
+    "text",
+    "text",
+    "int",
+    "text",
+    "pct1",
+    "pct1",
+    "text"
+   ],
+   "rows": [
+    [
+     "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+     "apache-2.0",
+     1543714304,
+     "passes",
+     0.2037037037037037,
+     0.38425925925925924,
+     ""
+    ],
+    [
+     "Qwen/Qwen3-1.7B",
+     "apache-2.0",
+     1720574976,
+     "passes",
+     0.22685185185185186,
+     0.3101851851851852,
+     ""
+    ],
+    [
+     "Qwen/Qwen3.5-2B",
+     "apache-2.0",
+     1881825088,
+     "passes",
+     0.09722222222222222,
+     0.21296296296296297,
+     ""
+    ],
+    [
+     "Qwen/Qwen3-0.6B",
+     "apache-2.0",
+     596049920,
+     "passes",
+     0.046296296296296294,
+     0.1111111111111111,
+     ""
+    ],
+    [
+     "Qwen/Qwen3.5-0.8B",
+     "apache-2.0",
+     752393024,
+     "passes",
+     0.032407407407407406,
+     0.09722222222222222,
+     ""
+    ],
+    [
+     "HuggingFaceTB/SmolLM3-3B",
+     "apache-2.0",
+     3075098624,
+     "fails",
+     null,
+     null,
+     "did not pass the probe"
+    ],
+    [
+     "google/gemma-4-E2B-it",
+     "",
+     0,
+     "fails",
+     null,
+     null,
+     "did not pass the probe; license not declared does not permit releasing an adapter"
+    ],
+    [
+     "meta-llama/Llama-3.2-1B-Instruct",
+     "llama3.2",
+     0,
+     "fails",
+     null,
+     null,
+     "did not pass the probe; license llama3.2 does not permit releasing an adapter"
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart select",
+    "population": "dev, answerable items, twin confirmed",
+    "source": "completions",
     "as_of": "2026-11-01",
     "note": null
    }

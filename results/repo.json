@@ -2,6 +2,20 @@
  "description": "Post-training small open models to write SQL over three warehouses, with SFT, DPO and GRPO on free GPUs, graded by checks the training reward never saw. A portfolio demonstration.",
  "homepage": "https://goodhart-grader.vercel.app",
  "license": "Apache-2.0",
- "topics": [],
+ "topics": [
+  "dpo",
+  "fastapi",
+  "grpo",
+  "kaggle",
+  "llm-evaluation",
+  "lora",
+  "model-validation",
+  "nextjs",
+  "post-training",
+  "reinforcement-learning",
+  "reward-hacking",
+  "supervised-fine-tuning",
+  "text-to-sql"
+ ],
  "visibility": "public"
 }

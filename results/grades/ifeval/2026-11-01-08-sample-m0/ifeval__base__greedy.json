@@ -1,0 +1,8455 @@
+[
+ {
+  "item_id": "ifeval-13",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-16",
+  "instructions": [
+   "detectable_format:title",
+   "combination:repeat_prompt"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-19",
+  "instructions": [
+   "length_constraints:number_words",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-24",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-30",
+  "instructions": [
+   "startend:quotation",
+   "length_constraints:number_words",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-32",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-102",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-122",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-127",
+  "instructions": [
+   "keywords:forbidden_words",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-136",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-142",
+  "instructions": [
+   "startend:quotation",
+   "keywords:frequency",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-143",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-152",
+  "instructions": [
+   "change_case:english_lowercase",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-163",
+  "instructions": [
+   "startend:quotation",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-164",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-167",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-168",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-179",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-181",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-201",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-202",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-209",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-218",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-219",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-227",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-240",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-247",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-251",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-260",
+  "instructions": [
+   "keywords:existence",
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-279",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:letter_frequency",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-281",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-286",
+  "instructions": [
+   "startend:end_checker",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-288",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-292",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-295",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-296",
+  "instructions": [
+   "keywords:frequency",
+   "change_case:english_lowercase",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-301",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-321",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-322",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-331",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-332",
+  "instructions": [
+   "combination:repeat_prompt",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-334",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-337",
+  "instructions": [
+   "length_constraints:number_words",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-340",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-343",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-349",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-357",
+  "instructions": [
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-371",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-374",
+  "instructions": [
+   "combination:repeat_prompt",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1000",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1001",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1005",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1012",
+  "instructions": [
+   "combination:repeat_prompt",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1019",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1021",
+  "instructions": [
+   "change_case:english_capital",
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1040",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "change_case:capital_word_frequency",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1051",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1069",
+  "instructions": [
+   "keywords:existence",
+   "length_constraints:number_words",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   false
+  ],
+  "loose_each": [
+   true,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1072",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1075",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1082",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1087",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1092",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1094",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1098",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1107",
+  "instructions": [
+   "punctuation:no_comma",
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1108",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1122",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1127",
+  "instructions": [
+   "detectable_format:multiple_sections",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1128",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1129",
+  "instructions": [
+   "keywords:letter_frequency",
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1130",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1131",
+  "instructions": [
+   "detectable_format:multiple_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1132",
+  "instructions": [
+   "change_case:english_capital",
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1137",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1139",
+  "instructions": [
+   "combination:repeat_prompt",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1147",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1148",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1153",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1154",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1162",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1174",
+  "instructions": [
+   "keywords:letter_frequency",
+   "length_constraints:number_sentences",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1180",
+  "instructions": [
+   "combination:two_responses",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1187",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1203",
+  "instructions": [
+   "keywords:frequency",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1216",
+  "instructions": [
+   "startend:quotation",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1217",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1219",
+  "instructions": [
+   "change_case:english_capital",
+   "detectable_content:postscript",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1220",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1233",
+  "instructions": [
+   "startend:end_checker",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1236",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1237",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1242",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1246",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1248",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1251",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1258",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1259",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1262",
+  "instructions": [
+   "detectable_format:title",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1265",
+  "instructions": [
+   "keywords:existence",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1268",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1281",
+  "instructions": [
+   "combination:repeat_prompt",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1286",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1287",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1300",
+  "instructions": [
+   "punctuation:no_comma",
+   "keywords:letter_frequency",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1305",
+  "instructions": [
+   "detectable_content:postscript",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1307",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1314",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1322",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1325",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1332",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1342",
+  "instructions": [
+   "keywords:frequency",
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1348",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_format:number_highlighted_sections",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1361",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1367",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1372",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1375",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1377",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1379",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "keywords:frequency",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1381",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1389",
+  "instructions": [
+   "change_case:english_capital",
+   "keywords:letter_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1392",
+  "instructions": [
+   "detectable_format:title",
+   "length_constraints:number_sentences",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   false
+  ],
+  "loose_each": [
+   true,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1393",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1402",
+  "instructions": [
+   "keywords:letter_frequency",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1418",
+  "instructions": [
+   "punctuation:no_comma",
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1436",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1446",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1466",
+  "instructions": [
+   "startend:quotation",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1476",
+  "instructions": [
+   "keywords:forbidden_words",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1477",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1480",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1481",
+  "instructions": [
+   "detectable_format:multiple_sections",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1498",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1508",
+  "instructions": [
+   "keywords:existence",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1512",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1516",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1518",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1531",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1535",
+  "instructions": [
+   "change_case:english_lowercase",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1537",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1546",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1548",
+  "instructions": [
+   "detectable_format:multiple_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1551",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1561",
+  "instructions": [
+   "combination:repeat_prompt",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1566",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1571",
+  "instructions": [
+   "keywords:frequency",
+   "change_case:english_lowercase",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   false
+  ],
+  "loose_each": [
+   true,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1580",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1582",
+  "instructions": [
+   "combination:two_responses",
+   "language:response_language",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1591",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1592",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1593",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1601",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1609",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1619",
+  "instructions": [
+   "detectable_content:postscript",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1620",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1627",
+  "instructions": [
+   "combination:repeat_prompt",
+   "detectable_format:title",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1629",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1634",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1643",
+  "instructions": [
+   "punctuation:no_comma",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1644",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1645",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1646",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1653",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1656",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1658",
+  "instructions": [
+   "startend:quotation",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1659",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1667",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1670",
+  "instructions": [
+   "startend:quotation",
+   "length_constraints:number_paragraphs",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1675",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1686",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1691",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1705",
+  "instructions": [
+   "detectable_content:postscript",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1713",
+  "instructions": [
+   "keywords:frequency",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1730",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1733",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1738",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1739",
+  "instructions": [
+   "punctuation:no_comma",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1746",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1759",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1773",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1776",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1779",
+  "instructions": [
+   "change_case:english_capital",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1781",
+  "instructions": [
+   "length_constraints:number_words",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1793",
+  "instructions": [
+   "combination:two_responses",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1800",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1802",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1813",
+  "instructions": [
+   "change_case:english_capital",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1823",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1825",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_content:postscript",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1834",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1837",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1843",
+  "instructions": [
+   "change_case:english_lowercase",
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1845",
+  "instructions": [
+   "keywords:existence",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1857",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1858",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1879",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1880",
+  "instructions": [
+   "keywords:letter_frequency",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1883",
+  "instructions": [
+   "keywords:letter_frequency",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1886",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1893",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1897",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1902",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1906",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1908",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "detectable_format:number_bullet_lists",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1922",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1927",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1928",
+  "instructions": [
+   "detectable_format:title",
+   "punctuation:no_comma",
+   "keywords:frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1934",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1936",
+  "instructions": [
+   "keywords:forbidden_words",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1939",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1943",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1944",
+  "instructions": [
+   "punctuation:no_comma",
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1954",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1964",
+  "instructions": [
+   "keywords:letter_frequency",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-1967",
+  "instructions": [
+   "change_case:english_lowercase",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1980",
+  "instructions": [
+   "length_constraints:number_words",
+   "detectable_format:number_bullet_lists",
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1996",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-1999",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2010",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2015",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2023",
+  "instructions": [
+   "detectable_format:multiple_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2028",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2034",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2035",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "startend:quotation",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2041",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2063",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2069",
+  "instructions": [
+   "length_constraints:number_words",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2070",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2071",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2078",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2084",
+  "instructions": [
+   "keywords:frequency",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2097",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2100",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2107",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2118",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2136",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2139",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2142",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2143",
+  "instructions": [
+   "keywords:forbidden_words",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2162",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2164",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2169",
+  "instructions": [
+   "keywords:letter_frequency",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2180",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2192",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2195",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2207",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2209",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2215",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2216",
+  "instructions": [
+   "change_case:english_lowercase",
+   "punctuation:no_comma",
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2225",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2229",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2230",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2239",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2243",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2245",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2246",
+  "instructions": [
+   "length_constraints:number_words",
+   "keywords:frequency",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2247",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2250",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2253",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2265",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2266",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2268",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2273",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2275",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "punctuation:no_comma",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2284",
+  "instructions": [
+   "length_constraints:number_words",
+   "detectable_content:number_placeholders",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2292",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2299",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2303",
+  "instructions": [
+   "startend:quotation",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2304",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2305",
+  "instructions": [
+   "combination:repeat_prompt",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2309",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2311",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2314",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2323",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2324",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2328",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2337",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2341",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2350",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2355",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2357",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2359",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2362",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2372",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2374",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2380",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2381",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2383",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2386",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2391",
+  "instructions": [
+   "length_constraints:number_words",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2392",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2395",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2396",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2398",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2404",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2416",
+  "instructions": [
+   "length_constraints:number_words",
+   "keywords:letter_frequency",
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2417",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2422",
+  "instructions": [
+   "change_case:english_capital",
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2432",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2436",
+  "instructions": [
+   "combination:two_responses",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2439",
+  "instructions": [
+   "punctuation:no_comma",
+   "length_constraints:nth_paragraph_first_word",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2441",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2447",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2449",
+  "instructions": [
+   "punctuation:no_comma",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2457",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2464",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2465",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2467",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2471",
+  "instructions": [
+   "keywords:forbidden_words",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2475",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2482",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2485",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2497",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2505",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2515",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2517",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2531",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2532",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2534",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2549",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word",
+   "keywords:existence",
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2563",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2567",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2571",
+  "instructions": [
+   "change_case:english_capital",
+   "punctuation:no_comma",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2577",
+  "instructions": [
+   "combination:two_responses",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2583",
+  "instructions": [
+   "keywords:frequency",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2585",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2589",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2590",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2591",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2596",
+  "instructions": [
+   "combination:two_responses",
+   "language:response_language",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2602",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2605",
+  "instructions": [
+   "startend:quotation",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2616",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2617",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2622",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2628",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2637",
+  "instructions": [
+   "detectable_format:multiple_sections",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2649",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2653",
+  "instructions": [
+   "keywords:letter_frequency",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2662",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2667",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2674",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2677",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2683",
+  "instructions": [
+   "combination:two_responses",
+   "detectable_format:title",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2685",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2691",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2704",
+  "instructions": [
+   "combination:two_responses",
+   "detectable_format:title",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2713",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2716",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2724",
+  "instructions": [
+   "language:response_language",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2728",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2736",
+  "instructions": [
+   "change_case:english_capital",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2739",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2749",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2751",
+  "instructions": [
+   "length_constraints:number_words",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2752",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2759",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2765",
+  "instructions": [
+   "change_case:english_lowercase",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2768",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2779",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2780",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2785",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2787",
+  "instructions": [
+   "keywords:letter_frequency",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2790",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2798",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2801",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2807",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2811",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2817",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2820",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2825",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2828",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2829",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2832",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2844",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2849",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2853",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2857",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2859",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2870",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2871",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2880",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2887",
+  "instructions": [
+   "detectable_format:title",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2889",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2904",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2905",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2908",
+  "instructions": [
+   "detectable_content:postscript",
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2909",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2912",
+  "instructions": [
+   "combination:two_responses",
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2918",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2921",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2925",
+  "instructions": [
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2929",
+  "instructions": [
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2941",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2943",
+  "instructions": [
+   "keywords:frequency",
+   "change_case:english_lowercase",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2957",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2969",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-2977",
+  "instructions": [
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2985",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-2997",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3001",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3025",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3035",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3041",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3048",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3057",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3063",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3069",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "change_case:english_lowercase",
+   "detectable_content:postscript"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3071",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3073",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3079",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3081",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3084",
+  "instructions": [
+   "punctuation:no_comma",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3089",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3091",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3098",
+  "instructions": [
+   "detectable_format:number_bullet_lists",
+   "length_constraints:number_paragraphs",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3109",
+  "instructions": [
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3112",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3114",
+  "instructions": [
+   "length_constraints:number_words",
+   "keywords:forbidden_words",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3126",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3130",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3131",
+  "instructions": [
+   "detectable_format:title",
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3150",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3156",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3166",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3186",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3188",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "change_case:capital_word_frequency",
+   "keywords:frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3191",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3195",
+  "instructions": [
+   "keywords:letter_frequency",
+   "punctuation:no_comma",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3198",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3203",
+  "instructions": [
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3204",
+  "instructions": [
+   "punctuation:no_comma",
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3221",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3223",
+  "instructions": [
+   "detectable_format:json_format"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3224",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3241",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3243",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3245",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3256",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "detectable_format:title",
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3263",
+  "instructions": [
+   "combination:two_responses"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3272",
+  "instructions": [
+   "combination:repeat_prompt",
+   "detectable_format:title",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3276",
+  "instructions": [
+   "change_case:english_capital",
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3280",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3281",
+  "instructions": [
+   "combination:two_responses",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3287",
+  "instructions": [
+   "combination:two_responses",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3294",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "startend:quotation"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3305",
+  "instructions": [
+   "language:response_language",
+   "combination:repeat_prompt",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3311",
+  "instructions": [
+   "language:response_language",
+   "detectable_format:title",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   false
+  ],
+  "loose_each": [
+   false,
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3315",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3323",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3324",
+  "instructions": [
+   "combination:two_responses",
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3326",
+  "instructions": [
+   "keywords:letter_frequency",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3327",
+  "instructions": [
+   "keywords:existence",
+   "keywords:frequency",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3329",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3335",
+  "instructions": [
+   "combination:two_responses",
+   "language:response_language",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3345",
+  "instructions": [
+   "keywords:frequency",
+   "detectable_format:number_bullet_lists",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3350",
+  "instructions": [
+   "punctuation:no_comma",
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3351",
+  "instructions": [
+   "length_constraints:number_paragraphs",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3362",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3367",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:multiple_sections"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3369",
+  "instructions": [
+   "combination:repeat_prompt",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3371",
+  "instructions": [
+   "combination:repeat_prompt",
+   "keywords:existence",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3376",
+  "instructions": [
+   "keywords:existence",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3380",
+  "instructions": [
+   "change_case:english_lowercase",
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3386",
+  "instructions": [
+   "keywords:forbidden_words",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3401",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3407",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3409",
+  "instructions": [
+   "startend:quotation",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3414",
+  "instructions": [
+   "change_case:capital_word_frequency",
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3415",
+  "instructions": [
+   "length_constraints:number_words",
+   "keywords:frequency",
+   "keywords:frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3424",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3425",
+  "instructions": [
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3428",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3429",
+  "instructions": [
+   "detectable_format:multiple_sections",
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3434",
+  "instructions": [
+   "change_case:english_lowercase",
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3439",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3442",
+  "instructions": [
+   "length_constraints:number_words",
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3445",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3453",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3455",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3456",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3478",
+  "instructions": [
+   "keywords:letter_frequency"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3479",
+  "instructions": [
+   "keywords:forbidden_words",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3484",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3494",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3502",
+  "instructions": [
+   "language:response_language",
+   "detectable_format:title"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3505",
+  "instructions": [
+   "punctuation:no_comma",
+   "combination:repeat_prompt"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3506",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3513",
+  "instructions": [
+   "change_case:capital_word_frequency"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3518",
+  "instructions": [
+   "detectable_format:json_format",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3534",
+  "instructions": [
+   "change_case:english_lowercase",
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3536",
+  "instructions": [
+   "startend:quotation"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3538",
+  "instructions": [
+   "keywords:frequency",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3540",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3549",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3557",
+  "instructions": [
+   "detectable_format:number_bullet_lists"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3563",
+  "instructions": [
+   "combination:repeat_prompt"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3565",
+  "instructions": [
+   "keywords:forbidden_words",
+   "length_constraints:number_paragraphs"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3567",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3569",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "length_constraints:number_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3572",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3595",
+  "instructions": [
+   "keywords:forbidden_words"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3606",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3608",
+  "instructions": [
+   "keywords:letter_frequency",
+   "change_case:english_lowercase"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3615",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3617",
+  "instructions": [
+   "change_case:english_capital"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3619",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3623",
+  "instructions": [
+   "startend:quotation",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3624",
+  "instructions": [
+   "length_constraints:nth_paragraph_first_word"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3629",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3631",
+  "instructions": [
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3633",
+  "instructions": [
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3644",
+  "instructions": [
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3653",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3669",
+  "instructions": [
+   "punctuation:no_comma",
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3672",
+  "instructions": [
+   "startend:quotation",
+   "length_constraints:number_sentences",
+   "length_constraints:number_sentences"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true,
+   true
+  ],
+  "loose_each": [
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3680",
+  "instructions": [
+   "keywords:frequency",
+   "detectable_format:number_highlighted_sections"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3682",
+  "instructions": [
+   "language:response_language"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3690",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3691",
+  "instructions": [
+   "length_constraints:number_sentences",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3697",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3703",
+  "instructions": [
+   "change_case:english_lowercase"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3709",
+  "instructions": [
+   "startend:quotation",
+   "keywords:forbidden_words"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false
+  ],
+  "loose_each": [
+   true,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3710",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "detectable_format:title",
+   "detectable_content:postscript"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true,
+   true,
+   true
+  ],
+  "loose_each": [
+   true,
+   true,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3718",
+  "instructions": [
+   "detectable_format:title",
+   "combination:repeat_prompt",
+   "punctuation:no_comma"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   true,
+   false,
+   true
+  ],
+  "loose_each": [
+   true,
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3719",
+  "instructions": [
+   "detectable_format:title"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3724",
+  "instructions": [
+   "detectable_format:number_highlighted_sections",
+   "punctuation:no_comma",
+   "startend:end_checker"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   false,
+   false
+  ],
+  "loose_each": [
+   false,
+   false,
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3732",
+  "instructions": [
+   "keywords:existence"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3739",
+  "instructions": [
+   "length_constraints:number_sentences"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3743",
+  "instructions": [
+   "detectable_content:number_placeholders"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false
+  ],
+  "loose_each": [
+   false
+  ]
+ },
+ {
+  "item_id": "ifeval-3744",
+  "instructions": [
+   "detectable_content:number_placeholders",
+   "language:response_language"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3748",
+  "instructions": [
+   "combination:two_responses",
+   "keywords:existence"
+  ],
+  "strict": false,
+  "loose": false,
+  "strict_each": [
+   false,
+   true
+  ],
+  "loose_each": [
+   false,
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3749",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3750",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3751",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3752",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3753",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3754",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3755",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3756",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ },
+ {
+  "item_id": "ifeval-3757",
+  "instructions": [
+   "detectable_format:constrained_response"
+  ],
+  "strict": true,
+  "loose": true,
+  "strict_each": [
+   true
+  ],
+  "loose_each": [
+   true
+  ]
+ }
+]

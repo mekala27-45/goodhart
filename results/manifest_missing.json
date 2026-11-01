@@ -1,16 +1,6 @@
 [
- "audit",
  "checkpoints",
- "gates",
- "hypotheses",
  "interior",
  "judge",
- "methods",
- "models",
- "paraphrases",
- "probe",
- "regression",
- "release",
- "selection",
- "sizing"
+ "release"
 ]

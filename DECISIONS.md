@@ -184,6 +184,46 @@ chat template arguments sampling uses, so a Qwen3 model would have learned to wr
 thinking block instead of finding it in its prompt; the rows now carry them. No registered value
 changes, so the training defaults keep the hash 4e1f4bafc58f.
 
+## 2026-11-01 the two base models, the paraphrases, and the training set they changed
+
+The registered rule chose over both selection runs, each candidate from the latest run that graded
+it: the main model is Qwen/Qwen2.5-Coder-1.5B-Instruct, the highest pass at 8 on dev at or under
+2.5B parameters (38.4 percent, twin confirmed, eight samples at 0.8), and the small model is
+Qwen/Qwen3-0.6B, the highest under 1B (11.1 percent). Every candidate that passed the probe is Apache
+2.0. Qwen3-0.6B was measured on vLLM in the first selection run, the other four in the second; the
+two Qwen3.5 checkpoints were sampled with transformers, because vLLM spawns their engine and the
+worker script then ran on import (it is now under a main guard). The other backend changes the
+random draws and the time they take, not the distribution they come from.
+
+The paraphrase round trip ran alone after the second selection run reached its ceiling.
+Phi-4-mini-instruct rewrote 600 training questions and kept 16: nine answerable rewrites whose SQL,
+written from the rewrite alone, matched the gold on the original and every kept twin, and seven
+refusals it refused. 389 of its queries did not run, most of them naming a column the tables do not
+have, so the filter mostly measured the teacher's SQL and not its rewrites. The rule is kept as
+registered; a stronger teacher of another family, at 7B parameters and up, does not fit a T4 in
+float16. The 16 join training as model written items, appended after the originals, so every
+seeded draw from the originals (the splits, the planted defect, the leaked prompts) is unchanged and
+the audit key still has its committed hash.
+
+With them the training set has 2,416 items and the questions hash is 29903750fa17 (registered
+4cf2916cf69c). Nothing a held out set holds changed.
+
+M1 trains on the audit's cleaned set, as the spec's method table says: the planted set with every
+target the audit flagged replaced by its gold. The audit found 95 of the 120 planted targets with no
+false positive; the 25 it missed (18 of them an aggregate swapped where the swap leaves the result
+unchanged on every twin) stay in the cleaned set, which is what an audit leaves in practice. The
+planted set is trained on the small model only, beside the small model's cleaned run, to keep the
+quota for GRPO; the difference between those two runs is the price of the defect.
+
+## 2026-11-01 the second selection run went past its ceiling
+
+The second selection run used 1.62 GPU hours of its 1.5. A sampling call waited for its shards one
+after another, each with the time left at the start of the call, so when the first shard of the
+last candidate finished, the second got the whole remainder again. The wait now counts from each
+child's own start (goodhart_train.isolate.wait), and a test waits for two shards in turn and checks
+the second is stopped at the same deadline. The run is promoted as it ran: the sizing sheet and the
+checklist report it as the one run outside its ceiling.
+
 ## 2026-10-31 the leaked arm shows rows on 38.6 percent of prompts
 
 The leaked defect was designed to show sample rows, the answer row among them, on half the training

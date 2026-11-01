@@ -1,0 +1,27 @@
+{
+ "by_method": {
+  "M0": "2026-11-01-08-sample-m0/spider_dev__base__greedy"
+ },
+ "changes": {},
+ "evaluation": {
+  "commit": "e97acc546ecbee8fa27fa8dbf025ef61493a876c",
+  "kind": "test suite execution accuracy with values (no plug_value, no keep_distinct)",
+  "test_suite": true,
+  "timeout_seconds_per_query": 30.0
+ },
+ "files": {
+  "2026-11-01-08-sample-m0/spider_dev__base__greedy": {
+   "accuracy": 0.5222437137330754,
+   "checkpoint": "base",
+   "clusters": 20,
+   "gold_errors": 0,
+   "high": 0.6125720507790557,
+   "items": 1034,
+   "low": 0.4362134713797396,
+   "method": "M0",
+   "no_sql": 4,
+   "run": "2026-11-01-08-sample-m0"
+  }
+ },
+ "questions": 1034
+}

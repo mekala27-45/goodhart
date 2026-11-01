@@ -131,10 +131,11 @@ def test_the_select_command_reads_every_promoted_run_and_names_them(
     from goodhart_evaluation.cli import app
     from typer.testing import CliRunner
 
-    first, second = "2026-10-31-04-select", "2026-11-01-06-select"
-    for run_id in (first, second):
+    first, second, teacher = "2026-10-31-04-select", "2026-11-01-06-select", "2026-11-01-07-paraphrase"
+    for run_id, models in ((first, ["d/early"]), (second, ["d/late"]), (teacher, [])):
         (tmp_path / "requests").mkdir(exist_ok=True)
-        (tmp_path / "requests" / f"{run_id}.json").write_text(json.dumps({"stage": "select"}), encoding="utf-8")
+        req = {"stage": "select", "models": models}
+        (tmp_path / "requests" / f"{run_id}.json").write_text(json.dumps(req), encoding="utf-8")
         folder = tmp_path / "results" / "runs" / run_id
         folder.mkdir(parents=True)
         (folder / "provenance.json").write_text(json.dumps({"status": "done"}), encoding="utf-8")

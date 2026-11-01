@@ -1,0 +1,16 @@
+{"item_id": "g-comparison-c482dcfeff", "paraphrase": "Hey, can you tell me which had more renter households in 2016 between Bakersfield-Delano, CA and Louisville/Jefferson County, and what were the exact numbers for each?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-lookup-15eadb1bbd", "paraphrase": "Hey, can you tell me what the median income was in Port St. Lucie, FL, back in 2007?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-lookup-1c497be43e", "paraphrase": "Hey, can you tell me what the median household income was in Montgomery, AL, in thousands of dollars for the year 2019?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-lookup-38a412b9ef", "paraphrase": "Hey, can you tell me what the median income was in Brownsville for the year 2012?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-lookup-5477a4ace8", "paraphrase": "What was the mortgage payment as a share of income in Warner Robins, GA in 2014?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-lookup-c015ae10d6", "paraphrase": "Hey, can you tell me what the median income was in San Luis Obispo for the year 2007?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-multi-d743c44204", "paraphrase": "Can you tell me which years between 2008 and 2013 had a median household income in Huntington-Ashland, WV-KY-OH higher than $37,000?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-493e8f3d0c", "paraphrase": "Can you predict the rent burdened share for Los Angeles in the year 2028?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-566bc12ec0", "paraphrase": "Can you predict the price to income ratio for Dallas-Fort Worth-Arlington, TX in 2031?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-60b2f6cd07", "paraphrase": "Can you tell me what the payment share in Bridgeport-Stamford-Danbury, CT will be in 2030?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-8424aea3c3", "paraphrase": "Hey, can you tell me what the average commute time in Seattle was in 2024?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-9e00d379d7", "paraphrase": "Hey, can you tell me what the crime rate was in New Orleans for the year 2023?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-a6a8ae219a", "paraphrase": "Hey, can you tell me what the building permits in San Juan-Bayam\u00f3n-Caguas, PR are expected to be for the year 2029?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-refusal-c503727c01", "paraphrase": "Can you provide the renter cost burden share percentage for Memphis in the year 1980?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-top_k-3e6cc4dc75", "paraphrase": "Hey, can you tell me which 5 years between 2015 and 2025 had the highest on-time delivery rate across all carriers, expressed as a percentage?", "teacher": "microsoft/Phi-4-mini-instruct"}
+{"item_id": "g-top_k-be2ff0304f", "paraphrase": "Hey, can you tell me which 5 years between 2012 and 2024 had the lowest payment share across all metros?", "teacher": "microsoft/Phi-4-mini-instruct"}

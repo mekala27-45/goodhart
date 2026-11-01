@@ -133,13 +133,14 @@ def select(root: Path, runs: str | Sequence[str], probe: dict[str, Any]) -> dict
 
 
 def select_runs(root: Path) -> list[str]:
-    """Every promoted selection run that finished, in request order."""
+    """Every promoted selection run that finished and sampled a candidate, in request order. A run of
+    the select stage with no candidates (the paraphrase round trip alone) is not one."""
     found = []
     for prov in sorted((root / "results" / "runs").glob("*/provenance.json")):
         request = root / "requests" / f"{prov.parent.name}.json"
-        stage = json.loads(request.read_text(encoding="utf-8")).get("stage") if request.exists() else None
+        req = json.loads(request.read_text(encoding="utf-8")) if request.exists() else {}
         status = json.loads(prov.read_text(encoding="utf-8")).get("status")
-        if stage == "select" and status == "done":
+        if req.get("stage") == "select" and req.get("models") and status == "done":
             found.append(prov.parent.name)
     return found
 
