@@ -34,6 +34,8 @@ jobs:
         env:
           WITHOUT: ${{ inputs.without_test_suite }}
         run: |
+          set -o pipefail
+          mkdir -p build
           flag=""
           if [ "$WITHOUT" = "true" ]; then flag="--without-test-suite"; fi
           python scripts/fetch_spider.py --out build/spider $flag | tee build/spider-summary.json
