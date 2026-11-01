@@ -76,10 +76,11 @@ class Service:
             for name, it in sorted(self.items.values(), key=lambda x: (x[0], x[1].id))
         ]
 
-    def grade(self, question_id: str, answer: str) -> tuple[str, Item, Verdict, float]:
+    def grade(self, question_id: str, answer: str, as_completion: bool = False) -> tuple[str, Item, Verdict, float]:
         name, item = self.items[question_id]
         start = time.perf_counter()
-        v = verdict(item, parse_answer(answer), self.golds, self.kept)
+        parsed = parse_completion(answer) if as_completion else parse_answer(answer)
+        v = verdict(item, parsed, self.golds, self.kept)
         return name, item, v, (time.perf_counter() - start) * 1000.0
 
     def health(self) -> dict[str, Any]:

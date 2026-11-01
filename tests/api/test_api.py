@@ -140,10 +140,9 @@ def test_the_api_and_the_repository_give_the_same_verdict(service: Any) -> None:
     from goodhart_rewards.parse import parse_completion
 
     it = _lookup(service)
-    for text in (it.gold.sql, "select 1 as value", "REFUSE FORECAST"):
-        _, _, v, _ = service.grade(it.id, text)
-        fenced = text if text.startswith("REFUSE") else f"```sql\n{text}\n```"
-        repo = verdict(it, parse_completion(fenced), service.golds, service.kept)
+    for text in (f"```sql\n{it.gold.sql}\n```", "```sql\nselect 1 as value\n```", "REFUSE FORECAST", "select 1"):
+        _, _, v, _ = service.grade(it.id, text, as_completion=True)
+        repo = verdict(it, parse_completion(text), service.golds, service.kept)
         assert (v.original, v.twins_passed, v.confirmed, v.pays, v.flags) == (
             repo.original,
             repo.twins_passed,

@@ -38,6 +38,9 @@ MAX_SQL = 8000
 class GradeIn(BaseModel):
     question_id: str = Field(min_length=1, max_length=64)
     sql: str = Field(min_length=1, max_length=MAX_SQL)
+    # True: parse the text exactly as the repository parses a model's completion (one fenced block or
+    # one REFUSE line, anything else malformed). The parity check sends completions this way.
+    completion: bool = False
 
 
 def client_of(request: Request, salt: str) -> str:
@@ -101,7 +104,7 @@ def create_app(service: Service | None = None, engine: Engine | None = None) -> 
         with db.session(e) as session:
             if not db.take_budget(session, client, PARITY_LIMIT if via_parity else CLIENT_LIMIT, now):
                 raise HTTPException(429, "this client has used its grades for the hour")
-        name, _, v, elapsed = s.grade(body.question_id, body.sql)
+        name, _, v, elapsed = s.grade(body.question_id, body.sql, as_completion=body.completion)
         row = db.GradeRow(
             question_id=body.question_id,
             question_set=name,
