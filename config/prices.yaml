@@ -1,0 +1,43 @@
+# Public price pages read on the day of the build, for the sizing sheet. Estimates only, never spent.
+# Each entry quotes the page as it read; where the page did not say what a table is, neither do we.
+read_on: "2026-10-31"
+fine_tuning:
+  url: https://www.together.ai/pricing
+  source: Together AI pricing page, fine-tuning
+  unit: USD per million training tokens
+  note: the page shows two fine-tuning tables without saying which method each prices; both are kept
+  first_table:
+    Qwen3.5 0.8B: {sft: 0.34, dpo: 0.84}
+    Qwen3.5 2B: {sft: 0.34, dpo: 0.84}
+    Qwen3.5 4B: {sft: 0.34, dpo: 0.84}
+    Qwen3.5 9B: {sft: 0.34, dpo: 0.84}
+    Llama 3.1 8B: {sft: 0.34, dpo: 0.84}
+    Qwen3.5 27B: {sft: 1.05, dpo: 2.62}
+    Gemma 4 31B: {sft: 1.05, dpo: 2.62}
+    Llama 3.3 70B: {sft: 2.03, dpo: 5.08}
+  second_table:
+    Qwen3.5 0.8B: {sft: 0.38, dpo: 0.94}
+    Qwen3.5 2B: {sft: 0.38, dpo: 0.94}
+    Qwen3.5 9B: {sft: 0.38, dpo: 0.94}
+    Llama 3.1 8B: {sft: 0.38, dpo: 0.94}
+    Qwen3.5 27B: {sft: 1.16, dpo: 2.88}
+    Gemma 4 31B: {sft: 1.16, dpo: 2.88}
+    Llama 3.3 70B: {sft: 2.24, dpo: 5.60}
+gpu_hours:
+  url: https://lambda.ai/pricing
+  source: Lambda pricing page, on demand instances
+  unit: USD per GPU per hour, before tax
+  prices:
+    NVIDIA H100 SXM 80GB: 3.99
+    NVIDIA A100 SXM 80GB: 2.79
+    NVIDIA A100 SXM 40GB: 1.99
+    NVIDIA B200 SXM6 180GB: 6.69
+    NVIDIA Tesla V100 16GB: 0.79
+gpu_hours_second_source:
+  url: https://www.together.ai/pricing
+  source: Together AI pricing page, GPU clusters, on demand
+  unit: USD per GPU per hour
+  prices:
+    NVIDIA HGX H100: 3.99
+    NVIDIA HGX H200: 5.99
+    NVIDIA HGX B200: 8.19

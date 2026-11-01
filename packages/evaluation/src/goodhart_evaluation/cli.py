@@ -40,6 +40,27 @@ def data() -> None:
     typer.echo(json.dumps({k: manifest[k] for k in ("sets", "drops", "schema_recall", "planted")}, indent=1))
 
 
+@app.command("probe-summary")
+def probe_summary() -> None:
+    """Write results/gpu_probe.json from the promoted probe runs."""
+    from goodhart_evaluation.probe_summary import run
+
+    out = run(paths.root())
+    passed = [c["model"] for c in out["candidates"] if c["passes"]]
+    typer.echo(
+        f"probe: {out['accelerator']}, backend {out['generation_backend']}, passing {', '.join(passed) or 'none'}"
+    )
+
+
+@app.command()
+def twins() -> None:
+    """Build the kept twins from data/twins.lock.json into the cache, every file checked by digest."""
+    from goodhart_heldout.pipeline import materialize
+
+    counts = materialize(paths.root())
+    typer.echo(f"twins: {counts['built']} tables built, {counts['present']} already present, every digest as locked")
+
+
 @app.command()
 def audit() -> None:
     """Re-execute every SFT target against its declared answer on the original and the twins."""
@@ -91,14 +112,16 @@ def manifest() -> None:
 
 @app.command("rebuild-check")
 def rebuild_check() -> None:
-    """Rebuild the sets and the twins in place and compare every digest with the committed one."""
+    """Rebuild the sets, the twins and the mutation score in a scratch copy and compare every file."""
     from goodhart_evaluation.rebuild import run
 
-    problems = run(paths.root())
-    if problems:
-        typer.echo("\n".join(problems))
+    out = run(paths.root())
+    for kind, names in (("differs", out.differ), ("missing", out.missing), ("not committed", out.extra)):
+        for name in names:
+            typer.echo(f"{kind}: {name}")
+    if not out.ok:
         sys.exit(1)
-    typer.echo("rebuild: every committed digest reproduced")
+    typer.echo(f"rebuild: all {out.compared} committed files reproduced byte for byte under another hash seed")
 
 
 if __name__ == "__main__":
