@@ -104,6 +104,13 @@ packages = [
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# The deep learning stack is read as Any whether or not it is installed, so the type check gives the
+# same answer on a machine without PyTorch and in CI, which installs it for the trainer tests.
+module = ["torch", "torch.*", "transformers", "transformers.*", "trl", "trl.*", "peft", "peft.*", "datasets", "datasets.*", "accelerate", "accelerate.*", "vllm", "vllm.*"]
+follow_imports = "skip"
+follow_imports_for_stubs = true
+
+[[tool.mypy.overrides]]
 # The trainers call TRL and Transformers, which are typed loosely; the stage code is checked, the
 # library objects are Any.
 module = ["goodhart_train.sft", "goodhart_train.dpo", "goodhart_train.grpo", "goodhart_train.sample", "goodhart_train.probe", "goodhart_train.backend"]
