@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "base_commit": "1f8736008aab48d10274480c542d4c6523c18629",
+  "sources": [
+    {
+      "request": "2026-11-01-11-sft-m1",
+      "commit": "d05b632eae9939fadb0fa0ed914192bb7d8e3191",
+      "pull_request": 14
+    },
+    {
+      "request": "2026-11-01-12-sft-small-planted",
+      "commit": "ee76789c040762bd505f5618650722df0ea9aaa1",
+      "pull_request": 15
+    },
+    {
+      "request": "2026-11-01-13-pairs-small",
+      "commit": "4fcf642dc054cdfffd07ab3fbfd241414eeff1a2",
+      "pull_request": 16
+    }
+  ],
+  "purpose": "Independently grade unchanged completion exports before promotion.",
+  "new_model_execution": false
+}
