@@ -298,3 +298,19 @@ the audit when cleaned targets are committed. It compares the regenerated audit 
 revealed key as well. No question, target, registered plan, raw model output or threshold changes.
 The independent grader also supplies the missing grades before the three retained result
 submissions can be promoted. No new model execution is requested by this review.
+
+## 2026-11-13 execution drift is a resource observation, not a corrected score
+
+The retained execution diagnostic reproduces the outstanding template export disagreement.
+The same unchanged SQL completes alone and exceeds the existing deadline under concurrent
+execution. Its correctness stays false; execution and detector flags can differ with contention.
+The diagnostic records serial and concurrent execution metadata without exporting SQL or source
+rows. It does not replace grades, alter deadlines or authorize promotion. The exact observations
+remain on the separate results/execution-43553085043 branch.
+
+The first diagnostic workflow included the requested owner author email in its git configuration.
+The repository identifier gate correctly refused that source and its history. The clean execution
+review starts from the earlier review head and uses the established noreply author identity.
+The original branch and diagnostic receipt remain preserved. No scanner exception or history
+rewrite is used. Result promotion remains blocked until a separately versioned grading protocol
+can reconcile resource-dependent metadata without erasing the original measured outcomes.
