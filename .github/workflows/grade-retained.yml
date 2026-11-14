@@ -37,8 +37,17 @@ jobs:
         run: uv run --no-sync python scripts/fetch_sources.py
       - name: Grade existing completion bytes without model execution
         run: |
+          set -o pipefail
           uv run --no-sync goodhart grade | tee "$RUNNER_TEMP/grading.json"
-          uv run --no-sync goodhart grade --check | tee "$RUNNER_TEMP/regrading.json"
+          if uv run --no-sync goodhart grade --check > "$RUNNER_TEMP/regrading.json"; then
+            echo "Independent regrading passed"
+          else
+            echo "Independent regrading failed; preserve its evidence before refusing promotion"
+          fi
+          cat "$RUNNER_TEMP/regrading.json"
+      - name: Compare every drifted row with its committed grade
+        run: |
+          uv run --no-sync python scripts/diagnose_grade_drift.py "$RUNNER_TEMP/regrading.json" "$RUNNER_TEMP/drift.json"
       - name: Preserve grades on a separate review branch
         run: |
           python3 - <<'PY'
@@ -48,15 +57,17 @@ jobs:
               raise SystemExit("Unexpected tracked change during grading")
           generated = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "grading.json").read_text())
           checked = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "regrading.json").read_text())
-          if checked.get("drift") or generated.get("graded", 0) == 0:
-              raise SystemExit("Missing new grades or independent regrading drift")
+          if generated.get("graded", 0) == 0:
+              raise SystemExit("Missing new grades")
           record = {
               "source_commit": os.environ["GITHUB_SHA"],
               "workflow_run": os.environ["GITHUB_RUN_ID"],
               "request": json.loads(pathlib.Path("evaluation/grading-request.json").read_text()),
               "generated": generated,
               "independent_regrading": checked,
+              "drift_diagnostics": json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "drift.json").read_text()),
               "new_model_execution": False,
+              "passed": not checked.get("drift"),
               "promotion_status": "awaiting pull request CI and review"
           }
           folder = pathlib.Path("results/review")
@@ -72,3 +83,11 @@ jobs:
           git diff --cached --quiet && exit 1
           git commit -m "analysis: independently grade retained GPU exports"
           git push origin "HEAD:refs/heads/results/grade-$GITHUB_RUN_ID"
+      - name: Refuse promotion when any independent grade differs
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          checked = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "regrading.json").read_text())
+          if checked.get("drift"):
+              raise SystemExit("Retained for diagnosis only: independent grades differ")
+          PY
