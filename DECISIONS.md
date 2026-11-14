@@ -288,3 +288,13 @@ not get to spend the rest; the ceiling is a cap, not an allowance.
 
 The generated SQL strings and the sqlglot expressions read better on one line, and 110 broke them
 mid expression. Ruff wraps at 120; the tests may run longer lines where a fixture is a literal.
+
+## 2026-11-13 the isolated rebuild omitted confirmed rewrites and the target audit
+
+The result-review CI reproduced a failure already present in the main build: the scratch
+repository omitted data/paraphrases/kept.jsonl, and reran the data builder without the audit
+that writes cleaned SFT targets. The rebuild now copies the confirmed rewrite input and reruns
+the audit when cleaned targets are committed. It compares the regenerated audit report and
+revealed key as well. No question, target, registered plan, raw model output or threshold changes.
+The independent grader also supplies the missing grades before the three retained result
+submissions can be promoted. No new model execution is requested by this review.
