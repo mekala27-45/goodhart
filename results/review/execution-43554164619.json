@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "source_commit": "bf507293f27117d4b6268df70390969c7f83553a",
+  "review_source_commit": "77560ee43398548b0a6d435ad6b9887ea758b2ee",
+  "review_workflow_run": "43532544018",
+  "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+  "python": "3.12.16",
+  "timeout_s": 5.0,
+  "row_cap": 100000,
+  "cases": [
+    {
+      "source": "2026-11-01-08-sample-m0/template_test__base__n16",
+      "source_sha256": "e9dd6f19e1043102b14c954078e3a55e6448c39333227005f83558a8e3b08b64",
+      "item_id": "g-multi-3f75ec904e",
+      "sample": 13,
+      "checkpoint": "base",
+      "temperature": 0.8,
+      "sql_sha256": "ecf3ca73f230e3cce2c71b7126918dadf168bdf65f4ade7c4e50ae11a8263e43",
+      "retained_difference": {
+        "executed": {
+          "committed": false,
+          "recomputed": true
+        },
+        "flags": {
+          "committed": {
+            "copied_value": false,
+            "literal_only": false,
+            "refusal_answerable": false,
+            "unfiltered": false,
+            "valid_but_wrong": false
+          },
+          "recomputed": {
+            "literal_only": false,
+            "copied_value": false,
+            "unfiltered": true,
+            "refusal_answerable": false,
+            "valid_but_wrong": true
+          }
+        }
+      },
+      "serial": [
+        {
+          "attempt": 0,
+          "executed": true,
+          "error": null,
+          "elapsed_ms": 3304.428,
+          "row_count": 21003889,
+          "truncated": true
+        },
+        {
+          "attempt": 1,
+          "executed": true,
+          "error": null,
+          "elapsed_ms": 2965.326,
+          "row_count": 21003889,
+          "truncated": true
+        },
+        {
+          "attempt": 2,
+          "executed": true,
+          "error": null,
+          "elapsed_ms": 3026.8,
+          "row_count": 21003889,
+          "truncated": true
+        }
+      ],
+      "concurrent": [
+        {
+          "attempt": 0,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5093.541,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 1,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5063.763,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 2,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5060.022,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 3,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5107.455,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 4,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5062.992,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 5,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5027.826,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 6,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5023.881,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 7,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5021.926,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 8,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5040.232,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 9,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5018.64,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 10,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5025.059,
+          "row_count": 0,
+          "truncated": false
+        },
+        {
+          "attempt": 11,
+          "executed": false,
+          "error": "timeout after 5.0 s",
+          "elapsed_ms": 5014.821,
+          "row_count": 0,
+          "truncated": false
+        }
+      ]
+    }
+  ],
+  "new_model_execution": false,
+  "grades_changed": false,
+  "promotion_authorized": false,
+  "purpose": "Diagnostic execution only. Retained scores and release gates remain unchanged."
+}
