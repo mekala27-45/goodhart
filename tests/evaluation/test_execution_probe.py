@@ -26,10 +26,14 @@ class ExecutionProbeTests(unittest.TestCase):
         self.path.parent.mkdir(parents=True)
         self.row = {"item_id": "q1", "sample": 13, "text": "PRIVATE SQL"}
         self.path.write_text(json.dumps(self.row) + "\n", encoding="utf-8")
-        self.review = {"drift_diagnostics": [{
-            "source": "run/test__base__n16",
-            "differences": [{"item_id": "q1", "sample": 13, "fields": {"executed": {}}}],
-        }]}
+        self.review = {
+            "drift_diagnostics": [
+                {
+                    "source": "run/test__base__n16",
+                    "differences": [{"item_id": "q1", "sample": 13, "fields": {"executed": {}}}],
+                }
+            ]
+        }
 
     def test_original_bytes_are_preserved_and_hashed(self) -> None:
         before = self.path.read_bytes()
@@ -65,8 +69,15 @@ class ExecutionProbeTests(unittest.TestCase):
             PROBE.select_cases(self.root, {"drift_diagnostics": []})
 
     def test_execution_export_excludes_rows_and_sql(self) -> None:
-        result = SimpleNamespace(executed=False, error="timeout", elapsed_ms=5000,
-                                 row_count=0, truncated=False, rows=[["private"]], sql="private")
+        result = SimpleNamespace(
+            executed=False,
+            error="timeout",
+            elapsed_ms=5000,
+            row_count=0,
+            truncated=False,
+            rows=[["private"]],
+            sql="private",
+        )
         public = PROBE.summarize_execution(result)
         self.assertEqual(set(public), {"executed", "error", "elapsed_ms", "row_count", "truncated"})
         self.assertNotIn("private", json.dumps(public))

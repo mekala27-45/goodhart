@@ -314,3 +314,10 @@ review starts from the earlier review head and uses the established noreply auth
 The original branch and diagnostic receipt remain preserved. No scanner exception or history
 rewrite is used. Result promotion remains blocked until a separately versioned grading protocol
 can reconcile resource-dependent metadata without erasing the original measured outcomes.
+
+
+## 2026-11-14: complete CI history for the reviewed source
+
+CI previously fetched all remote branches, so its whole-history scans also inspected an abandoned diagnostic branch that is not an ancestor of the candidate. The first diagnostic commit on that branch included the owner author email in a workflow file. It remains retained and fails the identifier scan; it is not merged or rewritten. The clean candidate uses a noreply address.
+
+The CI checkout now starts with the reviewed ref and fetches its complete ancestry without unrelated refs or tags. It explicitly rejects a still-shallow checkout. The unchanged gates still scan every tracked file and every commit diff in that complete history, including both parents of the pull-request merge. This changes checkout scope, not identifier rules or allowed values. Failed runs and the abandoned branch remain available for inspection.

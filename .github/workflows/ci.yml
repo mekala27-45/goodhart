@@ -36,7 +36,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          fetch-tags: false
+      - name: Fetch complete reviewed history without unrelated branch refs
+        run: |
+          git fetch --no-tags --unshallow origin "$GITHUB_SHA"
+          test "$(git rev-parse --is-shallow-repository)" = false
+          echo "Scanning every ancestor of the reviewed commit"
+          git rev-list --count HEAD
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"

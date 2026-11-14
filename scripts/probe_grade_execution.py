@@ -33,12 +33,14 @@ def select_cases(root: Path, review: dict[str, Any]) -> list[dict[str, Any]]:
             matched = [row for row in rows if row["item_id"] == item_id and row["sample"] == sample]
             if len(matched) != 1:
                 raise ValueError("Diagnostic identity is missing or ambiguous")
-            cases.append({
-                "source": source,
-                "source_sha256": hashlib.sha256(raw).hexdigest(),
-                "completion": matched[0],
-                "retained_difference": difference["fields"],
-            })
+            cases.append(
+                {
+                    "source": source,
+                    "source_sha256": hashlib.sha256(raw).hexdigest(),
+                    "completion": matched[0],
+                    "retained_difference": difference["fields"],
+                }
+            )
     if not cases:
         raise ValueError("No drifted rows to inspect")
     return cases
@@ -46,9 +48,7 @@ def select_cases(root: Path, review: dict[str, Any]) -> list[dict[str, Any]]:
 
 def summarize_execution(execution: Any) -> dict[str, Any]:
     """Keep execution metadata; never export SQL text or returned source rows."""
-    return {key: getattr(execution, key) for key in (
-        "executed", "error", "elapsed_ms", "row_count", "truncated"
-    )}
+    return {key: getattr(execution, key) for key in ("executed", "error", "elapsed_ms", "row_count", "truncated")}
 
 
 def probe(root: Path, review: dict[str, Any], repeats: int = 3) -> dict[str, Any]:
@@ -78,18 +78,20 @@ def probe(root: Path, review: dict[str, Any], repeats: int = 3) -> dict[str, Any
             # Match the registered repository grader concurrency; no deadline or row-cap change.
             with ThreadPoolExecutor(max_workers=4) as pool:
                 concurrent = list(pool.map(execute, range(repeats * 4)))
-            out.append({
-                "source": case["source"],
-                "source_sha256": case["source_sha256"],
-                "item_id": completion["item_id"],
-                "sample": completion["sample"],
-                "checkpoint": completion["checkpoint"],
-                "temperature": completion["temperature"],
-                "sql_sha256": hashlib.sha256(parsed.sql.encode()).hexdigest(),
-                "retained_difference": case["retained_difference"],
-                "serial": serial,
-                "concurrent": concurrent,
-            })
+            out.append(
+                {
+                    "source": case["source"],
+                    "source_sha256": case["source_sha256"],
+                    "item_id": completion["item_id"],
+                    "sample": completion["sample"],
+                    "checkpoint": completion["checkpoint"],
+                    "temperature": completion["temperature"],
+                    "sql_sha256": hashlib.sha256(parsed.sql.encode()).hexdigest(),
+                    "retained_difference": case["retained_difference"],
+                    "serial": serial,
+                    "concurrent": concurrent,
+                }
+            )
     finally:
         warehouses.close()
     return {
