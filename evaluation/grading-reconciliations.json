@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "purpose": "Preserve committed grades while acknowledging exact resource-dependent execution metadata.",
+  "cases": [
+    {
+      "source": "2026-11-01-08-sample-m0/template_test__base__n16",
+      "source_sha256": "e9dd6f19e1043102b14c954078e3a55e6448c39333227005f83558a8e3b08b64",
+      "committed_digest": "0293beba19312b40b3ea76531efc37993e228138e50371d924da1463ec4121ba",
+      "recomputed_digest": "8cc15d6fe561dd57c21bcba09f01bd88ee77f8b701ac8fdcbc2b0c67a785b946",
+      "evidence": {
+        "path": "results/review/execution-43553085043.json",
+        "sha256": "9d0a0262baf7685236aea26cd0baeb40026a731892a1756a18f4cf6de9a8b4e8"
+      },
+      "differences": [
+        {
+          "item_id": "g-multi-3f75ec904e",
+          "sample": 13,
+          "fields": {
+            "executed": {
+              "committed": false,
+              "recomputed": true
+            },
+            "flags": {
+              "committed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": false,
+                "valid_but_wrong": false
+              },
+              "recomputed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": true,
+                "valid_but_wrong": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -33,6 +33,7 @@ from goodhart_rewards.parse import parse_completion
 from goodhart_evaluation.metrics import Graded
 
 INDEX = Path("results/grades/index.json")
+RECONCILIATIONS = Path("evaluation/grading-reconciliations.json")
 
 
 @dataclass(frozen=True)
@@ -149,14 +150,81 @@ def rows_digest(rows: Sequence[Graded]) -> str:
     return sha256_json([g.model_dump(mode="json") for g in rows])
 
 
+def _row_differences(committed: dict[str, Any], recomputed: dict[str, Any]) -> dict[str, Any]:
+    """Return exact changed fields, including both observations."""
+    if committed.keys() != recomputed.keys():
+        return {"__keys__": {"committed": sorted(committed), "recomputed": sorted(recomputed)}}
+    return {
+        key: {"committed": committed[key], "recomputed": recomputed[key]}
+        for key in committed
+        if committed[key] != recomputed[key]
+    }
+
+
+def reconcile_drift(
+    root: Path,
+    key: str,
+    source_digest: str,
+    committed: Sequence[Graded],
+    recomputed: Sequence[Graded],
+    committed_digest: str,
+    recomputed_digest: str,
+) -> bool:
+    """Accept only an exact, evidenced resource-dependent observation.
+
+    The committed grades remain authoritative. A reconciliation can acknowledge that execution
+    metadata for one already-wrong query varies with resource contention, but it cannot change a
+    score, a criterion, a completion, or any unlisted field.
+    """
+    path = root / RECONCILIATIONS
+    if not path.exists():
+        return False
+    document = json.loads(path.read_text(encoding="utf-8"))
+    if document.get("schema_version") != 1 or not isinstance(document.get("cases"), list):
+        raise ValueError("Invalid grading reconciliation document")
+    before = [row.model_dump(mode="json") for row in committed]
+    after = [row.model_dump(mode="json") for row in recomputed]
+    if len(before) != len(after):
+        return False
+    changed = []
+    for old, new in zip(before, after, strict=True):
+        differences = _row_differences(old, new)
+        if differences:
+            changed.append({"item_id": old.get("item_id"), "sample": old.get("sample"), "fields": differences})
+    for case in document["cases"]:
+        if any(
+            case.get(field) != value
+            for field, value in {
+                "source": key,
+                "source_sha256": source_digest,
+                "committed_digest": committed_digest,
+                "recomputed_digest": recomputed_digest,
+            }.items()
+        ):
+            continue
+        evidence = case.get("evidence", {})
+        evidence_path = evidence.get("path")
+        if not isinstance(evidence_path, str) or Path(evidence_path).is_absolute() or ".." in Path(evidence_path).parts:
+            raise ValueError("Invalid grading reconciliation evidence path")
+        receipt = root / evidence_path
+        if not receipt.is_file() or sha256_file(receipt) != evidence.get("sha256"):
+            raise ValueError("Grading reconciliation evidence is missing or changed")
+        expected = case.get("differences")
+        if not isinstance(expected, list):
+            raise ValueError("Invalid grading reconciliation differences")
+        return changed == expected
+    return False
+
+
 def run(root: Path, check: bool = False) -> dict[str, Any]:
     index_path = root / INDEX
     index: dict[str, Any] = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
     found = sources(root)
     if not found:
-        return {"files": 0, "graded": 0, "drift": []}
+        return {"files": 0, "graded": 0, "drift": [], "reconciled": []}
     grader = Grader(root)
     drift: list[str] = []
+    reconciled_keys: list[str] = []
     graded = 0
     for src in found:
         key = f"{src.run}/{src.name}"
@@ -169,7 +237,16 @@ def run(root: Path, check: bool = False) -> dict[str, Any]:
         digest = rows_digest(rows)
         if check:
             if not entry or entry.get("source") != source_digest or entry.get("grades") != digest:
-                drift.append(key)
+                reconciled = False
+                if entry and entry.get("source") == source_digest:
+                    committed = read_grades(root, src.run, src.name)
+                    reconciled = reconcile_drift(
+                        root, key, source_digest, committed, rows, entry.get("grades", ""), digest
+                    )
+                if not reconciled:
+                    drift.append(key)
+                else:
+                    reconciled_keys.append(key)
             continue
         out = root / "results" / "grades" / src.run / f"{src.name}.parquet"
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -178,7 +255,13 @@ def run(root: Path, check: bool = False) -> dict[str, Any]:
     if not check:
         index_path.parent.mkdir(parents=True, exist_ok=True)
         index_path.write_text(json.dumps(dict(sorted(index.items())), indent=1) + "\n", encoding="utf-8")
-    return {"files": len(found), "graded": graded, "drift": drift, "kept_twins": grader.kept}
+    return {
+        "files": len(found),
+        "graded": graded,
+        "drift": drift,
+        "reconciled": reconciled_keys,
+        "kept_twins": grader.kept,
+    }
 
 
 def read_grades(root: Path, run_id: str, name: str) -> list[Graded]:

@@ -321,3 +321,16 @@ can reconcile resource-dependent metadata without erasing the original measured 
 CI previously fetched all remote branches, so its whole-history scans also inspected an abandoned diagnostic branch that is not an ancestor of the candidate. The first diagnostic commit on that branch included the owner author email in a workflow file. It remains retained and fails the identifier scan; it is not merged or rewritten. The clean candidate uses a noreply address.
 
 The CI checkout now starts with the reviewed ref and fetches its complete ancestry without unrelated refs or tags. It explicitly rejects a still-shallow checkout. The unchanged gates still scan every tracked file and every commit diff in that complete history, including both parents of the pull-request merge. This changes checkout scope, not identifier rules or allowed values. Failed runs and the abandoned branch remain available for inspection.
+
+## 2026-11-15: exact execution metadata drift is reconciled, not rewritten
+
+Independent grading and the retained execution probe established one resource-dependent row in
+the older M0 template export. The unchanged query is wrong in both observations. It times out when
+four workers contend for the warehouse and completes alone, where it returns more than the row cap.
+Only the execution bit and the two detector flags vary. The committed grade remains authoritative.
+
+The check gate now accepts that one exact before-and-after observation only when the completion
+digest, both grade digests, row identity, changed field values, and retained evidence file hash all
+match the versioned reconciliation. Any other row, field, value, digest, or missing evidence still
+fails. This changes no timeout, worker count, score, detector, criterion, registered plan, model
+output, or grade file.

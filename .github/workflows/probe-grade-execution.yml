@@ -34,7 +34,7 @@ jobs:
       - run: uv run --no-sync python scripts/fetch_sources.py
       - name: Inspect the retained drift without changing grades
         run: |
-          git show aa0d8148b66bd4ebe731922dba95a81e83fb6d6b:results/review/grading-43532544018.json > "$RUNNER_TEMP/review.json"
+          git show a157cb71171e466dd3bbc1be23db63c046882a6a:results/review/grading-43690463069.json > "$RUNNER_TEMP/review.json"
           uv run --no-sync python scripts/probe_grade_execution.py "$RUNNER_TEMP/review.json" "$RUNNER_TEMP/execution.json"
       - name: Retain diagnostic evidence on its own branch
         run: |
