@@ -2,7 +2,7 @@ name: Grade retained result exports
 
 on:
   push:
-    branches: [codex/goodhart-result-review]
+    branches: [codex/goodhart-result-review, codex/goodhart-execution-review]
     paths:
       - .github/workflows/grade-retained.yml
       - evaluation/grading-request.json
