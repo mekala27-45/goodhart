@@ -1,0 +1,88 @@
+{
+ "request": "2026-11-15-14-dpo-m2",
+ "request_digest": "ba86931aafa7bec49eb6afe968f2441b3a016817d6365e1d8fe262c8e39ca73b",
+ "stage": "dpo",
+ "status": "done",
+ "summary": {
+  "global_step": 26,
+  "pairs": 404,
+  "stopped_at_ceiling": false,
+  "dev_exports": [
+   25,
+   26
+  ],
+  "dev_export_errors": [],
+  "trained_on": "card 0, dev export on card 1",
+  "peak_memory_bytes": 4207221760
+ },
+ "environment": {
+  "python": "3.13.16",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "kaggle": true,
+  "cuda": "13.0",
+  "driver": {
+   "driver_version": "580.178.04",
+   "cuda_driver": "13.0",
+   "cards": [
+    {
+     "index": "0",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "885",
+     "power.limit": "70.00",
+     "temperature.gpu": "47"
+    },
+    {
+     "index": "1",
+     "driver_version": "580.178.04",
+     "clocks.max.sm": "1590",
+     "clocks.sm": "300",
+     "power.limit": "70.00",
+     "temperature.gpu": "72"
+    }
+   ]
+  },
+  "gpus": [
+   {
+    "index": 0,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   },
+   {
+    "index": 1,
+    "name": "Tesla T4",
+    "capability": "7.5",
+    "memory_bytes": 15636037632,
+    "bf16": false
+   }
+  ],
+  "packages": {
+   "torch": "2.11.0+cu130",
+   "transformers": "5.22.1",
+   "trl": "1.17.1",
+   "peft": "0.21.2",
+   "accelerate": "1.15.0",
+   "datasets": "5.1.0",
+   "bitsandbytes": null,
+   "vllm": null,
+   "duckdb": "2.0.0",
+   "sqlglot": "30.27.0"
+  }
+ },
+ "outputs": {
+  "adapter/README.md": "ee4b936a2850006db1a10182872eed08b13da24b7d13305ace9408e985214ab0",
+  "adapter/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapter/adapter_model.safetensors": "1b05fe8bff12f3318f3aa192979f345719b36b7914c55189d3e4ca5ffb7cbc18",
+  "adapters/step-25/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-25/adapter_model.safetensors": "93d35dc5eea2eb2b5405b6f2996c71db1dbb528fb73bf8073d41f70cf9249550",
+  "adapters/step-26/adapter_config.json": "0e9e6d382292c815617f0811b44b6d4d861d870fc53148af59d1fa94ccc84f79",
+  "adapters/step-26/adapter_model.safetensors": "1b05fe8bff12f3318f3aa192979f345719b36b7914c55189d3e4ca5ffb7cbc18",
+  "completions/dev__step-25.jsonl": "32c69d770f70aab9d76302d0d2a542e6001d34cc75c5ad3c423952e265455737",
+  "completions/dev__step-26.jsonl": "0a160ab2b93e3b26a45ab6672dd802b3f960e60a785076851488940664353103",
+  "logs/dpo.err.txt": "01f1ddc8de456820972769e0c8d29047854fd387d7a524b5feb8d7f822619d92",
+  "logs/dpo.out.txt": "83cf7e987853d12e182795ed7e31380fa2f4672045b67e94dd399b21a2f2073f",
+  "metrics/trainer.jsonl": "35c2a90a4d5ffb69d789f14d1806fe42048d865d1edf6b617170737b07514e5a"
+ }
+}
