@@ -324,12 +324,13 @@ The CI checkout now starts with the reviewed ref and fetches its complete ancest
 
 ## 2026-11-15: exact execution metadata drift is reconciled, not rewritten
 
-Independent grading and the retained execution probe established one resource-dependent row in
-the older M0 template export. The unchanged query is wrong in both observations. It times out when
-four workers contend for the warehouse and completes alone, where it returns more than the row cap.
-Only the execution bit and the two detector flags vary. The committed grade remains authoritative.
+Independent grading and retained execution probes established two resource-dependent rows in the
+older M0 exports. Both unchanged queries remain wrong in every observation. The template query
+completes alone and times out when four workers contend for the warehouse. The readback query
+completes close to the deadline on the current runner and timed out in an earlier grading run.
+Only each execution bit and two detector flags vary. The committed grades remain authoritative.
 
-The check gate now accepts that one exact before-and-after observation only when the completion
+The check gate now accepts those two exact before-and-after observations only when the completion
 digest, both grade digests, row identity, changed field values, and retained evidence file hash all
 match the versioned reconciliation. Any other row, field, value, digest, or missing evidence still
 fails. This changes no timeout, worker count, score, detector, criterion, registered plan, model

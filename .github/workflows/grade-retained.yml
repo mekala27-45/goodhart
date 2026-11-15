@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/grade-retained.yml
       - evaluation/grading-request.json
+      - evaluation/grading-reconciliations.json
 
 permissions:
   contents: write
