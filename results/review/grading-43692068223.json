@@ -1,0 +1,57 @@
+{
+  "source_commit": "b96248b7b70e688dd9724e96d0a393e1308d8244",
+  "workflow_run": "43692068223",
+  "request": {
+    "schema_version": 1,
+    "base_commit": "1f8736008aab48d10274480c542d4c6523c18629",
+    "sources": [
+      {
+        "request": "2026-11-01-11-sft-m1",
+        "commit": "d05b632eae9939fadb0fa0ed914192bb7d8e3191",
+        "pull_request": 14
+      },
+      {
+        "request": "2026-11-01-12-sft-small-planted",
+        "commit": "ee76789c040762bd505f5618650722df0ea9aaa1",
+        "pull_request": 15
+      },
+      {
+        "request": "2026-11-01-13-pairs-small",
+        "commit": "4fcf642dc054cdfffd07ab3fbfd241414eeff1a2",
+        "pull_request": 16
+      }
+    ],
+    "purpose": "Independently grade unchanged completion exports before promotion.",
+    "new_model_execution": false
+  },
+  "generated": {
+    "files": 57,
+    "graded": 44896,
+    "drift": [],
+    "reconciled": [],
+    "kept_twins": [
+      "twin-13",
+      "twin-01",
+      "twin-12",
+      "twin-07"
+    ]
+  },
+  "independent_regrading": {
+    "files": 57,
+    "graded": 69305,
+    "drift": [],
+    "reconciled": [
+      "2026-11-01-08-sample-m0/template_test__base__n16"
+    ],
+    "kept_twins": [
+      "twin-13",
+      "twin-01",
+      "twin-12",
+      "twin-07"
+    ]
+  },
+  "drift_diagnostics": [],
+  "new_model_execution": false,
+  "passed": true,
+  "promotion_status": "awaiting pull request CI and review"
+}

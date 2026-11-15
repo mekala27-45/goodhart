@@ -1,0 +1,49 @@
+name: Diagnose retained execution drift
+
+on:
+  push:
+    branches: [codex/goodhart-execution-review]
+    paths:
+      - .github/workflows/probe-grade-execution.yml
+      - scripts/probe_grade_execution.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probe-retained-execution
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      UV_SYSTEM_CERTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - run: uv sync --frozen --no-dev
+      - run: uv run --no-sync python -m unittest discover -s tests/evaluation -p test_execution_probe.py -v
+      - run: uv run --no-sync python scripts/promote_results.py --check
+      - run: uv run --no-sync python scripts/fetch_sources.py
+      - name: Inspect the retained drift without changing grades
+        run: |
+          git show a157cb71171e466dd3bbc1be23db63c046882a6a:results/review/grading-43690463069.json > "$RUNNER_TEMP/review.json"
+          uv run --no-sync python scripts/probe_grade_execution.py "$RUNNER_TEMP/review.json" "$RUNNER_TEMP/execution.json"
+      - name: Retain diagnostic evidence on its own branch
+        run: |
+          git diff --exit-code
+          mkdir -p results/review
+          cp "$RUNNER_TEMP/execution.json" "results/review/execution-$GITHUB_RUN_ID.json"
+          git config user.name 'Ajay Mekala'
+          git config user.email 'goodhart-review@users.noreply.github.com'
+          git checkout -b "results/execution-$GITHUB_RUN_ID"
+          git add "results/review/execution-$GITHUB_RUN_ID.json"
+          git commit -m 'analysis: retain execution drift diagnostics without changing scores'
+          git push origin "HEAD:refs/heads/results/execution-$GITHUB_RUN_ID"

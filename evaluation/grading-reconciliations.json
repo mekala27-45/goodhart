@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "purpose": "Preserve committed grades while acknowledging exact resource-dependent execution metadata.",
+  "cases": [
+    {
+      "source": "2026-11-01-08-sample-m0/readback_test__base__n16",
+      "source_sha256": "3f0e7bc2175102db2e5dfdd8992ab00f7fbbfbaa02096e8d623feddd9f7e78f4",
+      "committed_digest": "b05ddc43b691fc21c56fa770731f71bee159cda692b07fcb93f8272909430b2c",
+      "recomputed_digest": "38bfffa4299eb6d7c1f9298632c26cbc3c2d2e7079efb8125a3898cfcec89b33",
+      "evidence": {
+        "path": "results/review/execution-43691824215.json",
+        "sha256": "ece8fe62df96e05ea9b041cbabc00599aa03772eaa1c72914bca3934578d0ad7"
+      },
+      "differences": [
+        {
+          "item_id": "rb-M-multi-01",
+          "sample": 6,
+          "fields": {
+            "executed": {
+              "committed": false,
+              "recomputed": true
+            },
+            "flags": {
+              "committed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": false,
+                "valid_but_wrong": false
+              },
+              "recomputed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": true,
+                "valid_but_wrong": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "2026-11-01-08-sample-m0/template_test__base__n16",
+      "source_sha256": "e9dd6f19e1043102b14c954078e3a55e6448c39333227005f83558a8e3b08b64",
+      "committed_digest": "0293beba19312b40b3ea76531efc37993e228138e50371d924da1463ec4121ba",
+      "recomputed_digest": "8cc15d6fe561dd57c21bcba09f01bd88ee77f8b701ac8fdcbc2b0c67a785b946",
+      "evidence": {
+        "path": "results/review/execution-43691824215.json",
+        "sha256": "ece8fe62df96e05ea9b041cbabc00599aa03772eaa1c72914bca3934578d0ad7"
+      },
+      "differences": [
+        {
+          "item_id": "g-multi-3f75ec904e",
+          "sample": 13,
+          "fields": {
+            "executed": {
+              "committed": false,
+              "recomputed": true
+            },
+            "flags": {
+              "committed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": false,
+                "valid_but_wrong": false
+              },
+              "recomputed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": true,
+                "valid_but_wrong": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

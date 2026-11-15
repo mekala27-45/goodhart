@@ -288,3 +288,50 @@ not get to spend the rest; the ceiling is a cap, not an allowance.
 
 The generated SQL strings and the sqlglot expressions read better on one line, and 110 broke them
 mid expression. Ruff wraps at 120; the tests may run longer lines where a fixture is a literal.
+
+## 2026-11-13 the isolated rebuild omitted confirmed rewrites and the target audit
+
+The result-review CI reproduced a failure already present in the main build: the scratch
+repository omitted data/paraphrases/kept.jsonl, and reran the data builder without the audit
+that writes cleaned SFT targets. The rebuild now copies the confirmed rewrite input and reruns
+the audit when cleaned targets are committed. It compares the regenerated audit report and
+revealed key as well. No question, target, registered plan, raw model output or threshold changes.
+The independent grader also supplies the missing grades before the three retained result
+submissions can be promoted. No new model execution is requested by this review.
+
+## 2026-11-13 execution drift is a resource observation, not a corrected score
+
+The retained execution diagnostic reproduces the outstanding template export disagreement.
+The same unchanged SQL completes alone and exceeds the existing deadline under concurrent
+execution. Its correctness stays false; execution and detector flags can differ with contention.
+The diagnostic records serial and concurrent execution metadata without exporting SQL or source
+rows. It does not replace grades, alter deadlines or authorize promotion. The exact observations
+remain on the separate results/execution-43553085043 branch.
+
+The first diagnostic workflow included the requested owner author email in its git configuration.
+The repository identifier gate correctly refused that source and its history. The clean execution
+review starts from the earlier review head and uses the established noreply author identity.
+The original branch and diagnostic receipt remain preserved. No scanner exception or history
+rewrite is used. Result promotion remains blocked until a separately versioned grading protocol
+can reconcile resource-dependent metadata without erasing the original measured outcomes.
+
+
+## 2026-11-14: complete CI history for the reviewed source
+
+CI previously fetched all remote branches, so its whole-history scans also inspected an abandoned diagnostic branch that is not an ancestor of the candidate. The first diagnostic commit on that branch included the owner author email in a workflow file. It remains retained and fails the identifier scan; it is not merged or rewritten. The clean candidate uses a noreply address.
+
+The CI checkout now starts with the reviewed ref and fetches its complete ancestry without unrelated refs or tags. It explicitly rejects a still-shallow checkout. The unchanged gates still scan every tracked file and every commit diff in that complete history, including both parents of the pull-request merge. This changes checkout scope, not identifier rules or allowed values. Failed runs and the abandoned branch remain available for inspection.
+
+## 2026-11-15: exact execution metadata drift is reconciled, not rewritten
+
+Independent grading and retained execution probes established two resource-dependent rows in the
+older M0 exports. Both unchanged queries remain wrong in every observation. The template query
+completes alone and times out when four workers contend for the warehouse. The readback query
+completes close to the deadline on the current runner and timed out in an earlier grading run.
+Only each execution bit and two detector flags vary. The committed grades remain authoritative.
+
+The check gate now accepts those two exact before-and-after observations only when the completion
+digest, both grade digests, row identity, changed field values, and retained evidence file hash all
+match the versioned reconciliation. Any other row, field, value, digest, or missing evidence still
+fails. This changes no timeout, worker count, score, detector, criterion, registered plan, model
+output, or grade file.

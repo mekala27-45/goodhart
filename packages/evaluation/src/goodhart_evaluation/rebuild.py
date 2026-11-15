@@ -26,8 +26,11 @@ OUTPUTS = (
     "data/audit_key.sha256",
     "results/mutation.json",
     "results/contamination.json",
+    "results/audit.json",
+    "data/audit_key.json",
 )
 INPUTS = ("config", "data/sources.lock.json", "pyproject.toml")
+OPTIONAL_INPUTS = ("data/paraphrases/kept.jsonl",)
 SHARED_CACHE = ("warehouses", "readback")
 HASH_SEED = "12345"
 
@@ -76,6 +79,11 @@ def stage(root: Path, scratch: Path) -> tuple[Path, Path]:
             shutil.copytree(src, dst)
         else:
             shutil.copy2(src, dst)
+    for rel in OPTIONAL_INPUTS:
+        src, dst = root / rel, repo / rel
+        if src.exists():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
     cache.mkdir(parents=True)
     for name in SHARED_CACHE:
         (cache / name).symlink_to(paths.cache_dir() / name, target_is_directory=True)
@@ -87,8 +95,11 @@ def run(root: Path | None = None) -> Rebuild:
     with tempfile.TemporaryDirectory(prefix="goodhart-rebuild-") as tmp:
         repo, cache = stage(root, Path(tmp))
         env = {**os.environ, "GOODHART_ROOT": str(repo), "GOODHART_CACHE": str(cache), "PYTHONHASHSEED": HASH_SEED}
+        command = "from goodhart_evaluation.data import build; build()"
+        if (root / "data/questions/sft/cleaned.jsonl").exists():
+            command += "; from goodhart_core import paths; from goodhart_evaluation.audit import run; run(paths.root())"
         done = subprocess.run(
-            [sys.executable, "-c", "from goodhart_evaluation.data import build; build()"],
+            [sys.executable, "-c", command],
             env=env,
             capture_output=True,
             text=True,

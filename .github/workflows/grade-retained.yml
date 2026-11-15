@@ -1,0 +1,94 @@
+name: Grade retained result exports
+
+on:
+  push:
+    branches: [codex/goodhart-result-review, codex/goodhart-execution-review]
+    paths:
+      - .github/workflows/grade-retained.yml
+      - evaluation/grading-request.json
+      - evaluation/grading-reconciliations.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: grade-retained
+  cancel-in-progress: false
+
+env:
+  PYTHONHASHSEED: "0"
+  UV_SYSTEM_CERTS: "1"
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install the locked repository grader
+        run: uv sync --frozen --no-dev
+      - name: Verify every retained result and request
+        run: uv run --no-sync python scripts/promote_results.py --check
+      - name: Fetch the warehouses by their registered digests
+        run: uv run --no-sync python scripts/fetch_sources.py
+      - name: Grade existing completion bytes without model execution
+        run: |
+          set -o pipefail
+          uv run --no-sync goodhart grade | tee "$RUNNER_TEMP/grading.json"
+          if uv run --no-sync goodhart grade --check > "$RUNNER_TEMP/regrading.json"; then
+            echo "Independent regrading passed"
+          else
+            echo "Independent regrading failed; preserve its evidence before refusing promotion"
+          fi
+          cat "$RUNNER_TEMP/regrading.json"
+      - name: Compare every drifted row with its committed grade
+        run: |
+          uv run --no-sync python scripts/diagnose_grade_drift.py "$RUNNER_TEMP/regrading.json" "$RUNNER_TEMP/drift.json"
+      - name: Preserve grades on a separate review branch
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          changed = subprocess.check_output(["git", "diff", "--name-only"], text=True).splitlines()
+          if any(not p.startswith("results/grades/") for p in changed):
+              raise SystemExit("Unexpected tracked change during grading")
+          generated = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "grading.json").read_text())
+          checked = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "regrading.json").read_text())
+          if generated.get("graded", 0) == 0:
+              raise SystemExit("Missing new grades")
+          record = {
+              "source_commit": os.environ["GITHUB_SHA"],
+              "workflow_run": os.environ["GITHUB_RUN_ID"],
+              "request": json.loads(pathlib.Path("evaluation/grading-request.json").read_text()),
+              "generated": generated,
+              "independent_regrading": checked,
+              "drift_diagnostics": json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "drift.json").read_text()),
+              "new_model_execution": False,
+              "passed": not checked.get("drift"),
+              "promotion_status": "awaiting pull request CI and review"
+          }
+          folder = pathlib.Path("results/review")
+          folder.mkdir(exist_ok=True)
+          (folder / ("grading-" + os.environ["GITHUB_RUN_ID"] + ".json")).write_text(
+              json.dumps(record, indent=2) + "\n"
+          )
+          PY
+          git config user.name "goodhart-review"
+          git config user.email "goodhart-review@users.noreply.github.com"
+          git checkout -b "results/grade-$GITHUB_RUN_ID"
+          git add -f results/grades "results/review/grading-$GITHUB_RUN_ID.json"
+          git diff --cached --quiet && exit 1
+          git commit -m "analysis: independently grade retained GPU exports"
+          git push origin "HEAD:refs/heads/results/grade-$GITHUB_RUN_ID"
+      - name: Refuse promotion when any independent grade differs
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          checked = json.loads(pathlib.Path(os.environ["RUNNER_TEMP"], "regrading.json").read_text())
+          if checked.get("drift"):
+              raise SystemExit("Retained for diagnosis only: independent grades differ")
+          PY
