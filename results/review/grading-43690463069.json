@@ -1,0 +1,125 @@
+{
+  "source_commit": "4bf5da6dfd65f137d5d0ec5d43f708a0a9ed8105",
+  "workflow_run": "43690463069",
+  "request": {
+    "schema_version": 1,
+    "base_commit": "1f8736008aab48d10274480c542d4c6523c18629",
+    "sources": [
+      {
+        "request": "2026-11-01-11-sft-m1",
+        "commit": "d05b632eae9939fadb0fa0ed914192bb7d8e3191",
+        "pull_request": 14
+      },
+      {
+        "request": "2026-11-01-12-sft-small-planted",
+        "commit": "ee76789c040762bd505f5618650722df0ea9aaa1",
+        "pull_request": 15
+      },
+      {
+        "request": "2026-11-01-13-pairs-small",
+        "commit": "4fcf642dc054cdfffd07ab3fbfd241414eeff1a2",
+        "pull_request": 16
+      }
+    ],
+    "purpose": "Independently grade unchanged completion exports before promotion.",
+    "new_model_execution": false
+  },
+  "generated": {
+    "files": 57,
+    "graded": 44896,
+    "drift": [],
+    "kept_twins": [
+      "twin-13",
+      "twin-01",
+      "twin-12",
+      "twin-07"
+    ]
+  },
+  "independent_regrading": {
+    "files": 57,
+    "graded": 69305,
+    "drift": [
+      "2026-11-01-08-sample-m0/readback_test__base__n16",
+      "2026-11-01-08-sample-m0/template_test__base__n16"
+    ],
+    "kept_twins": [
+      "twin-13",
+      "twin-01",
+      "twin-12",
+      "twin-07"
+    ]
+  },
+  "drift_diagnostics": [
+    {
+      "source": "2026-11-01-08-sample-m0/readback_test__base__n16",
+      "committed_digest": "b05ddc43b691fc21c56fa770731f71bee159cda692b07fcb93f8272909430b2c",
+      "recomputed_digest": "38bfffa4299eb6d7c1f9298632c26cbc3c2d2e7079efb8125a3898cfcec89b33",
+      "different_rows": 1,
+      "differences": [
+        {
+          "item_id": "rb-M-multi-01",
+          "sample": 6,
+          "fields": {
+            "executed": {
+              "committed": false,
+              "recomputed": true
+            },
+            "flags": {
+              "committed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": false,
+                "valid_but_wrong": false
+              },
+              "recomputed": {
+                "literal_only": false,
+                "copied_value": false,
+                "unfiltered": true,
+                "refusal_answerable": false,
+                "valid_but_wrong": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "2026-11-01-08-sample-m0/template_test__base__n16",
+      "committed_digest": "0293beba19312b40b3ea76531efc37993e228138e50371d924da1463ec4121ba",
+      "recomputed_digest": "8cc15d6fe561dd57c21bcba09f01bd88ee77f8b701ac8fdcbc2b0c67a785b946",
+      "different_rows": 1,
+      "differences": [
+        {
+          "item_id": "g-multi-3f75ec904e",
+          "sample": 13,
+          "fields": {
+            "executed": {
+              "committed": false,
+              "recomputed": true
+            },
+            "flags": {
+              "committed": {
+                "copied_value": false,
+                "literal_only": false,
+                "refusal_answerable": false,
+                "unfiltered": false,
+                "valid_but_wrong": false
+              },
+              "recomputed": {
+                "literal_only": false,
+                "copied_value": false,
+                "unfiltered": true,
+                "refusal_answerable": false,
+                "valid_but_wrong": true
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "new_model_execution": false,
+  "passed": false,
+  "promotion_status": "awaiting pull request CI and review"
+}
