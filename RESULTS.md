@@ -3,7 +3,7 @@
 > goodhart is a portfolio demonstration. It post-trains small open models to write SQL for questions about three public warehouses its author built from public and synthetic data, and grades them with checks the training reward never saw. It is not a production system; its models must not be used to answer real questions about housing, flights or banking; and its numbers describe these models on these questions only.
 
 Every number below is read from results/manifest.json, which the build assembles from the files
-each step wrote (manifest as of 2026-11-01). A section whose step has not run says so
+each step wrote (manifest as of 2026-11-15). A section whose step has not run says so
 instead of printing a number. Sections not in the manifest yet: planted, judge, release, interior.
 
 ## The definition of done
@@ -17,7 +17,7 @@ build wrote; none is marked by hand.
 | 2 | done | Comparator, rewards, twins and distillation, mutation score, detectors, tested | The kept twins (twin-13, twin-01, twin-12, twin-07) confirm 16 of 2,482 non equivalent mutants of the test golds, of which the honest reward pays 112; tests/verifier and tests/heldout test the comparator, every reward, the twins and the detectors. |
 | 3 | done | Generator, splits, paraphrase round trip, held-out sets, contamination, planted defect | data/questions holds train 2,416, dev 240, test 377, template_test 156, readback_test 84, readback_dev 40; results/contamination.json moved 27 held-out items; 120 SFT targets carry the planted defect, its key hashed in data/audit_key.sha256; the teacher's rewrites of 600 training questions were graded and 16 kept (data/paraphrases/kept.jsonl). |
 | 4 | done | Plan, predictions, thresholds and hypotheses hashed before the first test score | evaluation/registration.json registered the plan (f4b75fe30811), the predictions, the monitor thresholds and the hypotheses on 2026-10-31, before the first test question was scored; scripts/check_registration.py holds every later change to a dated decision. |
-| 5 | done | GPU request route, results branch, reviewed promotion, resume, ledger, no token | 9 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff. |
+| 5 | done | GPU request route, results branch, reviewed promotion, resume, ledger, no token | 13 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff. |
 | 6 | done | Probe and base selection by coverage with licenses; base, floor and reference graded | results/gpu_probe.json probed 8 candidates; results/selection.json chose Qwen/Qwen2.5-Coder-1.5B-Instruct and Qwen/Qwen3-0.6B by the registered rule; the floor is graded. |
 | 7 | not done | SFT clean and planted with the audit; DPO with its pair counts | Missing: SFT on the cleaned and on the planted targets, both graded; a promoted DPO run with its pair counts. |
 | 8 | done | Grader API live with the grade log, verified from a separate client; parity exact | From a GitHub runner, run 41328508360, the live API graded 1428 exported completions and differed from the repository on 0; a grade it logged was read back in the database. |
@@ -29,8 +29,8 @@ build wrote; none is marked by hand.
 | 14 | not done | Sizing sheet and compute ledger, every run inside its ceiling | The ledger sums 3.366 GPU hours over the promoted runs. |
 | 15 | not done | Model cards, validation reports, promotion gates, champion, adapters released | The model cards, the validation reports or the release record is missing. |
 | 16 | done | Site live on Pages with every route; the desk grading live; the live check | The live check is recorded in results/live_check.json. |
-| 17 | done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs | DECISIONS.md has 26 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place. |
-| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 166 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag. |
+| 17 | done | RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs | DECISIONS.md has 28 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place. |
+| 18 | not done | Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described | 183 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag. |
 
 ## The questions
 
