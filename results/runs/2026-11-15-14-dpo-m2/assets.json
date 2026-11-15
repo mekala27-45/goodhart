@@ -1,0 +1,20 @@
+{
+ "adapter/adapter_model.safetensors": {
+  "sha256": "1b05fe8bff12f3318f3aa192979f345719b36b7914c55189d3e4ca5ffb7cbc18",
+  "bytes": 73911112,
+  "release": "runs",
+  "asset": "2026-11-15-14-dpo-m2__adapter__adapter_model.safetensors"
+ },
+ "adapters/step-25/adapter_model.safetensors": {
+  "sha256": "93d35dc5eea2eb2b5405b6f2996c71db1dbb528fb73bf8073d41f70cf9249550",
+  "bytes": 73911112,
+  "release": "runs",
+  "asset": "2026-11-15-14-dpo-m2__adapters__step-25__adapter_model.safetensors"
+ },
+ "adapters/step-26/adapter_model.safetensors": {
+  "sha256": "1b05fe8bff12f3318f3aa192979f345719b36b7914c55189d3e4ca5ffb7cbc18",
+  "bytes": 73911112,
+  "release": "runs",
+  "asset": "2026-11-15-14-dpo-m2__adapters__step-26__adapter_model.safetensors"
+ }
+}
