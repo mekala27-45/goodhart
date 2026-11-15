@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-01",
+ "as_of": "2026-11-15",
  "values": {
   "audit.false_positives": {
    "value": 0,
@@ -8,7 +8,7 @@
     "origin": "goodhart audit",
     "population": "the SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -19,7 +19,7 @@
     "origin": "goodhart audit",
     "population": "the SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -30,7 +30,7 @@
     "origin": "goodhart audit",
     "population": "the SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -41,7 +41,7 @@
     "origin": "goodhart audit",
     "population": "the SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -52,7 +52,7 @@
     "origin": "goodhart audit",
     "population": "the planted key",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -63,7 +63,7 @@
     "origin": "goodhart audit",
     "population": "the planted key",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -74,29 +74,29 @@
     "origin": "goodhart audit",
     "population": "the SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
   "build.commits": {
-   "value": 166,
+   "value": 183,
    "fmt": "int",
    "provenance": {
     "origin": "git",
     "population": "commits on main",
     "source": "build",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
   "build.decisions": {
-   "value": 26,
+   "value": 28,
    "fmt": "int",
    "provenance": {
     "origin": "DECISIONS.md",
     "population": "dated entries",
     "source": "build",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -107,7 +107,7 @@
     "origin": "DECISIONS.md",
     "population": "dated reversals",
     "source": "build",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -118,7 +118,29 @@
     "origin": "goodhart checkpoints",
     "population": "dev, greedy",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-11-sft-m1.chosen": {
+   "value": 125,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
+    "as_of": "2026-11-15",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-12-sft-small-planted.chosen": {
+   "value": 175,
+   "fmt": "int",
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -129,7 +151,7 @@
     "origin": "contamination report",
     "population": "the stated threshold",
     "source": "plan",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -140,7 +162,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -151,7 +173,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -162,7 +184,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -173,7 +195,7 @@
     "origin": "contamination report",
     "population": "held-out items moved out",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -184,7 +206,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -195,7 +217,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -206,7 +228,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -217,7 +239,7 @@
     "origin": "contamination report",
     "population": "held-out sets against train and dev",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -228,7 +250,7 @@
     "origin": "goodhart data",
     "population": "generated candidates",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -239,7 +261,7 @@
     "origin": "goodhart data",
     "population": "training prompts with sample rows (defect D2)",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -250,7 +272,7 @@
     "origin": "goodhart data",
     "population": "training prompts",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -261,7 +283,7 @@
     "origin": "goodhart paraphrases",
     "population": "training questions the teacher rewrote",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -272,7 +294,7 @@
     "origin": "goodhart paraphrases",
     "population": "training questions the teacher rewrote",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -283,7 +305,7 @@
     "origin": "goodhart paraphrases",
     "population": "the paraphrase teacher",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -294,7 +316,7 @@
     "origin": "goodhart data",
     "population": "planted SFT targets",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -305,7 +327,7 @@
     "origin": "goodhart data",
     "population": "the filtered pool",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -316,7 +338,7 @@
     "origin": "goodhart data",
     "population": "the dev set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -327,7 +349,7 @@
     "origin": "goodhart data",
     "population": "the readback_dev set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -338,7 +360,7 @@
     "origin": "goodhart data",
     "population": "the readback_test set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -349,7 +371,7 @@
     "origin": "goodhart data",
     "population": "the template_test set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -360,7 +382,7 @@
     "origin": "goodhart data",
     "population": "the test set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -371,7 +393,7 @@
     "origin": "goodhart data",
     "population": "the train set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -382,7 +404,7 @@
     "origin": "goodhart floor",
     "population": "the answerable dev items",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -393,7 +415,7 @@
     "origin": "goodhart floor",
     "population": "the answerable readback_dev items",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -404,7 +426,7 @@
     "origin": "goodhart floor",
     "population": "the answerable readback_test items",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -415,7 +437,7 @@
     "origin": "goodhart floor",
     "population": "the answerable template_test items",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -426,7 +448,7 @@
     "origin": "goodhart floor",
     "population": "the answerable test items",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -437,7 +459,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -448,7 +470,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -459,7 +481,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -470,7 +492,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -481,7 +503,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -492,7 +514,7 @@
     "origin": "goodhart manifest",
     "population": "the sections whose inputs do not exist yet",
     "source": "build",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -503,7 +525,7 @@
     "origin": "evaluation/plan.yaml",
     "population": "every method",
     "source": "plan",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -514,7 +536,7 @@
     "origin": "goodhart gates",
     "population": "the methods whose checkpoints were sampled",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "empty when no checkpoint cleared every gate"
    }
   },
@@ -525,7 +547,7 @@
     "origin": "gpu probe",
     "population": "the Kaggle kernels",
     "source": "probe",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -536,7 +558,7 @@
     "origin": "gpu probe",
     "population": "the Kaggle kernels",
     "source": "probe",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -547,7 +569,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -558,7 +580,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -569,7 +591,7 @@
     "origin": "goodhart regression",
     "population": "the IFEval prompts each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -580,7 +602,7 @@
     "origin": "goodhart regression",
     "population": "the Spider dev questions each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -591,7 +613,7 @@
     "origin": "goodhart select",
     "population": "the probed candidates",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -602,7 +624,7 @@
     "origin": "goodhart select",
     "population": "the probed candidates",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -613,7 +635,7 @@
     "origin": "the run ledger",
     "population": "every promoted run",
     "source": "ledger",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -624,7 +646,7 @@
     "origin": "the run ledger",
     "population": "every promoted run",
     "source": "ledger",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -635,7 +657,7 @@
     "origin": "greedy cover",
     "population": "train and dev mutants the kept twins catch",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -646,7 +668,7 @@
     "origin": "greedy cover",
     "population": "train and dev mutants the original pays",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -657,7 +679,7 @@
     "origin": "mutation score",
     "population": "the distillation sample, in sample",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -668,7 +690,7 @@
     "origin": "mutation score",
     "population": "the distillation sample, in sample",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -679,7 +701,7 @@
     "origin": "greedy cover",
     "population": "16 candidates",
     "source": "twins",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -690,7 +712,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -701,7 +723,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -712,7 +734,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -723,7 +745,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -734,7 +756,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -745,7 +767,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -756,7 +778,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -767,7 +789,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -778,7 +800,7 @@
     "origin": "mutation score",
     "population": "non equivalent mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -789,7 +811,7 @@
     "origin": "greedy cover",
     "population": "16 candidates",
     "source": "twins",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   }
@@ -837,7 +859,7 @@
      5,
      "done",
      "GPU request route, results branch, reviewed promotion, resume, ledger, no token",
-     "9 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff."
+     "13 runs came back on gpu/<id> branches with provenance and were promoted by pull request; resume and the ledger are tested in tests/train/test_smoke.py; the token scan reads every file and every commit diff."
     ],
     [
      6,
@@ -909,20 +931,20 @@
      17,
      "done",
      "RESULTS, README with the matrix, DECISIONS, notebooks, AGENTS.md, skills, SPEC, ADRs",
-     "DECISIONS.md has 26 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
+     "DECISIONS.md has 28 dated entries, 3 of them reversals; 3 notebooks; 7 ADRs; 3 skills; AGENTS.md and docs/SPEC.md are in place."
     ],
     [
      18,
      "not done",
      "Coverage, types, lint, gates, forty commits, rederive, v0.1.0, licenses, repo described",
-     "166 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag."
+     "183 commits on main when this manifest was built; the gates (dashes, vocabulary, palette, skills, tokens, identifiers, types, lint, coverage at 80 percent) run in CI on every push; missing: the rederive; the v0.1.0 tag."
     ]
    ],
    "provenance": {
     "origin": "goodhart manifest",
     "population": "the definition of done",
     "source": "build",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1008,7 +1030,179 @@
     "origin": "goodhart checkpoints",
     "population": "dev, greedy",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-11-sft-m1": {
+   "columns": [
+    "step",
+    "twin confirmed accuracy",
+    "items"
+   ],
+   "formats": [
+    "int",
+    "pct1",
+    "int"
+   ],
+   "rows": [
+    [
+     25,
+     0.9120370370370371,
+     216
+    ],
+    [
+     50,
+     0.9305555555555556,
+     216
+    ],
+    [
+     75,
+     0.9953703703703703,
+     216
+    ],
+    [
+     100,
+     0.9768518518518519,
+     216
+    ],
+    [
+     125,
+     1.0,
+     216
+    ],
+    [
+     150,
+     0.9953703703703703,
+     216
+    ],
+    [
+     175,
+     1.0,
+     216
+    ],
+    [
+     200,
+     1.0,
+     216
+    ],
+    [
+     225,
+     1.0,
+     216
+    ],
+    [
+     250,
+     1.0,
+     216
+    ],
+    [
+     275,
+     1.0,
+     216
+    ],
+    [
+     300,
+     1.0,
+     216
+    ],
+    [
+     302,
+     1.0,
+     216
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
+    "as_of": "2026-11-15",
+    "note": null
+   }
+  },
+  "checkpoints.2026-11-01-12-sft-small-planted": {
+   "columns": [
+    "step",
+    "twin confirmed accuracy",
+    "items"
+   ],
+   "formats": [
+    "int",
+    "pct1",
+    "int"
+   ],
+   "rows": [
+    [
+     25,
+     0.6296296296296297,
+     216
+    ],
+    [
+     50,
+     0.9398148148148148,
+     216
+    ],
+    [
+     75,
+     0.9861111111111112,
+     216
+    ],
+    [
+     100,
+     0.9351851851851852,
+     216
+    ],
+    [
+     125,
+     0.9907407407407407,
+     216
+    ],
+    [
+     150,
+     0.9861111111111112,
+     216
+    ],
+    [
+     175,
+     0.9953703703703703,
+     216
+    ],
+    [
+     200,
+     0.9953703703703703,
+     216
+    ],
+    [
+     225,
+     0.9953703703703703,
+     216
+    ],
+    [
+     250,
+     0.9953703703703703,
+     216
+    ],
+    [
+     275,
+     0.9953703703703703,
+     216
+    ],
+    [
+     300,
+     0.9953703703703703,
+     216
+    ],
+    [
+     302,
+     0.9953703703703703,
+     216
+    ]
+   ],
+   "provenance": {
+    "origin": "goodhart checkpoints",
+    "population": "dev, greedy",
+    "source": "completions",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1055,7 +1249,7 @@
     "origin": "goodhart data",
     "population": "every candidate",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1138,7 +1332,7 @@
     "origin": "goodhart data",
     "population": "every set",
     "source": "questions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1185,7 +1379,7 @@
     "origin": "goodhart paraphrases",
     "population": "training questions the teacher rewrote",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1236,7 +1430,7 @@
     "origin": "goodhart paraphrases",
     "population": "training questions the teacher rewrote",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1296,7 +1490,7 @@
     "origin": "goodhart floor",
     "population": "every held-out set, readback's no model floor at its pinned commit",
     "source": "floor",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1377,7 +1571,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses, each tested once",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "95 percent cluster bootstrap; Benjamini-Hochberg at q 0.05 across the hypotheses tested"
    }
   },
@@ -1451,7 +1645,7 @@
     "origin": "goodhart hypotheses",
     "population": "the registered hypotheses, each tested once",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1696,7 +1890,7 @@
     "origin": "goodhart methods",
     "population": "the held-out items each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "95 percent cluster bootstrap intervals over question templates"
    }
   },
@@ -1749,7 +1943,7 @@
     "origin": "goodhart methods",
     "population": "each method's training and sampling runs",
     "source": "ledger",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1810,7 +2004,7 @@
     "origin": "goodhart methods",
     "population": "the items both answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "paired cluster bootstrap, a minus b"
    }
   },
@@ -1861,7 +2055,7 @@
     "origin": "goodhart methods",
     "population": "readback_test, the answerable items each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "greedy twin confirmed accuracy with its 95 percent cluster bootstrap interval; pass at k from 16 samples"
    }
   },
@@ -1920,7 +2114,7 @@
     "origin": "goodhart regression",
     "population": "IFEval prompts and Spider dev questions each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -1943,7 +2137,7 @@
     "origin": "goodhart methods",
     "population": "the registered comparisons on readback_test",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -2034,7 +2228,7 @@
     "origin": "gpu probe",
     "population": "the candidates",
     "source": "probe",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -2117,7 +2311,7 @@
     "origin": "first look",
     "population": "every mart",
     "source": "warehouses",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -2161,7 +2355,7 @@
     "origin": "goodhart regression",
     "population": "the IFEval prompts each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "prompt level strict accuracy (every instruction of the prompt followed, as written); the change is against the base, paired, 95 percent bootstrap"
    }
   },
@@ -2205,7 +2399,7 @@
     "origin": "goodhart regression",
     "population": "the Spider dev questions each method's chosen checkpoint answered",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": "test suite execution accuracy with values; the change is against the base, paired, 95 percent bootstrap"
    }
   },
@@ -2306,7 +2500,7 @@
     "origin": "goodhart select",
     "population": "dev, answerable items, twin confirmed",
     "source": "completions",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   },
@@ -2389,7 +2583,7 @@
     "origin": "mutation score",
     "population": "mutants of test golds",
     "source": "mutants",
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-15",
     "note": null
    }
   }

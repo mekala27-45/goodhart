@@ -55,5 +55,119 @@
     "twin_confirmed_accuracy": 0.9861111111111112
    }
   }
+ },
+ "2026-11-01-11-sft-m1": {
+  "chosen": 125,
+  "steps": {
+   "100": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9768518518518519
+   },
+   "125": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "150": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "175": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "200": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "225": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "25": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9120370370370371
+   },
+   "250": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "275": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "300": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "302": {
+    "items": 216,
+    "twin_confirmed_accuracy": 1.0
+   },
+   "50": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9305555555555556
+   },
+   "75": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   }
+  }
+ },
+ "2026-11-01-12-sft-small-planted": {
+  "chosen": 175,
+  "steps": {
+   "100": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9351851851851852
+   },
+   "125": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9907407407407407
+   },
+   "150": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9861111111111112
+   },
+   "175": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "200": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "225": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "25": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.6296296296296297
+   },
+   "250": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "275": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "300": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "302": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9953703703703703
+   },
+   "50": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9398148148148148
+   },
+   "75": {
+    "items": 216,
+    "twin_confirmed_accuracy": 0.9861111111111112
+   }
+  }
  }
 }
